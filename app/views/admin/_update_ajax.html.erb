@@ -1,0 +1,4 @@
+<%=editablefield(params[:field], @user).html_safe%>
+<%if not @alert_message.empty?%>
+<div id="errorExplanation"><h2><%=@alert_message%> </h2></div>
+<%end%>

@@ -1,0 +1,34 @@
+<div id="field_<%=menu_list.id.to_s%>">
+  <div class="hr"></div>
+  <table width ="100%" cellpadding="5" cellspacing="0" border="0" class="<%= 'has-sub-menus' if (menu_list.menus.count > 0) %> " >
+    <tr class="list-table">
+      <td width="10" <%= "class='menu-drag'" if menu_list.parent_id!=0%> >
+      </td>
+      <td align="left"  valign="top" class="<%= cycle('list-line-odd', 'list-line-even') %>"  onclick = "window.location.href ='<%=url_for(:controller => 'menus', :id => menu_list.id,  :action => 'edit')%>' "  style = "cursor:pointer" >
+        <span class="list-title <%=menu_list.menu_active ? "" : "menu-disabled"%> ">        <%=link_to image_tag((menu_list.menus.count > 0 ? "interface/lever_closed.png":"interface/lever_disabled.png" ), :width=>"16px"),"#",{:onclick=>"return true;", :id=>"zoom-invoice", :class=>"lever-toggle"} %> <%=h menu_list.name.html_safe %></span>
+      </td>
+      <td>
+         <div align="right" class="image-delete-list2" >
+          <%=menu_delete(menu_list)%>
+         </div>
+        <div align="right" class="add_sub_menu" >
+          <%=link_to image_tag("interface/Download-icon-16.png", :border=>"0") , {:action=>:create_empty_record,:typeofrecord=>"Child", :parent_id=>menu_list.id}, :remote=>true%>
+        </div>
+      </td>
+    </tr>
+  </table>
+
+
+  <ul id='sortable_<%=menu_list.id.to_s%>' data-id='#sortable_<%=menu_list.id.to_s%>' class="draggable_menu_item sub-menu-item-closed">
+    <%=render :partial=>"menu_list.html", :collection=>menu_list.menus%>
+  </ul>
+</div>
+
+<%#*<script type="text/javascript">%>
+    <%#*makeDraggable();%>
+<%#*</script>%>
+
+
+<%#= sortable_element("sortable_"+menu_list.name.gsub(" ", "-"),
+:url => {:action => 'update_order', :name=>"sortable_"+ menu_list.name.gsub(" ", "-")},
+:tag=> "div", :constraint=>'vertical', :overlap=>'vertical', :handle=>".menu-drag") %>

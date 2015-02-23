@@ -1,0 +1,12 @@
+
+<div id="image_<%= image.id%>" class="imageSingle">
+  <div class="imageThumb">
+    <%= image_tag(image.image_url(:large).to_s) %>
+  </div>
+   <div class="imageName">
+    <%=editablefieldcreate("title", image)%>
+  </div>
+   <div class="imageDelete">
+   <%= link_to image_tag("interface/Button-Delete.png"), {:id=>image, :incoming_id=>params[:id], :action=>"delete_image", :format=>"js"}, :class=>"delete_image", :confirm => 'Are you sure?', :remote=>true %> 
+  </div>
+</div>

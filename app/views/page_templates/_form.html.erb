@@ -1,0 +1,41 @@
+  <div class="cms-section">
+    <div class="cms-heading">Information</div>
+    <div class="cms-content">
+<p> 
+        <b>Version: (looking at version:<%=params[:version]%>)</b><br>
+             <%=link_to((params[:version]=@page_template.versions.last.number.to_s) ? "(#{@page_template.versions.last.number})":@page_template.versions.last.number , :version=>@page_template.versions.last.number) rescue "No Versions Found!"%>
+        <% @page_template.versions.reverse.each do |page_template| %>
+          | <%=link_to((params[:version]==(page_template.number-1).to_s) ? "(#{page_template.number-1})":page_template.number-1 , :version=>page_template.number-1) %> 
+        <% end %>
+        </br>
+      </p>
+      </br>
+      
+      <p>
+        <b>Title:</b><br>
+        <%=editablefieldcreate("title", @page_template)%>
+      </p>
+      
+      <p>
+        <b>Description:</b><br>
+        <%=editablefieldcreate("description", @page_template)%>
+      </p>
+
+    </div>
+  </div>
+
+<div class="cms-section">
+
+    <div class="cms-heading cms-headingmce">Body</div>
+    <div class="cms-content">
+
+      <% form_for(@page_template, :remote=>true) do |f| %>
+  <%#= f.submit "Update"%><br>
+
+        <center>
+          <%= f.text_area :body, :class => "mceEditor"%>
+        </center>
+        <br>
+      <% end %>
+    </div>
+  </div>

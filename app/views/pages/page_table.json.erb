@@ -1,0 +1,14 @@
+{"sEcho": <%= params[:sEcho] || -1 %>,
+ "iTotalRecords": <%= @total_objects %>,
+ "iTotalDisplayRecords": <%= @total_objects %>,
+ "aaData":[
+<% @objects.each do |page| %>
+  [
+   "<%= page.id%><div id='page-id' class='hidden-item'><%= page.id%></div> ",
+   "<%= page.title %>",
+   "<%= raw(truncate(page.body.to_s.gsub(/<\/?[^>]+>|(\r\n|\n|\r)|&nbsp;/, '').html_safe, :length => 17)) %>",
+   "<%= page.menu.name rescue "n/a" %>",  
+   "<center><div class='delete-page-item'><%=image_tag('interface/delete.png', :border=>'0').gsub("\"", "'").html_safe() %></div> </center>"
+  ] <% if @objects.last != page then %> , <% end %>
+<% end %>
+]}

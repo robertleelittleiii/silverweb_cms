@@ -1,0 +1,13 @@
+<div class="hidden-item" id="user-id"><%=@user.id%></div>
+<div class="hidden-item">
+  <div id="as_window"><%=params[:as_window]%></div>
+  <div id="dialog-height">300</div>
+  <div id="dialog-width">300</div>
+  <div id="dialog-name">Update Roles</div>
+</div>
+<b>User Roles:</b><br>
+<% for role in @roles %>
+  <div class="field_row">
+    <div id="role-id"class="hidden-item"><%= role.id%></div> <%= check_box_tag "user[role_ids][]", role.id, @user.roles.include?(role),:class=>"role-check" %> <%= role.name %>
+  </div>
+<% end %>

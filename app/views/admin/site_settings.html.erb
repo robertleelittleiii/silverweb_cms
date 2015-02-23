@@ -1,0 +1,313 @@
+<div class="cms-block" Align="Left">
+  <%   $user =  User.find_by_id(session[:user_id])
+  $roles = $user.roles
+%>
+
+  <div id="flash" align="center">
+    <!-- START:flash -->
+    <% if flash[:notice] -%>
+      <div id="notice"><%= flash[:notice] %></div>
+    <% end -%>
+    <!-- END:flash -->
+  </div>
+
+
+
+  <div class="cms-header">Site Preferences</div>
+
+  <div class="cms-section">
+    <div class="cms-heading">Company Information</div>
+    <div class="cms-content">
+      <p>
+        <b>Web Site URL</b><br>
+        <%=editablefieldcreate("company_url", @settings)%>
+      </p>
+      <p>
+        <b>Admin Email Address</b><br>
+        <%=editablefieldcreate("admin_email", @settings)%>
+      </p>
+      <p>
+        <b>Name:</b><br>
+        <%=editablefieldcreate("company_name", @settings)%>
+      </p>
+      <p>
+        <b>Street Address:</b><br>
+        <%=editablefieldcreate("company_address", @settings)%>
+      </p>
+      <p>
+        <b>Phone Number:</b><br>
+        <%=editablefieldcreate("company_phone", @settings)%>
+      </p>
+      <p>
+        <b>Fax Number:</b><br>
+        <%=editablefieldcreate("company_fax", @settings)%>
+      </p>
+      <p>
+      </p>
+    </div>
+  </div>
+
+
+  <% if (check_permissions("index","products")) then %>
+    <div class="cms-section">
+      <div class="cms-heading">System Wide Settings</div>
+      <div class="cms-content">
+        <p>
+          <b>Products per Page (Number):</b><br>
+          <%=editablefieldcreate("products_per_page", @settings)%>
+        </p>
+        <p> 
+          <b>Search Products per Page (Number):</b><br>
+          <%=editablefieldcreate("search_products_per_page", @settings)%>
+        </p> 
+
+        <p> 
+          <b>Order Notification:</b><br>
+          <%=editablecheckboxedit("order_notification", @settings, "Send Invoice Copy")%> 
+        </p> 
+
+        <p>
+          </br>
+        </p>
+      </div>
+    </div>
+  
+  <% end %>
+  
+    <% if (check_permissions("index","products")) then %>
+
+  <div class="cms-section">
+    <div class="cms-heading">Payment Gateway</div>
+    <div class="cms-content">
+      <p> 
+        </br>
+      </p>
+      <p>
+        <b>Login:</b><br>
+        <%=editablefieldcreate("gateway_login", @settings)%>
+      </p>
+      <p>
+        <b>Password:</b><br>
+        <%=editablefieldcreate("gateway_password", @settings)%>
+      </p>
+      <p>
+        <b>Signature: (paypal only)</b><br>
+        <%=editablefieldcreate("gateway_signature", @settings)%>
+      </p>
+      <p>
+      </p>
+    </div>
+  </div>
+  
+  <% end %>
+
+    <% if (check_permissions("index","products")) then %>
+
+  <div class="cms-section">
+    <div class="cms-heading">UPS - Shipping Settings</div>
+    <div class="cms-content">
+      <p> 
+        </br>
+
+      </p>
+      <p>
+        <b>Account Number:</b><br>
+        <%=editablefieldcreate("ups_account", @settings)%>
+      </p>
+      <p>
+        <b>User ID:</b><br>
+        <%=editablefieldcreate("ups_login", @settings)%>
+      </p>
+      <p>
+        <b>Password:</b><br>
+        <%=editablefieldcreate("ups_password", @settings)%>
+      </p>
+      <p>
+        <b>Access Key:</b><br>
+        <%=editablefieldcreate("ups_access_key", @settings)%>
+      </p>
+
+      <p>
+      </p>
+    </div>
+  </div>
+  
+  <% end %>
+  
+    <% if (check_permissions("index","products")) then %>
+
+  <div class="cms-section">
+    <div class="cms-heading">General Shipping Settings</div>
+    <div class="cms-content">
+      <p> 
+        </br>
+
+      </p>
+
+      <p>
+        <b>Shipping Methods (ground, 2nd day, overnight, pickup):
+          <%=editablefieldcreate("shipping_methods", @settings)%>
+      </p>
+      <p>
+        <i>Note: number of payment levels must be the same as number of shipping methods.</i>
+      </p>
+      <p>
+        <b>$0.00 - $349.99: (ground, 2nd day, overnight, pickup)</b><br>
+        <%=editablefieldcreate("shipping_level_1", @settings)%>
+      </p>
+      <p>
+        <b>$350.00 - $1999.99:(ground, 2nd day, overnight, pickup)</b><br>
+        <%=editablefieldcreate("shipping_level_2", @settings)%>
+      </p>
+
+      <p>
+      </p>
+    </div>
+  </div>
+  
+  <% end %>
+
+    <% if (check_permissions("index","products")) then %>
+
+  <div class="cms-section">
+    <div class="cms-heading">Images</div>
+    <div class="cms-content">
+      <div id="product-images">
+        <%= render :partial=>"image_section" %>
+      </div>
+    </div>
+  </div>
+
+ <% end %>
+  
+    <% if (check_permissions("index","products")) then %>
+
+  <div class="cms-section">
+    <div class="cms-heading">Inventory</div>
+    <div class="cms-content">
+      <p>
+        <b>Email Address for Notification</b><br>
+        <%=editablefieldcreate("inventory_email", @settings)%>
+      </p>
+
+      <p>
+        <b>Size List (please seperate by ",")</b><br>
+        <%=editablefieldcreate("inventory_size_list", @settings)%>
+      </p>
+      <p>
+        <b>Auto Create Inventory Key:</b>
+        <br>
+        <%=editablecheckboxedit("inventory_key_increment", @settings, "Auto Increment")%> 
+        <br><br>
+      </p>
+      <p>
+
+      </p>
+    </div>
+  </div>
+  
+  <% end %>
+  
+  
+  <div class="cms-section">
+    <div class="cms-heading">Tracking Codes</div>
+    <div class="cms-content">
+      <p>
+        <b>Google Analytics:</b><br>
+        <%=editablefieldcreate("google_analytics", @settings)%>
+      </p>
+      <p>
+        <b>Google Tag Manager:</b><br>
+        <%=editablefieldcreate("google_tag_manager", @settings)%>
+      </p>
+      <p>
+
+      </p>
+    </div>
+  </div>
+  <div class="cms-section">
+    <div class="cms-heading">Site Status</div>
+    <div class="cms-content">
+      </br>
+
+<%#=link_to("reload!", {:action=>:reload_rails_env}, {})%>
+
+      <p>
+        <b> It's <%= Time.now %> </b>
+      </p>
+      <div id="site-status">
+        <%=  site_status(site_down()) %>
+      </div>
+      <p>
+        <%=link_to 'Turn Site '+ (site_down() ? "ON" : "OFF"), {:controller => 'admin', :action => 'toggle_index'}, :id=>"site-button", :remote=>true%>
+      </p>
+      </br>
+       <p>
+        <b> Click this link to reprocess page images:</b></br>
+        <%=link_to 'Reproces page images', {:controller => 'admin', :action => 'reprocess_page_images'}, :id=>"process-image-button", :remote=>true%>
+      </p>
+      </br>
+      
+        <% if (check_permissions("index","products")) then %>
+      <hr>
+
+      <p>
+        <b> Click this link to reprocess images:</b></br>
+        <%=link_to 'Reproces product images', {:controller => 'admin', :action => 'reprocess_product_images'}, :id=>"process-image-button", :remote=>true%>
+      </p>
+      
+      </br>  
+      <hr>
+      
+      <p>
+        <b> Click this link to clean database:</b></br>
+        <%=link_to 'Clean Database', {:controller => 'admin', :action => 'clean_product_details'}, :id=>"process-image-button", :remote=>true%>
+      </p>
+      </br>  
+      <hr>
+      
+      
+      <p>
+        <b> Click this link to clear inventory and deactivate all products in system.</b></br>
+        <%=link_to 'Clear Products', {:controller => 'admin', :action => 'clear_product_inventory_and_make_all_inactive'}, :id=>"process-image-button", :remote=>true%>
+      </p>
+      </br>  
+      <hr>
+      <p>
+        <b> Click this link to Activate Products with Inventory:</b></br>
+        <%=link_to 'Activate Products', {:controller => 'admin', :action => 'activate_all_products'}, :id=>"process-image-button", :remote=>true%>
+      </p>
+      </br>  
+
+      <hr>
+      
+
+      <p>
+        <b>Workers <%=@workers.count %> (should be 0 if no known processes are running)</b></br></br>
+      <hr width="60%">
+      <% @workers.each do |worker| %>
+        </p>
+        <center>
+          <% if worker.class == String then %>
+            <%= worker %>
+          <% else %>
+            <%= worker.pid %>: Started:<%=worker.started %> Type: <%=worker.queues %> </br>
+          <% end %>
+        </center>
+      <% end %>
+      <hr width="60%"></br>
+      <p> 
+        <%=link_to 'Clear all Workers', {:controller => 'admin', :action => 'kill_all_workers'}, :id=>"process-image-button", :remote=>true%>
+      </p>
+      </br></br>
+      
+            <% end %>
+
+    </div>
+  </div>
+
+
+
+
+
+</div>

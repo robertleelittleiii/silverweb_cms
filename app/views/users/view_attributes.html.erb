@@ -1,0 +1,24 @@
+
+
+<%= "view.html" %>
+
+<h1>Attributes for <%=h @user.name %></h1>
+<% if @user.user_attribute.nil? %>
+  <% form_for @user, :url => { :action => "add_attributes", :id => @user} do |f| %>
+  <p>
+    <%= f.submit "Add Attributes" %>
+  </p>
+  <%  end %>
+    <% else %>
+  <%  @user_attribute = @user.user_attribute%>
+
+  <%=render :partial =>"user_attributes/edit" %>
+
+  <% end %>
+
+
+<%= link_to 'Products', :controller=>'products', :action=>'list_user_products', :id=>@user %>
+<%= link_to 'Edit', edit_user_path(@user) %> |
+<%= link_to 'Back', user_path %>
+
+

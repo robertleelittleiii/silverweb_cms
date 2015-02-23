@@ -1,0 +1,11 @@
+
+<div id="album" class="album">
+
+<%= render(:partial => "image", :collection => images) %>
+</div>
+<%= sortable_element('album',
+                     :url => {:action => 'update_image_order'},
+                      :opacity=>"0.7", :revert=>"true", 
+                      :scroll=>"true", :tag=> "div",
+                      :constraint=>'false',
+                      :overlap=>'false') %>

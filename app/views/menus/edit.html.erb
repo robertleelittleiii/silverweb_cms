@@ -1,0 +1,64 @@
+
+<div class="cms-block" Align="Left">
+  <div class="cms-header">Edit Menu</div>
+  <div class="cms-section">
+    <div class="cms-heading">Information</div>
+    <div class="cms-content">
+
+
+      <p>
+        <b>Name:</b><br>
+        <%=editablefieldcreate("name", @menu)%>
+      </p>
+      
+      <p>
+        <b> Active: </b><br>
+        <%=editablecheckboxedit("menu_active", @menu, "Menu Active")%>
+      </p>  
+      </br>  
+      
+      
+      <%if @menu.parent_id!=0 then %>
+
+      <p>
+        <b>Display:</b><br>
+
+        <%=editablecheckboxedit("has_image", @menu, "Uses Image")%>
+
+      <div class="imagesection">
+        <!-- START:hidden_div -->
+        <%= hidden_div_if(@menu.pictures.empty?, :id => "images") %>
+        <%= render(:partial => "/images/images", :object => @menu.pictures) %>
+        <%="</div>".html_safe %>
+
+
+        <%= hidden_div_if(@menu.pictures.count >0, :id => "imagebutton") %>
+        <%=render(:partial => "/images/imagebutton")%>
+        <%="</div>".html_safe %>
+
+
+      </div> 
+      </p>
+        <p>
+          <b>Type of Menu:</b>
+
+          <%=ajax_select2("m_type","menu",@menu, @menu_type)%><br><br>
+
+        <div id="menu-options" data-id="<%=@menu.id%>">
+
+          <%=render :partial=>(@menu_type.select{|name,id| id==@menu.m_type.to_i}.first.first+ "_type.html") rescue ""%>
+
+        </div>
+        </p>
+
+        <p></p>
+      <%end%>
+    </div>
+  </div>
+
+
+  <p><%= link_to 'Back', request.env['HTTP_REFERER'] %>
+  </p>
+
+
+</div>

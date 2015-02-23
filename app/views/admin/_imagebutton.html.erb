@@ -1,0 +1,11 @@
+   <%=form_tag({:action=> "add_image", :id=>params[:id], :format=>"js"}, :class=>"upload-form", :multipart => true, :target=>'upload_frame', :remote => true ) do%>
+      <div class="file">
+        <%= file_field_tag "image",   :class => 'file' %>
+      </div>
+    <%end%>
+
+<iframe id='upload_frame' name="upload_frame" style="width:1px;height:1px;border:0px" src="about:blank"></iframe>
+
+<%#*<script type="text/javascript" language="javascript">%>
+<%#*SI.Files.stylizeAll();%>
+<%#*</script>%>

@@ -1,0 +1,6 @@
+# TODO Operate on the page object
+
+page.replace_html("images" , :partial => "images" , :object => @images)
+page[:images].visual_effect :blind_down if SystemImages.count == 1
+page["{@image.id}"].visual_effect :highlight, "image_#{@image.id}"
+page.hide("loader_progress") 

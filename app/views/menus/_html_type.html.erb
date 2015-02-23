@@ -1,0 +1,17 @@
+<%#
+# To change this template, choose Tools | Templates
+# and open the template in the editor.
+%>
+
+     <p>
+        <b>HTML Code:</b><br>
+             <% form_for(@menu, :remote=>true) do |f| %>
+  <%#= f.submit "Update"%><br>
+
+        <center>
+          <%= f.text_area :rawhtml, :class => "mceEditor"%>
+        </center>
+          <br>
+      <% end %>
+        <%#=editablefieldcreate2("rawhtml", @menu)%>
+      </p>

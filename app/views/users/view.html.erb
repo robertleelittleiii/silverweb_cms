@@ -1,0 +1,29 @@
+<%#
+# To change this template, choose Tools | Templates
+# and open the template in the editor.
+%>
+
+<%= "view.html" %>
+
+<h1>Roles for <%=h @user.name %></h1>
+
+<% form_for @user, :url => { :action => "record", :id => @user} do |f| %>
+
+<ul>
+	<% for role in @roles %>
+		<li><div class="field_row">
+		<%= check_box_tag "user[role_ids][]", role.id, @user.roles.include?(role) %> <%= role.name %>
+		</div></li>
+  <% end %>
+</ul>
+
+  <p>
+    <%= f.submit "Update" %>
+  </p>
+<% end %>
+
+
+<%= link_to 'Edit', edit_user_path(@user) %> |
+<%= link_to 'Back', user_path %>
+
+

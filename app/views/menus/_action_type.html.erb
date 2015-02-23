@@ -1,0 +1,14 @@
+<%#
+# To change this template, choose Tools | Templates
+# and open the template in the editor.
+%>
+
+     <p>
+        <b>Action:</b><br>
+         <%=ajax_select2("rawhtml","menu",@menu, @action_type, "Please Select...")%><br><br>
+      </p>
+      
+      <div id="action-step">
+        <%= render :partial=>@partial_action rescue ""%>
+        
+      </div>

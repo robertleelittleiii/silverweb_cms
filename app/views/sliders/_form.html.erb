@@ -1,0 +1,49 @@
+
+
+  
+      <p>
+        <b>Name:</b><br>
+        <%=editablefieldcreate("slider_name", @slider)%>
+      </p>
+
+
+
+      <p>
+        <b>Is Slider Activated:</b><br>
+                <%=editablecheckboxedit("slider_active", @slider, "Activate")%>
+      </p>
+      </br>
+      
+      <%#*<p>%>
+        <%#*<b>Type</b><br>%>
+        <%#=editablefieldcreate("slider_type", @slider)%>
+      <%#*</p>%>
+
+
+      <p>
+        <b>Tag Line Top:</b><br>
+        <%=editablefieldcreate("slider_tag_line_one", @slider)%>
+      </p>
+      </br>
+      
+      <p>
+        <b>Tag Line Bottom: (button text)</b><br>
+        <%=editablefieldcreate("slider_tag_line_two", @slider)%>
+      </p>
+      </br>
+      
+       <p>
+        <b>Button Link:</b><br>
+        <%#=editablefieldcreate("slider_url", @slider)%>
+        <%=ajax_select2("slider_url","slider",@slider,@page_list)%>
+
+      </p>
+      </br>
+      
+       <p>
+        <b>Button Color:</b><br>
+        <%#=editablefieldcreate("slider_button_color", @slider)%>
+        <%=ajax_select2("slider_button_color","slider",@slider, @button_color_list)%><br><br>
+
+      </p>
+      </br>

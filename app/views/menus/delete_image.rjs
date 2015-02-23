@@ -1,0 +1,6 @@
+# TODO Operate on the page object
+if @menu.pictures.count < 1
+  page.visual_effect(:appear, "imagebutton")
+end
+
+page.visual_effect(:fade,"image_"+params[:id])

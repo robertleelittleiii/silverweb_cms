@@ -1,0 +1,13 @@
+<div class="hidden-item" id="role-id"><%=@role.id%></div>
+<div class="hidden-item">
+  <div id="as_window"><%=params[:as_window]%></div>
+  <div id="dialog-height">300</div>
+  <div id="dialog-width">300</div>
+  <div id="dialog-name">Update Rights for <%=h @role.name %></div>
+</div>
+<b>User Roles:</b><br>
+<% for right in @rights %>
+  <div class="field_row">
+    <div id="right-id"class="hidden-item"><%= right.id%></div> <%= check_box_tag "user[right_ids][]", right.id, @role.rights.include?(right),:class=>"right-check" %> <%= right.name %>
+  </div>
+<% end %>

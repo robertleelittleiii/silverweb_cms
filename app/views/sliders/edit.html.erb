@@ -1,0 +1,56 @@
+<%=page_attr_display(@page, "true") %>
+
+
+<div class="cms-block" Align="Left">
+    <div align="center">
+    <!-- START:flash -->
+    <% if notice -%>
+      <div id="notice"><%= notice  %></div>
+    <% end -%>
+    <!-- END:flash -->
+    
+    <% if @slider.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@slider.errors.count, "error") %> prohibited this slider from being saved:</h2>
+
+      <ul>
+      <% @slider.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+    
+  </div>
+
+  <div class="cms-header">Edit Slider</div>
+  <div class="cms-section">
+    <div class="cms-heading">Information for slider</div>
+    <div class="cms-content">
+
+      <%= render 'form' %>
+
+         </div>
+    </p>
+  </div>
+  
+   <div class="cms-section">
+
+    <div class="cms-heading cms-headingmce">Body</div>
+    <div class="cms-content">
+
+      <% form_for(@slider, :remote=>true) do |f| %>
+        <center>
+          <%= f.text_area :slider_content, :class => "mceEditor"%>
+        </center>
+        <br>
+      <% end %>
+    </div>
+  </div>
+  
+  <p><%= link_to 'Back', request.env['HTTP_REFERER'] %></p>
+
+   
+
+</div>
+

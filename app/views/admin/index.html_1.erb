@@ -1,0 +1,86 @@
+<%   $user =  User.find_by_id(session[:user_id])
+     $roles = $user.roles
+ %>
+
+<div class="cms-block">
+  <div align="center">
+  <!-- START:flash -->
+      <% if flash[:notice] -%>
+        <div id="notice"><%= flash[:notice] %></div>
+      <% end -%>
+      <!-- END:flash -->
+</div>
+
+<div CLASS="cms-header" >My Account</div>
+<%  if @user.not_activated? %>
+<%#=@user.activation_code.nil?%>
+<%#=@user.not_activated?%>
+  Account has not been activated.
+  <%= link_to "Resend Activate Code" , :controller =>'registration', :action=>'lostwithemail',  :name=>@user.name %>
+  <%else%>
+<%end%>
+
+
+
+<div class="cms-block" style="display:table">
+  <div style="display:table-row">
+    <div style="display:table-cell" Class="cms-subl">Name</div>
+    <div style="display:table-cell" Class="cms-subr">Change</div>
+  </div>
+
+  <div style="display:table-row">
+    <div style="display:table-cell" Class="cms-subt">Your Real Name</div>
+    <div style="display:table-cell" Class="cms-subv">Robert Little</div>
+  </div>
+</div>
+
+<div class="cms-block" style="display:table">
+  <div style="display:table-row">
+    <div style="display:table-cell" Class="cms-subl">Email Address</div>
+    <div style="display:table-cell" Class="cms-subr">Change</div>
+  </div>
+
+  <div style="display:table-row">
+    <div style="display:table-cell" Class="cms-subt">Used for your login</div>
+    <div style="display:table-cell" Class="cms-subv"><%=@user.name%></div>
+  </div>
+</div>
+
+<div class="cms-block" style="display:table">
+  <div style="display:table-row">
+    <div style="display:table-cell" Class="cms-subl">Name</div>
+    <div style="display:table-cell" Class="cms-subr">Change</div>
+  </div>
+
+  <div style="display:table-row">
+    <div style="display:table-cell" Class="cms-subt">Your Real Name</div>
+    <div style="display:table-cell" Class="cms-subv">Robert Little</div>
+  </div>
+</div>
+
+<div class="cms-block" style="display:table">
+  <div style="display:table-row">
+    <div style="display:table-cell" Class="cms-subl">Name</div>
+    <div style="display:table-cell" Class="cms-subr">Change</div>
+  </div>
+
+  <div style="display:table-row">
+    <div style="display:table-cell" Class="cms-subt">Your Real Name</div>
+    <div style="display:table-cell" Class="cms-subv">Robert Little</div>
+  </div>
+</div>
+
+It's <%= Time.now %>
+We have <%= pluralize(@total_orders, "order") %>.
+
+<br>
+You are an
+<%for role in $roles do %>
+                <%=role.name %>, 
+<%  end %>
+<br>
+
+
+ <%= app_link_to 'Orders',    :controller => 'users'  %>
+
+</div>

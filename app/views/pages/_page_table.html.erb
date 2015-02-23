@@ -1,0 +1,14 @@
+<% @pages.each do |page| %>
+      <div class="hr"></div>
+      <table width ="100%"cellpadding="5" cellspacing="0">
+        <tr class="list-table" valign="top" class="<%= cycle('list-line-odd', 'list-line-even') %>"  onclick = "window.location.href ='<%=url_for(:controller => 'pages', :id => page.id,  :action => 'edit')%>' "  style = "cursor:pointer" >
+          <td align="left">
+            <span class="list-title"><%=h page.title %></span><br />
+            <span class="list-description"><%=h (page.body.gsub(/<.*?>/,'').truncate(100)) %></span>
+          </td>
+        </tr>
+      </table>
+      <div align="right" class="image-delete-list" >
+        <%=link_to image_tag("interface/Button-Delete.png", :border=>"0") , page,:on_click=>"", :confirm => 'Are you sure?', :method => :delete %>
+      </div>
+    <% end %>

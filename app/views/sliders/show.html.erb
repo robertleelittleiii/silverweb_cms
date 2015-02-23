@@ -1,0 +1,35 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Page:</b>
+  <%= @slider.page_id %>
+</p>
+
+<p>
+  <b>Slider order:</b>
+  <%= @slider.slider_order %>
+</p>
+
+<p>
+  <b>Slider name:</b>
+  <%= @slider.slider_name %>
+</p>
+
+<p>
+  <b>Slider active:</b>
+  <%= @slider.slider_active %>
+</p>
+
+<p>
+  <b>Slider type:</b>
+  <%= @slider.slider_type %>
+</p>
+
+<p>
+  <b>Slider content:</b>
+  <%= @slider.slider_content %>
+</p>
+
+
+<%= link_to 'Edit', edit_slider_path(@slider) %> |
+<%= link_to 'Back', sliders_path %>

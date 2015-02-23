@@ -1,0 +1,71 @@
+<div class="cms-block">
+  <div align="center">
+    <!-- START:flash -->
+    <% if flash[:notice] -%>
+      <div id="notice"><%= flash[:notice] %></div>
+    <% end -%>
+    <!-- END:flash -->
+  </div>
+
+  <div id="site-pref-list">
+    <h1  class="cms-header">Site Menus</h1>
+
+    <center><%= link_to 'New Menu Head', {:action=>:create_empty_record,:typeofrecord=>"Head", :parent_id=>"0"}, :remote=>true, :update=>"menu-item-list" %></center>
+    <div id="menu-item-list">
+      <%=render :partial=>"menu_list.html", :collection=>@menus%>
+    </div>
+    <div class="hr"></div>
+
+  </div>
+    <center><%= link_to 'New Menu Head', {:action=>:create_empty_record,:typeofrecord=>"Head", :parent_id=>"0"}, :remote=>true , :update=>"menu-item-list" %></center>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<%#*<h1>Listing menus</h1>%>
+
+<%#*<table>%>
+  <%#*<tr>%>
+    <%#*<th>Name</th>%>
+    <%#*<th>Page</th>%>
+    <%#*<th>Parent</th>%>
+    <%#*<th>Has submenu</th>%>
+    <%#*<th>M order</th>%>
+    <%#*<th>M type</th>%>
+    <%#*<th>Rawhtml</th>%>
+    <%#*<th>Url</th>%>
+    <%#*<th></th>%>
+    <%#*<th></th>%>
+    <%#*<th></th>%>
+  <%#*</tr>%>
+
+<%# @menus.each do |menu| %>
+  <%#*<tr>%>
+    <%#*<td><%= menu.name </td>%>
+    <%#*<td><%= menu.page_id </td>%>
+    <%#*<td><%= menu.parent_id </td>%>
+    <%#*<td><%= menu.has_submenu </td>%>
+    <%#*<td><%= menu.m_order </td>%>
+    <%#*<td><%= menu.m_type </td>%>
+    <%#*<td><%= menu.rawhtml </td>%>
+    <%#*<td><%= menu.url </td>%>
+    <%#*<td><%= link_to 'Show', menu </td>%>
+    <%#*<td><%= link_to 'Edit', edit_menu_path(menu) </td>%>
+    <%#*<td><%= link_to 'Destroy', menu, :confirm => 'Are you sure?', :method => :delete </td>%>
+  <%#*</tr>%>
+<%# end %>
+<%#*</table>%>
+
+<%#*<br />%>
+
+<%#= link_to 'New Menu', new_menu_path %>

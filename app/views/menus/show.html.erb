@@ -1,0 +1,45 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Name:</b>
+  <%= @menu.name %>
+</p>
+
+<p>
+  <b>Page:</b>
+  <%= @menu.page_id %>
+</p>
+
+<p>
+  <b>Parent:</b>
+  <%= @menu.parent_id %>
+</p>
+
+<p>
+  <b>Has submenu:</b>
+  <%= @menu.has_submenu %>
+</p>
+
+<p>
+  <b>M order:</b>
+  <%= @menu.m_order %>
+</p>
+
+<p>
+  <b>M type:</b>
+  <%= @menu.m_type %>
+</p>
+
+<p>
+  <b>Rawhtml:</b>
+  <%= @menu.rawhtml %>
+</p>
+
+<p>
+  <b>Url:</b>
+  <%= @menu.url %>
+</p>
+
+
+<%= link_to 'Edit', edit_menu_path(@menu) %> |
+<%= link_to 'Back', menus_path %>

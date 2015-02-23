@@ -1,0 +1,34 @@
+<%#
+# To change this template, choose Tools | Templates
+# and open the template in the editor.
+%>
+>
+
+  <b>Name:</b>
+  <h2><%=h @role.name %></h2>
+</p>
+<%= "role-right" %>
+<% if @role.rights.count() > 0 %>
+  <table>
+  <% for right in @role.rights %>
+    <tr>
+      <td>------------</td>
+      <td><%= right.controller %></td>
+      <td><%= right.action %></td>
+    </tr>
+  <% end %>
+  </table>
+<% end %>
+<%#  = form_tag :action => 'record', :id => @role %>
+  <p>
+    Description<%#= text_field  'right', 'name', :size=>25 %>
+    Controller <%#= text_field 'right', 'controller', :size => 25 %>
+    Action $<%#= text_field 'right', 'action', :size => 25 %>
+  </p>
+  <%#= submit_tag 'Record!' %>
+<%#= form_tag %>
+
+<%= link_to 'Edit', edit_role_path(@role) %> |
+<%= link_to 'Back', role_path %>
+
+

@@ -1,0 +1,17 @@
+<li id="slider_<%=slider_list.id.to_s%>" class="slider-list-item">
+  <div class="hr"></div>
+  <table width ="100%"cellpadding="5" cellspacing="0" border="0">
+    <tr class="list-table">
+      <td width="10" class="slider-drag">
+      </td>
+      <td align="left"  valign="top" class="<%= cycle('list-line-odd', 'list-line-even') %>"  onclick = "window.location.href ='<%=url_for(:controller => 'sliders', :id => slider_list.id,  :action => 'edit')%>' "  style = "cursor:pointer" >
+        <span class="list-title"><%=h slider_list.slider_name %></span>
+      </td>
+      <td>
+         <div align="right" class="image-delete-list2" >
+          <%=slider_delete(slider_list)%>
+         </div>
+       </td>
+    </tr>
+  </table>
+</li>

@@ -1,0 +1,148 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+
+ *= require files.css
+
+*/
+/* 
+    Created on : Feb 20, 2015, 4:59:39 PM
+    Author     : rlittle
+
+
+
+*/
+
+.picture-float-center {
+   
+    
+}
+
+div.picture-float-center img {
+display: block;
+margin-left: auto;
+margin-right: auto;
+}
+
+div.file-list-item {
+display: inline-block;
+position: relative;
+top: -10px\0/;
+/* background-color: #ccc; */
+
+
+/*background-image:
+      -moz-linear-gradient(45deg, #ccc 25%, transparent 25%), 
+      -moz-linear-gradient(-45deg, #ccc 25%, transparent 25%),
+      -moz-linear-gradient(45deg, transparent 75%, #ccc 75%),
+      -moz-linear-gradient(-45deg, transparent 75%, #ccc 75%);
+    background-image:
+      -webkit-gradient(linear, 0 100%, 100% 0, color-stop(.25, #ccc), color-stop(.25, transparent)), 
+      -webkit-gradient(linear, 0 0, 100% 100%, color-stop(.25, #ccc), color-stop(.25, transparent)),
+      -webkit-gradient(linear, 0 100%, 100% 0, color-stop(.75, transparent), color-stop(.75, #ccc)),
+      -webkit-gradient(linear, 0 0, 100% 100%, color-stop(.75, transparent), color-stop(.75, #ccc));
+
+    -moz-background-size:20px 20px;
+    background-size:20px 20px;
+    -webkit-background-size:20px 21px;  override value for shitty webkit 
+    
+    background-position:0 0, 10px 0, 10px -10px, 0px 10px;*/
+    
+/* height: 150px;*/
+vertical-align: middle;
+border: 5px solid white;
+/* border-radius: 20px; */
+/* border-radius: 20px; */
+/* border-bottom-left-radius: 20px; */
+/* border-bottom-right-radius: 20px; */
+}
+
+div.picture-float-center img {
+display: block;
+margin-left: auto;
+margin-right: auto;
+padding-top: 20px;
+padding-left: 20px;
+padding-right: 20px;
+padding-bottom: 20px;
+}
+
+.file-block {
+border-bottom-left-radius: 10px;
+border-bottom-right-radius: 10px;
+background-color: #ccc;
+min-height: 150px;
+}
+
+.hover-block {
+display:none;
+background-color: rgba(255, 255, 255, 0.5);
+position: absolute;
+top: 0px;
+width: 100%;
+height: 100%;
+}
+
+/*.file-block:hover + .hover-block{
+    display:block
+}*/
+
+.file-item {
+margin-left: 0px;
+padding: 0PX;
+border-radius: 0PX;
+padding-right: 0PX;
+vertical-align: middle;
+display: inline-block;
+position: relative;
+}
+
+.file-title {
+display: inline-block;
+position: relative;
+top: -6px;
+top: 20px\0/;
+padding-right: 5px;
+background: inherit;
+border-radius: 20PX;
+padding-left: 5px;
+border: inherit;
+border-bottom-left-radius: 0px;
+border-top-left-radius: 0px;
+vertical-align: baseline;
+font-size: 13px;
+min-width: 100px;
+}
+
+.file-delete-icon {
+width: 16px;
+height: 16px;
+display: inline-block;
+position: absolute;
+right: 0px;
+top: 2px;
+}
+
+.file-item {
+margin-left: 0px;
+padding: 0PX;
+border-radius: 0PX;
+padding-right: 0PX;
+vertical-align: middle;
+display: block;
+position: relative;
+background-color: darkgray;
+border-top-left-radius: 5px;
+border-top-right-radius: 5px;
+}
+
+.file-delete-icon {
+width: 16px;
+height: 16px;
+display: inline-block;
+position: absolute;
+right: 0px;
+top: 2px;
+z-index: 10;
+}

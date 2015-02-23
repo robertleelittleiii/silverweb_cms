@@ -1,0 +1,5 @@
+# TODO Operate on the page object
+if @product.pictures.count <= 9
+  page.show "imagebutton"
+end
+page.replace_html("images" , :partial => "products/images" , :object => @product.pictures)

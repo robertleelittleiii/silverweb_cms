@@ -1,0 +1,24 @@
+<%=page_attr_display(nil,"true") %>
+
+<div class="cms-block">
+  <div align="center">
+    <!-- START:flash -->
+    <% if flash[:notice] -%>
+      <div id="notice"><%= flash[:notice] %></div>
+    <% end -%>
+    <!-- END:flash -->
+  </div>
+
+  <div id="site-pref-list">
+    <h1  class="cms-header">Site Pages</h1>
+
+    <center><%= link_to 'New Page',{ :action=>:create_empty_record,:typeofrecord=>"Page"}, :class=>"button-link"%></center>
+    <p>
+      </br>
+      </br>
+    </p>
+<%=render(:partial=>"page_data_table") %>
+    <div class="hr"></div>
+
+  </div>
+</div>

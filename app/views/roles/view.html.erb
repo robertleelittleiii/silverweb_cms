@@ -1,0 +1,23 @@
+
+<h1>Rights for <%=h @role.name %></h1>
+
+<% form_for @role, :url => { :action => "record2", :id => @role} do |f| %>
+
+<ul>
+	<% for right in @rights %>
+		<li><div class="field_row">
+		<%= check_box_tag "role[right_ids][]", right.id, @role.rights.include?(right) %> <%= right.name %>
+		</div></li>
+  <% end %>
+</ul>
+
+  <p>
+    <%= f.submit "Update" %>
+  </p>
+<% end %>
+
+
+<%= link_to 'Edit', edit_role_path(@role) %> |
+<%= link_to 'Back', role_path %>
+
+

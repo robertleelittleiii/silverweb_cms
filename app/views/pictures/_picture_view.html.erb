@@ -1,0 +1,30 @@
+
+<% picture=@picture if picture.blank? %>
+
+<div id="<%=picture.id%>" class="file-list-item">
+     <div class="file-delete-icon ui-icon ui-icon-closethick">
+<%#= link_to('X',{ :controller=>:pictures, :id=>picture.id, :action=>:destroy} , { :method => :delete, :confirm => 'Are you sure?' , :remote=>true})%>
+                    <%= link_to 'X', picture,  method: :delete, remote:true, data: { confirm: "Are you sure?" }%>
+
+                </div> 
+    <div class="file-item"> 
+            <div id="logo-links" class="<%=picture.file_type[1..-1] rescue ""%>">
+                <%=link_to('', :controller=>"pictures", :action => "download_file", :id=>picture.id, :title=>"Download File") %> 
+            </div>
+            <div class="file-title"><%=picture.file_name rescue "file not found"%> 
+               
+            </div>
+        </div> 
+    
+    <div class="file-block">
+         <div class="hover-block">
+        this is a test.
+    </div>
+        <div class="picture-item">
+            <div class="picture-float-center">
+                <%= picture.file_type==".pdf" ? (image_tag(picture.image_url(:pdf_preview).to_s)) : (image_tag(picture.image_url(:preview).to_s))%>
+            </div>
+        </div>
+    </div>
+   
+</div> 

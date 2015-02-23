@@ -1,0 +1,2 @@
+# TODO Operate on the page object
+page.replace_html("flash" , :partial => "flash_notice")

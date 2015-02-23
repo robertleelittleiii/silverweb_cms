@@ -1,0 +1,13 @@
+
+        <div class="imagesection">
+          <!-- START:hidden_div -->
+          <%= hidden_div_if(@all_images.empty?, :id => "images") %>
+          <%= render(:partial => "images", :object => @all_images) %>
+          <%="</div>".html_safe %>
+
+
+          <%= hidden_div_if(@all_images.count >100, :id => "imagebutton") %>
+          <%=render(:partial => "imagebutton")%>
+          <%="</div>".html_safe %>
+
+        </div>

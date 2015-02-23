@@ -1,0 +1,54 @@
+default:
+  toolbar:
+  - styleselect | bold italic | undo redo | table
+  - image | link | tablecontrols | fullscreen | save
+  plugins:
+    - image
+    - link
+    - table
+    - advlist
+    - anchor
+    - autolink
+    - autoresize
+    - autosave
+    - bbcode
+    - charmap
+    - code
+    - colorpicker
+    - contextmenu
+    - directionality
+    - emoticons
+    - fullpage
+    - fullscreen
+    - hr
+    - image
+    - importcss
+    - insertdatetime
+    - layer
+    - legacyoutput
+    - link
+    - lists
+    - media
+    - nonbreaking
+    - noneditable
+    - pagebreak
+    - paste
+    - preview
+    - print
+    - save
+    - searchreplace
+    - spellchecker
+    - tabfocus
+    - table
+    - template
+    - textcolor
+    - textpattern
+    - visualblocks
+    - visualchars
+    - wordcount
+
+alternate:
+  selector: textarea.table-editor
+  toolbar: styleselect | bold italic | undo redo | table
+  plugins:
+    - table

@@ -1,0 +1,56 @@
+<%#
+# To change this template, choose Tools | Templates
+# and open the template in the editor.
+%>
+<div class="hidden-item">
+  <div id="as_window"><%=params[:request_type]=="window"%></div>
+  <div id="dialog-height">546</div>
+  <div id="dialog-width">700</div>
+  <div id="dialog-name">Roles</div>
+</div>
+
+<div class="m-block">
+  <div align="center">
+    <!-- START:flash -->
+    <% if flash[:notice] -%>
+      <div id="notice"><%= flash[:notice] %></div>
+    <% end -%>
+    <!-- END:flash -->
+  </div>
+
+  <div id="role-list">
+    <%if not params[:request_type]=="window" then%>
+      <h1  class="cms-header">Roles <%=image_tag "ajax-loader2.gif", :id=>"loader_progress" ,:style=>"display:none"%></h1>
+    <%  else %>
+      <%=image_tag "ajax-loader2.gif", :id=>"loader_progress" ,:style=>"display:none"%>
+    <% end %> <br>
+    <div id="role-actions">
+      <%= link_to('New Role',{ :action=>:create_empty_record, :controller=>:roles, :typeofrecord=>"role", :request_type=>"window"}, :id=>"new-role",:class=>"button-link", :remote => true  )%>
+    </div>
+    <hr>
+
+    <table cellpadding="0" cellspacing="0" border="0" class="display" id="role-table">
+      <thead>
+  <tr>
+          <th width="5">Role ID</th>
+          <th width="20">Role Name</th>
+          <th width="500">Rights</th>
+
+          <th style="width: 100px; text-align: center;">- - -</th>
+        </tr>
+      </thead>
+      <tbody>
+
+      </tbody>
+      <tfoot>
+        <tr>
+          <th>Role ID</th>
+          <th>Role Name</th>
+          <th>Rights</th>
+          <th>- - -</th>
+  </tr>
+      </tfoot>
+</table>
+</div>
+</div>
+

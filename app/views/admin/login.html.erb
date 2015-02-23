@@ -1,0 +1,67 @@
+<%puts("in admin/login page")%>
+<div align="center" class="depot-form">
+      <!-- START:flash -->
+      <% if flash[:notice] -%>
+<SPACER TYPE=HORIZONTAL SIZE=50>
+        <div id="notice">
+<%= flash[:notice] %>
+        </div>
+      <% end -%>
+      <!-- END:flash -->
+
+<div class="loginBlock" style="display:table">
+
+
+
+		<div class="loginSpan" style="display:table-row">
+            <%#=render(:partial=>"/registration/register_customer") %>
+		   <div class="loginSpan" style="display:table-cell">
+			<div CLASS="loginheader">
+				Already a Member?
+			</div>
+
+			<div CLASS="loginArea">
+				<DIV CLASS="L11G" STYLE="margin-bottom:10px">If you already have a login on this site, please login.</DIV>
+				<BR>
+
+                  <div id="ds_component">
+                    <% form_tag(:controller=>"admin", :action => 'login') do %>
+                      <table border="0" cellspacing=0 class="ds_login">
+                          <tr>
+                            <td valign="top">
+                              <b>User Name:</b>
+                            </td>
+                              <td> <%= text_field_tag :name, params[:name] %><br>
+                                <span class="ds_nameexample">Example: little@mac.com</span><br>
+                              </td>
+                          </tr>
+                          <tr>
+                            <td valign="top">
+                              <b>Password:</b></td>
+
+                            <td> <%= password_field_tag :password, params[:password] %><br>
+                              <%#= link_to "Forgot Password" , :controller =>'registration', :action=>'forgot' %>
+                            </td>
+                          </tr>
+                        <tr>
+                          <td height="5">
+                            
+                          </td>
+                          <td></td>
+                        </tr>
+                        <tr>
+                          <td><%= token_tag %> </td>
+                          <td>
+<%= submit_tag ("Login",:alt=>"Login",:class=>"button-link" ) %>
+                          </td>
+                        </tr>
+                    </table>
+                  <% end %>
+              </div>
+			</div>
+		</div>
+        </div>
+
+</div>
+</div>
+

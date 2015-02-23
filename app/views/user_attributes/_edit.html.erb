@@ -1,0 +1,28 @@
+<h1>Editing user_attribute</h1>
+
+<% form_for(@user_attribute) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :first_name %><br />
+    <%= f.text_field :first_name %>
+  </p>
+  <p>
+    <%= f.label :last_name %><br />
+    <%= f.text_field :last_name %>
+  </p>
+  <p>
+    <%= f.label :handle %><br />
+    <%= f.text_field :handle %>
+  </p>
+  <p>
+    <%= f.label :birthdate %><br />
+    <%= f.date_select :birthdate ,:start_year=>1900, :end_year=>2000 , :order => [:month,:day,:year] %>
+  </p>
+  <p>
+    <%= f.submit "Update" %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @user_attribute %> |
+<%= link_to 'Back', user_attributes_path %>

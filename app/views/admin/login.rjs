@@ -1,0 +1,3 @@
+puts("in Partial Login.rjs")
+page.replace_html("content_c_content" , :partial => "login")
+page[:content_c].visual_effect :blind_down

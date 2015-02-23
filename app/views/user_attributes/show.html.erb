@@ -1,0 +1,30 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>First name:</b>
+  <%= @user_attribute.first_name %>
+</p>
+
+<p>
+  <b>Last name:</b>
+  <%= @user_attribute.last_name %>
+</p>
+
+<p>
+  <b>Handle:</b>
+  <%= @user_attribute.handle %>
+</p>
+
+<p>
+  <b>Birthdate:</b>
+  <%= @user_attribute.birthdate %>
+</p>
+
+<p>
+  <b>User:</b>
+  <%= @user_attribute.user_id %>
+</p>
+
+
+<%= link_to 'Edit', edit_user_attribute_path(@user_attribute) %> |
+<%= link_to 'Back', user_attributes_path %>

@@ -1,0 +1,59 @@
+<%#
+# To change this template, choose Tools | Templates
+# and open the template in the editor.
+%>
+<div class="hidden-item">
+  <div id="as_window"><%=params[:request_type]=="window"%></div>
+  <div id="dialog-height">546</div>
+  <div id="dialog-width">882</div>
+  <div id="dialog-name">User Administration</div>
+</div>
+
+<div class="m-block">
+  <div align="center">
+    <!-- START:flash -->
+    <% if flash[:notice] -%>
+      <div id="notice"><%= flash[:notice] %></div>
+    <% end -%>
+    <!-- END:flash -->
+  </div>
+
+  <div id="user-list">
+    <%if not params[:request_type]=="window" then%>
+    <h1  class="cms-header">User Administration <%=image_tag "interface/ajax-loader2.gif", :id=>"loader_progress" ,:style=>"display:none"%></h1>
+    <%  else %>
+    <%=image_tag "interface/ajax-loader2.gif", :id=>"loader_progress" ,:style=>"display:none"%>
+    <% end %> <br>
+    <div id="user-actions">
+<%= link_to('New User',{ :action=>:create_empty_record, :controller=>:users, :typeofrecord=>"user", :request_type=>"window"}, :id=>"new-user",:class=>"button-link", :remote => true  )%>
+    </div>
+    <hr>
+
+    <table cellpadding="0" cellspacing="0" border="0" class="display" id="user-table">
+      <thead>
+        <tr>
+          <th>User ID</th>
+          <th>User Name</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Roles</th>
+          <th style="width: 100px; text-align: center;">- - -</th>
+        </tr>
+      </thead>
+      <tbody>
+
+      </tbody>
+      <tfoot>
+        <tr>
+          <th>User ID</th>
+          <th>User Name</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Roles</th>
+          <th>- - -</th>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+</div>
+

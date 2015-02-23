@@ -1,0 +1,8 @@
+<%#= render :file=>"/public/stylesheets/global-reset.css" %>
+<%= render :file=>"/public/stylesheets/fonts.css" %>
+<%= @page.template_name.blank? ? "" : render(:file=>"/public/stylesheets/site/show_page-#{@page.template_name}.css") %>
+<%= render :file=>"/public/stylesheets/editor-custom.css" %>
+<%= render :file=>"/public/stylesheets/alteredstates.css"  rescue ""%>
+<%= render :file=>"/public/stylesheets/#{@page.page_style}"  rescue ""%>
+
+

@@ -1,0 +1,191 @@
+/* 
+    Document   : files
+    Created on : Sep 23, 2011, 12:23:18 AM
+    Author     : rlittle
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+
+root { 
+    display: block;
+}
+.file-block
+{
+    position:relative; 
+
+}
+
+.fileSingle {
+    position:relative;
+    margin:20px;
+    text-align:center;
+    display:inline-block;
+    float:left;
+
+    // display:inline;
+} 
+.filesection {
+
+}
+
+.file-list-item {
+display: inline-block;
+position: relative;
+top:-10px\0/;
+}
+
+.file-item {
+margin-left: 0px;
+padding: 4PX;
+border-radius: 20PX;
+padding-right: 2PX;
+vertical-align: middle;
+display: inline-block;
+position: relative;
+}
+
+.file-title {
+display: inline-block;
+position: relative;
+top: -6px;
+top: 20px\0/;
+padding-right: 5px;
+background: lightgrey;
+border-radius: 20PX;
+padding-left: 5px;
+border: grey dotted 1px;
+border-bottom-left-radius: 0px;
+border-top-left-radius: 0px;
+vertical-align:baseline;
+}
+
+#logo-links {
+margin: 1px;
+margin-left: 5px;
+margin-top: 5px;
+margin-right: -1px;
+vertical-align:baseline;
+
+}
+
+.file-delete-icon {
+width: 16px;
+height: 16px;
+display: inline-block;
+position: relative;
+top:2px;
+}
+
+div.progress {
+height: 10px;
+width: 200px;
+border-radius: 4px;
+border: #026599 solid 1px;
+box-shadow: rgba(2, 101, 153, 0.5) 1px 1px;
+}
+
+div.bar {
+height: 100%;
+background-color: #CBDCE6;
+}
+
+/* 
+div.upload {
+position: relative;
+display: inline-block;
+top: -20px;
+padding-left:10px;
+}
+*/
+
+.file-delete-icon a {
+position: absolute;
+left: 0px;
+width: 15px;
+}
+
+#filebutton{
+    display:inline-block;
+    margin:20px;
+    text-align:center;
+}
+#files{
+    display:inline-block;
+    margin-left: 20px;
+}
+.fileThumb{
+    background:#E1BF48 none repeat scroll 0 0;
+}
+
+.fileDelete{
+    margin-left: -15px;
+    margin-top: -20px;
+    float: left;
+    padding-right: 10px;
+
+}
+
+.file-delete-list{
+    margin-right:5px;
+    margin-top: -25px;
+}
+
+#logo-link
+{
+    width:40px;
+    height:50px;
+    background-image:url(/assets/interface/icons.png);
+    display:inline-block;
+}
+
+#logo-linkm
+{
+    width:40px;
+    height:50px;
+    background-image:url(/assets/interface/icons.png);
+    display:inline-block;
+}
+
+#logo-links
+{
+    width:20px;
+    height:24px;
+    background-image:url(/assets/interface/icons.png);
+    display:inline-block;
+    background-position:405px 100px; 
+}
+
+
+#logo-link.general  { background-position:14px 14px; }
+
+#logo-link.doc, #logo-link.docx  { background-position:380px 528px; }
+#logo-link.xls, #logo-link.xlsx { background-position:300px 528px; }
+#logo-link.ppt, #logo-link.pptx { background-position:220px 528px; }
+
+#logo-link.pdf  { background-position:300px 450px; }
+
+#logo-links.doc, #logo-links.docx, #logo-links.odt  { background-position:255px 100px; }
+#logo-links.xls, #logo-links.xlsx { background-position:205px 100px; }
+#logo-links.ppt, #logo-links.pptx { background-position:155px 100px; }
+#logo-links.rtf  { background-position: 105px 150px; }
+
+#logo-links.gif   { background-position: 455px 100px; }
+#logo-links.png   { background-position: 505px 100px; }
+#logo-links.bmp   { background-position: 555px 100px; }
+#logo-links.jpg, #logo-links.jpeg  { background-position: 605px 100px; }
+#logo-links.tif, #logo-links.tiff,#logo-links.eps, #logo-links.svg 
+     { background-position: 55px 150px; }
+
+#logo-links.zip  { background-position: 355px 50px; }
+
+#logo-links.pdf  { background-position:405px 50px; }
+
+#logo-links:hover {
+background-position: 155px 152px !important;
+cursor: pointer;
+}

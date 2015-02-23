@@ -1,0 +1,42 @@
+<div class="myaccountblock">
+  <div align="center">
+    <!-- START:flash -->
+    <% if flash[:notice] -%>
+      <div id="notice"><%= flash[:notice] %></div>
+    <% end -%>
+    <!-- END:flash -->
+  </div>
+
+  <div id="site-pref-list">
+    <h1  class="myaccountheader">Picture</h1>
+
+    <center><%= link_to 'New Picture', :action=>:create_empty_record,:typeofrecord=>"picture" %></center>
+
+    <%  @pictures.each do |picture| %>
+      <div class="hr"></div>
+      <table width ="100%"cellpadding="5" cellspacing="0">
+        <tr class="list-table" valign="top" class="<%= cycle('list-line-odd', 'list-line-even') %>"  onclick = "window.location.href ='<%=url_for(:controller => 'pictures', :id => picture.id,  :action => 'edit')%>' "  style = "cursor:pointer" >
+                      <td align="left">
+    <span class="list-title"><%= picture.title %></span>
+          </td>
+                   <td align="left">
+    <span class="list-title"><%= picture.description %></span>
+          </td>
+                   <td align="left">
+    <span class="list-title"><%= picture.position %></span>
+          </td>
+                   <td align="left">
+    <span class="list-title"><%= picture.image %></span>
+          </td>
+          
+        </tr>
+      </table>
+      <div align="right" class="image-delete-list" >
+        <%=link_to image_tag ("interface/Button-Delete.png", :border=>"0") , picture,:on_click=>"", :confirm => 'Are you sure?', :method => :delete %>
+      </div>
+    <% end %>
+    <div class="hr"></div>
+
+  </div>
+    <center><%= link_to 'New Picture', :action=>:create_empty_record,:typeofrecord=>"picture" %></center>
+</div>

@@ -1,0 +1,31 @@
+<h1>Listing user_attributes</h1>
+
+<table>
+  <tr>
+    <th>First name</th>
+    <th>Last name</th>
+    <th>Handle</th>
+    <th>Birthdate</th>
+    <th>User</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @user_attributes.each do |user_attribute| %>
+  <tr>
+    <td><%= user_attribute.first_name %></td>
+    <td><%= user_attribute.last_name %></td>
+    <td><%= user_attribute.handle %></td>
+    <td><%= user_attribute.birthdate %></td>
+    <td><%= user_attribute.user_id %></td>
+    <td><%= link_to 'Show', user_attribute %></td>
+    <td><%= link_to 'Edit', edit_user_attribute_path(user_attribute) %></td>
+    <td><%= link_to 'Destroy', user_attribute, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New User attribute', new_user_attribute_path %>

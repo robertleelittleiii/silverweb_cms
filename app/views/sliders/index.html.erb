@@ -1,0 +1,50 @@
+<%=page_attr_display(nil,"true") %>
+
+<div class="cms-block">
+  <div align="center">
+    <!-- START:flash -->
+    <% if flash[:notice] -%>
+      <div id="notice"><%= flash[:notice] %></div>
+    <% end -%>
+    <!-- END:flash -->
+  </div>
+
+  <div id="site-pref-list">
+    <h1  class="cms-header">Slider</h1>
+
+    <center><%= link_to 'New Slider', :action=>:create_empty_record,:typeofrecord=>"slider" %></center>
+
+    <%  @sliders.each do |slider| %>
+      <div class="hr"></div>
+      <table width ="100%"cellpadding="5" cellspacing="0">
+        <tr class="list-table" valign="top" class="<%= cycle('list-line-odd', 'list-line-even') %>"  onclick = "window.location.href ='<%=url_for(:controller => 'sliders', :id => slider.id,  :action => 'edit')%>' "  style = "cursor:pointer" >
+                      <td align="left">
+    <span class="list-title"><%= slider.page_id %></span>
+          </td>
+                   <td align="left">
+    <span class="list-title"><%= slider.slider_order %></span>
+          </td>
+                   <td align="left">
+    <span class="list-title"><%= slider.slider_name %></span>
+          </td>
+                   <td align="left">
+    <span class="list-title"><%= slider.slider_active %></span>
+          </td>
+                   <td align="left">
+    <span class="list-title"><%= slider.slider_type %></span>
+          </td>
+                   <td align="left">
+    <span class="list-title"><%= slider.slider_content %></span>
+          </td>
+          
+        </tr>
+      </table>
+      <div align="right" class="image-delete-list" >
+        <%=link_to image_tag ("Button-Delete.png", :border=>"0") , slider,:on_click=>"", :confirm => 'Are you sure?', :method => :delete %>
+      </div>
+    <% end %>
+    <div class="hr"></div>
+
+  </div>
+    <center><%= link_to 'New Slider', :action=>:create_empty_record,:typeofrecord=>"slider" %></center>
+</div>

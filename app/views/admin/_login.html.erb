@@ -1,0 +1,71 @@
+<%puts("in admin/login page via partial")%>
+<div align="center" class="depot-form">
+  <!-- START:flash -->
+  <% if flash[:notice] -%>
+    <SPACER TYPE=HORIZONTAL SIZE=50>
+      <div id="notice">
+        <%= flash[:notice] %>
+      </div>
+    <% end -%>
+    <!-- END:flash -->
+
+
+    <div class="loginBlock" style="display:table">
+      <div class="loginSpan" style="display:table-row">
+        <div class="loginSpan" style="display:table-cell">
+          <DIV CLASS="loginheader">
+            Log in to your account
+          </DIV>
+
+          <DIV CLASS="loginArea">
+            <DIV CLASS="L11G" STYLE="margin-bottom:10px">If you already have a login on this site, please login.</DIV>
+            <BR>
+
+            <div id="ds_component">
+              <% form_tag do %>
+                <table cellspacing=0 class="ds_login">
+
+                  <tr>
+                    <td><b>Email Address</b><br>
+                      <%= text_field_tag :name, params[:name] %><br><span class="ds_nameexample">Example: little@mac.com</span><br></td>
+                  </tr>
+                  <tr>
+                    <td><b>Password</b><br>
+                      <%= password_field_tag :password, params[:password] %><br>
+                      <%= link_to "Forgot Password" , :controller =>'registration', :action=>'forgot' %>
+
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><%= submit_tag "Login" %></td>
+                  </tr>
+                </table>
+              <% end %>
+            </div>
+          </DIV>
+
+        </div>
+        <div class="loginSpan" style="display:table-cell">
+          <DIV CLASS="loginheader">
+            Register a new account
+          </DIV>
+
+          <DIV CLASS="loginArea">
+            <DIV CLASS="L11G" STYLE="margin-bottom:10px">If you don't have an account please register.</DIV>
+            <BR>
+
+            <div id="ds_component">
+              <table cellspacing=0 class="ds_login">
+                <tr>
+                  <%= button_to "Register" , :controller =>'registration', :action=>'register_customer' %>
+                </tr>
+              </table>
+            </div>
+          </DIV>
+        </div>
+      </div>
+    </div>
+
+
+</div>
+

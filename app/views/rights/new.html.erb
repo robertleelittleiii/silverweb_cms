@@ -1,0 +1,32 @@
+<div class="depot-form">
+
+<% form_for(@right) do |f| %>
+  <%= f.error_messages %>
+
+  <fieldset>
+  <legend>Enter right Details</legend>
+
+  <div>
+    <%= f.label :name %>:
+    <%= f.text_field :name, :size => 40 %>
+  </div>
+
+  <div>
+
+    <%= f.label :contoller, 'Controller' %>:
+    <%= f.text_field :controller, :size => 40 %>
+  </div>
+
+  <div>
+    <%= f.label :action, 'Action' %>:
+    <%= f.text_field :action, :size => 40 %>
+  </div>
+
+  <div>
+    <%= f.submit "Add Right", :class => "submit" %>
+  </div>
+
+  </fieldset>
+<% end %>
+
+</div>

@@ -1,0 +1,20 @@
+<%= form_for Picture.new, :html => {:multipart => true} do |f| %>
+  <span class="btn btn-success fileinput-button">
+    <i class="glyphicon glyphicon-plus"></i>
+    <span><%=image_tag("interface/browse.png", :id=>"file-button") %> </span>
+    <!-- The file input field used as target for the file upload widget -->
+    <%= f.file_field :image, :multiple=>true , :name=>"picture[image]" %>
+  </span>
+<% end %>
+
+<div id="pictures">
+  <%= render :partial=>"/pictures/picture_list.html" %>
+</div>
+  
+<script id="template-upload" type="text/x-tmpl">
+  <div class="upload">
+  {%=o.name%}
+  <div class="progress"><div class="bar" style="width: 0%"></div></div>
+  </div>
+</script>
+      

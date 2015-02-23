@@ -1,0 +1,103 @@
+/* 
+    Document   : pages
+    Created on : Sep 18, 2011, 3:50:20 AM
+    Author     : rlittle
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+
+root { 
+    display: block;
+}
+
+edit-pages 
+{
+
+
+}
+
+
+.draggable-slider-item {
+
+
+}
+.slider-drag:hover {
+    cursor: move;
+}
+
+.slider-drag {
+    background-color: grey;
+}
+
+#draggable_slider_item{
+
+
+}
+
+.slider-list-item {
+    display:block;
+}
+
+#sliders {
+    margin-left: 50px;
+    margin-right: 50px;
+}
+#slider-options {
+    border-width: 1px;
+    width: 90%;
+    border-style: dotted;
+    margin: auto;
+    padding:10px;
+    margin-top: -8px;
+    margin-bottom:25px;
+    display: block;
+    position: relative;
+
+}
+
+#add-slider{
+    margin-left:50px;
+    
+}
+
+iframe.preview{
+  -moz-transform: scale(0.5, 0.5); 
+  -webkit-transform: scale(0.5, 0.5); 
+  -o-transform: scale(0.5, 0.5);
+  -ms-transform: scale(0.5, 0.5);
+  transform: scale(0.5, 0.5); 
+  -moz-transform-origin: top left;
+  -webkit-transform-origin: top left;
+  -o-transform-origin: top left;
+  -ms-transform-origin: top left;
+  transform-origin: top left;
+  margin-bottom:-300px;
+  display:inline-block;
+  position:relitive;
+
+}
+
+.display-area {
+display: inline-block;
+padding: 50px;
+padding-bottom: 0px;
+}
+
+form.edit_page {
+margin-top: -20px;
+}
+
+div.div-security_group {
+display: inline-block;
+margin-left: 50px;
+padding-bottom: 25px;
+}
+
+#page-table > tbody > tr.page-row {
+cursor: pointer;
+}
