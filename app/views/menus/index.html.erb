@@ -1,3 +1,10 @@
+<div class="hidden-item">
+    <div id="as_window"><%=params[:request_type]=="window"%></div>
+    <div id="dialog-height">650</div>
+    <div id="dialog-width">1050</div>
+    <div id="dialog-name">Menu Manager</div>
+</div>
+
 <div class="cms-block">
   <div align="center">
     <!-- START:flash -->
@@ -8,16 +15,15 @@
   </div>
 
   <div id="site-pref-list">
-    <h1  class="cms-header">Site Menus</h1>
+    <!-- <<h1  class="cms-header">Site Menus</h1> -->
 
-    <center><%= link_to 'New Menu Head', {:action=>:create_empty_record,:typeofrecord=>"Head", :parent_id=>"0"}, :remote=>true, :update=>"menu-item-list" %></center>
+    <%= link_to 'New Menu Head', {:action=>:create_empty_record,:typeofrecord=>"Head", :parent_id=>"0"}, :remote=>true, :update=>"menu-item-list", :class=>"button-link", :id=>"new-menu-head" %>
     <div id="menu-item-list">
       <%=render :partial=>"menu_list.html", :collection=>@menus%>
     </div>
     <div class="hr"></div>
 
   </div>
-    <center><%= link_to 'New Menu Head', {:action=>:create_empty_record,:typeofrecord=>"Head", :parent_id=>"0"}, :remote=>true , :update=>"menu-item-list" %></center>
 </div>
 
 

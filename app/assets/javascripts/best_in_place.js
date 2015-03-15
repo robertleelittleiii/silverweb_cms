@@ -44,8 +44,8 @@ function autoGrowInput (o,inputField) {
 
     o = jQuery.extend({
         maxWidth: 1000,
-        minWidth: 10,
-        comfortZone: 10
+        minWidth: 5,
+        comfortZone: 2
     }, o);
 
     jQuery(inputField).filter('input:text').each(function(){

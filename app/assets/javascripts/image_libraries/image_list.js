@@ -4,26 +4,43 @@
  * and open the template in the editor.
  */
 
+var picture_edit_dialog = "";
 
 $(document).ready(function () {
 
     //alert("in here");
     $("#tabs").tabs();
     bind_file_upload_to_upload_form();
+    bind_paste_body_zone();
     bind_mouseover();
+    initialize_edit_button();
+    initialize_insert_button();
+    activate_buttons();
 });
 
+
+function activate_buttons() {
+    
+    $("div.ui-button a").button();
+}
+function bind_paste_body_zone(){
+    
+    $('body').fileupload({
+    pasteZone: $('body')
+});
+
+}
 function bind_mouseover()
 {
 
     $("div.file-block")
             .mouseenter(function () {
                 $(this).parent().find("div.hover-block").fadeIn();
-                console.log("fadeIn");
+                // console.log("fadeIn");
             })
             .mouseleave(function () {
                  $(this).parent().find("div.hover-block").fadeOut();
-                 console.log("fadeOut");
+               //   console.log("fadeOut");
            });
 
 //$("div.file-block").hover(function() {
@@ -36,14 +53,15 @@ function bind_mouseover()
 //    });
 
 }
-function render_pictures() {
+function render_pictures(picture_id) {
     $.ajax({
         dataType: "html",
-        url: '/pictures/render_pictures',
+        url: '/pictures/render_picture',
         cache: false,
+        data: "id="+picture_id,
         success: function (data)
         {
-            $("div#picture-list").html(data);
+            $("div#pictures").append(data).hide().fadeIn();
             bind_file_upload_to_upload_form();
         }
     });
@@ -77,22 +95,23 @@ function bind_file_upload_to_upload_form()
             var jqXHR = data.submit()
                     .success(function (result, statusText, jqXHR) {
 
-                        // console.log("------ - fileupload: Success - -------");
-                        // console.log(result);
-                        // console.log(statusText);
-                        // console.log(jqXHR);
+                        console.log("------ - fileupload: Success - -------");
+                        console.log(result);
+                        console.log(result.id);
+                        console.log(statusText);
+                        console.log(jqXHR);
 
-                        // console.log(JSON.stringify(jqXHR.responseJSON["attachment"]));
+                        console.log(JSON.stringify(jqXHR.responseJSON["attachment"]));
 
-                        // console.log(typeof(jqXHR.responseText));
+                        console.log(typeof(jqXHR.responseText));
 // specifically for IE8. 
                         if (typeof (jqXHR.responseText) == "undefined") {
-                            setUpPurrNotifier("info.png", "Notice", jqXHR.responseJSON["attachment"][0]);
+                            setUpPurrNotifier( "Notice", jqXHR.responseJSON["attachment"][0]);
                             data.context.remove();
                         }
                         else
                         {
-                            render_pictures();
+                            render_pictures(result.id);
                         }
 
                     })
@@ -104,13 +123,13 @@ function bind_file_upload_to_upload_form()
                         // console.log(jqXHR.responseText);
                         if (jqXHR.status == "200")
                         {
-                            render_pictures();
+                         //   render_pictures();
                         }
                         else
                         {
                             var obj = jQuery.parseJSON(jqXHR.responseText);
                             // console.log(typeof obj["attachment"][0])
-                            setUpPurrNotifier("info.png", "Notice", obj["attachment"][0]);
+                            setUpPurrNotifier( "Notice", obj["attachment"][0]);
                             data.context.remove();
                         }
 //                        if (jqXHR.statusText == "success") {
@@ -149,5 +168,163 @@ function bind_file_upload_to_upload_form()
         data.context.remove();
         //data.context.text('');
     });
+};
+
+
+function initialize_insert_button()
+        {
+            $("a.insert-picture")
+                    .bind("ajax:beforeSend", function(evt, xhr, settings) {
+                 //alert("ajax:beforeSend");
+            })
+                    .bind("ajax:success", function(evt, data, status, xhr) {
+                // alert("ajax:success");
+                // edit_picture_dialog(data);
+                 top.tinymce.activeEditor.insertContent(data);
+
+                    })
+                    .bind('ajax:complete', function(evt, xhr, status) {
+                 //alert("ajax:complete");
+            })
+                    .bind("ajax:error", function(evt, xhr, status, error) {
+                //  alert("ajax:error");
+
+                var $form = $(this),
+                        errors,
+                        errorText;
+
+                try {
+                    // Populate errorText with the comment errors
+                    console.log(xhr);
+                    console.log(status);
+                    console.log(error);
+                    
+                    errors = $.parseJSON(xhr.responseText);
+                    console.log(errors);
+                    
+                } catch (err) {
+                    // If the responseText is not valid JSON (like if a 500 exception was thrown), populate errors with a generic error message.
+                    errors = {
+                        message: "Please reload the page and try again"
+                    };
+                }
+                var errorText;
+                // Build an unordered list from the list of errors
+                errorText = "<ul>";
+
+                for (error in errors) {
+                    console.log(error);
+                    console.log(errors[error][0]);
+                    errorText += "<li>" + error + ': ' + errors[error][0] + "</li> ";
+                    console.log(errorText);
+                }
+
+                errorText += "</ul>";
+                    console.log(errorText);
+
+                // Insert error list into form
+                setUpNotifier("error.png", "Warning", errorText);
+            });
+
+        }
+        
+        
+  function initialize_edit_button()
+        {
+            $("a.edit-picture")
+                    .bind("ajax:beforeSend", function(evt, xhr, settings) {
+                 //alert("ajax:beforeSend");
+            })
+                    .bind("ajax:success", function(evt, data, status, xhr) {
+                // alert("ajax:success");
+                edit_picture_dialog(data);
+            })
+                    .bind('ajax:complete', function(evt, xhr, status) {
+                 //alert("ajax:complete");
+            })
+                    .bind("ajax:error", function(evt, xhr, status, error) {
+                //  alert("ajax:error");
+
+                var $form = $(this),
+                        errors,
+                        errorText;
+
+                try {
+                    // Populate errorText with the comment errors
+                    console.log(xhr);
+                    console.log(status);
+                    console.log(error);
+                    
+                    errors = $.parseJSON(xhr.responseText);
+                    console.log(errors);
+                    
+                } catch (err) {
+                    // If the responseText is not valid JSON (like if a 500 exception was thrown), populate errors with a generic error message.
+                    errors = {
+                        message: "Please reload the page and try again"
+                    };
+                }
+                var errorText;
+                // Build an unordered list from the list of errors
+                errorText = "<ul>";
+
+                for (error in errors) {
+                    console.log(error);
+                    console.log(errors[error][0]);
+                    errorText += "<li>" + error + ': ' + errors[error][0] + "</li> ";
+                    console.log(errorText);
+                }
+
+                errorText += "</ul>";
+                    console.log(errorText);
+
+                // Insert error list into form
+                setUpNotifier("error.png", "Warning", errorText);
+            });
+
+        }
+        
+        
+        
+        function edit_picture_dialog(data) {
+
+    // alert("ajax:success");
+        picture_edit_dialog = createAppDialog(data, "edit-picture", {}, "");
+
+    //initialize_save_button();
+    //$('.datepicker').datepicker();
+    //tiny_mce_initializer();
+    //bind_org_select();
+    //bind_membership_select();
+    //bind_grade_select();
+    //bind_flags_select();
+
+    //bind_grade_all_select();
+
+    //bind_grade_filter_display();
+    //bind_membership_filter_display();
+    //bind_flags_filter_display();
+    //bind_select_ajax("picture_priority");
+    //bind_select_ajax("picture_status");
+
+
+
+    //current_notice = $("#picture-id").text();
+    //set_before_edit(current_notice);
+    // tinyMCE.init({"selector":"textarea.tinymce"});
+    $(".best_in_place").best_in_place();
+
+    //bind_file_upload_to_upload_form();
+    //$("button.ui-dialog-titlebar-close").hide();
+
+    //initialize_add_organization();
+    //select_subject_field();
+    //initialize_select_all_button();
+    //initialize_select_none_button();
+    //initilize_filter_buttons();
+
 }
-;
+        
+        
+        
+        

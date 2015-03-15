@@ -1,7 +1,7 @@
 class RolesController < ApplicationController
 
   def index
-   @roles = Role.find(:all, :order => :name)
+   @roles = Role.all.order(:name)
 
   respond_to do |format|
       format.html # index.html.erb
@@ -28,7 +28,7 @@ end
 
   def view
         @role = Role.find(params[:id], :include => :rights)
-        @rights = Right.find(:all, :order => :name)
+        @rights = Right.all.order(:name)
 
       respond_to do |format|
       format.html # index.html.erb
@@ -76,7 +76,7 @@ def record2
   end
 
   def create
-    @role = Role.new(params[:role])
+    @role = Role.new(role_params)
 
     respond_to do |format|
       if @role.save
@@ -96,7 +96,7 @@ def record2
     @role = Role.find(params[:id])
 
     respond_to do |format|
-      if @role.update_attributes(params[:role])
+      if @role.update_attributes(role_params)
         flash[:notice] = "role #{@role.name} was successfully updated."
         format.html { redirect_to(:action=>'index') }
         format.xml  { head :ok }
@@ -155,7 +155,11 @@ end
     @role.name = "Role_" + Time.now.to_i.to_s
     @role.save
     
-    redirect_to(:controller=>:roles, :action=>:edit, :id=>@role.id)
+     respond_to do |format|
+      format.html {redirect_to(:controller=>:roles, :action=>:edit, :id=>@role.id)}
+      format.json { render :json=>@role }
+    end
+    
   end
   
   def delete_ajax
@@ -200,4 +204,12 @@ end
     return conditions.join(" AND ")
   end
  
+  
+    private
+
+  
+  def role_params
+    params[:role].permit( "name")
+  end
+  
 end

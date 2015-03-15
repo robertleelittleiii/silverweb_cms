@@ -40,7 +40,7 @@ class UserAttributesController < ApplicationController
   # POST /user_attributes
   # POST /user_attributes.json
   def create
-    @user_attribute = UserAttribute.new(params[:user_attribute])
+    @user_attribute = UserAttribute.new(user_attribute_params)
 
     respond_to do |format|
       if @user_attribute.save
@@ -59,7 +59,7 @@ class UserAttributesController < ApplicationController
     @user_attribute = UserAttribute.find(params[:id])
 
     respond_to do |format|
-      if @user_attribute.update_attributes(params[:user_attribute])
+      if @user_attribute.update_attributes(user_attribute_params)
         format.html { redirect_to(@user_attribute, :notice => 'User attribute was successfully updated.') }
         format.json  { head :ok }
       else
@@ -80,4 +80,11 @@ class UserAttributesController < ApplicationController
       format.json  { head :ok }
     end
   end
+  
+  
+  
+  def user_attribute_params
+    params[:user_attribute].permit("first_name", "last_name", "handle", "birthdate", "user_id")
+  end
+  
 end

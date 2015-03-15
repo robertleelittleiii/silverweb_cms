@@ -1,30 +1,35 @@
 
-<% picture=@picture if picture.blank? %>
+<%picture=@picture if picture.blank?%>
 
 <div id="<%=picture.id%>" class="file-list-item">
-     <div class="file-delete-icon ui-icon ui-icon-closethick">
+    <div class="file-delete-icon ui-icon ui-icon-closethick">
 <%#= link_to('X',{ :controller=>:pictures, :id=>picture.id, :action=>:destroy} , { :method => :delete, :confirm => 'Are you sure?' , :remote=>true})%>
-                    <%= link_to 'X', picture,  method: :delete, remote:true, data: { confirm: "Are you sure?" }%>
+        <%= link_to 'X', picture,  method: :delete, remote:true, data: { confirm: "Are you sure?" }%>
 
-                </div> 
+    </div> 
     <div class="file-item"> 
-            <div id="logo-links" class="<%=picture.file_type[1..-1] rescue ""%>">
-                <%=link_to('', :controller=>"pictures", :action => "download_file", :id=>picture.id, :title=>"Download File") %> 
-            </div>
-            <div class="file-title"><%=picture.file_name rescue "file not found"%> 
-               
-            </div>
-        </div> 
-    
-    <div class="file-block">
-         <div class="hover-block">
-        this is a test.
-    </div>
-        <div class="picture-item">
-            <div class="picture-float-center">
-                <%= picture.file_type==".pdf" ? (image_tag(picture.image_url(:pdf_preview).to_s)) : (image_tag(picture.image_url(:preview).to_s))%>
-            </div>
+        <div id="logo-links" class="<%=picture.file_type[1..-1] rescue ""%>">
+            <%=link_to('', :controller=>"pictures", :action => "download_file", :id=>picture.id, :title=>"Download File") %> 
         </div>
-    </div>
-   
-</div> 
+        <div class="file-title"><%=truncate(picture.file_name, length: 12) rescue "file not found"%> 
+
+        </div>
+    </div> 
+
+    <div class="file-block">
+        <div class="hover-block">
+            <div class="ui-button">
+                <%= link_to("Edit", edit_picture_path(picture, as_window: true ), remote: true,  class: "edit-picture") rescue "" %>
+              </div>
+              <div class="ui-button">
+                <%= link_to("Insert", {controller: "pictures", action: "insert", as_window: true, id: picture.id} , remote: true,  class: "insert-picture")  rescue ""%>
+              </div>
+          </div>
+          <div class="picture-item">
+              <div class="picture-float-center">
+                  <%= picture.file_type==".pdf" ? (image_tag(picture.image_url(:pdf_preview).to_s)) : (image_tag(picture.image_url(:preview).to_s)) rescue ""%>
+              </div>
+          </div>
+      </div>
+
+  </div> 

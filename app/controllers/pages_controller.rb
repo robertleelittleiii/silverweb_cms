@@ -2,7 +2,7 @@ class PagesController < ApplicationController
   # GET /pages
   # GET /pages.json
 
- # uses_tiny_mce(:options => AppConfig.default_mce_options, :only => [:new, :edit])
+  # uses_tiny_mce(:options => AppConfig.default_mce_options, :only => [:new, :edit])
   # uses_tiny_mce(:options => AppConfig.full_mce_options, :only => [:new, :edit])
 
   STYLE_TYPES = [["B L A N K",""],["Agriculture","agriculture"],["Marine","marine"],["Automotive","automotive"], ["Industrial","industrial"],["Do it yourself","doityourself"],["Trades","trades"] ]
@@ -205,6 +205,6 @@ class PagesController < ApplicationController
   
   private
 def page_params
-  params[:page].permit( "title", "body", "in_menu", "menu_local", "full_screen", "has_slider", "slider_height", "slider_width", "meta_description", "meta_keywords", "meta_robot", "template_name", "secure_page", "dialog_width", "dialog_height", "slider_show_nav", "page_style")
+  params[:page].permit( "title", "body", "in_menu", "menu_local", "full_screen", "has_slider", "slider_height", "slider_width", "meta_description", "meta_keywords", "meta_robot", "template_name", "secure_page", "dialog_width", "dialog_height", "slider_show_nav", "page_style","page_table")
 end
 end

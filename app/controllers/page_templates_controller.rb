@@ -52,7 +52,7 @@ class PageTemplatesController < ApplicationController
   # POST /page_templates
   # POST /page_templates.json
   def create
-    @page_template = PageTemplate.new(params[:page_template])
+    @page_template = PageTemplate.new(user_attribute_params)
 
     respond_to do |format|
       if @page_template.save
@@ -71,7 +71,7 @@ class PageTemplatesController < ApplicationController
     @page_template = PageTemplate.find(params[:id])
 
     respond_to do |format|
-      if @page_template.update_attributes(params[:page_template])
+      if @page_template.update_attributes(user_attribute_params)
         format.html { redirect_to(:action =>"edit", :notice => 'Page Template was successfully updated.') }
         format.json { head :ok }
       else
@@ -109,4 +109,9 @@ class PageTemplatesController < ApplicationController
     @last_page_template = @page_templates.last
   end
   
+  private
+  
+  def page_template_params
+    params[:page_template].permit( "title", "description", "body")
+  end
 end

@@ -1,3 +1,10 @@
+<div class="hidden-item">
+    <div id="as_window"><%=params[:request_type]=="window"%></div>
+    <div id="dialog-height">650</div>
+    <div id="dialog-width">1050</div>
+    <div id="dialog-name">Page Manager</div>
+</div>
+
 <%=page_attr_display(nil,"true") %>
 
 <div class="cms-block">
@@ -10,15 +17,14 @@
   </div>
 
   <div id="site-pref-list">
-    <h1  class="cms-header">Site Pages</h1>
+   <!-- <h1  class="cms-header">Site Pages</h1> -->
 
-    <center><%= link_to 'New Page',{ :action=>:create_empty_record,:typeofrecord=>"Page"}, :class=>"button-link"%></center>
+     <%=link_to 'New Page',{ :action=>:create_empty_record,:typeofrecord=>"Page"}, :class=>"button-link" ,:id=>"new-page", :remote=>true%>
+   
     <p>
       </br>
       </br>
     </p>
-<%=render(:partial=>"page_data_table") %>
-    <div class="hr"></div>
-
+      <%=render(:partial=>"page_data_table") %>
   </div>
 </div>

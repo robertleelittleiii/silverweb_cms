@@ -1,0 +1,7 @@
+<%#
+# To change this license header, choose License Headers in Project Properties.
+# To change this template file, choose Tools | Templates
+# and open the template in the editor.
+%>
+
+<%= @picture.file_type==".pdf" ? (link_to(image_tag(@picture.image_url(:pdf_preview).to_s),@picture.image_url.to_s )) : (image_tag(@picture.image_url(:preview).to_s))%>

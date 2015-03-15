@@ -1,0 +1,53 @@
+/* 
+    Document   : user_administration
+    Created on : Mar 8, 2013, 8:43:03 PM
+    Author     : rlittle
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+
+input.button-link, a.button-link {
+display: inline-block;
+float: initial;
+}
+.m-block {
+margin-left: 5px;
+padding-top: 10px;
+padding-bottom: 75px;
+background-color: rgba(255, 255, 255, 0.41);
+}
+#user-actions {
+display: inline-block;
+position: relative;
+}
+
+table.display thead th {
+padding: 3px 18px 3px 10px;
+border-bottom: 1px solid black;
+font-weight: bold;
+cursor: pointer;
+}
+
+.user-row, .details-row {
+color: black;
+}
+
+.myaccountcontentitem {
+margin-top: 0px;
+padding-bottom: 0px;
+padding-left: 0px;
+display: inline-block;
+margin-bottom: 0px;
+font-size: 16px;
+font-weight: normal;
+}
+
+div#user-table_wrapper table {
+color: black;
+background-color: rgba(125, 125, 125, 0.5);
+}
+
+#user-table_wrapper {
+padding-top: 20px;
+}

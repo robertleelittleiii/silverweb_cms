@@ -1,0 +1,76 @@
+@import "image_management.css";
+/* 
+    Document   : index
+    Created on : Apr 11, 2011, 6:37:54 PM
+    Author     : rlittle
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+root { 
+    display: block;
+}
+
+.menu-disabled {
+color: red !important;
+}
+
+.draggable-menu-item {
+
+    
+}
+.menu-drag:hover {
+    cursor: move;
+}
+
+.menu-drag {
+    background-color: grey;
+}
+#draggable_menu_item{
+
+    
+}
+
+.menu-list-items {
+
+}
+
+#menu-options {
+border-width: 1px;
+width: 90%;
+border-style: dotted;
+margin: auto;
+padding:10px;
+margin-top: -8px;
+margin-bottom:25px;
+display: block;
+position: relative;
+
+}
+
+
+.has-sub-menus {
+border-bottom: 4px black double;
+}
+
+.sub-menu-item-closed {
+    display:none;
+}
+
+div#edit-menu div.cms-content {
+max-height: 92%;
+overflow: auto;
+}
+
+div#edit-menu {
+overflow: auto !important;
+}
+
+a#new-menu-head {
+  margin: 20px;
+  width: 144px;
+}

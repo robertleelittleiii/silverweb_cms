@@ -1,8 +1,42 @@
 Rails.application.routes.draw do
   
+  resources :admin do
+    collection do
+      get "user_administration"
+      get "logout"
+      get "index"
+      get "site_settings"
+      get "toggle_index"
+      get "reprocess_page_images"
+      get "update_ajax"
+      get "update"
+    end
+  end
+  resources :site do
+    collection do
+      get "show_page"
+      get "show_page_popup"
+      post "login"
+      post "login_ajax"
+      post "reset_ajax"
+      post "register_ajax"
+      get "logout_ajax"
+      get "render_partial"
+   end 
+  end
+  
+  resource :pictures do
+    collection do
+      get "edit"
+      get "insert"
+      get "render_picture"
+    end
+  end
+  
   resource :image_library do
     collection do
-      get "image_list"
+    get "image_list"
+    post "image_list"
     end
   end
   
@@ -47,8 +81,14 @@ Rails.application.routes.draw do
 
   resources :menus do
     collection do
+      post "ajax_load_partial"
+      post "update_order"
       get "create_empty_record"
       get "ajax_load_partial"
+      get "update_menu_list"
+      get "render_menu_list"
+      post "add_image"
+      get "render_menu"
     end
   end
 
@@ -60,6 +100,7 @@ Rails.application.routes.draw do
       get "change_password" 
       get "update_rights"
       get "create_empty_record"
+      get "delete_ajax"
     end
   end
 
@@ -71,6 +112,8 @@ resources :users do
       get "change_password" 
       get "update_roles"
       get "create_empty_record"
+      get "delete_ajax"
+      get "update_password"
     end
   end
   
@@ -108,5 +151,13 @@ resources :users do
   
   
  #  match ':page_name(.:format)', :controller => 'site', :action => 'show_page',  via: [:get]
+ 
+  # match ':controller(/:action(/:id(.:format)))'
+
+  # match '*a.htm' => redirect("/site", :status => 302)
+
+  match ':page_name(.:format)', :controller => 'site', :action => 'show_page',  via: [:get]
+   
+  root :to => "site#index"
 
 end

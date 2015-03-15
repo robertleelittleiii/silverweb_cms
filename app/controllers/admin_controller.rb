@@ -38,7 +38,7 @@ def user_administration
 
   
   def index
-    @user =  User.find_by_id(session[:user_id], :include => :user_attribute)
+    @user =  User.where(:id=>session[:user_id]).includes(:user_attribute).first
     @user_attributes = @user.user_attribute
     if @user.user_attribute.nil? then
      
@@ -107,22 +107,34 @@ def user_administration
   
   end
   
+  def update
+     eval("Settings." + params["settings"].first[0] + "='" + params["settings "].first[1] +"'"   )
+  
+  respond_to do |format|
+      format.json  { head :ok }
+      format.html { head :ok }  
+    end  
+  end
+  
   def site_settings
 
-    if params.count > 2 then
+    #if params.count > 2 then
       # we are doing an update on the site settings
-      eval("Settings." + params["settings"].first[0] + "='" + params["settings"].first[1] +"'"   ) rescue ""
-    else
+    #  eval("Settings." + params["settings"].first[0] + "='" + params["settings"].first[1] +"'"   ) rescue ""
+    #else 
       @settings = Settings.all 
-      @all_images = SystemImages.all
+      if @settings.blank? then
+        Settings.test="blank";
+        @settings = Settings.all 
+      end
+      @all_images = SystemImages.all rescue []
       @image_class = "none"
-    end
+   # end
     @workers = Resque.workers rescue ["Redis not available[#{$!.message}]"]
 
-    respond_to do |format|
-      format.json  { head :ok }
-      format.html 
-    end  
+#    respond_to do |format|
+#      format.html 
+#    end  
     
     
   end

@@ -1,4 +1,5 @@
-<%=page_attr_display(nil,"true") %>
+
+<%= create_dialog_settings("My Account Information", "650", "500") %>
 <div class="cms-block" Align="Left">
 <%   $user =  User.find_by_id(session[:user_id])
      $roles = $user.roles
@@ -11,7 +12,7 @@
       <% end -%>
       <!-- END:flash -->
 </div>
- <div class="cms-header">My Account Information</div>
+<!-- <div class="cms-header">My Account Information</div> -->
  <div class="cms-section">
    <div class="cms-heading">About Me</div>
       <div class="cms-content">
@@ -47,7 +48,7 @@
         
         <p>
         <b>Passsword:</b><br>
-        <%=editablefieldcreate2("password", @user)%>
+<%#=editablefieldcreate2("password", @user)%> (set password)</br>
         </p>
 
          <%#*<p>%>

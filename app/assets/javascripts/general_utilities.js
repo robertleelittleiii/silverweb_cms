@@ -109,7 +109,7 @@ function sz(t) {
 //
 //
 function require(script) {
-    var theUrl="/javascripts/"+script;
+    var theUrl="/assets/"+script;
     var theTimeStamp = getRailsTimeStamp();
     
     // $("script[src='/javascripts/ie_fixes.js?1361329086']")
@@ -147,8 +147,8 @@ function require(script) {
 //
 function requireCss(cssFile) {
     var theTimeStamp = getRailsTimeStamp();
-    var href = "/stylesheets/"+cssFile
-
+    // if (cssFile.charAt(0) == "/") {
+    var href = "/assets/"+cssFile
     if (!$("link[href^='" + href +"']").length) {
         //alert("loaded");
         $.ajax({
@@ -252,4 +252,115 @@ function setupCheckboxes(inputElement) {
         $(this).closest('form').trigger('submit');
     });
 
+}
+
+function createAppDialog(theContent, dialog_id, call_backs, buttons_to_show_in) {
+// completion_callback, save_callback, cancel_callback, submit_callback
+
+    if (typeof call_backs === 'undefined') var call_backs = {};
+    if (typeof buttons_to_show_in === 'undefined') var buttons_to_show_in = "";
+    if (typeof dialog_id === 'undefined') var dialog_id = "app-dialog";
+
+
+    buttons_to_show = buttons_to_show_in || "all"
+    console.log(buttons_to_show);
+    console.log(buttons_to_show_in);
+    console.log(buttons_to_show.indexOf("Cancel"));
+
+    if ($("#" + dialog_id).length == 0)
+    {
+        var dialogContainer = "<div id='" + dialog_id + "' class='cms-ui-dialog'></div>";
+        $("body").append($(dialogContainer));
+    }
+    else
+    {
+        dialogContainer = $("#" + dialog_id);
+    }
+
+   
+
+// $('#app-dialog').html(theContent);
+    theContent = '<input type="hidden" autofocus="autofocus" />' + theContent
+    theAppDialog = $('#' + dialog_id).dialog({
+        autoOpen: false,
+        modal: true,
+        close: function(event, ui) {
+            if (typeof(call_backs.completion) == "function")
+            {
+                call_backs.completion();
+            }
+
+            // $('#' + dialog_id).html("");
+            //  $('#' + dialog_id).dialog("destroy");
+            //   alert('closed');
+        },
+        open: function(event, ui)
+        {
+            popUpAlertifExists();
+        }
+
+
+    });
+    $('#' + dialog_id).html(theContent);
+    theHeight = $('#' + dialog_id + ' #dialog-height').text() || "500";
+    theWidth = $('#' + dialog_id + ' #dialog-width').text() || "500";
+    theTitle = $('#' + dialog_id + ' #dialog-name').text() || "Edit";
+    theAppDialog.dialog({
+        title: theTitle,
+        width: theWidth,
+        height: theHeight
+    });
+    theAppDialog.dialog("open");
+    return(theAppDialog)
+}
+
+function ui_ajax_select() {
+    
+     $("select.ui-ajax-select").bind("change", function() {
+        selected_item= $(this).val();
+        controller=this.getAttribute("data-path")
+        
+        //alert(this.getAttribute("data-id"));
+
+
+        $.ajax({
+            url: controller ,// controller + "/update",
+            dataType: "json",
+            type: "PUT",
+            data: "id="+this.getAttribute("data-id")+ "&" + this.getAttribute("name")+ "=" +  selected_item,
+            success: function (data)
+            {
+                alert(data);
+                if (data === undefined || data === null || data === "")
+                {
+                    //display warning
+                }
+                else
+                {
+                   
+                }
+            }
+        });
+      });
+}
+
+
+function updateMenu(menu_id)
+{
+    menu = $('[data-menu-id ="' + menu_id + '"]');
+    menu_helper = menu.attr("cms-menu-helper");
+    menu_params = menu.attr("data-menu-params")
+
+    if (menu.length > 0) {
+    $.ajax({
+        url: "/menus/render_menu",
+        type: "GET",
+        data: {menu_id: menu_id, menu_helper: menu_helper, menu_params: menu_params},
+        success: function (data)
+        {
+            menu.replaceWith(data);
+            // console.log(data);
+        }
+    });
+    }
 }

@@ -25,7 +25,7 @@
       <%=image_tag "ajax-loader2.gif", :id=>"loader_progress" ,:style=>"display:none"%>
     <% end %> <br>
     <div id="role-actions">
-      <%= link_to('New Role',{ :action=>:create_empty_record, :controller=>:roles, :typeofrecord=>"role", :request_type=>"window"}, :id=>"new-role",:class=>"button-link", :remote => true  )%>
+      <%= link_to('New Role',{ :action=>:create_empty_record, :controller=>:roles, :format=>"json", :typeofrecord=>"role", :request_type=>"window"}, :id=>"new-role",:class=>"button-link", :remote => true  )%>
     </div>
     <hr>
 

@@ -31,28 +31,34 @@ class Menu < ActiveRecord::Base
   
   
   def self.find_root_menus()
-    find(:all, conditions: [ "parent_id = 0"])
+    where(parent_id: 0)
+    # find(:all, conditions: [ "parent_id = 0"])
   end
 
   def self.find_menus_by_parent_id(parent_id)
     today = Time.now
-    find(:all, conditions: [ "parent_id = (?)", parent_id])
+    where(:parent_id=>parent_id)
   end
 
   def self.find_menu(parent_id)
-    find(:all, conditions: ["parent_id = (?)", parent_id]   ,order: "m_order ASC")
+    
+    where(parent_id: parent_id).order( "m_order ASC")
+    
+    # find(:all, conditions: ["parent_id = (?)", parent_id]   ,order: "m_order ASC")
+
   end
-  
   def top_level_menu?
     menu.parent_id==0 rescue false
   end
     
   def find_top_level_parent
-    parent_id = menu.parent_id rescue -1
+    
     if parent_id==0 then
+      puts("found parent:#{id} ")
       return id
     else
-      menu.find_top_level_parent
+      puts("check next level ^")
+      return menu.find_top_level_parent
     end rescue return 0
   end
   

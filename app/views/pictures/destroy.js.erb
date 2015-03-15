@@ -1,1 +1,24 @@
-$("#<%=@picture.id%>.file-list-item").fadeOut(400, function(){$("#<%=@picture.id%>.file-list-item").remove();});
+$("#<%=@picture.id%>.file-list-item").fadeOut(400, function(){
+
+  $("#<%=@picture.id%>.file-list-item").remove();
+  
+  max_images = $('#max-images').text();
+
+if (max_images.length > 0)
+{
+// console.log("first if passes");
+
+total_images = $("div.file-list-item").size();
+// console.log(total_images);
+
+if (total_images < max_images) {
+$("div#imagebutton").fadeIn();
+}
+
+}
+
+  });
+
+
+
+

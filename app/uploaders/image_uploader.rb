@@ -119,7 +119,7 @@ class ImageUploader < CarrierWave::Uploader::Base
   #  end
 
   version :preview, :if=>:not_pdf?  do
-    process :resize_to_limit => [200, 300]
+    process :resize_to_limit => [150, 150]
   end
 
   version :thumb, :if=>:not_pdf?    do
@@ -228,7 +228,7 @@ class ImageUploader < CarrierWave::Uploader::Base
 
   version :pdf_preview , :if => :pdf? do
       process :cover
-      process :resize_to_fit => [210, 338]
+      process :resize_to_fit => [150, 150]
       process :convert => :jpg
 
       def full_filename (for_file = model.source.file)

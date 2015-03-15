@@ -12,10 +12,13 @@
  *
  *= require_tree .
  *= require_self
- *= require smoothness/jquery-ui-1.8.24.custom
+ * require smoothness/jquery-ui-1.8.24.custom
+ *= require smoothness/jquery-ui
  *= require ui.notify
  *= require jquery.fileupload
  *= require jquery.fileupload-ui
+ *= require best_in_place
+ *= require cloud
  */
 /*
 To change this license header, choose License Headers in Project Properties.
@@ -27,7 +30,7 @@ and open the template in the editor.
     Author     : rlittle
 */
 
-
+/*
 html { height: 100%; }
 
 
@@ -38,14 +41,16 @@ body {
     height: 90%;
     margin-top: 0px;
     margin-left:0px;
-    background-color: #FFFFFF}
+    background-color: #FFFFFF
+
+}*/
 
 /*Fix for i.e boarders on image links*/
 a img {border: none; }
 
 
 
-a.button-link{
+/*a.button-link{
     color: #444;
     display: block;
     float: left;
@@ -56,7 +61,7 @@ a.button-link{
     border-style: solid;
     border-radius: 5px;
 
-    padding: 5px 10px 4px 10px; /* push text down 1px */
+    padding: 5px 10px 4px 10px;  push text down 1px 
 
     background-color: white;
 
@@ -66,28 +71,26 @@ a.button-link{
 a.button-link:active {
     background-color:darkgrey;
     color: #000;
-    outline: none; /* hide dotted outline in Firefox */
-    padding: 6px 11px 3px 9px; /* push text down 1px */
+    outline: none;  hide dotted outline in Firefox 
+    padding: 6px 11px 3px 9px;  push text down 1px 
 
 }
 
 a.button-link:hover {
-}
+}*/
 
 
 #flash {
-    display: inline-block;
+    display: none;
     margin: auto;
     width: 100%;
-
 }   
 
 #edit-pages {
-margin-top: -20px;
-position: absolute;
-margin-bottom: -47px;
-z-index: 100;
-margin-left: -20px;
+    margin-top: 0px;
+    position: absolute;
+    z-index: 100;
+    margin-left: 0px;
 }
 
 
@@ -277,42 +280,46 @@ margin-left: -20px;
 
 }
 
+div.cms-ui-dialog {
+    padding: 0px !important;
+    margin: 0px !important;
+    overflow: auto !important;
+}
+
 .cms-block {
-    margin-left: 5px;
-    padding-top: 10px;
-    padding-bottom: 75px;
-    display:inline-block;   
+    display:block;
     position: relative;
-width: 100%;
+    background-image: url(/assets/interface/patterns/cloth_alike_@2X.png);
+    background-repeat: repeat;
+    overflow: hidden;
+    padding: 5px;
+    display: table;
+    width: 99%;
+    height: 100%;
+
 }
 
 .cms-header {
-background-color: #FFFFFF;
-color: #035A0C;
-font-family: "Lucida Grande",Geneva,Arial,Verdana,san-serif;
-font-size: 24px;
-font-weight: bold;
-text-align: left;
-margin-left: 1px;
-padding-bottom: 10px;
+    color: black;
+    font-size: 24px;
+    font-weight: bold;
+    text-align: left;
+    margin-left: 1px;
+    padding-bottom: 10px;
 }
 
 .cms-heading {
-font-family: Arial,Helvetica,sans-serif;
-border-style: solid;
-border-width: 1px;
-height: 24px;
-padding-left: 15px;
-padding-top: 6px;
-background-color: #7EA9DC;
-font-weight: bold;
-font-size: 18px;
-/* border-color: #FCD163 #FCD163 #E1BF48; */
-border-top-color: #34369F;
-border-left-color: #34369F;
-border-right-color: #34369F;
-border-bottom-color: #34369F;
-color: navy;
+    height: 24px;
+    padding-left: 15px;
+    padding-top: 6px;
+    font-weight: bold;
+    color: #222;
+    border: 1px grey solid;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    background: #ccc url("/assets/smoothness/images/ui-bg_highlight-soft_75_cccccc_1x100.png") 50% 50% repeat-x;
+    font-size: 20px;
+    text-shadow: white 2px 2px 3px;
 }
 .cms-headingmce {
 
@@ -324,21 +331,23 @@ color: navy;
     margin-bottom: 10px;
 }
 .cms-content {
-border-top-color: #4D5AB9;
-border-left-color: #4D5AB9;
-border-right-color: #4D67B9;
-border-bottom-color: #34459F;
-border-style: solid;
-border-width: 1px;
-padding: 0px;
-background: rgba(255, 255, 255, 0.5);
+    border: grey solid 1px;
+    border-width: 1px;
+    padding: 10px;
+    border-radius:5px;
+    background: rgba(255, 255, 255, 0.6);
+    box-shadow: gray 5px 5px 20px;
 }
+.cms-content.with-title {
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
 
+}
 .cms-content b {
-font-family: "Times New Roman", Times, serif;
-font-weight: bold;
-color: #000994;
-font-size: 18px;
+    font-family: "Times New Roman", Times, serif;
+    font-weight: bold;
+    color: #000994;
+    font-size: 18px;
 }
 
 a.navmenu3 {
@@ -557,7 +566,7 @@ table tr td.list-table:active {
     margin-right:5px;
     martin-top:-3px;
 }
-
+/*
 .loginheader{
     background-color:#FFFFFF;
     color:#3F83CB;
@@ -624,11 +633,11 @@ padding-bottom: 50px;
     margin:5px;
     zoom: 1;
 
-}
+}*/
 
-
+/*
 .best_in_place {
-    /* padding: .1m; */
+     padding: .1m; 
     cursor: hand;
     cursor: pointer;
     padding:4px;
@@ -652,8 +661,8 @@ padding-bottom: 50px;
 } 
 
 .best_in_place:hover, #user_account .do_hover {
-    /*  padding-right: 1.5em;*/
-    /*  background: url("/images/red_pen.png") no-repeat right;*/
+      padding-right: 1.5em;
+      background: url("/images/red_pen.png") no-repeat right;
     background-color: #CCC;
 }
 
@@ -662,7 +671,7 @@ padding-bottom: 50px;
     float: right;
     cursor: hand;
     cursor: pointer;
-}
+}*/
 
 /* Missatges Flotants */
 

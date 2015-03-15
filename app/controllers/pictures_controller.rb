@@ -37,6 +37,10 @@ class PicturesController < ApplicationController
     @picture = Picture.find(params[:id])
   end
 
+  def insert
+    @picture = Picture.find(params[:id])
+  end
+  
   # POST /pictures
   # POST /pictures.json
   def create
@@ -60,7 +64,7 @@ class PicturesController < ApplicationController
     @picture = Picture.find(params[:id])
 
     respond_to do |format|
-      if @picture.update_attributes(params[:picture])
+      if @picture.update_attributes(picture_params)
         format.html { redirect_to @picture, :notice=>"Picture was successfully updated."}
         format.json { head :ok }
       else
@@ -95,9 +99,9 @@ class PicturesController < ApplicationController
   end
   
   
-  def render_pictures
-    @pictures = Picture.all
-    render :partial=>"/pictures/form.html"   
+  def render_picture
+    @picture = Picture.where(id: params[:id]).first
+    render :partial=>"/pictures/picture_view.html"   
   end
   
   

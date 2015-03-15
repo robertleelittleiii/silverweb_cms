@@ -1,0 +1,32 @@
+<div id="page-display-page-popup">
+  <div class="hidden-item">
+    <div id="dialog-height"><%=@page.dialog_height%></div>
+    <div id="dialog-width"><%=@page.dialog_width%></div>
+  </div>
+  
+  <% if notice -%>
+    <div id="notice"><%= notice  %></div>
+  <% end -%>
+
+  <%=page_attr_display(@page) %>
+  <!--  <div id="slide-gallary-container"> -->
+  <div id="page-slider-gallary-page" style="display:none;">
+    <div id="slider-background">
+    </div>
+    <%=show_slider_gallary_v3(@page) %> 
+  </div>
+  <!--    </div>-->
+
+  <div id="section-name-page">
+<%#=get_page_name%>
+  </div>
+
+
+  <%=page_edit_div(@page)%>
+  <div id="page-body-page">
+    <%=display_html(@page.body) rescue @page%>
+  </div>
+  <div class="hidden-item" id="page-scrollback-image-not-used" style="display:none;">
+    <%=link_to(image_tag("site/scrollback_image.png"), "#top-of-page")%>
+  </div>
+</div>

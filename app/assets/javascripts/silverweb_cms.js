@@ -11,10 +11,12 @@
 // about supported directives.
 //
 // require jquery
+//= require jquery.turbolinks
 //= require jquery-ui
 // require jquery_ujs
 //= require jquery.autoGrowInput
 //= require jquery.caret
+//= require jquery.cookie
 //= require jquery.notify
 //= require jquery.dataTables
 //= require jquery-observe_fields
@@ -24,22 +26,54 @@
 //= reauire /tinymce/themes/modern/theme.js
 //= require jquery-fileupload/basic
 //= require jquery-fileupload/vendor/tmpl
+//= require cloud
+//= require superfish
 
 //
 
-$(document).ready(function() {
+$(document).ready(function () {
     popUpAlertifExists();
     updateSearchFormBindings();
     disableSelectOptionsSeperators();
-    
-       $(".best_in_place").best_in_place();
+    bindLoginButton();
+    bindLogoutClick();
+    bindMyAccount();
+    $(".best_in_place").best_in_place();
 
     $(".datepicker").datepicker();
 
-    });
+    ui_ajax_select();
+
+    $("a.button-link").button();
+    enablePageEdit();
     
-    
-    function ajaxUpdateSearch(search_term) {
+    if ($('ul.sf-menu').length > 0)
+    {
+     $('ul.sf-menu').superfish({
+              dropShadows: false                            // enable drop shadows 
+             
+         }); 
+     }
+     
+     //fix for issue with popup dialog and tinymce
+     $(document).on('focusin', function(e) {
+    if ($(e.target).closest(".mce-window").length || $(e.target).closest(".moxman-window").length) {
+        e.stopImmediatePropagation();
+    }
+});
+});
+
+
+function enablePageEdit() {
+    if ($("#edit-pages").length > 0)
+    {
+        require("/pages/shared.js")
+        pageeditClickBinding("div#edit-pages")
+    }
+}
+
+
+function ajaxUpdateSearch(search_term) {
 
     var form = $("#live-search"); // grab the form wrapping the search bar.
     var url = "/site/live_search"; // live_search action.
@@ -98,7 +132,7 @@ $(document).ready(function() {
             $.ajax({
                 url: full_search_url,
                 cache: false,
-                success: function(data) {
+                success: function (data) {
                     // $("#page-left").hide();
                     $("#search-image").removeClass("loading"); // hide the spinner
 
@@ -125,26 +159,28 @@ $(document).ready(function() {
                     bindClickToProductItem();
                     //alert('Load was performed.');
                 },
-                error: function(jqXHR, textStatus, errorThrown) {
+                error: function (jqXHR, textStatus, errorThrown) {
                     document.location.href = full_search_url;
                     return;
                 }
             });
-        };
-    };
-  } 
-  
-  function updateSearchFormBindings() {
+        }
+        ;
+    }
+    ;
+}
+
+function updateSearchFormBindings() {
 
     // Executes a callback detecting changes with a frequency of 1 second
-    $("#live-search_search").observe_field(1, function() {
+    $("#live-search_search").observe_field(1, function () {
         $("#search-image").addClass("loading"); // show the spinner
         //console.log ("observe_field");
         ajaxUpdateSearch("");
 
     });
 
-    $("#live-search_search").keypress(function(e) {
+    $("#live-search_search").keypress(function (e) {
         if (e.which == 13) {
             ////console.log("keypress- return");
             //           alert("return clicked");

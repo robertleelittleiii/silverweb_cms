@@ -17,7 +17,7 @@ class UsersController < ApplicationController
 
 
   def index
-    @users = User.find(:all, :order => :name)
+    @users = User.all.order(:name)
 
     respond_to do |format|
       format.html # index.html.erb
@@ -62,12 +62,12 @@ class UsersController < ApplicationController
   def selfcreate
     puts "selfcreate"
 
-        @user = User.new(params[:user])
+        @user = User.new(user_params)
   end
 
 
   def create
-    @user = User.new(params[:user])
+    @user = User.new(user_params)
        puts "testing"
       logger.error("controller #{self.class.controller_path}")
       logger.info("action: #{action_name}")
@@ -93,7 +93,7 @@ class UsersController < ApplicationController
 
  def view
         @user = User.find(params[:id], :include => :roles)
-        @roles = Role.find(:all, :order => :name)
+        @roles = Role.all.order(:name)
 
       respond_to do |format|
       format.html # index.html.erb
@@ -122,7 +122,7 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
 
     respond_to do |format|
-      if @user.update_attributes(params[:user])
+      if @user.update_attributes(user_params)
         flash[:notice] = "User #{@user.name} was successfully updated."
         format.html { redirect_to(:action=>'index') }
         format.json  { head :ok }
@@ -284,6 +284,12 @@ end
     conditions = []
     conditions << "(u.name LIKE '%#{params[:sSearch]}%')" if(params[:sSearch])
     return conditions.join(" AND ")
+  end
+
+  private
+  
+  def user_params
+    params[:user].permit( "name", "hashed_password", "salt", "remember_token", "remember_token_expires_at", "activation_code", "activated_at", "state", "deleted_at", "password_reset_code")
   end
 
 end

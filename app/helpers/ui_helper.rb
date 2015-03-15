@@ -1,24 +1,53 @@
   module UiHelper
-#  This will autoload css files based on the controller and/or action
 
+    #  This will hide or show a div based on the given condition.
+    def hidden_div_if(condition, attributes = {})
+    if condition
+      attributes["style"] = "display: none"
+    end
+    attrs = tag_options(attributes.stringify_keys)
+    "<div #{attrs}>".html_safe
+  end
+  
+      
+    def add_google_analytics
+    tracking_id = Settings.google_analytics
+    if not tracking_id.blank? then
+      data = "<script type=\"text/javascript\">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', '#{tracking_id}']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>".html_safe
+      return data
+    end
+    
+  end
+  
+  #  This will autoload css files based on the controller and/or action
   def controller_stylesheet_link_tag
     stylesheet = "#{params[:controller]}.css"
-    
+    stylesheet_path = Rails.application.assets.find_asset(stylesheet)
+
     stylesheetaction = "#{params[:controller]}/#{params[:action]=="index" ? "index" : params[:action]}.css"
+    stylesheetaction_path = Rails.application.assets.find_asset(stylesheetaction)
+
     stylesheet_return = ""
   
-        puts("stylesheet action path: #{stylesheetaction}")
-        puts("real path: #{asset_path(stylesheetaction)}")
-       # puts("the link tag #{stylesheet_link_tag(stylesheet)}")
-       puts("the second link tag: #{stylesheet_link_tag stylesheetaction}")
-    
-    # if File.exists?(File.join(Rails.root, '/assets/stylesheets', stylesheet))
+    if  stylesheet_path != nil then
       stylesheet_return = stylesheet_link_tag stylesheet rescue ""
-    #end
+    end
     
-    #if File.exists?(File.join(Rails.root, '/assets/stylesheets', stylesheetaction))
+    if stylesheetaction_path != nil and (stylesheet_path != stylesheetaction_path) then
       stylesheet_return = stylesheet_return + " " + (stylesheet_link_tag stylesheetaction) rescue ""
-    #end
+    end
     
     return stylesheet_return.html_safe if not stylesheet_return.blank?
     
@@ -29,23 +58,23 @@
   def controller_javascript_include_tag
     
     javascript = "#{params[:controller]}.js"
+    javascript_path = Rails.application.assets.find_asset(javascript)
 
     javascriptaction = "#{params[:controller]}/#{params[:action]=="index" ? "index" : params[:action]}.js"
-    
-    puts("javascript action path: #{javascriptaction}")
-    javascript_return = ""
-    
-    puts("real path: /assets/#{javascriptaction}")
-       
-    
-    
-    # if File.exists?(File.join(Rails.root, '/assets/javascripts', javascript))
-     javascript_return = javascript_include_tag(javascript) rescue ""
-   #  end
+    javascriptaction_path = Rails.application.assets.find_asset(javascriptaction)
 
-   # if File.exists?(File.join(Rails.root, '/assets/javascripts', javascriptaction))
+    javascript_return = ""
+           
+    # Rails.application.assets.find_asset(javascriptaction) != nil
+
+    # if File.exists?(File.join(Rails.root, '/assets/javascripts', javascript))
+    if  javascript_path != nil then
+      javascript_return = javascript_include_tag(javascript) rescue ""
+    end
+
+    if javascriptaction_path != nil and (javascript_path != javascriptaction_path) then
       javascript_return = javascript_return + " " + (javascript_include_tag(javascriptaction))rescue ""
-   # end
+    end
     
     return javascript_return.html_safe if not javascript_return.blank?
 
@@ -61,6 +90,7 @@
     field = field.to_s
     puts("bestinplace->>> field is: #{field}")
     puts("bestinplace->>> Object is: #{object.inspect}")
+    
     field_items = field.split(".")
     
     if field.include?("[") and field.include?("]") then
@@ -97,8 +127,13 @@
     end
     
     #fix for rails settings gem
-    object_class_name = object.class.to_s.gsub("::", "_").underscore
-    object_class_name = (object_class_name == "active_support_hash_with_indifferent_access" ? "settings" : object_class_name)
+    object_class_name = object.class.to_s.gsub("::", "_").underscore  
+    object_class_name = (object_class_name == "settings_active_record_relation" ? "settings" : object_class_name)
+   
+    if object_class_name == "settings" then
+      opts[:path] = request.original_url
+    end rescue ""
+    
     puts("object-class-name in bestinplace: #{object_class_name}")
     
     out = "<div class='best_in_place " + extraclass
@@ -134,7 +169,7 @@
         # do nothing
       end
     end
-    
+    puts("value======> #{sanitize(value.to_s, :tags => nil, :attributes => nil)}")
     if !opts[:sanitize].nil? && !opts[:sanitize]
       out << " data-sanitize='false'>"
       out << sanitize(value.to_s, :tags => %w(b i u s a strong em p h1 h2 h3 h4 h5 ul li ol hr pre span img), :attributes => %w(id class))
@@ -283,7 +318,7 @@
   
      def ajax_select(field_name, field_object, field_pointer, value_list, prompt='Please Select...', html_options=nil)
         
-    html_options==nil ? html_options={} : ""
+    html_options==nil ? html_options={:class=>"ui-ajax-select", "data-path"=>url_for(field_pointer).to_s} : ""
     
     select(field_object,"#{field_name}", value_list,{ :prompt => prompt}, {"data-id"=>field_pointer.id,
       }.merge(html_options)
@@ -292,5 +327,196 @@
   end
   
      
+     def generate_grid_tabnav(*args)
+    html_options      = args.first || {}
+    icon_list = args.second || {}
+    
+    grid_div_class = html_options[:grid_div_class].blank? ? "" : ("class='" + html_options[:grid_div_class]+"'")
+    grid_div_id = html_options[:grid_div_id].blank? ? "" : ("id=" + html_options[:grid_div_id]+"'")
   
+    grid_ul_class = html_options[:grid_ul_class].blank? ? "" : ("class=" + html_options[:grid_ul_class]+"'")
+    grid_ul_id = html_options[:grid_ul_id].blank? ? "" : ("id=" + html_options[:grid_ul_id]+"'")
+   
+    grid_li_class = html_options[:grid_li_class].blank? ? "" : (html_options[:grid_li_class])
+   
+    out = "" 
+    out << "<div #{grid_div_class} #{grid_div_id}>"
+    out << "<ul #{grid_ul_class} #{grid_ul_id}>"
+    icon_list.each  do |item|
+      
+      window_type = item[:window_type] || ""
+      
+      out << tab_link(navigation_icon(item[:name]),{:controller=>item[:controller], :action=>item[:action], :request_type=>"window", :window_type=>window_type, :role=>item[:role]}, {:name=>item[:name].gsub(/ /, '-')  ,:class=>grid_li_class, :remote=>true}) # rescue ""
+    end
+    #
+    #    {"Home"=>{:controller=>'admin', :action=>'index'}, 
+    #      "Site Settings"=>{:controller=>'admin', :action=>'index'}, 
+    #      "Feeds"=>{:controller=>'admin', :action=>'index'}, 
+    #      "Menu"=>{:controller=>'admin', :action=>'index'}, 
+    #      "Pages"=>{:controller=>'admin', :action=>'index'}, 
+    #      "Users"=>{:controller=>'admin', :action=>'index'}, 
+    #      "Rights"=>{:controller=>'admin', :action=>'index'}, 
+    #      "Roles"=>{:controller=>'admin', :action=>'index'}
+    #    }
+    #    out << tab_link(navigation_icon("Home"), {:controller=>'admin', :action=>'index'}, {:class=> 'myCssClass', :id=>'myCssId'})
+    #    out << tab_link(navigation_icon('Site Settings'), :controller=>'admin', :action=>'site_settings')
+    #    out << tab_link( navigation_icon('Feeds'),     :controller=> 'feed_management', :action=>'index')
+    #    out << tab_link( navigation_icon('Menu'), :controller=> 'menus', :action=>'index')
+    #    out << tab_link( navigation_icon('Pages'), :controller=> 'pages', :action=>'index')
+    #    out << tab_link( navigation_icon('Users'),     :controller => 'users', :action=>'index')
+    #    out <<  tab_link( navigation_icon('Rights'),     :controller=> 'rights', :action=>'index')
+    #    out << tab_link( navigation_icon('Roles'),     :controller=> 'roles', :action=>'index')
+    # 
+    out << "</ul>"
+    out << "</div>"
+    
+    return out.html_safe
+    
+  end
+  
+  
+  def tab_link(*args, &block)
+    if block_given?
+      options      = args.first || {}
+      html_options = args.second
+      concat(link_to(capture(&block), options, html_options))
+    else
+      name         = args.first
+      options      = args.second || {}
+      html_options = args.third
+    end
+    
+    if options[:controller].blank? then
+      the_controller_name = params[:controller]
+    else
+      the_controller_name = options[:controller] 
+    end
+    
+    the_action_name = options[:action]
+     puts(the_controller_name, the_action_name)
+
+    if session[:user_id] then
+      user =  User.find_by_id(session[:user_id])
+
+      if options[:role].blank? or user.roles.map {|i| i.name }.include?(options[:role]) then
+      if user.roles.detect{|role|
+          role.rights.detect{|right|
+            ((right.action == the_action_name)|(right.action == "*")|(right.action.include? the_action_name)) && right.controller == the_controller_name
+          }
+        } 
+        puts("html_options[:order]:  #{html_options[:order]}")
+        
+        return("<li id='#{html_options[:name].gsub(/ /,'-')}' class='hidden' >#{link_to(*args,&block)}</li>").html_safe
+     
+      else 
+        return ""
+      end
+      else
+        return ""
+      end
+
+    end
+  end
+
+  def tab_link_to(*args, &block)
+    if block_given?
+      options      = args.first || {}
+      html_options = args.second
+      concat(link_to(capture(&block), options, html_options))
+    else
+      name         = args.first
+      options      = args.second || {}
+      html_options = args.third
+    end
+    
+    if options[:controller].blank? then
+      the_controller_name = params[:controller]
+    else
+      the_controller_name = options[:controller] 
+    end
+    
+    the_action_name = options[:action]
+    # puts(the_controller_name, the_action_name)
+
+    if session[:user_id] then
+      user =  User.find_by_id(session[:user_id])
+
+      if user.roles.detect{|role|
+          role.rights.detect{|right|
+            ((right.action == the_action_name)|(right.action == "*")|(right.action.include? the_action_name)) && right.controller == the_controller_name
+          }
+        }
+
+        add_tab do |t|
+          t.named name
+          t.titled the_controller_name
+          t.links_to :controller => the_controller_name, :action =>  the_action_name
+        end
+        #return_value = the_tab.create(the_controller_name, name) do
+        # render :controller => the_controller_name, :action =>  the_action_name
+        #  link_to(*args,&block)
+        #end
+        return
+      else
+        return ""
+      end
+
+      #  url = url_for(options)
+
+      #  if html_options
+      #    html_options = html_options.stringify_keys
+      #    href = html_options['href']
+      #    convert_options_to_javascript!(html_options, url)
+      #    tag_options = tag_options(html_options)
+      #  else
+      #    tag_options = nil
+      #  end
+
+      #  href_attr = "href=\"#{url}\"" unless href
+      #  "<a #{href_attr}#{tag_options}>#{name || url}</a>"
+      # end
+
+    end
+  end
+     
+  def navigation_icon(name)
+    out = ""
+     
+    out << "<div class='navigation-icon'>"
+    out << image_tag("interface/system_icons/"+name.downcase+".png", {:class=>"navigation-image"})
+    out << "<div class='navigation-icon-name'>"
+    out << name
+    out << "</div>"
+    out << "<div id='ajax-wait'>"
+    out << image_tag("cloud/cloud-ajax-loader.gif", {:class=>"ajax-wait", :style=>"display:none;"})
+    out << "</div>"
+    out << "</div>"
+
+    
+    return out.html_safe
+
+  end
+  
+  def check_permissions(the_action_name,the_controller_name)
+ 
+   user =  User.find_by_id(session[:user_id])
+
+   return user.roles.detect{|role|
+          role.rights.detect{|right|
+            ((right.action == the_action_name)|(right.action == "*")|(right.action.include? the_action_name)) && right.controller == the_controller_name
+          }
+        }
+  end
+  
+  
+  def create_dialog_settings(dialog_name, dialog_width, dialog_height)
+    out = ""
+    out << "<div class='hidden-item'>"
+    out << "<div id='as_window'>#{params[:request_type]=='window'}</div>"
+    out << "<div id='dialog-height'>#{dialog_height}</div>"
+    out << "<div id='dialog-width'>#{dialog_width}</div>"
+    out << " <div id='dialog-name'>#{dialog_name}</div>"
+    out << "</div>"
+    return out.html_safe
+  end
 end

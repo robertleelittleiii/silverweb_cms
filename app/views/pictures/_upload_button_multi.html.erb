@@ -1,0 +1,8 @@
+
+<%=form_tag({:action=> "add_image", :id=>params[:id]}, :class=>"upload-form", :multipart => true, :target=>'upload_frame', :remote => true ) do%>
+   <span class="btn btn-success fileinput-button">
+ <i class="glyphicon glyphicon-plus"></i>
+  <span><%=image_tag("interface/browse.png", :id=>"file-button") %> </span>
+      <%= file_field_tag "image",  :multiple=>true, :class => 'file' %>
+   </span>
+<%end%>

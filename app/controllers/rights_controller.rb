@@ -1,7 +1,7 @@
 class RightsController < ApplicationController
 
   def index
-   @rights = Right.find(:all, :order => :name)
+   @rights = Right.all.order(:name)
 
   respond_to do |format|
       format.html # index.html.erb
@@ -36,7 +36,7 @@ end
   end
 
   def create
-    @right = Right.new(params[:right])
+    @right = Right.new(right_params)
 
     respond_to do |format|
       if @right.save
@@ -56,7 +56,7 @@ end
     @right = Right.find(params[:id])
 
     respond_to do |format|
-      if @right.update_attributes(params[:right])
+      if @right.update_attributes(right_params)
         flash[:notice] = "Right #{@right.name} was successfully updated."
         format.html { redirect_to(:action=>'index') }
         format.xml  { head :ok }
@@ -83,6 +83,11 @@ end
 
 end
 
+ private
 
+  
+  def right_params
+    params[:right].permit( "name")
+  end
 
 end

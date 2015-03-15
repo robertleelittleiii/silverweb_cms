@@ -1,4 +1,6 @@
 tinymce.PluginManager.add('image_library', function(editor, url) {
+    global_editor_hold = editor;
+    
     // Add a button that opens a window
     editor.addButton('image_library', {
         icon: 'image',
@@ -26,7 +28,7 @@ tinymce.PluginManager.add('image_library', function(editor, url) {
             // Open window with a specific url
             editor.windowManager.open({
                 title: 'Image Libary',
-                url: '/image_library/image_list',
+                url: '/image_library/image_list?as_window=true',
                 width: 800,
                 height: 600,
                 buttons: [{

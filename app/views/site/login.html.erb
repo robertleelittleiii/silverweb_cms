@@ -1,0 +1,177 @@
+<div id="login-backdrop">
+</div>
+<div class="login-enclosure">
+  <div align="center" class="login-form">
+    <!-- START:flash -->
+    <% if flash[:notice] -%>
+      <SPACER TYPE=HORIZONTAL SIZE=50>
+        <div id="notice">
+          <%= flash[:notice] %>
+        </div>
+      <% end -%>
+      <!-- END:flash -->
+
+      <div class="loginBlock" style="display:table">
+
+
+
+        <div class="loginSpan" style="display:table-row">
+<%#=render(:partial=>"/registration/register_customer") %>
+          <div class="loginSpan" style="display:table-cell">
+            <div CLASS="loginheader">
+              <br>  
+            </div>
+
+            <div CLASS="loginArea">
+              <div id="ds_component">
+                <%=form_tag({:controller=>"site", :action => 'login_ajax'},{:id=>"login-form", :remote=>true}) do %>
+                  </br>
+                  <DIV CLASS="L11G" STYLE="margin-bottom:10px">If you already have a login on this site, please login. <br>
+                  if not click to <%= link_to "register", "#", :class=>"register-link"%>  
+</DIV>
+                  <BR>
+                  <table border="0" cellspacing=0 class="ds_login">
+                    <tr>
+                      <td valign="top">
+                        <b>User Name:</b>
+                      </td>
+                      <td> <%= text_field_tag :name, params[:name] %><br>
+                        <span class="ds_nameexample">Example: little@mac.com</span><br>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td valign="top">
+                        <b>Password:</b></td>
+                      <td> <%= password_field_tag :password, params[:password] %><br>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td height="5">
+
+                      </td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td class="center">
+                        <%= link_to("Forgot Password", "#", :class=>"button-link forgot-link")  %>  
+                      </td>
+                      <td class="center"><%= submit_tag("Login", :class=>"button-link", :id=>"login-button")%> <%= token_tag %> 
+                      <%= link_to("Cancel", "#", :id=>"cancel-button", :class=>"button-link")  %>
+                      </td>
+                    </tr>
+                  </table>
+                <% end %>
+                <%=form_tag({:controller=>"site", :action => 'reset_ajax'},{:id=>"recover-form", :remote=>true}) do %>
+                  </br>
+                  <DIV CLASS="L11G" STYLE="margin-bottom:10px">To reset your password please enter you email below:</DIV>
+                  <BR> <table border="0" cellspacing=0 class="ds_login">
+                    <tr>
+                      <td valign="top">
+                        <b>Email Address:</b>
+                      </td>
+                      <td> <%= text_field_tag :name, params[:name] %><br>
+                        <span class="ds_nameexample">Example: little@mac.com</span><br>
+
+                      </td>
+                    </tr>
+                    <tr>
+                      <td height="5">
+
+                      </td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                       <td class="center">
+                        </br>
+                        <%= submit_tag("Reset", :class=>"button-link", :id=>"reset-button")%> <%= token_tag %> </td>
+                      </td>
+                      <td class="center"> 
+                        </br>
+                        <%= link_to "Back to Login", "#",:onclick=>"return(false);",  :class=>"button-link forgot-link"%>
+                      </td>
+                   </tr>
+                  </table>
+                <% end %>
+
+                <%=form_tag({:controller=>"site", :action => 'register_ajax', :role=>"customer"},{:id=>"registration-form", :remote=>true}) do %>
+                  </br>
+                  <DIV CLASS="L11G" STYLE="margin-bottom:10px">Please fill out this form to register.</DIV>
+                  <BR>
+                  <div id="ds_component">
+                    <%@role_name="Customer"%>
+    <%# form_tag :controller=>"registration", :action => 'registration'  do |f| %>
+                      <table cellspacing=0 class="ds_login">
+                        <tr >
+                          <td class="left">
+                            <%= fields_for :user_attributes do |a|%>
+                               <b>First Name:</b>
+                          </td>
+                          <td>
+                              <%=a.text_field 'first_name' %></br>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td class="left">
+                               <b>Last Name:</b>
+                          </td>
+                          <td>
+                              <%=a.text_field 'last_name' %></br>
+                          </td>
+      <%#*<lable for="user_attribute_birthdate">Birthdate:</label> <br>%>
+      <%#=a.date_select  'birthdate' ,:start_year=>1900, :end_year=>2000 , :order => [:month,:day,:year] %><p>
+                                <%end%>
+                        </tr>
+                        <%= fields_for :user do |u|%>
+                          <tr>
+                          <td class="left">
+                            <b>User id (email address):</b>
+                          </td>
+                            <td>
+                              <%= u.text_field  'name'  %>
+                            </td>
+                          </tr>
+                          <tr>
+                          <td class="left">
+                              <b>Password:</b>
+                            </td>
+                            <td>
+                              <%= u.password_field  'password'  %>
+                            </td>
+                          </tr>
+                          <tr>
+                          <td class="left">
+                            <b>Re-Type Password:</b>
+                            </td>
+                            <td>
+                              <%= u.password_field 'password_confirmation'  %>
+                            </td>
+                          </tr>
+                        <%end%>
+                          
+                        <tr>
+                          <td class="center">
+                            <%= submit_tag("Register", :class=>"button-link", :id=>"register-button")%> <%= token_tag %> 
+                          </td>
+                          <td class="center">
+ <%= link_to "Back to Login", "#",:onclick=>"return(false);",  :class=>"button-link register-link"%>
+                         </td>
+                        </tr>
+                      </table>
+
+
+                      <%=fields_for :register do |r| -%>
+                        <%= r.hidden_field :role, :value=>"customer"%><br/>
+                        <%= r.hidden_field :regtype, :value=>action_name%><br/>
+                      <%end%>
+                    </div>
+                  <%end%>
+
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+    </div>
+  </div>
+

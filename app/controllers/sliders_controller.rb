@@ -1,5 +1,5 @@
 class SlidersController < ApplicationController
-  uses_tiny_mce(:options => AppConfig.full_mce_options, :only => [:new, :edit])
+  # uses_tiny_mce(:options => AppConfig.full_mce_options, :only => [:new, :edit])
   
   BUTTON_COLOR_LIST = [["yellow","yellow-button"],["grey","grey-button"] , ["red","red-button"], ["blue","blue-button"]]
 
@@ -52,7 +52,7 @@ class SlidersController < ApplicationController
   # POST /sliders
   # POST /sliders.json
   def create
-    @slider = Slider.new(params[:slider])
+    @slider = Slider.new(slider_params)
 
     respond_to do |format|
       if @slider.save
@@ -71,7 +71,7 @@ class SlidersController < ApplicationController
     @slider = Slider.find(params[:id])
 
     respond_to do |format|
-      if @slider.update_attributes(params[:slider])
+      if @slider.update_attributes(slider_params)
         format.html { redirect_to(:action=>"edit", :notice=>"Slider was successfully updated.")}
         format.json { head :ok }
       else
@@ -88,7 +88,7 @@ class SlidersController < ApplicationController
     @slider.destroy
 
     respond_to do |format|
-      format.html { redirect_to sliders_url }
+      format.html { head :ok }
       format.json { head :ok }
     end
   end
@@ -121,5 +121,9 @@ class SlidersController < ApplicationController
 
     render :nothing => true
   end
+  private
   
+  def slider_params
+    params[:slider].permit("page_id", "slider_order", "slider_name", "slider_active", "slider_type", "slider_content","slider_url", "slider_tag_line_one", "slider_tag_line_two", "slider_button_color")
+  end
 end

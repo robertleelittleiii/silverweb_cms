@@ -1,0 +1,28 @@
+<div id="page-display-page">
+  <% if notice -%>
+    <div id="notice"><%= notice  %></div>
+  <% end -%>
+
+  <%=page_attr_display(@page) %>
+
+  <div id="page-display-left">
+      <%=page_edit_div(@page)%>
+
+    <div id="page-nav-gallary-page">
+      <%=show_nav_gallary(@page,"Vitalife works in","Details") %>
+    </div>
+    
+    <div id="section-name-page">
+<%#=get_page_name%>
+    </div>
+    
+  </div>
+
+  <div id="page-display-right">
+    <div id="page-body-page" class="hidden-item">
+      <%=display_html(@page.body) rescue @page%>
+    </div>
+
+  </div>
+</div>
+

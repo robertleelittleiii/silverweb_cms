@@ -1,0 +1,30 @@
+<div id="page-display-page">
+  <% if notice -%>
+    <div id="notice"><%= notice  %></div>
+  <% end -%>
+
+  <%=page_attr_display(@page) %>
+
+  <div id="page-display-left">
+    <div id="section-name-page">
+<%#=get_page_name%>
+    </div>
+
+     <ul id="left-nav">
+              <%= buildverticalmenu_special(:prehtml=>"<li class='left-nav'>", :posthtml=>"</li>",  :selected_class=>"<li class='left-nav left-nav-selected'>",:menu_id=>"Top Menu") %>
+            </ul>
+
+    <%=page_edit_div(@page)%>
+    <div id="page-body-page">
+      <%=display_html(@page.body) rescue @page%>
+    </div>
+
+  </div>
+
+  <div id="page-display-right">
+
+    <div id="page-slider-gallary-page">
+      <%=show_slider_gallary(@page) %>
+    </div>
+  </div>
+</div>

@@ -1,3 +1,5 @@
+<%= create_dialog_settings("Site Preferences", "650", "500") %>
+
 <div class="cms-block" Align="Left">
   <%   $user =  User.find_by_id(session[:user_id])
   $roles = $user.roles
@@ -13,7 +15,7 @@
 
 
 
-  <div class="cms-header">Site Preferences</div>
+  <!-- <div class="cms-header">Site Preferences</div> -->
 
   <div class="cms-section">
     <div class="cms-heading">Company Information</div>
