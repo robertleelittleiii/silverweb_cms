@@ -106,18 +106,20 @@ function bindToggleListClick(item) {
         var items_to_set_click = item + " a.lever-toggle";
     }
 
-    $(items_to_set_click).unbind("click").click(function () {
+    $(items_to_set_click).unbind("click").click(function (event) {
         var parentTable = $(this).parent().parent().parent().parent().parent();
         var this_id = $(this).parent().parent().parent().parent().parent().next("ul").attr("id")
-        console.log("this ID")
-        console.log(this_id)
-        
+        console.log("this ID");
+        console.log(this_id);
+        console.log(parentTable);
+        console.log(this);
         if ($.trim($(parentTable).attr("class")) == "has-sub-menus")
         {
             $(this).parent().parent().parent().parent().parent().next("ul").attr("id")
 
             $.cookie('open_menu_list', $.unique($.merge($.cookie('open_menu_list').split(","), [this_id])))
-            $(this).find("img").attr("src", $(this).find("img").attr("src").replace("closed", "open"))
+            $(this).switchClass("closed","open");
+           // $(this).find("img").attr("src", $(this).find("img").attr("src").replace("closed", "open"))
             $($(this).parent().parent().parent().parent().parent().parent().find("ul")[0]).slideDown();
             $(this).parent().parent().parent().parent().parent().removeClass("has-sub-menus");
         }
@@ -128,13 +130,16 @@ function bindToggleListClick(item) {
                 var theList = $.cookie('open_menu_list').split(",")
                 theList.splice(theList.indexOf(this_id), 1)
                 $.cookie("open_menu_list", theList)
-
-                $(this).find("img").attr("src", $(this).find("img").attr("src").replace("open", "closed"))
+                $(this).switchClass("open","closed");
+               // $(this).find("img").attr("src", $(this).find("img").attr("src").replace("open", "closed"))
                 $($(this).parent().parent().parent().parent().parent().parent().find("ul")[0]).slideUp();
                 $(this).parent().parent().parent().parent().parent().addClass("has-sub-menus");
             }
         }
-        return(false);
+        
+        event.stopPropagation();
+
+        return(true);
     });
 }
 ;
@@ -145,7 +150,10 @@ function handleOpenedMenus() {
         if ($("#" + value).length > 0)
         {
             $("#" + value).slideDown();
-            $($("#" + value).parent().find("img")[0]).attr("src", $($("#" + value).parent().find("img")[0]).attr("src").replace("closed", "open"))
+            // console.log($($("#" + value).parent().find("a")[0]));
+            $($("#" + value).parent().find("a")[0]).switchClass("closed","open");
+
+            // $($("#" + value).parent().find("img")[0]).attr("src", $($("#" + value).parent().find("img")[0]).attr("src").replace("closed", "open"))
             $($("#" + value).parent().find("table")[0]).removeClass("has-sub-menus");
         }
         //alert(key + ': ' + value); 
