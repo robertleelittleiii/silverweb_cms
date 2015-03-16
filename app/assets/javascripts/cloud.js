@@ -628,6 +628,8 @@ function bindAppClick() {
         var windowType = $.url(this.href).param("window_type");
         var theController = $.url(this.href).segment(1);
         var theAction = $.url(this.href).segment(2) || "index"
+        
+      
 
         if (windowType == "iframe") {
             //   alert("This is an iframe app.");
@@ -670,9 +672,9 @@ function bindAppClick() {
 
         console.log(this.href);
 
-        require(theController + "/" + theAction + ".js");
         requireCss(theController + "/" + theAction + ".css");
-        
+        require(theController + "/" + ( theAction=='index' ? 'index+' : theAction )+ ".js");
+
         console.log(theController + "_" + theAction + "_callDocumentReady");
         
         try
