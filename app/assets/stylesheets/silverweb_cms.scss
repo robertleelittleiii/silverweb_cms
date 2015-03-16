@@ -159,7 +159,7 @@ a.button-link:hover {
 #nav li {
     margin-left: -35px;
     padding-top: 15px;
-    background: image-url("/images/navbkgnd.gif") no-repeat 0px 0px;
+    background: image-url("navbkgnd.gif") no-repeat 0px 0px;
     text-align: center;
 }
 #nav li a{
@@ -318,7 +318,7 @@ div.cms-ui-dialog {
     border: 1px grey solid;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
-    background: #ccc image-url("/smoothness/images/ui-bg_highlight-soft_75_cccccc_1x100.png") 50% 50% repeat-x;
+    background: #ccc image-url("jquery-ui/ui-bg_highlight-soft_75_cccccc_1x100.png") 50% 50% repeat-x;
     font-size: 20px;
     text-shadow: white 2px 2px 3px;
 }
@@ -694,7 +694,7 @@ padding-bottom: 50px;
     width: 25px;
     height: 25px;
     text-indent: -9999px;
-    background: image-url("/images/close-button.gif") no-repeat;
+    background: image-url("close-button.gif") no-repeat;
 }
 
 #header-table {

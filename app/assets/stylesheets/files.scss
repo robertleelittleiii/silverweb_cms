@@ -139,7 +139,7 @@ width: 15px;
 {
     width:40px;
     height:50px;
-    background-image:url(/assets/interface/icons.png);
+    background-image:image-url("interface/icons.png");
     display:inline-block;
 }
 
@@ -147,7 +147,7 @@ width: 15px;
 {
     width:40px;
     height:50px;
-    background-image:url(/assets/interface/icons.png);
+    background-image:image-url("interface/icons.png");
     display:inline-block;
 }
 
@@ -155,7 +155,7 @@ width: 15px;
 {
     width:20px;
     height:24px;
-    background-image:url(/assets/interface/icons.png);
+    background-image:image-url("interface/icons.png");
     display:inline-block;
     background-position:405px 100px; 
 }
