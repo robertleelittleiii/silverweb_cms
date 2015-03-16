@@ -15,18 +15,18 @@ function getRailsTimeStamp()
 // support of the 3D CSS3 transformations.
 function supportsCSS3D() {
     var props = [
-    'perspectiveProperty', 'WebkitPerspective', 'MozPerspective'
+        'perspectiveProperty', 'WebkitPerspective', 'MozPerspective'
     ], testDom = document.createElement('a');
 
-    for(var i=0; i<props.length; i++){
-        if(props[i] in testDom.style){
+    for (var i = 0; i < props.length; i++) {
+        if (props[i] in testDom.style) {
             return true;
         }
     }
 
     return false;
 }
-        
+
 // 
 // 
 // 
@@ -37,11 +37,11 @@ function are_cookies_enabled()
     var cookieEnabled = (navigator.cookieEnabled) ? true : false;
 
     if (typeof navigator.cookieEnabled == "undefined" && !cookieEnabled)
-    { 
-        document.cookie="testcookie";
+    {
+        document.cookie = "testcookie";
         cookieEnabled = (document.cookie.indexOf("testcookie") != -1) ? true : false;
     }
-        
+
     return (cookieEnabled);
 }
 
@@ -52,7 +52,7 @@ function are_cookies_enabled()
 //
 
 
-function customizeForDevice(){
+function customizeForDevice() {
     var ua = navigator.userAgent;
     var checker = {
         iphone: ua.match(/(iPhone|iPod|iPad)/),
@@ -61,29 +61,29 @@ function customizeForDevice(){
         android: ua.match(/Android/),
         palm: ua.match(/Palm/)
     };
-    if (checker.android){
+    if (checker.android) {
         return("mobile:android");
-    // $('.android-only').show();
+        // $('.android-only').show();
     }
-    else if (checker.iPad){
+    else if (checker.iPad) {
         return("mobile:ipad");
 
-    //  $('.idevice-only').show();
+        //  $('.idevice-only').show();
     }
-    else if (checker.iphone){
+    else if (checker.iphone) {
         return("mobile:iphone");
 
-    //  $('.idevice-only').show();
+        //  $('.idevice-only').show();
     }
-    else if (checker.blackberry){
+    else if (checker.blackberry) {
         return("mobile:blackberry");
 
-    //  $('.berry-only').show();
+        //  $('.berry-only').show();
     }
-    else if (checker.palm){
+    else if (checker.palm) {
         return("mobile:palm");
 
-    //  $('.berry-only').show();
+        //  $('.berry-only').show();
     }
     else {
         return(ua);
@@ -95,12 +95,14 @@ function customizeForDevice(){
 
 function sz(t) {
     a = t.value.split('\n');
-    b=1;
-    for (x=0;x < a.length; x++) {
-        if (a[x].length >= t.cols) b+= Math.floor(a[x].length/t.cols);
+    b = 1;
+    for (x = 0; x < a.length; x++) {
+        if (a[x].length >= t.cols)
+            b += Math.floor(a[x].length / t.cols);
     }
-    b+= a.length;
-    if (b > t.rows) t.rows = b;
+    b += a.length;
+    if (b > t.rows)
+        t.rows = b;
 }
 
 
@@ -109,25 +111,26 @@ function sz(t) {
 //
 //
 function require(script) {
-    var theUrl="/assets/"+script;
+    var theUrl = "/assets/" + script;
     var theTimeStamp = getRailsTimeStamp();
-    
+
     // $("script[src='/javascripts/ie_fixes.js?1361329086']")
-    
+
     if (!$("script[src^='" + theUrl + "']").length) {
         // alert("loaded");
         $.ajax({
-            url: theUrl + "?"+ theTimeStamp,
-            dataType: "script",
-            async: false,           // <-- this is the key
-            success: function () {
+            url: "/site/load_asset",
+            data: {path: script},
+            dataType: "text",
+            async: false, // <-- this is the key
+            success: function (data) {
                 var javascriptLink = $("<script>").attr({
                     type: "text/javascript",
-                    src: theUrl + "?"+ theTimeStamp 
-                }); 
+                    src: data
+                });
                 $("head").append(javascriptLink);
 
-            // all good...
+                // all good...
             },
             error: function () {
                 console.warn("Could not load script " + script);
@@ -136,7 +139,7 @@ function require(script) {
     }
     else
     {
-    //      alert("Not Loaded");
+        //      alert("Not Loaded");
 
     }
 }
@@ -148,30 +151,31 @@ function require(script) {
 function requireCss(cssFile) {
     var theTimeStamp = getRailsTimeStamp();
     // if (cssFile.charAt(0) == "/") {
-    var href = "/assets/"+cssFile
-    if (!$("link[href^='" + href +"']").length) {
+    var href = "/assets/" + cssFile
+    if (!$("link[href^='" + href + "']").length) {
         //alert("loaded");
         $.ajax({
-            url: href+"?"+theTimeStamp,
+            url: "/site/load_asset",
+            data: {path: cssFile},
             dataType: 'text',
-            success: function(){
+            success: function (data) {
                 var cssLink = $("<link>").attr({
-                    rel:  "stylesheet",
+                    rel: "stylesheet",
                     type: "text/css",
-                    href: href+"?"+theTimeStamp
-                }); 
+                    href: data
+                });
                 $("head").append(cssLink);
-          
-            //your callback
+
+                //your callback
             },
-            fail: function(){
+            fail: function () {
                 alert("fail");
             }
         });
     }
     else
     {
-    //  alert("Not Loaded");
+        //  alert("Not Loaded");
     }
 }
 //
@@ -179,13 +183,13 @@ function requireCss(cssFile) {
 //  Notifier base code
 //
 //
-function popUpAlertifExists() 
+function popUpAlertifExists()
 {
-    var message= $("#alert").text().trim();
+    var message = $("#alert").text().trim();
 
     setUpPurrNotifier("Alert", message);
-   
-    var message= $("#notice").text().trim();
+
+    var message = $("#notice").text().trim();
 
     setUpPurrNotifier("Alert", message);
 
@@ -196,59 +200,60 @@ function popUpAlertifExists()
 function setUpPurrNotifier(headline, message)
 {
     var notice = ''
-    +'<div id="notify-container" style="display:none">' 
-    +   '<div id="notice-body">'
-    +       '<a class="ui-notify-close ui-notify-cross" href="#">x</a>'
-    +	'<div style="float:left;margin:0 10px 0 0; min-height:50px;">'
-    +           '<img src="/assets/interface/info.png" alt="warning">'
-    +        '</div>'
-    +       '<h1>#{title}</h1>'
-    +       '<p>#{text}</p>'
-    +	'</div>'
-    +'</div>';
+            + '<div id="notify-container" style="display:none">'
+            + '<div id="notice-body">'
+            + '<a class="ui-notify-close ui-notify-cross" href="#">x</a>'
+            + '<div style="float:left;margin:0 10px 0 0; min-height:50px;">'
+            + '<img src="/assets/interface/info.png" alt="warning">'
+            + '</div>'
+            + '<h1>#{title}</h1>'
+            + '<p>#{text}</p>'
+            + '</div>'
+            + '</div>';
 
 
-    if (message.length > 1) 
+    if (message.length > 1)
     {
-        if ($("#notify-container").length == 0) 
+        if ($("#notify-container").length == 0)
         {
             $("body").append($(notice));
         }
         $("#notify-container").notify({
             //  expires: false,
-              speed: 1000
-            });
+            speed: 1000
+        });
 
-        $("#notify-container").notify("create","notice-body", {
+        $("#notify-container").notify("create", "notice-body", {
             title: headline,
             text: message
         });
-    }  
+    }
 }
 
 function disableSelectOptionsSeperators()
 {
     found_options = $("select option");
 
-    found_options.each(function() {
+    found_options.each(function () {
         if ($(this).text() == "-") {
             $(this).prop('disabled', true);
-        };
+        }
+        ;
     });
 }
 
 function createPasswordDialog() {
-    
+
     $('#edit-password-dialog').dialog({
         autoOpen: false,
         width: 706,
-        height:245,
-        modal:true
+        height: 245,
+        modal: true
     });
 }
 
 function setupCheckboxes(inputElement) {
-    $(inputElement).click( function() {
+    $(inputElement).click(function () {
         $(this).closest('form').trigger('submit');
     });
 
@@ -257,9 +262,12 @@ function setupCheckboxes(inputElement) {
 function createAppDialog(theContent, dialog_id, call_backs, buttons_to_show_in) {
 // completion_callback, save_callback, cancel_callback, submit_callback
 
-    if (typeof call_backs === 'undefined') var call_backs = {};
-    if (typeof buttons_to_show_in === 'undefined') var buttons_to_show_in = "";
-    if (typeof dialog_id === 'undefined') var dialog_id = "app-dialog";
+    if (typeof call_backs === 'undefined')
+        var call_backs = {};
+    if (typeof buttons_to_show_in === 'undefined')
+        var buttons_to_show_in = "";
+    if (typeof dialog_id === 'undefined')
+        var dialog_id = "app-dialog";
 
 
     buttons_to_show = buttons_to_show_in || "all"
@@ -277,15 +285,15 @@ function createAppDialog(theContent, dialog_id, call_backs, buttons_to_show_in) 
         dialogContainer = $("#" + dialog_id);
     }
 
-   
+
 
 // $('#app-dialog').html(theContent);
     theContent = '<input type="hidden" autofocus="autofocus" />' + theContent
     theAppDialog = $('#' + dialog_id).dialog({
         autoOpen: false,
         modal: true,
-        close: function(event, ui) {
-            if (typeof(call_backs.completion) == "function")
+        close: function (event, ui) {
+            if (typeof (call_backs.completion) == "function")
             {
                 call_backs.completion();
             }
@@ -294,7 +302,7 @@ function createAppDialog(theContent, dialog_id, call_backs, buttons_to_show_in) 
             //  $('#' + dialog_id).dialog("destroy");
             //   alert('closed');
         },
-        open: function(event, ui)
+        open: function (event, ui)
         {
             popUpAlertifExists();
         }
@@ -315,19 +323,19 @@ function createAppDialog(theContent, dialog_id, call_backs, buttons_to_show_in) 
 }
 
 function ui_ajax_select() {
-    
-     $("select.ui-ajax-select").bind("change", function() {
-        selected_item= $(this).val();
-        controller=this.getAttribute("data-path")
-        
+
+    $("select.ui-ajax-select").bind("change", function () {
+        selected_item = $(this).val();
+        controller = this.getAttribute("data-path")
+
         //alert(this.getAttribute("data-id"));
 
 
         $.ajax({
-            url: controller ,// controller + "/update",
+            url: controller, // controller + "/update",
             dataType: "json",
             type: "PUT",
-            data: "id="+this.getAttribute("data-id")+ "&" + this.getAttribute("name")+ "=" +  selected_item,
+            data: "id=" + this.getAttribute("data-id") + "&" + this.getAttribute("name") + "=" + selected_item,
             success: function (data)
             {
                 alert(data);
@@ -337,11 +345,11 @@ function ui_ajax_select() {
                 }
                 else
                 {
-                   
+
                 }
             }
         });
-      });
+    });
 }
 
 
@@ -352,15 +360,15 @@ function updateMenu(menu_id)
     menu_params = menu.attr("data-menu-params")
 
     if (menu.length > 0) {
-    $.ajax({
-        url: "/menus/render_menu",
-        type: "GET",
-        data: {menu_id: menu_id, menu_helper: menu_helper, menu_params: menu_params},
-        success: function (data)
-        {
-            menu.replaceWith(data);
-            // console.log(data);
-        }
-    });
+        $.ajax({
+            url: "/menus/render_menu",
+            type: "GET",
+            data: {menu_id: menu_id, menu_helper: menu_helper, menu_params: menu_params},
+            success: function (data)
+            {
+                menu.replaceWith(data);
+                // console.log(data);
+            }
+        });
     }
 }

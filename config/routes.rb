@@ -22,6 +22,7 @@ Rails.application.routes.draw do
       post "register_ajax"
       get "logout_ajax"
       get "render_partial"
+      get "load_asset"
    end 
   end
   
