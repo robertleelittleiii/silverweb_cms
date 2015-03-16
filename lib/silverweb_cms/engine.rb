@@ -4,7 +4,8 @@ module SilverwebCms
  require 'jquery-turbolinks'
  require 'jquery-fileupload-rails'
  require 'kaminari'
-
+ require 'RFC822'
+ 
   class Engine < ::Rails::Engine
     require 'jquery-turbolinks'
     require 'acts-as-taggable-on'
