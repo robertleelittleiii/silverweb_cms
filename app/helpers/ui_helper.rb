@@ -60,7 +60,7 @@
     javascript = "#{params[:controller]}.js"
     javascript_path = Rails.application.assets.find_asset(javascript)
 
-    javascriptaction = "#{params[:controller]}/#{params[:action]=="index" ? "index" : params[:action]}.js"
+    javascriptaction = "#{params[:controller]}/#{params[:action]=="index" ? "index+" : params[:action]}.js"
     javascriptaction_path = Rails.application.assets.find_asset(javascriptaction)
 
     javascript_return = ""

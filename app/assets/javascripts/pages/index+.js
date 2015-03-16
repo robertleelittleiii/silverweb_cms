@@ -20,7 +20,7 @@ $(document).ready(function () {
 
 function pages_index_callDocumentReady() {
     requireCss("tables.css");
-    require("/pages/shared.js");
+    require("pages/shared.js");
 
     if ($('#mainnav:visible').length != 0)
     {
