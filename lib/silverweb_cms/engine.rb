@@ -4,6 +4,7 @@ module SilverwebCms
  require 'jquery-turbolinks'
  require 'jquery-fileupload-rails'
  require 'kaminari'
+ require 'jquery-ui-rails'
  # require 'RFC822'
  
   class Engine < ::Rails::Engine
@@ -12,7 +13,7 @@ module SilverwebCms
     require 'carrierwave'
     require 'rails-settings-cached'
     require 'vestal_versions'
-
+    
     # isolate_namespace SilverwebCms
          ActiveSupport.on_load(:action_controller) do
           include SilverwebCms::Controller # ActiveSupport::Concern

@@ -12,8 +12,9 @@
  *
  *= require_tree .
  *= require_self
+ *= require jquery-ui
  * require smoothness/jquery-ui-1.8.24.custom
- *= require smoothness/jquery-ui
+ * require smoothness/jquery-ui
  *= require ui.notify
  *= require jquery.fileupload
  *= require jquery.fileupload-ui
@@ -158,7 +159,7 @@ a.button-link:hover {
 #nav li {
     margin-left: -35px;
     padding-top: 15px;
-    background: url(/images/navbkgnd.gif) no-repeat 0px 0px;
+    background: image-url("/images/navbkgnd.gif") no-repeat 0px 0px;
     text-align: center;
 }
 #nav li a{
@@ -289,7 +290,7 @@ div.cms-ui-dialog {
 .cms-block {
     display:block;
     position: relative;
-    background-image: url(/assets/interface/patterns/cloth_alike_@2X.png);
+    background-image: image-url("interface/patterns/cloth_alike_@2X.png");
     background-repeat: repeat;
     overflow: hidden;
     padding: 5px;
@@ -317,7 +318,7 @@ div.cms-ui-dialog {
     border: 1px grey solid;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
-    background: #ccc url("/assets/smoothness/images/ui-bg_highlight-soft_75_cccccc_1x100.png") 50% 50% repeat-x;
+    background: #ccc image-url("/smoothness/images/ui-bg_highlight-soft_75_cccccc_1x100.png") 50% 50% repeat-x;
     font-size: 20px;
     text-shadow: white 2px 2px 3px;
 }
@@ -662,7 +663,7 @@ padding-bottom: 50px;
 
 .best_in_place:hover, #user_account .do_hover {
       padding-right: 1.5em;
-      background: url("/images/red_pen.png") no-repeat right;
+      background: image-url("/images/red_pen.png") no-repeat right;
     background-color: #CCC;
 }
 
@@ -693,7 +694,7 @@ padding-bottom: 50px;
     width: 25px;
     height: 25px;
     text-indent: -9999px;
-    background: url("/images/close-button.gif") no-repeat;
+    background: image-url("/images/close-button.gif") no-repeat;
 }
 
 #header-table {
