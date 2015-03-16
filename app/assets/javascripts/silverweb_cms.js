@@ -67,7 +67,7 @@ $(document).ready(function () {
 function enablePageEdit() {
     if ($("#edit-pages").length > 0)
     {
-        require("/pages/shared.js")
+        require("pages/shared.js")
         pageeditClickBinding("div#edit-pages")
     }
 }
