@@ -11,5 +11,5 @@
 // about supported directives.
 //
 //= require tinymce-jquery
-//= require /silverweb_cms/general_utilities
+//= require general_utilities
 //
