@@ -1,6 +1,6 @@
 class PageTemplatesController < ApplicationController
   
-  uses_tiny_mce(:options => AppConfig.full_mce_options, :only => [:new, :edit])
+  #uses_tiny_mce(:options => AppConfig.full_mce_options, :only => [:new, :edit])
 
   
   
