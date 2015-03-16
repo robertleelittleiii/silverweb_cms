@@ -472,7 +472,7 @@ module  MenusHelper
 
     #	<li class="top"><a href="#nogo1" class="top_link"><span>Home</span></a></li>
 
-    return("<ul data-menu-params='#{params.to_json}' data-menu-id='#{@menu.id}' cms-menu-helper='buildhorizontalmenuprodrop' id='navi'>" + returnMenu + "</ul>").html_safe
+    return("<ul data-menu-params='#{params.to_json}' data-menu-id='#{@menu.id rescue "n/a"}' cms-menu-helper='buildhorizontalmenuprodrop' id='navi'>" + returnMenu + "</ul>").html_safe
       
   end
     
@@ -598,7 +598,7 @@ module  MenusHelper
 
     #	<li class="top"><a href="#nogo1" class="top_link"><span>Home</span></a></li>
 
-    return("<ul data-menu-params='#{params.to_json}' data-menu-id='#{@menu.id}' cms-menu-helper='buildhorizontalmenusuperfish' #{class_val}>" + returnMenu + "</ul>").html_safe
+    return("<ul data-menu-params='#{params.to_json}' data-menu-id='#{@menu.id rescue "n/a"}' cms-menu-helper='buildhorizontalmenusuperfish' #{class_val}>" + returnMenu + "</ul>").html_safe
       
   end
   
