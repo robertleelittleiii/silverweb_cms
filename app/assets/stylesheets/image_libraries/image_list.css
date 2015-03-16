@@ -28,7 +28,7 @@ margin-right: auto;
 div.file-list-item {
 display: inline-block;
 position: relative;
-top: -10px\0/;
+top: -10px\0;
 /* background-color: #ccc; */
 
 
@@ -102,7 +102,7 @@ position: relative;
 display: inline-block;
 position: relative;
 top: -6px;
-top: 20px\0/;
+top: 20px\0;
 padding-right: 5px;
 background: inherit;
 border-radius: 20PX;
