@@ -8,7 +8,7 @@
             <td width="10" <%= "class=menu-drag" if menu_list.parent_id!=0%> >
             </td>
             <td align="left"  valign="top" class="menu-item  <%= cycle('list-line-odd', 'list-line-even') %>"  style = "cursor:pointer" >
-                <span class="list-title <%=menu_list.menu_active ? "" : "menu-disabled"%> "> <div id="menu-id" class="hidden-item"><%=menu_list.id%></div>       <%=link_to "","#",{:id=>"menu-id-#{menu_list.id.to_s}", :class=>("lever-toggle #{menu_list.menus.count > 0 ? 'closed' : 'disabled' }")} %> <%=h menu_list.name.html_safe %></span>
+                <span class="list-title <%=menu_list.menu_active ? "" : "menu-disabled"%> "> <div id="menu-id" class="hidden-item"><%=menu_list.id%></div>       <div id="menu-id-<%=menu_list.id.to_s%>" class="<%=("lever-toggle #{menu_list.menus.count > 0 ? 'closed' : 'disabled' }") %>"> </div> <%=h menu_list.name.html_safe %></span>
             </td>
             <td>
                 <div align="right" class="image-delete-list2" >

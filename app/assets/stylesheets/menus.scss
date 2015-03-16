@@ -75,23 +75,23 @@ a#new-menu-head {
     width: 144px;
 }
 
-a.lever-toggle {
+div.lever-toggle {
   width: 30px;
   height: 30px;
   display: inline-block;
   margin-bottom: -15px;
 }
 
-a.lever-toggle.open {
+div.lever-toggle.open {
     background-image: image_url("interface/lever_open.png");
 }
 
-a.lever-toggle.closed {
+div.lever-toggle.closed {
     background-image: image_url("interface/lever_closed.png");
 
 }
 
-a.lever-toggle.disabled {
+div.lever-toggle.disabled {
     background-image: image_url("interface/lever_disabled.png");
 
 }

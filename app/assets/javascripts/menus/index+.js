@@ -99,11 +99,11 @@ function bindToggleListClick(item) {
 
     if (typeof item === 'undefined')
     {
-        var items_to_set_click = "a.lever-toggle";
+        var items_to_set_click = "div.lever-toggle";
     }
     else
     {
-        var items_to_set_click = item + " a.lever-toggle";
+        var items_to_set_click = item + " div.lever-toggle";
     }
 
     $(items_to_set_click).unbind("click").click(function (event) {
@@ -150,8 +150,8 @@ function handleOpenedMenus() {
         if ($("#" + value).length > 0)
         {
             $("#" + value).slideDown();
-            // console.log($($("#" + value).parent().find("a")[0]));
-            $($("#" + value).parent().find("a")[0]).switchClass("closed","open");
+            // console.log($($("#" + value).parent().find("div.lever-toggle")[0]));
+            $($("#" + value).parent().find("div.lever-toggle")[0]).switchClass("closed","open");
 
             // $($("#" + value).parent().find("img")[0]).attr("src", $($("#" + value).parent().find("img")[0]).attr("src").replace("closed", "open"))
             $($("#" + value).parent().find("table")[0]).removeClass("has-sub-menus");
