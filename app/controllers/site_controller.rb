@@ -934,8 +934,13 @@ class SiteController < ApplicationController
 
   def load_asset
     path = params[:path]
-    the_asset = Rails.application.assets.find_asset(path).body rescue ""
+    # the_asset = Rails.application.assets.find_asset(path).body rescue ""
     the_asset = ActionController::Base.helpers.compute_asset_path(path)
+    
+    if the_asset == "/"+path then
+      the_asset=""
+    end
+    
     render :text=>the_asset
   end
   

@@ -124,12 +124,14 @@ function require(script) {
             dataType: "text",
             async: false, // <-- this is the key
             success: function (data) {
-                var javascriptLink = $("<script>").attr({
-                    type: "text/javascript",
-                    src: data
-                });
-                $("head").append(javascriptLink);
 
+                if (data != "") {
+                    var javascriptLink = $("<script>").attr({
+                        type: "text/javascript",
+                        src: data
+                    });
+                    $("head").append(javascriptLink);
+                }
                 // all good...
             },
             error: function () {
@@ -159,13 +161,14 @@ function requireCss(cssFile) {
             data: {path: cssFile},
             dataType: 'text',
             success: function (data) {
-                var cssLink = $("<link>").attr({
-                    rel: "stylesheet",
-                    type: "text/css",
-                    href: data
-                });
-                $("head").append(cssLink);
-
+                if (data != "") {
+                    var cssLink = $("<link>").attr({
+                        rel: "stylesheet",
+                        type: "text/css",
+                        href: data
+                    });
+                    $("head").append(cssLink);
+                }
                 //your callback
             },
             fail: function () {

@@ -60,6 +60,11 @@ module SilverwebCms
         if(self.class.controller_path == "users" && action_name=="create")
         else
           user =  User.find_by_id(session[:user_id])
+          
+          if user.roles.where(:name=>"Admin").length>0 then
+                Rack::MiniProfiler.authorize_request
+          end
+          
           unless user.roles.detect{|role|
               role.rights.detect{|right|
                 ((right.action == action_name)|(right.action == "*")|(right.action.include? action_name)) && right.controller == self.class.controller_path
