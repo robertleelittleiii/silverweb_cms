@@ -55,8 +55,9 @@
                       <td class="center">
                         <%= link_to("Forgot Password", "#", :class=>"button-link forgot-link")  %>  
                       </td>
-                      <td class="center"><%= submit_tag("Login", :class=>"button-link", :id=>"login-button")%> <%= token_tag %> 
+                      <td class="center">
                       <%= link_to("Cancel", "#", :id=>"cancel-button", :class=>"button-link")  %>
+                      <%= submit_tag("Login", :class=>"button-link", :id=>"login-button")%> <%= token_tag %> 
                       </td>
                     </tr>
                   </table>
