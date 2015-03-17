@@ -13,6 +13,7 @@ module SilverwebCms
     require 'carrierwave'
     require 'rails-settings-cached'
     require 'vestal_versions'
+    require 'rack-mini-profiler'
     
     # isolate_namespace SilverwebCms
          ActiveSupport.on_load(:action_controller) do

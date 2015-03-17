@@ -29,6 +29,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'jquery-fileupload-rails'
   s.add_dependency 'rails-settings-cached'
   s.add_dependency 'jquery-turbolinks'
+  s.add_dependency 'rack-mini-profiler'
   
   s.add_development_dependency "mysql"
 end
