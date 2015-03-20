@@ -50,8 +50,8 @@ class PagesController < ApplicationController
    
     @page = Page.find(params[:id])
     @page.revert_to(params[:version].to_i) if params[:version]
-@style_type = STYLE_TYPES
-@template_types = TEMPLATE_TYPES
+    @style_type = STYLE_TYPES
+    @template_types = TEMPLATE_TYPES
     @item_edit =  @page
     @menu_location=[["Top",1] , ["Side",2]]
   end

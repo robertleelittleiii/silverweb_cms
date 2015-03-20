@@ -60,7 +60,7 @@ module  MenusHelper
     end
   end
 
-  def   buildmenuitem(menuItem, html_options, span_options, class_options=nil)
+  def   buildmenuitem(menuItem, html_options, span_options, class_options=nil, options=nil)
     #    html_options = Menu.create_hash_from_string(menuItem.html_options)
     # html_options = {}
     return_link = ""
@@ -547,7 +547,7 @@ module  MenusHelper
   def buildhorizontalmenusuperfish(params=nil)
     @menu_id= params[:menu_id]
     returnMenu=""
-
+    item_tag = params[:item_tag] || "li"
     @menu = Menu.find_by_name(@menu_id)
 
     if @menu.blank?  then
@@ -587,9 +587,9 @@ module  MenusHelper
           if subMenus.include?(params[:selected_class]) then
             html_link_class = params[:selected_class]
           end
-          returnMenu=  returnMenu + breaker + "<li class='top #{html_li_class} #{colorized_class}'>"+ self.buildmenuitem(menu, {:class=>html_link_class}, "") +subMenus+ "</li>"
+          returnMenu=  returnMenu + breaker + "<#{item_tag} class='top #{html_li_class} #{colorized_class}'>"+ self.buildmenuitem(menu, {:class=>html_link_class}, "") +subMenus+ "</#{item_tag}>"
         else
-          returnMenu=  returnMenu + breaker  + "<li class='top #{html_li_class} #{colorized_class}'>" + self.buildmenuitem(menu, {:class=>html_link_class}, "") + "</li>"
+          returnMenu=  returnMenu + breaker  + "<#{item_tag} class='top #{html_li_class} #{colorized_class}'>" + self.buildmenuitem(menu, {:class=>html_link_class}, "") + "</#{item_tag}>"
         end
 
         breaker = breaker_val.html_safe
@@ -607,7 +607,8 @@ module  MenusHelper
     returnSubMenu = ""
     html_link_class = ""
     level = level + 1
-    
+    item_tag = params[:item_tag] || "li"
+
     
     inputMenus.each_with_index  do |eachmenu, index | 
       if eachmenu.name == params[:current_page]
@@ -625,9 +626,9 @@ module  MenusHelper
         end
         
         returnSubMenu = self.buildsubmenussuperfish(eachmenu.menus, level)
-        returnSubMenu = "<li>"+ self.buildmenuitem(eachmenu, {:class=>(html_link_class + " " + colorized_class) }, "")+ returnSubMenu+ "</li>"
+        returnSubMenu = "<#{item_tag}>"+ self.buildmenuitem(eachmenu, {:class=>(html_link_class + " " + colorized_class) }, "")+ returnSubMenu+ "</#{item_tag}>"
       else
-        returnSubMenu = "<li>" + self.buildmenuitem(eachmenu, {:class=>(html_link_class + " " + colorized_class) }, "") + "</li>"
+        returnSubMenu = "<#{item_tag}>" + self.buildmenuitem(eachmenu, {:class=>(html_link_class + " " + colorized_class) }, "") + "</#{item_tag}>"
       end
       returnMenu = returnMenu + returnSubMenu
     end

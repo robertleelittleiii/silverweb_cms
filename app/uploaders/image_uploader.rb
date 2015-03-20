@@ -32,8 +32,6 @@ class ImageUploader < CarrierWave::Uploader::Base
   # end
 
 
-
-
   def cropper(crop_width, crop_height)
     manipulate! do |img|
       width = img.columns
@@ -246,6 +244,9 @@ class ImageUploader < CarrierWave::Uploader::Base
         super.chomp(File.extname(super)) + '.jpg'
       end
 end
+
+     
+     load Rails.root.join('config', 'initializers', 'image_uploader.rb') rescue ""
 
 
   def validate_integrity

@@ -4,6 +4,7 @@
  */
 
 var global_editor_hold = "";
+var tinyMCE_editor_page = "";
 var pages_edit_callDocumentReady_called = false;
 var slider_edit_dialog = "";
 
@@ -39,7 +40,7 @@ function pages_edit_callDocumentReady() {
         return true;
     });
     sliderEditClickBinding("ul#sliders li");
-    tinyMCE.init(tinymce_config);
+        tinyMCE_editor_page = tinyMCE.init(tinymce_config);
     //tinyMCE.get("page_body").editor.on('ExecCommand', function(e) {
     //        console.log('ExecCommand event', e);
      //   })

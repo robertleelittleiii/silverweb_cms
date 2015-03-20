@@ -13,7 +13,8 @@ white-space: pre;
 }
 
 .CodeMirror {
-font-family: monospace;
-height: 550px;
-color: black;
+  font-family: monospace;
+  height: 375px;
+  color: black;
+  width: 835px;
 }

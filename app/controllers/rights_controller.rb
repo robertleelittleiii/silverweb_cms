@@ -87,7 +87,7 @@ end
 
   
   def right_params
-    params[:right].permit( "name")
+    params[:right].permit( "name", "controller","action")
   end
 
 end

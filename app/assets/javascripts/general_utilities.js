@@ -375,3 +375,98 @@ function updateMenu(menu_id)
         });
     }
 }
+
+function createButtonList(call_backs,buttons_to_build)
+{
+    button_list = {};
+
+    $.each(buttons_to_build.split(","), function (index, value) {
+        button_list[value] = {
+            text: value,
+            id: "dialog-" + value + "-button",
+            click: function () {
+// Do what needs to be done to complete 
+                if (typeof (call_backs[value]) == "function")
+                {
+                    call_backs[value]();
+                }
+            }
+        };
+
+    });
+    
+    return (button_list);
+
+}
+
+/*
+ * 
+ *  Sample call of the createAppDialogAdv
+createAppDialogAdv("this is test content","test-dialog",{
+        completion: function completionCallback() {
+        console.log("Complete");
+        },
+        "Save as Draft": function savedClicked() {
+            console.log("Saved")
+        },
+        "Cancel": function cancelClicked() {
+           console.log("Canceled.")
+        },
+        "Submit": function submitClicked() {
+           console.log("Submitted.")
+            }}, "Submit,Save as Draft,Cancel")
+            
+*/
+
+function createAppDialogAdv(theContent, dialog_id, call_backs, buttons_to_show_in) {
+// completion_callback, save_callback, cancel_callback, submit_callback
+
+
+    if ($("#" + dialog_id).length == 0)
+    {
+        var dialogContainer = "<div id='" + dialog_id + "'></div>";
+        $("body").append($(dialogContainer));
+    }
+    else
+    {
+        dialogContainer = $("#" + dialog_id);
+    }
+
+    button_list = createButtonList(call_backs,buttons_to_show_in);
+    
+    theContent = '<input type="hidden" autofocus="autofocus" />' + theContent
+    theAppDialog = $('#' + dialog_id).dialog({
+        autoOpen: false,
+        modal: true,
+        //       dialogClass: 'no-close',
+        buttons: button_list,
+        close: function (event, ui) {
+            if (typeof (call_backs.completion) == "function")
+            {
+                call_backs.completion();
+            }
+
+            // $('#' + dialog_id).html("");
+            //  $('#' + dialog_id).dialog("destroy");
+            //   alert('closed');
+        },
+        open: function (event, ui)
+        {
+            popUpAlertifExists();
+        }
+
+
+    });
+    $('#' + dialog_id).html(theContent);
+    theHeight = $('#' + dialog_id + ' #dialog-height').text() || "500";
+    theWidth = $('#' + dialog_id + ' #dialog-width').text() || "500";
+    theTitle = $('#' + dialog_id + ' #dialog-name').text() || "Edit";
+    theAppDialog.dialog({
+        title: theTitle,
+        width: theWidth,
+        height: theHeight
+    });
+    theAppDialog.dialog("open");
+    return(theAppDialog)
+}
+

@@ -36,7 +36,7 @@ function pageeditClickBinding(selector) {
                                 show_page(page_id);
                             }
                         }
-                        
+                        tinyMCE.editors[0].destroy();
                         $('#edit-page').html("");
                         $('#edit-page').dialog("destroy");
 

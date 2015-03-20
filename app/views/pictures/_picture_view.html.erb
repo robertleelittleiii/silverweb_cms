@@ -22,7 +22,8 @@
                 <%= link_to("Edit", edit_picture_path(picture, as_window: true ), remote: true,  class: "edit-picture") rescue "" %>
               </div>
               <div class="ui-button">
-                <%= link_to("Insert", {controller: "pictures", action: "insert", as_window: true, id: picture.id} , remote: true,  class: "insert-picture")  rescue ""%>
+                <%= link_to("Insert", {controller: "pictures", action: "insert_image", as_window: true, id: picture.id} , remote: true,  class: "insert-image")  rescue ""%>
+                <%#= link_to("Insert", {controller: "pictures", action: "insert", as_window: true, id: picture.id} , remote: true,  class: "insert-picture")  rescue ""%>
               </div>
           </div>
           <div class="picture-item">

@@ -112,6 +112,14 @@ class PicturesController < ApplicationController
       :url_based_filename => false)
   end
   
+  def insert_image
+    @picture = Picture.find(params[:id])
+      @image_class_list =  ImageUploader.versions.keys.map{|item| [(item.to_s.humanize), item] }
+
+    
+  end
+  
+  
     private
 
 def picture_params

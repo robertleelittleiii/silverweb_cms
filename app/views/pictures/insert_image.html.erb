@@ -1,0 +1,42 @@
+<div class="hidden-item" id="picture-id"><%=@picture.id%></div>
+<div class="hidden-item">
+    <div id="as_window"><%=params[:as_window]%></div>
+    <div id="dialog-height">200</div>
+    <div id="dialog-width">300</div>
+    <div id="dialog-name">Insert Image</div>
+</div>
+
+<div class="cms-block" Align="Left">
+    <div align="center">
+        <!-- START:flash -->
+        <% if notice -%>
+          <div id="notice"><%= notice  %></div>
+        <% end -%>
+        <!-- END:flash -->
+
+        <% if @picture.errors.any? %>
+          <div id="error_explanation">
+              <h2><%= pluralize(@picture.errors.count, "error") %> prohibited this picture from being saved:</h2>
+
+              <ul>
+                  <% @picture.errors.full_messages.each do |msg| %>
+                    <li><%= msg %></li>
+                  <% end %>
+              </ul>
+          </div>
+        <% end %>
+
+    </div>
+    <div class="cms-section">
+        <div class="cms-content">
+            <p>
+                <b>Select Size to Insert:</b><br>
+                <%=select_tag("Image Size",options_for_select(@image_class_list)   , {id: "image-size", prompt: "Choose Size..."})%><br><br>
+            </p>
+
+            <%#=button_tag "Insert", id: "insert-button", data: { disable_with: "Please wait..." } %>
+        </div>
+    </div>
+
+</div>
+

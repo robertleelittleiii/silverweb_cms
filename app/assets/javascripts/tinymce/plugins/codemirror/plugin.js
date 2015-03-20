@@ -84,7 +84,7 @@ tinymce.PluginManager.add('codemirror', function (editor) {
                     mode: {name: "htmlmixed"},
                     tabMode: "indent",
                     lineNumbers: true,
-                    height:500
+                    height:400
                 });  
                 
                 CodeMirror.commands["selectAll"](codeEditor);
