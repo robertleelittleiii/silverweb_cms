@@ -64,13 +64,35 @@ module  MenusHelper
     #    html_options = Menu.create_hash_from_string(menuItem.html_options)
     # html_options = {}
     return_link = ""
-    class_options==nil ? class_options={} : ""
-    puts("menuItem.name:#{menuItem.name}")
-    if menuItem.menu_active then
     
+    puts("options-> #{options}")
+    
+    class_options==nil ? class_options={} : ""
+    
+    puts("menuItem.name:#{menuItem.name}")
+    
+    if menuItem.menu_active then
+      menuText="<span "+ span_options +">"+menuItem.name + "</span>"
+
+      if not options.blank? then
+        if not options[:menu_name_sub_container].blank? then
+          menu_sub_container_start = "<#{options[:menu_name_sub_container]}>"
+          menu_sub_container_end= "</#{options[:menu_name_sub_container]}>"
+        else
+          menu_sub_container_start =  menu_sub_container_end= ""
+        end
+      
+        if not options[:menu_name_container].blank? then
+          menuText="<#{options[:menu_name_container]}" + span_options +">"+ menu_sub_container_start + menuItem.name + menu_sub_container_end + "</{options[:menu_name_container]}>"
+        else
+          menuText="<span "+ span_options +">"+ menu_sub_container_start + menuItem.name + menu_sub_container_end + "</span>"
+
+        end
+      end
+     
       case menuItem.m_type
       when "1"
-        menuText="<span "+ span_options +">"+menuItem.name + "</span>"
+        # menuText="<span "+ span_options +">"+menuItem.name + "</span>"
         if (menuItem.page_id.blank?)
 
         else      
@@ -100,17 +122,17 @@ module  MenusHelper
       when "2"
         return_link = menuItem.rawhtml
       when "3"
-        menuText="<span "+ span_options +">"+menuItem.name + "</span>"
+        # menuText="<span "+ span_options +">"+menuItem.name + "</span>"
 
         if(menuItem.has_image) then
           image_to_link_to = menuItem.pictures[0].image_url.to_s rescue "interface/missing_image_very_small.png"
           menuText = image_tag(image_to_link_to, :border=>"0", :alt=>menuItem.name.html_safe)
         else
-          menuText="<span "+ span_options +">"+menuItem.name + "</span>"
+          #  menuText="<span "+ span_options +">"+menuItem.name + "</span>"
         end
         return_link = link_to(menuText.html_safe, {},{:class=>'menu-title'})
       when "4"
-        menuText="<span "+ span_options +">"+menuItem.name + "</span>"
+        #  menuText="<span "+ span_options +">"+menuItem.name + "</span>"
         class_options = menuItem.rawhtml
       
         if(menuItem.has_image and not menuItem.pictures.empty?) then
@@ -124,7 +146,7 @@ module  MenusHelper
         #    return_link =  link_to(item_link_to, class_options, html_options.merge!(:target=>"_blank"))
       
       when "6"
-        menuText="<span "+ span_options +">"+menuItem.name + "</span>"
+        #  menuText="<span "+ span_options +">"+menuItem.name + "</span>"
         
         if menuItem.menu.parent_id == 0 then
           top_menu = menuItem
@@ -147,7 +169,7 @@ module  MenusHelper
       
       when "5"
       
-        menuText="<span "+ span_options +">"+menuItem.name + "</span>"
+        #  menuText="<span "+ span_options +">"+menuItem.name + "</span>"
         #top_menu = Menu.find(session[:parent_menu_id]) rescue {}
         if menuItem.menu.parent_id == 0 then
           top_menu = menuItem
@@ -560,39 +582,41 @@ module  MenusHelper
       class_val = "class='sf-menu " + params[:class] + "'" || "class='sf-menu' "
       
       menus.each_with_index  do |menu, index | 
-      #for menu in menus
-      if params[:colorize_index_count] then
-          colorized_class =    "primary-color-" + (index % params[:colorize_index_count].to_i ).to_s
-        else
-          colorized_class = ""
-        end
-        
-        html_link_class = ""
-        if menus.last == menu then
-          html_li_class="last"
-        else   
-          if menus.first == menu then
-            html_li_class="first"
+        #for menu in menus
+        if menu.menu_active then
+          if params[:colorize_index_count] then
+            colorized_class =    "primary-color-" + (index % params[:colorize_index_count].to_i ).to_s
           else
-            html_li_class="middle"
+            colorized_class = ""
           end
-        end
-        puts("current page:#{params[:current_page]}, Menu Name:#{menu.name} ")
-        if menu.name == params[:current_page]
-          html_link_class = params[:selected_class]
-        end
-
-        if menu.menus.count>0 then
-          subMenus=self.buildsubmenussuperfish(menu.menus,0,params)
-          if subMenus.include?(params[:selected_class]) then
+        
+          html_link_class = ""
+          if menus.last == menu then
+            html_li_class="last"
+          else   
+            if menus.first == menu then
+              html_li_class="first"
+            else
+              html_li_class="middle"
+            end
+          end
+          puts("current page:#{params[:current_page]}, Menu Name:#{menu.name} ")
+          if menu.name == params[:current_page]
             html_link_class = params[:selected_class]
           end
-          returnMenu=  returnMenu + breaker + "<#{item_tag} class='top #{html_li_class} #{colorized_class}'>"+ self.buildmenuitem(menu, {:class=>html_link_class}, "") +subMenus+ "</#{item_tag}>"
-        else
-          returnMenu=  returnMenu + breaker  + "<#{item_tag} class='top #{html_li_class} #{colorized_class}'>" + self.buildmenuitem(menu, {:class=>html_link_class}, "") + "</#{item_tag}>"
-        end
 
-        breaker = breaker_val.html_safe
+          if menu.menus.count>0 then
+            subMenus=self.buildsubmenussuperfish(menu.menus,0,params)
+            if subMenus.include?(params[:selected_class]) then
+              html_link_class = params[:selected_class]
+            end
+            returnMenu=  returnMenu + breaker + "<#{item_tag} class='top #{html_li_class} #{colorized_class}'>"+ self.buildmenuitem(menu, {:class=>html_link_class}, "", nil ,params) +subMenus+ "</#{item_tag}>"
+          else
+            returnMenu=  returnMenu + breaker  + "<#{item_tag} class='top #{html_li_class} #{colorized_class}'>" + self.buildmenuitem(menu, {:class=>html_link_class}, "", nil ,params) + "</#{item_tag}>"
+          end
+
+          breaker = breaker_val.html_safe
+        end
       end
     end
 
@@ -625,10 +649,10 @@ module  MenusHelper
           colorized_class = ""
         end
         
-        returnSubMenu = self.buildsubmenussuperfish(eachmenu.menus, level)
-        returnSubMenu = "<#{item_tag}>"+ self.buildmenuitem(eachmenu, {:class=>(html_link_class + " " + colorized_class) }, "")+ returnSubMenu+ "</#{item_tag}>"
+        returnSubMenu = self.buildsubmenussuperfish(eachmenu.menus, level, params)
+        returnSubMenu = "<#{item_tag}>"+ self.buildmenuitem(eachmenu, {:class=>(html_link_class + " " + colorized_class) }, "", nil ,params)+ returnSubMenu+ "</#{item_tag}>"
       else
-        returnSubMenu = "<#{item_tag}>" + self.buildmenuitem(eachmenu, {:class=>(html_link_class + " " + colorized_class) }, "") + "</#{item_tag}>"
+        returnSubMenu = "<#{item_tag}>" + self.buildmenuitem(eachmenu, {:class=>(html_link_class + " " + colorized_class) },  "", nil ,params) + "</#{item_tag}>"
       end
       returnMenu = returnMenu + returnSubMenu
     end
