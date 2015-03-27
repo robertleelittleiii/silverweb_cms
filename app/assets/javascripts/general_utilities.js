@@ -370,6 +370,10 @@ function updateMenu(menu_id)
             success: function (data)
             {
                 menu.replaceWith(data);
+                if (typeof (application_ready_function) == "function")
+                {
+                application_ready_function();
+            }
                 // console.log(data);
             }
         });
