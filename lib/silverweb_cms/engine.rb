@@ -5,6 +5,7 @@ module SilverwebCms
  require 'jquery-fileupload-rails'
  require 'kaminari'
  require 'jquery-ui-rails'
+ 
  # require 'RFC822'
  
   class Engine < ::Rails::Engine
