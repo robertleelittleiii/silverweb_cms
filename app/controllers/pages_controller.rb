@@ -52,6 +52,22 @@ class PagesController < ApplicationController
     @page.revert_to(params[:version].to_i) if params[:version]
     @style_type = STYLE_TYPES
     @template_types = TEMPLATE_TYPES
+    
+   # paths = ActionController::Base.view_paths.map{|i| (i.to_path.include?("silverweb") ? i.to_path : "")}.delete_if(&:empty?)
+    paths = ActionController::Base.view_paths
+    template_types = [["B L A N K",""]]
+    paths.each do |the_view_path|
+      templates = Dir.glob(the_view_path.to_path+ "/site/show_page*")
+      
+      templates.each do |template|
+        template_name = template.split("/").last.split("-").drop(1).join("-").split(".").first
+        template_types << [template_name + " Template",template_name] if not template_name.blank?
+      end
+    end
+    @template_types = template_types
+    
+    puts("New TemplateList:#{ template_types.inspect}")
+    
     @item_edit =  @page
     @menu_location=[["Top",1] , ["Side",2]]
   end

@@ -154,7 +154,7 @@ module SiteHelper
       return returnval.html_safe
     else
       return "" 
-    end rescue ""
+    end #rescue ""
   end  
   
   def show_nav_gallary(page,top_lead_text="", bottom_lead_text="", effect="fade")
