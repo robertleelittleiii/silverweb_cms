@@ -94,6 +94,9 @@ a.button-link:hover {
     margin-left: 0px;
 }
 
+div#edit-pages:hover, div#edit-slider:hover {
+  cursor: pointer;
+}
 
 .clearfix:after {
     content: ".";

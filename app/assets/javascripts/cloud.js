@@ -941,9 +941,10 @@ function show_page(page_id) {
         type: 'get',
         success: function (data)
         {
-            $("div#content").html(data)
+            $("div#content").html(data);
+            call_document_ready_on_show_page();
             enablePageEdit();
-
+            enableSliderEdit();
         }
     });
 

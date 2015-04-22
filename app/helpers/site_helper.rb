@@ -145,6 +145,10 @@ module SiteHelper
         else
           returnval =  returnval + "<div class='slider-content' style='display:none'>"
         end
+        returnval = returnval + "<div class='hidden-item'>"
+        returnval = returnval + "<div id='slider-id'>" + slider.id.to_s + "</div>"
+        returnval = returnval + "</div>"
+        
         #        returnval =  returnval + "<h1>" + slider.slider_name + "</h1>"
         returnval = returnval + slide_edit_div(slider)
         returnval =  returnval +  "<div class='" + action_name + " slider-content-float'>" + slider.slider_content + "</div> \n"
@@ -213,7 +217,7 @@ module SiteHelper
       user=User.find(session[:user_id])
       if user.roles.detect{|role|((role.name=="Admin") | (role.name=="Site Owner"))} then
         returnval="<div id=\"edit-slider\">"
-        returnval=returnval+link_to(image_tag("interface/edit.png",:border=>"0", :class=>"imagebutton", :title => "Edit this Slider"),:controller => 'sliders', :id =>slide.id ,  :action => 'edit')
+        returnval=returnval+image_tag("interface/edit.png",:border=>"0", :class=>"imagebutton", :title => "Edit this Slider")
         returnval=returnval + "</div>"
       end
     end
@@ -237,7 +241,7 @@ module SiteHelper
       user=User.find(session[:user_id])
       if user.roles.detect{|role|((role.name=="Admin") | (role.name=="Site Owner"))} then
         returnval="<div id=\"edit-product\" class=\"edit-product\">"
-        returnval=returnval+link_to(image_tag("interface/edit.png",:border=>"0", :class=>"imagebutton", :title => "Edit this Product"),:controller => 'products', :id =>product.id ,  :action => 'edit')
+        returnval=returnval+image_tag("interface/edit.png",:border=>"0", :class=>"imagebutton", :title => "Edit this Product")
         returnval=returnval + "</div>"
 
       end

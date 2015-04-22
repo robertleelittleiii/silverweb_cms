@@ -47,7 +47,8 @@ $(document).ready(function () {
 
     $("a.button-link").button();
     enablePageEdit();
-    
+    enableSliderEdit();
+
     if ($('ul.sf-menu').length > 0)
     {
      $('ul.sf-menu').superfish({
@@ -68,11 +69,17 @@ $(document).ready(function () {
 function enablePageEdit() {
     if ($("#edit-pages").length > 0)
     {
-        require("pages/shared.js")
-        pageeditClickBinding("div#edit-pages")
+        require("pages/shared.js");
+        pageeditClickBinding("div#edit-pages");
     }
 }
-
+function enableSliderEdit() {
+    if ($("#edit-slider").length > 0)
+    {
+        require("sliders/shared.js");
+        slidereditClickBinding("div#edit-slider");
+    }
+}
 
 function ajaxUpdateSearch(search_term) {
 

@@ -16,7 +16,7 @@ function pageeditClickBinding(selector) {
 
         var url = '/pages/' + page_id + '/edit?request_type=window&window_type=iframe&as_window=true';
 
-        $(this).effect("highlight", {color: "#669966"}, 1000);
+        // $(this).effect("highlight", {color: "#669966"}, 1000);
 
         $.ajax({
             url: url,
