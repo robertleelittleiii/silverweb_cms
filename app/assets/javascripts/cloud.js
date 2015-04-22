@@ -151,7 +151,7 @@ function loadLoginBox() {
 
     $.ajax({
         url: "/site/login",
-        type: "POST",
+        type: "GET",
         dataType: "html",
         success: function (data)
         {
@@ -590,7 +590,7 @@ function clear_user_locks() {
 }
 
 function bindMyAccount() {
-    $("a#my-account").click(function () {
+    $("#my-account").click(function () {
         updateAppDiv()
         // $("#nav-grid-links").fadeIn();
 
@@ -906,7 +906,7 @@ function bindRegisterClick() {
 
 function bindLoginButton() {
 
-    $('#sign-in-button').click(function (e) {
+    $('div#sign-in-button').click(function (e) {
         loadLoginBox();
     });
 

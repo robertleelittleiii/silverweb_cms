@@ -16,7 +16,7 @@ Rails.application.routes.draw do
     collection do
       get "show_page"
       get "show_page_popup"
-      post "login"
+      get "login"
       post "login_ajax"
       post "reset_ajax"
       post "register_ajax"
