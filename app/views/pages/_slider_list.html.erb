@@ -1,4 +1,4 @@
-<li id="slider_<%=slider_list.id.to_s%>" class="slider-list-item">
+<li id="slider_<%=slider_list.id.to_s%>" class="slider-list-item <%=slider_list.slider_active==true ? '' : 'inactive-slider'%> " >
     <div class="hidden-item" id="slider-id"><%=slider_list.id.to_s%></div>
   <div class="hr"></div>
   <table width ="100%"cellpadding="5" cellspacing="0" border="0">
