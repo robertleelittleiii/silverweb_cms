@@ -1,10 +1,9 @@
     <!-- controller/action based style sheet and javascript -->
-
-     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"> 
-    <link rel="icon" href="/favicon.ico" type="image/x-icon"> 
+     
+    <%= favicon_link_tag 'favicon.ico' %>
     <%= show_meta_page_data(@page) %>
+    
     <title><%=Settings.company_name%> : <%=get_page_title%></title>
-
     
     <%=controller_stylesheet_link_tag%>
     <%=controller_javascript_include_tag%>
