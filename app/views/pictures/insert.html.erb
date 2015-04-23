@@ -4,4 +4,4 @@
 # and open the template in the editor.
 %>
 
-<%= @picture.file_type==".pdf" ? (link_to(image_tag(@picture.image_url(:pdf_preview).to_s),@picture.image_url.to_s )) : (image_tag(@picture.image_url((params[:size] rescue :preview)).to_s))%>
+<%= @picture.file_type==".pdf" ? (link_to(image_tag(@picture.image_url(:pdf_preview).to_s),@picture.image_url.to_s )) : (image_tag(@picture.image_url(((params[:size].blank? ? nil :params[:size]) rescue :preview)).to_s))%>

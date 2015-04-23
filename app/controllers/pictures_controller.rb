@@ -114,7 +114,7 @@ class PicturesController < ApplicationController
   
   def insert_image
     @picture = Picture.find(params[:id])
-      @image_class_list =  ImageUploader.versions.keys.map{|item| [(item.to_s.humanize), item] }
+    @image_class_list =  [["Original Size",nil]] + ImageUploader.versions.keys.map{|item| [(item.to_s.humanize), item] } 
 
     
   end
