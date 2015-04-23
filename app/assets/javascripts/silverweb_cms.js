@@ -65,6 +65,11 @@ $(document).ready(function () {
 });
 });
 
+$(document).on('focusin', function(e) {
+    if ($(event.target).closest(".mce-window").length) {
+        e.stopImmediatePropagation();
+    }
+});
 
 function enablePageEdit() {
     if ($("#edit-pages").length > 0)
