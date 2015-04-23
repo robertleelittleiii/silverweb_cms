@@ -11,7 +11,6 @@ module FlexsliderHelper
       returnval =  returnval + "<div id='slider-height'>#{page.slider_height}</div> \n"
       returnval =  returnval + "<div id='slider-nav'>#{page.slider_show_nav}</div> \n"
       returnval =  returnval + "<div id='slider-effect'>#{effect}</div> \n"
-        returnval = returnval + "<div id='slider-id'>" + slider.id.to_s + "</div> \n"
       returnval =  returnval + "</div> \n"
       
       returnval = returnval + "<div class='flexslider'> \n"
@@ -27,7 +26,11 @@ module FlexsliderHelper
       page.sliders.active.each_with_index do |slider, slide_count| 
         puts("slide count #{slide_count}")
         returnval = returnval + "<li> \n"
-
+        
+        returnval = returnval + "<div class='hidden-item'>"
+        returnval = returnval + "<div id='slider-id'>" + slider.id.to_s + "</div>"
+        returnval = returnval + "</div>"
+        
         returnval = returnval + slide_edit_div(slider)
         returnval =  returnval +  "<div class='" + action_name + " slider-content-float'>" + slider.slider_content + "</div> \n"
         returnval =  returnval + "</li> \n"
