@@ -47,7 +47,18 @@ function call_document_ready_on_show_page() {
     }
     
     activate_slides();
+   start_flex_sliders();
+}
 
+function start_flex_sliders() {
+
+    if ($('.flexslider').length > 0) {
+        require("jquery.flexslider.js");
+        $('.flexslider').flexslider({start: function () {
+                $('#page-slider-gallary-page').fadeIn();
+            }, directionNav: true, animationSpeed: 2000, slideshowSpeed: 5000});
+
+    }
 }
 
 function activate_slides() {
