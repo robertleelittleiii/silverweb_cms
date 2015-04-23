@@ -9,7 +9,7 @@ var picture_insert_dialog = "";
 
 $(document).ready(function () {
 
-    //alert("in here");
+    // alert("in here");
     // $("#tabs").tabs();
     bind_file_upload_to_upload_form();
     bind_paste_body_zone();
@@ -19,11 +19,11 @@ $(document).ready(function () {
     activate_buttons();
 });
 
-$(document).on('focusin', function(e) {
-    if ($(event.target).closest(".mce-window").length) {
-		e.stopImmediatePropagation();
-	}
-});
+//$(document).on('focusin', function(e) {
+//    if ($(event.target).closest(".mce-window").length) {
+//		e.stopImmediatePropagation();
+//	}
+//});
 
 function activate_buttons() {
     
