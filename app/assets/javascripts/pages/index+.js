@@ -198,52 +198,64 @@ function createPageTable() {
 }
 
 function bindNewPage() {
-    $('a#new-page').bind('ajax:beforeSend', function (evt, xhr, settings) {
-        // alert("ajax:before");  
-        console.log('ajax:before');
-        console.log(evt);
-        console.log(xhr);
-        console.log(settings);
-
+    
+   $('a#new-page').unbind().bind('ajax:beforeSend', function (e, xhr, settings) {
+        xhr.setRequestHeader('accept', '*/*;q=0.5, text/html, ' + settings.accepts.html);
         $("body").css("cursor", "progress");
-
-
-
-    }).bind('ajax:success', function (evt, data, status, xhr) {
-        //  alert("ajax:success"); 
-        console.log('ajax:success');
-        console.log(evt);
-        console.log("date:" + data + ":");
-
-        $("body").css("cursor", "progress");
-        console.log(data.id);
-        editPage(data.id);
-
-        console.log(status);
-        console.log(xhr);
-
+    }).bind('ajax:success', function (xhr, data, status) {
+        $("body").css("cursor", "default");
+        pageTableAjax.fnDraw();
+        setUpPurrNotifier("Notice", "New Page Created!'");
     }).bind('ajax:error', function (evt, xhr, status, error) {
-        // alert("ajax:failure"); 
-        console.log('ajax:error');
-        console.log(evt);
-        console.log(xhr);
-        console.log(status);
-        console.log(error);
-
-        alert("Error:" + JSON.parse(data.responseText)["error"]);
-        $("body").css("cursor", "default");
-
-
-    }).bind('ajax:complete', function (evt, xhr, status) {
-        //    alert("ajax:complete");  
-        console.log('ajax:complete');
-        console.log(evt);
-        console.log(xhr);
-        // console.log(status);
-        $("body").css("cursor", "default");
-
-
+                setUpPurrNotifier("Error", "Page Creation Failed!'");
     });
+
+//    $('a#new-page').bind('ajax:beforeSend', function (evt, xhr, settings) {
+//        // alert("ajax:before");  
+//        console.log('ajax:before');
+//        console.log(evt);
+//        console.log(xhr);
+//        console.log(settings);
+//
+//        $("body").css("cursor", "progress");
+//
+//
+//
+//    }).bind('ajax:success', function (evt, data, status, xhr) {
+//        //  alert("ajax:success"); 
+//        console.log('ajax:success');
+//        console.log(evt);
+//        console.log("date:" + data + ":");
+//
+//        $("body").css("cursor", "progress");
+//        console.log(data.id);
+//        editPage(data.id);
+//
+//        console.log(status);
+//        console.log(xhr);
+//
+//    }).bind('ajax:error', function (evt, xhr, status, error) {
+//        // alert("ajax:failure"); 
+//        console.log('ajax:error');
+//        console.log(evt);
+//        console.log(xhr);
+//        console.log(status);
+//        console.log(error);
+//
+//        alert("Error:" + JSON.parse(data.responseText)["error"]);
+//        $("body").css("cursor", "default");
+//
+//
+//    }).bind('ajax:complete', function (evt, xhr, status) {
+//        //    alert("ajax:complete");  
+//        console.log('ajax:complete');
+//        console.log(evt);
+//        console.log(xhr);
+//        // console.log(status);
+//        $("body").css("cursor", "default");
+//
+//
+//    });
 
 }
 function bindDeletePage() {
