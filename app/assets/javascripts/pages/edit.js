@@ -351,3 +351,9 @@ function bind_versions_links() {
     });
 
 }
+
+$(document).on('focusin', function(e) {
+    if ($(event.target).closest(".mce-window").length) {
+        e.stopImmediatePropagation();
+    }
+});

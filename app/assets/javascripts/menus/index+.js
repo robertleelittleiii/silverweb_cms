@@ -35,7 +35,7 @@ function menus_index_callDocumentReady() {
     menueditClickBinding();
     makeDraggable();
     initializeCreateMenu();
-
+    bindNewMenuHead();
     $("#alert").click(function () {
         alert(this.getAttribute("data-message"));
         return false;
@@ -322,3 +322,20 @@ function initializeCreateMenu(selection) {
         initializeCreateMenu();
     });
 }
+
+
+function bindNewMenuHead() {
+    
+   $('a#new-menu-head').unbind().bind('ajax:beforeSend', function (e, xhr, settings) {
+        xhr.setRequestHeader('accept', '*/*;q=0.5, text/html, ' + settings.accepts.html);
+        $("body").css("cursor", "progress");
+    }).bind('ajax:success', function (xhr, data, status) {
+        $("body").css("cursor", "default");
+        // updateMenuItem(0);
+        $("div#menu-item-list").html(data);
+        menus_index_callDocumentReady();
+    setUpPurrNotifier("Notice", "New Menu Head Created!'");
+    }).bind('ajax:error', function (evt, xhr, status, error) {
+                setUpPurrNotifier("Error", "Menu Creation Failed!'");
+    }); 
+    }

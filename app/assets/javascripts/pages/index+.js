@@ -370,3 +370,9 @@ function edit_page_dialog(data) {
     //initilize_filter_buttons();
 
 }
+
+$(document).on('focusin', function(e) {
+    if ($(event.target).closest(".mce-window").length) {
+        e.stopImmediatePropagation();
+    }
+});

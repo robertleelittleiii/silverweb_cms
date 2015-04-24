@@ -553,12 +553,12 @@ module  MenusHelper
           
     else
       if (not user.roles.find_by_name("Admin").nil?)
-        returnval = link_to(image_tag("interface/Button-Delete.png", :border=>"0") , menu, :class=>"delete_menu",  :confirm => 'Are you sure?', :method => :delete , :remote=>true)
+        returnval = link_to(image_tag("interface/Button-Delete.png", :border=>"0") , menu, :class=>"delete_menu",  data: { confirm: 'Are you sure?' }, :method => :delete , :remote=>true)
       else
         if menu.parent_id==0
 
         else
-          returnval = link_to(image_tag("interface/Button-Delete.png", :border=>"0") , menu, :class=>"delete_menu",  :confirm => 'Are you sure?', :method => :delete , :remote=>true)
+          returnval = link_to(image_tag("interface/Button-Delete.png", :border=>"0") , menu, :class=>"delete_menu",  data: { confirm: 'Are you sure?' } , :method => :delete , :remote=>true)
         end
           
       end
