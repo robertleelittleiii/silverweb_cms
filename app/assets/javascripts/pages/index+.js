@@ -69,16 +69,16 @@ function pages_index_callDocumentReady() {
         $('#edit-password-dialog').dialog('close');
     });
 
-    $('a#new-page').bind('ajax:beforeSend', function (e, xhr, settings) {
-        xhr.setRequestHeader('accept', '*/*;q=0.5, text/html, ' + settings.accepts.html);
-        $("body").css("cursor", "progress");
-    });
-
-    $('a#new-page').bind('ajax:success', function (xhr, data, status) {
-        $("body").css("cursor", "default");
-        pageTableAjax.fnDraw();
-        setUpPurrNotifier("Notice", "New Page Created!'");
-    });
+//    $('a#new-page').unbind().bind('ajax:beforeSend', function (e, xhr, settings) {
+//        xhr.setRequestHeader('accept', '*/*;q=0.5, text/html, ' + settings.accepts.html);
+//        $("body").css("cursor", "progress");
+//    });
+//
+//    $('a#new-page').bind('ajax:success', function (xhr, data, status) {
+//        $("body").css("cursor", "default");
+//        pageTableAjax.fnDraw();
+//        setUpPurrNotifier("Notice", "New Page Created!'");
+//    });
 
 
     // createPasswordDialog();
