@@ -96,7 +96,8 @@ function deletePage(page_id)
     var answer = confirm('Are you sure you want to delete this?')
     if (answer) {
         $.ajax({
-            url: '/pages/delete_ajax/' + page_id,
+            url: '/pages/delete_ajax?id='+ page_id,
+            
             success: function (data)
             {
                 setUpPurrNotifier("Notice", "Item Successfully Deleted.");
@@ -208,7 +209,7 @@ function bindNewPage() {
         setUpPurrNotifier("Notice", "New Page Created!'");
     }).bind('ajax:error', function (evt, xhr, status, error) {
                 setUpPurrNotifier("Error", "Page Creation Failed!'");
-    });
+    }); 
 
 //    $('a#new-page').bind('ajax:beforeSend', function (evt, xhr, settings) {
 //        // alert("ajax:before");  

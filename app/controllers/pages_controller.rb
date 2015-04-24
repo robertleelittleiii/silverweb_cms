@@ -149,7 +149,6 @@ class PagesController < ApplicationController
 
     render(:nothing => true)
 
-      
   end
   
  def page_table
@@ -160,7 +159,7 @@ class PagesController < ApplicationController
   
  
   def delete_ajax
-    @page = Page.find(params[:id])
+      @page = Page.find(params[:id])
     
       @page.destroy
       render :nothing=>true

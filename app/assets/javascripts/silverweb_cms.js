@@ -29,6 +29,7 @@
 //= require cloud
 //= require jquery.slides
 //= require superfish
+//= require turbolinks
 
 //
 

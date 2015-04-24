@@ -474,3 +474,14 @@ function createAppDialogAdv(theContent, dialog_id, call_backs, buttons_to_show_i
     return(theAppDialog)
 }
 
+function findMyEvents(me) {
+
+    if (typeof $._data($(me)[0], 'events') !== "undefined") {
+        console.log($(me)[0])
+        console.log($._data($(me)[0], 'events'))
+        $._data($(me)[0], 'events')
+    };
+    for (var i = 0; i < $(me).children().length; i++) {
+        findMyEvents($(me).children()[i])
+    }
+}
