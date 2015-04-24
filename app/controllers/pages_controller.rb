@@ -70,6 +70,12 @@ class PagesController < ApplicationController
     
     @item_edit =  @page
     @menu_location=[["Top",1] , ["Side",2]]
+    
+    
+    respond_to do |format|
+      format.html 
+      format.json  { render :json => @page, :status => :created, :location => @page }
+    end
   end
 
   # POST /pages

@@ -19,10 +19,10 @@
         <div class="cms-content">
 
             <p> 
-                <b>Version: (looking at version:<%=params[:version]%>)</b><br>
-                     <%=link_to((params[:version]==@page.versions.last.number.to_s) ? "(#{@page.versions.last.number})":@page.versions.last.number , :version=>@page.versions.last.number) rescue "No Versions Found!"%>
+                <b>Version: (looking at version: <span class="inline-item" id="version-number"><%=params[:version].blank? ? "current" : params[:version] %></span>)</b><br>
+                     <%=link_to((params[:version]==@page.versions.last.number.to_s) ? "(#{@page.versions.last.number})":@page.versions.last.number , {:version=>@page.versions.last.number, :format => :json},:remote=>true, :class=>'version-info') rescue "No Versions Found!"%>
                 <% @page.versions.reverse.each do |page| %>
-                  | <%=link_to((params[:version]==(page.number-1).to_s) ? "(#{page.number-1})":page.number-1 , :version=>page.number-1) %> 
+                  | <%=link_to((params[:version]==(page.number-1).to_s) ? "(#{page.number-1})":page.number-1 , {:version=>page.number-1, :format => :json},:remote=>true, :class=>'version-info') %> 
                 <% end %>
                 </br>
             </p>

@@ -150,7 +150,7 @@ BestInPlaceEditor.prototype = {
             "input":1, 
             "textarea":1,
             "date":1
-        } && this.getValue() == this.oldValue)
+        } && this.getValue() == this.oldValue && !this.dirty=="true")
 { // Avoid request if no change is made
             this.abort();
             BestInPlaceCallBackNoChange(this);
@@ -215,6 +215,7 @@ BestInPlaceEditor.prototype = {
             self.attributeName = self.attributeName || jQuery(this).attr("data-attribute");
             self.nil           = self.nil           || jQuery(this).attr("data-nil");
             self.maxLength     = self.maxLength     || jQuery(this).attr("data-max-length");
+            self.dirty         = self.dirty         || jQuery(this).attr("data-dirty");
         });
 
         // Try Rails-id based if parents did not explicitly supply something
@@ -234,6 +235,7 @@ BestInPlaceEditor.prototype = {
         self.activator     = self.element.attr("data-activator")    || self.element;
         self.nil           = self.element.attr("data-nil")          || self.nil      || "-";
         self.maxLength     = self.element.attr("data-max-length")   || self.maxLength;
+        self.dirty         = self.element.attr("data-dirty")        || self.dirty;
 
         if (!self.element.attr("data-sanitize")) {
             self.sanitize = true;
