@@ -206,9 +206,9 @@ function bindNewPage() {
     }).bind('ajax:success', function (xhr, data, status) {
         $("body").css("cursor", "default");
         pagetemplateTableAjax.fnDraw();
-        setUpPurrNotifier("Notice", "New Page Created!'");
+        setUpPurrNotifier("Notice", "New Template Created!'");
     }).bind('ajax:error', function (evt, xhr, status, error) {
-                setUpPurrNotifier("Error", "Page Creation Failed!'");
+                setUpPurrNotifier("Error", "Template Creation Failed!'");
     }); 
 
 //    $('a#new-page').bind('ajax:beforeSend', function (evt, xhr, settings) {
