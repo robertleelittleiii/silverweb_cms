@@ -5,28 +5,28 @@
 
 var global_editor_hold = "";
 var tinyMCE_editor_page = "";
-var pages_edit_callDocumentReady_called = false;
+var page_templates_edit_callDocumentReady_called = false;
 var slider_edit_dialog = "";
 var result_test = "";
 
 $(document).ready(function () {
-    if (!pages_edit_callDocumentReady_called)
+    if (!page_templates_edit_callDocumentReady_called)
     {
-        pages_edit_callDocumentReady_called = true;
+        page_templates_edit_callDocumentReady_called = true;
         if ($("#as_window").text() == "true")
         {
             //  alert("it is a window");
         }
         else
         {
-            pages_edit_callDocumentReady();
+            page_templates_edit_callDocumentReady();
         }
     }
 });
 
 
-function pages_edit_callDocumentReady() {
-    $("#page-tabs").tabs();
+function page_templates_edit_callDocumentReady() {
+    $("#page-template-tabs").tabs();
     loadCustomCSS();
     activate_scroller_sort();
     set_up_delete_slider_callback();
@@ -35,7 +35,7 @@ function pages_edit_callDocumentReady() {
     $(".best_in_place").best_in_place();
     ui_ajax_select();
     $("a.button-link").button();
-    $('#page_body_save').bind("click", function () {
+    $('#page_template_body_save').bind("click", function () {
         // alert("clicked");
         $(this).closest("form").trigger("submit");
         return true;
@@ -92,7 +92,7 @@ function updateSliderList() {
             $('iframe.preview').attr("src", $('iframe.preview').attr("src"));
             sliderEditClickBinding("ul#sliders li");
         },
-        url: '/pages/get_sliders_list'
+        url: '/page_templates/get_sliders_list'
     });
 
 }
@@ -101,6 +101,18 @@ function set_up_add_slider_callback() {
     $("#add-slider")
             .bind("ajax:success", function (event, data, status, xhr) {
                 updateSliderList();
+            });
+}
+
+function set_up_save_callback() {
+
+    $("form.edit_page_template")
+            .on("ajax:success", function (event, data, status, xhr) {
+               // console.log(event);
+               // console.log(data["notice"]);
+                //console.log(status);
+               // console.log(xhr);
+                setUpPurrNotifier("Attention", data["notice"]);
             });
 }
 
@@ -127,7 +139,7 @@ function mysave() {
     console.log("trigger save");
     tinymce.triggerSave();
     // $("#page-body-save").closest("form").trigger("submit");
-    $("#page_body").parent().parent().closest("form").trigger("submit");
+    $("#page_template_body").parent().parent().closest("form").trigger("submit");
 
 }
 
@@ -136,7 +148,7 @@ function ajaxSave()
 
     tinyMCE.triggerSave();
 
-    $("#page_body_save").closest("form").trigger("submit");
+    $("#page_template_body_save").closest("form").trigger("submit");
 
 
 }
@@ -149,14 +161,14 @@ function BestInPlaceCallBack(input) {
 
 
 function tinyMcePostInit(inst) {
-    pages_bind_file_paste_to_upload_form();
+    page_templates_bind_file_paste_to_upload_form();
 }
 
-function pages_bind_file_paste_to_upload_form()
+function page_templates_bind_file_paste_to_upload_form()
 {
     $("form#picture-paste-page").fileupload({
         dataType: "json",
-        pasteZone: $("iframe#page_body_ifr").contents().find("body"),
+        pasteZone: $("iframe#page_template_body_ifr").contents().find("body"),
         add: function (e, data) {
             file = data.files[0];
             data.context = $(tmpl("template-upload", file));
@@ -270,7 +282,7 @@ function bind_download_to_files()
 
 
 function sliderEditClickBinding(selector) {
-    // selectors .edit-page-item, tr.page-row 
+    // selectors .edit-page-item, tr.page-template-row 
 
     $(selector).unbind("click").one("click", function (e) {
         if (e.target.id === "delete-button")
@@ -289,7 +301,7 @@ function sliderEditClickBinding(selector) {
             success: function (data)
             {
                 $("form#picture-paste-page").fileupload('destroy');
-                tinyMCE.EditorManager.execCommand('mceRemoveEditor', true, "page_body");
+                tinyMCE.EditorManager.execCommand('mceRemoveEditor', true, "page_template_body");
 
                 slider_edit_dialog = createAppDialog(data, "edit-slider-dialog", {}, "");
                 slider_edit_dialog.dialog({
@@ -297,8 +309,8 @@ function sliderEditClickBinding(selector) {
                         updateSliderList();
                         $('#edit-slider-dialog').html("");
                         $('#edit-slider-dialog').dialog("destroy");
-                        tinymce.EditorManager.execCommand('mceAddEditor', true, "page_body");
-                        pages_bind_file_paste_to_upload_form();
+                        tinymce.EditorManager.execCommand('mceAddEditor', true, "page_template_body");
+                        page_templates_bind_file_paste_to_upload_form();
                     }
                 });
                 slider_edit_dialog.dialog('open');
@@ -314,8 +326,8 @@ function sliderEditClickBinding(selector) {
 
 
 //        if (is_iframe) {
-//                        $('iframe#pages-app-id',window.parent.document).attr("src",url);
-//                        pageeditClickBinding(this);
+//                        $('iframe#page_templates-app-id',window.parent.document).attr("src",url);
+//                        pagetemplateeditClickBinding(this);
 //        }
 //        else
 //            {
@@ -336,7 +348,8 @@ function bind_versions_links() {
         result_test = data;
         console.log(status);
         
-        $("div#best_in_place_page_title").text(data["title"]);
+        $("div#best_in_place_page_template_title").text(data["title"]);
+        $("div#best_in_place_page_template_description").text(data["title"]);
         tinyMCE.activeEditor.setContent(data["body"]);
         console.log(this);
         console.log($(this).text());
@@ -353,19 +366,6 @@ function bind_versions_links() {
 
 }
 
-function set_up_save_callback() {
-
-    $("form.edit_page")
-            .on("ajax:success", function (event, data, status, xhr) {
-             //   console.log(event);
-             //   console.log(data["notice"]);
-              //  console.log(status);
-             //   console.log(xhr);
-                setUpPurrNotifier("Attention", data["notice"]);
-                $('iframe.preview').attr("src", $('iframe.preview').attr("src"));
-
-            });
-}
 
 $(document).off('focusin').on('focusin', function(e) {
     if ($(event.target).closest(".mce-window").length) {

@@ -8,6 +8,15 @@
 <%=  page_info(@page) %>
 <%= tinymce_assets %>
 
+<p> 
+                <b>Version: (looking at version: <span class="inline-item" id="version-number"><%=params[:version].blank? ? "current" : params[:version] %></span>)</b><br>
+                     <%=link_to((params[:version]==@page.versions.last.number.to_s) ? "(#{@page.versions.last.number})":@page.versions.last.number , {:version=>@page.versions.last.number, :format => :json},:remote=>true, :class=>'version-info') rescue "No Versions Found!"%>
+                <% @page.versions.reverse.each do |page| %>
+                  | <%=link_to((params[:version]==(page.number-1).to_s) ? "(#{page.number-1})":page.number-1 , {:version=>page.number-1, :format => :json},:remote=>true, :class=>'version-info') %> 
+                <% end %>
+                </br>
+            </p>
+            
 <div id="page-tabs">
     <ul>
         <li><a href="#information-tab">Information</a></li>
@@ -18,16 +27,7 @@
     <div id="information-tab">
         <div class="cms-content">
 
-            <p> 
-                <b>Version: (looking at version: <span class="inline-item" id="version-number"><%=params[:version].blank? ? "current" : params[:version] %></span>)</b><br>
-                     <%=link_to((params[:version]==@page.versions.last.number.to_s) ? "(#{@page.versions.last.number})":@page.versions.last.number , {:version=>@page.versions.last.number, :format => :json},:remote=>true, :class=>'version-info') rescue "No Versions Found!"%>
-                <% @page.versions.reverse.each do |page| %>
-                  | <%=link_to((params[:version]==(page.number-1).to_s) ? "(#{page.number-1})":page.number-1 , {:version=>page.number-1, :format => :json},:remote=>true, :class=>'version-info') %> 
-                <% end %>
-                </br>
-            </p>
-            </br>
-
+    
             <p>
                 <b>Title:</b><br>
                 <%=editablefieldcreate("title", @page)%>
@@ -129,7 +129,7 @@
 
 <%#= text_area_tag :body, @page.body, :id => "page[body]", :class => "tinymce", :rows => 40, :cols => 120 %>
 
-            <%=form_for(@page, :remote=>true, :id=>"page-body") do |f| %>
+            <%=form_for(@page, :remote=>true, :id=>"page-body", :format=>:json) do |f| %>
               <%= f.submit "Update", :class=>"hidden-item"%><br>
 
               <center>

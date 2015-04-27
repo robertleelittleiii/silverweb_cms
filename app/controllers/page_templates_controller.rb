@@ -46,13 +46,17 @@ class PageTemplatesController < ApplicationController
     @page_template = PageTemplate.find(params[:id])
     
     @page_template.revert_to(params[:version].to_i) if params[:version]
-
+    
+    respond_to do |format|
+      format.html 
+      format.json  { render :json => @page_template, :status => :created, :location => @page_template }
+    end
   end
 
   # POST /page_templates
   # POST /page_templates.json
   def create
-    @page_template = PageTemplate.new(user_attribute_params)
+    @page_template = PageTemplate.new(page_template_params)
 
     respond_to do |format|
       if @page_template.save
@@ -71,9 +75,9 @@ class PageTemplatesController < ApplicationController
     @page_template = PageTemplate.find(params[:id])
 
     respond_to do |format|
-      if @page_template.update_attributes(user_attribute_params)
+      if @page_template.update_attributes(page_template_params)
         format.html { redirect_to(:action =>"edit", :notice => 'Page Template was successfully updated.') }
-        format.json { head :ok }
+        format.json { render :json=> {:notice => 'Page Template was successfully updated.'} }
       else
         format.html { render :action=>"edit" }
         format.json { render :json=>@page_template.errors, :status=>"unprocessable_entry" }
@@ -98,6 +102,8 @@ class PageTemplatesController < ApplicationController
 
   def create_empty_record
     @page_template = PageTemplate.new
+    @page_template.title="new template"
+    @page_template.description= "new template description"
     @page_template.save
     
     redirect_to(:controller=>:page_templates, :action=>:edit, :id=>@page_template)
@@ -109,7 +115,52 @@ class PageTemplatesController < ApplicationController
     @last_page_template = @page_templates.last
   end
   
+  def page_template_table
+    @objects = current_objects(params)
+    @total_objects = total_objects(params)
+    render :layout => false
+  end
+  
+  def insert 
+        @page_template = PageTemplate.find(params[:id])
+
+  end
+  
   private
+  def current_objects(params={})
+    current_page = (params[:iDisplayStart].to_i/params[:iDisplayLength].to_i rescue 0)+1
+    @current_objects = PageTemplate.page(current_page).per(params[:iDisplayLength]).order("#{datatable_columns(params[:iSortCol_0])} #{params[:sSortDir_0] || "DESC"}").where(conditions(params))
+  end
+  
+
+  def total_objects(params={})
+    @total_objects = PageTemplate.where(conditions(params)).count()
+  end
+
+  def datatable_columns(column_id)
+    puts(column_id)
+    case column_id.to_i
+    when 0
+      return "`page_templates`.`id`"
+    when 1
+      return "`page_templates`.`title`"
+    else
+      return "`page_templates`.`body`"
+    end
+  end
+
+      
+  def conditions(params={})
+    
+    conditions = []
+   
+    conditions << "(page_templates.id LIKE '%#{params[:sSearch]}%' OR
+       page_templates.title LIKE '%#{params[:sSearch]}%' OR 
+       page_templates.body LIKE '%#{params[:sSearch]}%')" if(params[:sSearch])
+    return conditions.join(" AND ")
+    
+    
+  end
   
   def page_template_params
     params[:page_template].permit( "title", "description", "body")

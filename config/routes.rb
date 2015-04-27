@@ -46,6 +46,9 @@ Rails.application.routes.draw do
     collection do
       get "create_empty_record"
       get "template_list"
+      get "index"
+      get "page_template_table"
+      get "insert"
     end
   end
   

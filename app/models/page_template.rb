@@ -1,6 +1,6 @@
 class PageTemplate < ActiveRecord::Base
   
-    versioned only: [:title, :body]
+    versioned only: [:title, :description, :body]
 
   
   

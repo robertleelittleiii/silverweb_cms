@@ -1,40 +1,86 @@
+<div class="hidden-item">
+    <div id="as_window"><%=params[:request_type]=="window"%></div>
+    <div id="dialog-height">650</div>
+    <div id="dialog-width">1050</div>
+    <div id="dialog-name">Edit Page Template</div>
 
-  <div class="hidden-item">
-    <div id="page-template-id"><%=@page_template.id%></div>
-  </div>
+</div>
 
-  <div class="cms-block" Align="Left">
-    <div align="center">
-      <!-- START:flash -->
-      <% if notice -%>
-        <div id="notice"><%= notice  %></div>
-      <% end -%>
-      <!-- END:flash -->
+<%=  page_template_info(@page_template) %>
+<%= tinymce_assets %>
 
-      <% if @page_template.errors.any? %>
-        <div id="error_explanation">
-          <h2><%= pluralize(@page_template.errors.count, "error") %> prohibited this page_template from being saved:</h2>
+<p> 
+                    <b>Version: (looking at version: <span class="inline-item" id="version-number"><%=params[:version].blank? ? "current" : params[:version] %></span>)</b><br>
+                         <%=link_to((params[:version]==@page_template.versions.last.number.to_s) ? "(#{@page_template.versions.last.number})":@page_template.versions.last.number , {:version=>@page_template.versions.last.number, :format => :json},:remote=>true, :class=>'version-info') rescue "No Versions Found!"%>
+                    <% @page_template.versions.reverse.each do |page_template| %>
+                      | <%=link_to((params[:version]==(page_template.number-1).to_s) ? "(#{page_template.number-1})":page_template.number-1 , {:version=>page_template.number-1, :format => :json},:remote=>true, :class=>'version-info') %> 
+                    <% end %>
+                    </br>
+                </p>
+                
+<div id="page-template-tabs">
+    <ul>
+        <li><a href="#information-tab">Information</a></li>
+        <li><a href="#body-tab">Body</a></li>
+    </ul>
+    <div id="information-tab">
+        <div class="cms-section">
+            <div class="cms-heading">Information</div>
+            <div class="cms-content">
+                  
 
-          <ul>
-            <% @page_template.errors.full_messages.each do |msg| %>
-              <li><%= msg %></li>
-            <% end %>
-          </ul>
+                </br>
+
+                <p>
+                    <b>Title:</b><br>
+                    <%=editablefieldcreate("title", @page_template)%>
+                </p>
+
+                <p>
+                    <b>Description:</b><br>
+                    <%=editablefieldcreate("description", @page_template)%>
+                </p>
+
+            </div>
         </div>
-      <% end %>
-
     </div>
 
-  <h1 class="cms-header">Edit Page Template</h1>
 
-        <%= render 'form' %>
 
-      </p>
+
+    <div id="body-tab">
+        <div class="cms-content">
+
+<%#= text_area_tag :body, @page_template.body, :id => "page[body]", :class => "tinymce", :rows => 40, :cols => 120 %>
+
+            <%=form_for(@page_template, :remote=>true, :id=>"page-template-body",:format=>"json") do |f| %>
+              <%= f.submit "Update", :class=>"hidden-item"%><br>
+
+              <center>
+                  <%= f.text_area :body, :class => "tinymce-page-template" , :rows => "80", :cols => "120" %>
+                  <%= tinymce_settings(:default,{mode: "exact", selector: "textarea.tinymce-page-template", save_onsavecallback: "mysave", height: "375", width: "950", init_instance_callback: "tinyMcePostInit"})%>   
+  <%#= tinymce :default, mode: "exact", selector: "textarea.tinymce-page-template" ,save_onsavecallback: "mysave", height: "375", width: "950", init_instance_callback: "tinyMcePostInit"%>
+              </center>
+              <br>
+            <% end %>
+            <div class="hidden-item">
+                <%= form_for Picture.new, :html => {:multipart => true, id: "picture-paste-page"} do |f| %>
+                  <span class="btn btn-success fileinput-button">
+                      <i class="glyphicon glyphicon-plus"></i>
+                      <span><%=image_tag("interface/browse.png", :id=>"file-button") %> </span>
+                      <!-- The file input field used as target for the file upload widget -->
+                      <%= f.file_field :image, :multiple=>true , :name=>"picture[image]" %>
+                  </span>
+                <% end %>
+            </div>
+            <script id="template-upload" type="text/x-tmpl">
+                <div class="upload">
+                {%=o.name%}
+                <div class="progress"><div class="bar" style="width: 0%"></div></div>
+                </div>
+            </script>
+        </div>
+
     </div>
-
-  <p> <%= link_to '<< Back', request.env['HTTP_REFERER'], :class=>"button-link" %></p>
-
-
-
-
+</div>
 

@@ -102,7 +102,7 @@ class PagesController < ApplicationController
     respond_to do |format|
       if @page.update_attributes(page_params)
         format.html { redirect_to(:action =>"edit", :notice => 'Page was successfully updated.') }
-        format.json  { head :ok }
+        format.json { render :json=> {:notice => 'Page was successfully updated.'} }
       else
         format.html { render :action => "edit" }
         format.json  { render :json => @page.errors, :status => :unprocessable_entity }
@@ -224,7 +224,7 @@ class PagesController < ApplicationController
     
   end
   
-  private
+
 def page_params
   params[:page].permit( "title", "body", "in_menu", "menu_local", "full_screen", "has_slider", "slider_height", "slider_width", "meta_description", "meta_keywords", "meta_robot", "template_name", "secure_page", "dialog_width", "dialog_height", "slider_show_nav", "page_style","page_table")
 end

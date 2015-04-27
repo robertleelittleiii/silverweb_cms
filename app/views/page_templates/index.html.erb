@@ -1,3 +1,12 @@
+<div class="hidden-item">
+    <div id="as_window"><%=params[:request_type]=="window"%></div>
+    <div id="dialog-height">650</div>
+    <div id="dialog-width">1050</div>
+    <div id="dialog-name">Page Template Manager</div>
+</div>
+
+<%=page_attr_display(nil,"true") %>
+
 <div class="cms-block">
   <div align="center">
     <!-- START:flash -->
@@ -8,29 +17,14 @@
   </div>
 
   <div id="site-pref-list">
-    <h1  class="cms-header">Page template</h1>
+   <!-- <h1  class="cms-header">Site Pages</h1> -->
 
-    <center><%= link_to 'New Page template', :action=>:create_empty_record,:typeofrecord=>"page_template" %></center>
-
-    <%  @page_templates.each do |page_template| %>
-      <div class="hr"></div>
-      <table width ="100%"cellpadding="5" cellspacing="0">
-        <tr class="list-table" valign="top" class="<%= cycle('list-line-odd', 'list-line-even') %>"  onclick = "window.location.href ='<%=url_for(:controller => 'page_templates', :id => page_template.id,  :action => 'edit')%>' "  style = "cursor:pointer" >
-                      <td align="left">
-    <span class="list-title"><%= page_template.title %></span>
-          </td>
-                   <td align="left">
-    <span class="list-title"><%= page_template.description %></span>
-          </td>
-          
-        </tr>
-      </table>
-      <div align="right" class="image-delete-list" >
-        <%=link_to image_tag ("interface/Button-Delete.png", :border=>"0") , page_template,:on_click=>"", :confirm => 'Are you sure?', :method => :delete %>
-      </div>
-    <% end %>
-    <div class="hr"></div>
-
+     <%=link_to 'New Templage',{ :action=>:create_empty_record,:typeofrecord=>"PageTemplage"}, :class=>"button-link" ,:id=>"new-page", :remote=>true%>
+   
+    <p>
+      </br>
+      </br>
+    </p>
+      <%=render(:partial=>"page_template_data_table") %>
   </div>
-    <center><%= link_to 'New Page template', :action=>:create_empty_record,:typeofrecord=>"page_template" %></center>
 </div>
