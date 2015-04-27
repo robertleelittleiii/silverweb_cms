@@ -26,7 +26,18 @@ $(document).ready(function () {
 
 
 function pages_edit_callDocumentReady() {
-    $("#page-tabs").tabs();
+    $("#page-tabs").tabs({
+        activate: function (event, ui) {
+            if ($(ui.newTab[0]).find('a').text() == "Live Preview")
+            {
+                console.log("updated!")
+                $('iframe.preview').each(function () {
+                    this.contentWindow.location.reload(true)
+                });
+            }
+
+        }
+    });
     loadCustomCSS();
     activate_scroller_sort();
     set_up_delete_slider_callback();
@@ -47,8 +58,9 @@ function pages_edit_callDocumentReady() {
     //   })
 
     // setTimeout(function(){bind_file_paste_to_upload_form();},2000); 
-bind_versions_links();
-set_up_save_callback();
+    bind_versions_links();
+    set_up_save_callback();
+// do a quick frame reload to make it work.
 }
 
 
@@ -335,17 +347,17 @@ function bind_versions_links() {
         console.log(data);
         result_test = data;
         console.log(status);
-        
+
         $("div#best_in_place_page_title").text(data["title"]);
         tinyMCE.activeEditor.setContent(data["body"]);
         console.log(this);
         console.log($(this).text());
-        $("a.version-info").each(function(item) {
+        $("a.version-info").each(function (item) {
             $(this).removeClass('selected');
         });
         $(this).addClass('selected');
         $("span#version-number").text($(this).text());
-        
+
         setUpPurrNotifier("Notice", "Version Loaded!'");
     }).bind('ajax:error', function (evt, xhr, status, error) {
         setUpPurrNotifier("Error", "Version load failed!'");
@@ -357,17 +369,17 @@ function set_up_save_callback() {
 
     $("form.edit_page")
             .on("ajax:success", function (event, data, status, xhr) {
-             //   console.log(event);
-             //   console.log(data["notice"]);
-              //  console.log(status);
-             //   console.log(xhr);
+                //   console.log(event);
+                //   console.log(data["notice"]);
+                //  console.log(status);
+                //   console.log(xhr);
                 setUpPurrNotifier("Attention", data["notice"]);
                 $('iframe.preview').attr("src", $('iframe.preview').attr("src"));
 
             });
 }
 
-$(document).off('focusin').on('focusin', function(e) {
+$(document).off('focusin').on('focusin', function (e) {
     if ($(event.target).closest(".mce-window").length) {
         e.stopImmediatePropagation();
         console.log("worked!");
