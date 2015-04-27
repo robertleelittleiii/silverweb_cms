@@ -59,16 +59,17 @@ $(document).ready(function () {
      }
      
      //fix for issue with popup dialog and tinymce
-     $(document).on('focusin', function(e) {
-    if ($(e.target).closest(".mce-window").length || $(e.target).closest(".moxman-window").length) {
-        e.stopImmediatePropagation();
-    }
-});
+//$(document).on('focusin', function(e) {
+//    if ($(e.target).closest(".mce-window").length || $(e.target).closest(".moxman-window").length) {
+//        e.stopImmediatePropagation();
+//    }
+//});
 });
 
-$(document).on('focusin', function(e) {
+$(document).off('focusin').on('focusin', function(e) {
     if ($(event.target).closest(".mce-window").length) {
         e.stopImmediatePropagation();
+        console.log("worked!");
     }
 });
 
