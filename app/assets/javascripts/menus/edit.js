@@ -233,3 +233,10 @@ function render_pictures(picture_id) {
     });
 
 }
+
+$(document).off('focusin').on('focusin', function (e) {
+    if ($(event.target).closest(".mce-window").length) {
+        e.stopImmediatePropagation();
+        console.log("worked!");
+    }
+});
