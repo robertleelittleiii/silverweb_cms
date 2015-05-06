@@ -8,28 +8,34 @@ Gem::Specification.new do |s|
   s.name        = "silverweb_cms"
   s.version     = SilverwebCms::VERSION
   s.authors     = ["Robert Lee Little III"]
-  s.email       = ["robertleelittle@gmail.com"]
-  s.homepage    = "TODO"
-  s.summary     = "TODO: Summary of SilverwebCms."
-  s.description = "TODO: Description of SilverwebCms."
+  s.email       = ["rob@silverwebsystems.com"]
+  s.homepage    = "http://www.silverwebsystems.com/"
+  s.summary     = "This is a baseline CMS system built by silverwebs sytems"
+  s.description = "This CMS alows for Menus and Pages object.  Each page can have sliders.  Also has a built in secutiy model (Model/controller/Action Roles/Rules)"
   s.license     = "MIT"
 
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.rdoc"]
   s.test_files = Dir["test/**/*"]
 
-  s.add_dependency 'jquery-ui-rails'
-  s.add_dependency "rails", "~> 4.2.0"
-  s.add_dependency "tinymce-rails"
-  s.add_dependency 'vestal_versions'
-  s.add_dependency "acts-as-taggable-on"
-  s.add_dependency "rails-settings-cached", "0.4.1"
-  s.add_dependency 'carrierwave'
-  s.add_dependency 'rmagick'
-  s.add_dependency 'kaminari'
-  s.add_dependency 'jquery-fileupload-rails'
-  s.add_dependency 'rails-settings-cached'
-  s.add_dependency 'jquery-turbolinks'
-  s.add_dependency 'rack-mini-profiler'
+  s.add_runtime_dependency "tinymce-rails"
+
+  s.add_runtime_dependency "rails", '~> 4.2', '>= 4.2.0'
+  s.add_runtime_dependency 'jquery-rails','~> 4.0', '>= 4.0.3'
+  s.add_runtime_dependency 'rmagick','~> 2.15', '>= 2.15.0'
+
+  s.add_runtime_dependency 'jquery-ui-rails'
+  s.add_runtime_dependency 'jquery-fileupload-rails'
+  s.add_runtime_dependency 'turbolinks', '~> 2.5', '>= 2.5.3'
+  s.add_runtime_dependency 'jquery-turbolinks','~> 2.1', '>= 2.1.0'
+  s.add_runtime_dependency 'railties'
+
+  s.add_runtime_dependency 'vestal_versions', '~> 2.0', '>= 2.0.0' 
+  s.add_runtime_dependency "acts-as-taggable-on", '~> 3.5', '>= 3.5.0'
+  # s.add_dependency "rails-settings-cached", "0.4.1"
+  s.add_runtime_dependency 'rails-settings-cached', '0.4.1' 
+  s.add_runtime_dependency 'carrierwave'
+  s.add_runtime_dependency 'kaminari'
+  s.add_runtime_dependency 'rack-mini-profiler'
   
   s.add_development_dependency "mysql"
 end
