@@ -246,10 +246,11 @@ class ImageUploader < CarrierWave::Uploader::Base
 end
 
      # try to load local initializers for the image uploader.
-     begin 
-       load Rails.root.join('config', 'initializers', 'image_uploader.rb') 
-     rescue 
-     end
+     image_uploader_additions = Rails.root.join('config', 'initializers', 'image_uploader.rb')
+    if File.exist?(image_uploader_additions) then
+             load  image_uploader_additions
+    end
+    
 
 
   def validate_integrity
