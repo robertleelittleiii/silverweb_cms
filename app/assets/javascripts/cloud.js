@@ -673,7 +673,7 @@ function bindAppClick() {
         console.log(this.href);
 
         requireCss(theController + "/" + theAction + ".css");
-        require(theController + "/" + ( theAction=='index' ? 'index+' : theAction )+ ".js");
+        require(theController + "/" + ( theAction=='index' ? 'index' : theAction )+ ".js");
 
         console.log(theController + "_" + theAction + "_callDocumentReady");
         
