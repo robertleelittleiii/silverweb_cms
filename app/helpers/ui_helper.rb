@@ -36,7 +36,7 @@
     stylesheet = "#{params[:controller]}.css"
     stylesheet_path = Rails.application.assets.find_asset(stylesheet)
 
-    stylesheetaction = "#{params[:controller]}/#{params[:action]=="index" ? "index" : params[:action]}.css"
+    stylesheetaction = "#{params[:controller]}/#{params[:action]=="index" ? "index_" : params[:action]}.css"
     stylesheetaction_path = Rails.application.assets.find_asset(stylesheetaction)
 
     stylesheet_return = ""
@@ -60,7 +60,7 @@
     javascript = "#{params[:controller]}.js"
     javascript_path = Rails.application.assets.find_asset(javascript)
 
-    javascriptaction = "#{params[:controller]}/#{params[:action]=="index" ? "index+" : params[:action]}.js"
+    javascriptaction = "#{params[:controller]}/#{params[:action]=="index" ? "index_" : params[:action]}.js"
     javascriptaction_path = Rails.application.assets.find_asset(javascriptaction)
 
     javascript_return = ""
