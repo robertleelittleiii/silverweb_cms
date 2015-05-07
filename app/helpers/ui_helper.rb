@@ -49,6 +49,12 @@
       stylesheet_return = stylesheet_return + " " + (stylesheet_link_tag stylesheetaction) rescue ""
     end
     
+     if not @style_sheet_custom.nil? and not @style_sheet_custom.blank?  then
+        custom_stylesheet = "#{params[:controller]}/#{@style_sheet_custom}"
+        custom_stylesheet_path = Rails.application.assets.resolve(custom_stylesheet)
+        stylesheet_return <<  (stylesheet_link_tag(custom_stylesheet)) if  custom_stylesheet_path != nil
+     end
+     
     return stylesheet_return.html_safe if not stylesheet_return.blank?
     
   end
@@ -75,6 +81,13 @@
     if javascriptaction_path != nil and (javascript_path != javascriptaction_path) then
       javascript_return = javascript_return + " " + (javascript_include_tag(javascriptaction))rescue ""
     end
+    
+  
+     if not @java_script_custom.nil? and not @java_script_custom.blank?  then
+        custom_javascriptaction = "#{params[:controller]}/#{@java_script_custom}"
+        custom_javascriptaction_path = Rails.application.assets.resolve(custom_javascriptaction)
+        javascript_return <<  (javascript_include_tag(custom_javascriptaction)) if  custom_javascriptaction_path != nil
+     end
     
     return javascript_return.html_safe if not javascript_return.blank?
 

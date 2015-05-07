@@ -1,14 +1,18 @@
-    <!-- controller/action based style sheet and javascript -->
-     
-    <%= favicon_link_tag 'favicon.ico' %>
-    <%= show_meta_page_data(@page) %>
-    
-    <title><%=Settings.company_name%> : <%=get_page_title%></title>
-    
-    <%=controller_stylesheet_link_tag%>
-    <%=controller_javascript_include_tag%>
-    <%#=javascript_include_tag "silverweb_cms", 'data-turbolinks-track' => true %>
-    <%#=stylesheet_link_tag "silverweb_cms", 'data-turbolinks-track' => true %>
-    <%#=stylesheet_link_tag "pages.css"%>
-    
-    <%= add_google_analytics%>
+<!-- controller/action based style sheet and javascript -->
+
+<%= favicon_link_tag 'favicon.ico' %>
+<%= show_meta_page_data(@page) %>
+
+<title><%=Settings.company_name%> : <%=get_page_title%></title>
+<!-- controler stylesheets -->
+<%=controller_stylesheet_link_tag%>
+<!-- controler javascripts -->
+
+<%=controller_javascript_include_tag%>
+<!-- end controler javascripts -->
+
+<%#=javascript_include_tag "silverweb_cms", 'data-turbolinks-track' => true %>
+<%#=stylesheet_link_tag "silverweb_cms", 'data-turbolinks-track' => true %>
+<%#=stylesheet_link_tag "pages.css"%>
+
+<%= add_google_analytics%>
