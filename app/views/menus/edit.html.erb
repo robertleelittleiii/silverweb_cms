@@ -33,12 +33,13 @@ end %>
 
       <div class="imagesection">
           <!-- START:hidden_div -->
-          <%= hidden_div_if(@menu.pictures.empty?, :id => "images") %>
+          <%= hidden_div_if((@menu.pictures.empty?) , :id=>"images") %>
+
           <%= render(:partial => "/pictures/picture_list", :object => @menu.pictures) %>
           <%="</div>".html_safe %>
 
 
-          <%= hidden_div_if(@menu.pictures.count >0, :id => "imagebutton") %>
+          <%= hidden_div_if(@menu.pictures.count > 0, :id => "imagebutton") %>
           <%= render(:partial => "/pictures/upload_button_multi") %>
           <%#=  render(:partial => "/pictures/upload_button")%>
           <%="</div>".html_safe %>
