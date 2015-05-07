@@ -1,7 +1,7 @@
 module SilverwebCms
  #include 'tinymce-rails'
  require 'tinymce-rails'
- require 'jquery-turbolinks'
+ #require 'jquery-turbolinks'
  require 'jquery-fileupload-rails'
  require 'kaminari'
  require 'jquery-ui-rails'
@@ -10,7 +10,7 @@ module SilverwebCms
  # require 'RFC822'
  
   class Engine < ::Rails::Engine
-    require 'jquery-turbolinks'
+  #  require 'jquery-turbolinks'
     require 'acts-as-taggable-on'
     require 'carrierwave'
     require 'rails-settings-cached'
