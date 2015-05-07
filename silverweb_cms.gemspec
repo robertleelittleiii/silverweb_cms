@@ -25,8 +25,8 @@ Gem::Specification.new do |s|
 
   s.add_runtime_dependency 'jquery-ui-rails'
   s.add_runtime_dependency 'jquery-fileupload-rails'
-  s.add_runtime_dependency 'turbolinks', '~> 2.5', '>= 2.5.3'
-  s.add_runtime_dependency 'jquery-turbolinks','~> 2.1', '>= 2.1.0'
+  #  s.add_runtime_dependency 'turbolinks', '~> 2.5', '>= 2.5.3'
+  # s.add_runtime_dependency 'jquery-turbolinks','~> 2.1', '>= 2.1.0'
   s.add_runtime_dependency 'railties'
 
   s.add_runtime_dependency 'vestal_versions', '~> 2.0', '>= 2.0.0' 
