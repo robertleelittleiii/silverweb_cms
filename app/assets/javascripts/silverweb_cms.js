@@ -11,7 +11,7 @@
 // about supported directives.
 //
 //= require jquery
-//= require jquery.turbolinks
+//# require jquery.turbolinks
 //= require jquery-ui
 //= require jquery_ujs
 //= require jquery.autoGrowInput
@@ -29,7 +29,7 @@
 //= require cloud
 //= require jquery.slides
 //= require superfish
-//= require turbolinks
+//# require turbolinks
 
 //
 
