@@ -156,3 +156,9 @@ function initTinyMCESlider() {
       tinyMCE.init(tinymce_config)
   }
   
+  $(document).off('focusin').on('focusin', function (e) {
+    if ($(event.target).closest(".mce-window").length) {
+        e.stopImmediatePropagation();
+        console.log("worked!");
+    }
+});
