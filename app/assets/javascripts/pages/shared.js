@@ -44,6 +44,9 @@ function pageeditClickBinding(selector) {
                 });
                 
                 require("pages/edit.js");
+                requireCss("pages/edit.css");
+                requireCss("pages.css");
+
                 pages_edit_callDocumentReady();
                 page_edit_dialog.dialog('open');
 
