@@ -1,25 +1,5 @@
 
-
-<p>
-    <b>File Name: </b>
-    <%=@picture.image.current_path.split("/").last%>
-</p>
-      <p>
-        <b>title:</b><br>
-        <%=editablefieldcreate("title", @picture)%>
-      </p>
-
-
-
       <p>
         <b>Description:</b><br>
         <%=editablefieldcreate("description", @picture)%>
       </p>
-
-
-
-      <p>
-        <b>image:</b><br>
-        <%=editablefieldcreate("image", @picture)%>
-      </p>
-

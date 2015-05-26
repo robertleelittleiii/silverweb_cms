@@ -1,9 +1,9 @@
 <div class="hidden-item" id="picture-id"><%=@picture.id%></div>
 <div class="hidden-item">
     <div id="as_window"><%=params[:as_window]%></div>
-    <div id="dialog-height">300</div>
+    <div id="dialog-height">200</div>
     <div id="dialog-width">600</div>
-    <div id="dialog-name">Edit Picture</div>
+    <div id="dialog-name">Edit Picture (<%=@picture.image.current_path.split("/").last%>)</div>
 </div>
 
 <div class="cms-block" Align="Left">
@@ -33,7 +33,6 @@
     <% end %>
 
     <div class="cms-section">
-        <div class="cms-heading">Information for picture</div>
         <div class="cms-content">
 
             <%= render 'form' %>

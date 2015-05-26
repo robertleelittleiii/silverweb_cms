@@ -198,7 +198,37 @@ function popUpAlertifExists()
 
 }
 
-
+function setUpNotifier(icon, headline, message)
+{
+    var notice = ''
+            + '<div id="notify-container" style="display:none">'
+            + '<div id="notice-body">'
+            + '<a class="ui-notify-close ui-notify-cross" href="#">x</a>'
+            + '<div style="float:left;margin:0 10px 0 0; min-height:50px;">'
+            + '<div class="info-icon" style="float:left;margin:0 10px 0 0; min-height:50px;">'
+//            + '<img src="/assets/interface/#{icon}" height="38" alt="warning">'
+            + '</div>'
+            + '<h1>#{title}</h1>'
+            + '<p>#{text}</p>'
+            + '</div>'
+            + '</div>';
+    if (message.length > 1)
+    {
+        if ($("#notify-container").length == 0)
+        {
+            $("body").append($(notice));
+        }
+        $("#notify-container").notify({
+            //  expires: false,
+            //  speed: 1000
+        });
+        $("#notify-container").notify("create", "notice-body", {
+            title: headline,
+            text: message,
+            icon: icon
+        });
+    }
+}
 
 function setUpPurrNotifier(headline, message)
 {

@@ -1,10 +1,10 @@
 module TinymceHelper
   
-  def tinymce_settings(setting_name=:default,opts={} )
+  def tinymce_settings(setting_name=:default,jscript_name="tinymce_config",opts={} )
   out = ""
   out << "<script>"+ "\n"
   out << "//<![CDATA[" + "\n"
-  out << "tinymce_config = " + tinymce_configuration(setting_name,opts).to_javascript + "\n"
+  out << jscript_name + " = " + tinymce_configuration(setting_name,opts).to_javascript + "\n"
   out << "//]]>"+ "\n"
   out << "</script>"+ "\n"
   

@@ -1,5 +1,7 @@
 class SiteController < ApplicationController
 
+  require "silverweb_cms/base"
+
   helper ApplicationHelperSiteSpecific rescue ""
   
   before_filter :find_cart, :except => :empty_cart

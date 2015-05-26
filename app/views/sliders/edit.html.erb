@@ -51,7 +51,7 @@
 
               <center>
                   <%= f.text_area :slider_content, :class => "tinymce-slider" , :rows => "80", :cols => "120" %>
-                  <%= tinymce_settings(:default,{mode: "exact", selector: "textarea.tinymce-slider", save_onsavecallback: "mysave", height: "250", width: "950", init_instance_callback: "tinyMcePostInit"})%>   
+                  <%= tinymce_settings(:default,"tinymce_config",{mode: "exact", selector: "textarea.tinymce-slider", save_onsavecallback: "mysave", height: "250", width: "950", init_instance_callback: "tinyMcePostInit"})%>   
 <%#= TinyMCE::Rails.configuration["default"].to_javascript %>
                   <%#= tinymce :default, mode: "exact", selector: "textarea.tinymce-slider", save_onsavecallback: "mysave", height: "375", width: "950", init_instance_callback: "tinyMcePostInit"%>
               </center>

@@ -9,15 +9,7 @@
  <%="<div id='grid-nav'>".html_safe%>
 
    <%=generate_grid_tabnav({:grid_div_class=>"grid_tabnav", :grid_div_id=>"grid_tabnav",:grid_ul_class=>"",:grid_ul_id=>"",:grid_li_class=>"icon-button"},
-         [{:name=>"Home", :controller=>'admin', :action=>'index'}, 
-      {:name=>"Settings",:controller=>'admin', :action=>'site_settings'}, 
-      {:name=>"Users",:controller=>'admin', :action=>'user_administration'}, 
-      {:name=>"Menu", :controller=>'menus', :action=>'index'}, 
-      {:name=>"Pages",:controller=>'pages', :action=>'index'}, 
-      {:name=>"Page Templates",:controller=>'page_templates', :action=>'index'}, 
-      {:name=>"Rights", :controller=>'rights', :action=>'index'}, 
-      {:name=>"Roles", :controller=>'roles', :action=>'index'}, 
-     ])%>
+         SilverwebCms::Config.GRID_NAV)%>
   <%="</div>".html_safe%>
 
 

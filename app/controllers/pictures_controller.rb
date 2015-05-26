@@ -88,8 +88,8 @@ class PicturesController < ApplicationController
    
   end
   
-   # CREATE_EMPTY_RECORD /pictures/1
-   # CREATE_EMPTY_RECORD /pictures/1.json
+  # CREATE_EMPTY_RECORD /pictures/1
+  # CREATE_EMPTY_RECORD /pictures/1.json
 
   def create_empty_record
     @picture = Picture.new
@@ -100,10 +100,28 @@ class PicturesController < ApplicationController
   
   
   def render_picture
+    class_name =  params[:class_name]
+
     @picture = Picture.where(id: params[:id]).first
-    render :partial=>"/pictures/picture_view.html"   
+    if class_name.blank? then
+      render :partial=>"/pictures/picture_view.html" 
+    else
+      render :partial=> class_name.downcase + "s" + "/picture_view.html" 
+    end
   end
   
+  def render_pictures
+    class_name =  params[:class_name]
+  
+    @pictures = class_name.classify.constantize.where(id: params[:id]).first.pictures
+    
+    if class_name.blank? then
+      render(:partial=>"/pictures/picture_list.html", locals: {picture_list: @pictures} )
+    else
+      render(:partial=> class_name.downcase + "s" + "/picture_list.html", locals: {picture_list: @pictures} )
+    end
+    
+  end
   
   def download_file
     @picture = Picture.find(params[:id])
@@ -120,11 +138,11 @@ class PicturesController < ApplicationController
   end
   
   
-    private
+  private
 
-def picture_params
+  def picture_params
   
-  params[:picture].permit( "title", "description", "position", "image", "resource_id", "resource_type")
-end
+    params[:picture].permit( "title", "description", "position", "image", "resource_id", "resource_type")
+  end
   
 end

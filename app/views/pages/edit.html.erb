@@ -9,14 +9,14 @@
 <%= tinymce_assets %>
 
 <p> 
-                <b>Version: (looking at version: <span class="inline-item" id="version-number"><%=params[:version].blank? ? "current" : params[:version] %></span>)</b><br>
-                     <%=link_to((params[:version]==@page.versions.last.number.to_s) ? "(#{@page.versions.last.number})":@page.versions.last.number , {:version=>@page.versions.last.number, :format => :json},:remote=>true, :class=>'version-info') rescue "No Versions Found!"%>
-                <% @page.versions.reverse.each do |page| %>
-                  | <%=link_to((params[:version]==(page.number-1).to_s) ? "(#{page.number-1})":page.number-1 , {:version=>page.number-1, :format => :json},:remote=>true, :class=>'version-info') %> 
-                <% end %>
-                </br>
-            </p>
-            
+    <b>Version: (looking at version: <span class="inline-item" id="version-number"><%=params[:version].blank? ? "current" : params[:version] %></span>)</b><br>
+         <%=link_to((params[:version]==@page.versions.last.number.to_s) ? "(#{@page.versions.last.number})":@page.versions.last.number , {:version=>@page.versions.last.number, :format => :json},:remote=>true, :class=>'version-info') rescue "No Versions Found!"%>
+    <% @page.versions.reverse.each do |page| %>
+      | <%=link_to((params[:version]==(page.number-1).to_s) ? "(#{page.number-1})":page.number-1 , {:version=>page.number-1, :format => :json},:remote=>true, :class=>'version-info') %> 
+    <% end %>
+    </br>
+</p>
+
 <div id="page-tabs">
     <ul>
         <li><a href="#information-tab">Information</a></li>
@@ -27,7 +27,7 @@
     <div id="information-tab">
         <div class="cms-content">
 
-    
+
             <p>
                 <b>Title:</b><br>
                 <%=editablefieldcreate("title", @page)%>
@@ -134,8 +134,8 @@
 
               <center>
                   <%= f.text_area :body, :class => "tinymce-page" , :rows => "80", :cols => "120" %>
-                  <%= tinymce_settings(:default,{mode: "exact", selector: "textarea.tinymce-page", save_onsavecallback: "mysave", height: "375", width: "950", init_instance_callback: "tinyMcePostInit"})%>   
-             <%#= tinymce :default, mode: "exact", selector: "textarea.tinymce-page" ,save_onsavecallback: "mysave", height: "375", width: "950", init_instance_callback: "tinyMcePostInit"%>
+                  <%= tinymce_settings(:default,"tinymce_config",{mode: "exact", selector: "textarea.tinymce-page", save_onsavecallback: "mysave", height: "375", width: "950", init_instance_callback: "tinyMcePostInit"})%>   
+  <%#= tinymce :default, mode: "exact", selector: "textarea.tinymce-page" ,save_onsavecallback: "mysave", height: "375", width: "950", init_instance_callback: "tinyMcePostInit"%>
               </center>
               <br>
             <% end %>

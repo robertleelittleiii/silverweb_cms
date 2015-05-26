@@ -6,7 +6,7 @@ module SilverwebCms
  require 'kaminari'
  require 'jquery-ui-rails'
  require 'non-stupid-digest-assets'
- 
+
  # require 'RFC822'
  
   class Engine < ::Rails::Engine

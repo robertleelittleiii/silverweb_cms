@@ -10,6 +10,8 @@ class Picture < ActiveRecord::Base
 
   #after_initialize :init
 
+    scope :visible,-> { where(:active_flag=>true).order('position desc')}
+
   
   # set the active_flag to be true by default for all images.
   #def init

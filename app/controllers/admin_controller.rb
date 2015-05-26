@@ -108,7 +108,7 @@ def user_administration
   end
   
   def update
-     eval("Settings." + params["settings"].first[0] + "='" + params["settings "].first[1] +"'"   )
+     eval("Settings." + params["settings"].to_a.first[0] + "='" + params["settings"].to_a.first[1] +"'"   )
   
   respond_to do |format|
       format.json  { head :ok }

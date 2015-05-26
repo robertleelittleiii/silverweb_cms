@@ -58,7 +58,7 @@
 
               <center>
                   <%= f.text_area :body, :class => "tinymce-page-template" , :rows => "80", :cols => "120" %>
-                  <%= tinymce_settings(:default,{mode: "exact", selector: "textarea.tinymce-page-template", save_onsavecallback: "mysave", height: "375", width: "950", init_instance_callback: "tinyMcePostInit"})%>   
+                  <%= tinymce_settings(:default,"tinymce_config",{mode: "exact", selector: "textarea.tinymce-page-template", save_onsavecallback: "mysave", height: "375", width: "950", init_instance_callback: "tinyMcePostInit"})%>   
   <%#= tinymce :default, mode: "exact", selector: "textarea.tinymce-page-template" ,save_onsavecallback: "mysave", height: "375", width: "950", init_instance_callback: "tinyMcePostInit"%>
               </center>
               <br>

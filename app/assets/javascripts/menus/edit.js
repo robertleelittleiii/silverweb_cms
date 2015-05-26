@@ -27,8 +27,8 @@ function menus_edit_callDocumentReady() {
     bindMenuMType();
     bind_file_upload_to_upload_form();
     ui_ajax_select();
-}
-;
+    requireCss("image_libraries/image_list.css");
+};
 
 
 function bindMenuRawhtml() {

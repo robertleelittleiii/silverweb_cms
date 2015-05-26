@@ -1,10 +1,10 @@
 
 <%picture=@picture if picture.blank?%>
 
-<div id="<%=picture.id%>" class="file-list-item">
+<div id="picture_<%=picture.id.to_s%>" data-id='image_<%=picture.id.to_s%>' class="file-list-item">
     <div class="file-delete-icon ui-icon ui-icon-closethick">
 <%#= link_to('X',{ :controller=>:pictures, :id=>picture.id, :action=>:destroy} , { :method => :delete, :confirm => 'Are you sure?' , :remote=>true})%>
-        <%= link_to 'X', picture,  method: :delete, remote:true, data: { confirm: "Are you sure?" }%>
+        <%= link_to 'X', picture,  method: :delete, remote:true, data: { confirm: "Are you sure?" }, class: 'picture-delete'%>
 
     </div> 
     <div class="file-item"> 

@@ -32,6 +32,7 @@ Rails.application.routes.draw do
       get "insert"
       get "render_picture"
       get "insert_image"
+      get "render_pictures"
     end
   end
   

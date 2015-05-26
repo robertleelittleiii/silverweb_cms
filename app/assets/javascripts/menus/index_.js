@@ -24,7 +24,7 @@ $(document).ready(function () {
 
 
 function menus_index_callDocumentReady() {
-
+    requireCss("menus.css");
     if (($.cookie('open_menu_list') == null) || ($.cookie('open_menu_list') == ""))
     {
         $.cookie('open_menu_list', "null");

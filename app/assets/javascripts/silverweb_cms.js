@@ -28,6 +28,7 @@
 //= require jquery-fileupload/vendor/tmpl
 //= require cloud
 //= require jquery.slides
+//= require jquery-ui-combobox
 //= require superfish
 //# require turbolinks
 
@@ -80,6 +81,7 @@ function enablePageEdit() {
         pageeditClickBinding("div#edit-pages");
     }
 }
+
 function enableSliderEdit() {
     if ($("#edit-slider").length > 0)
     {
