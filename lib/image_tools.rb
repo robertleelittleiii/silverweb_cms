@@ -1,6 +1,6 @@
 
   module ImageTools
-require 'RMagick'
+require 'rmagick'
 include Magick
 
 
