@@ -99,7 +99,7 @@ module  MenusHelper
           # class_options.merge!({:action => "show_page", :controller =>"site", :id=>menuItem.page_id})
           class_options = {}
           begin 
-            class_options = menuItem.page.title
+            class_options = "/" +  menuItem.page.title
             # class_options.merge!({:controller=>menuItem.page.title })
           rescue 
             class_options.merge!({:action => "show_page", :controller =>"site", :id=>menuItem.page_id})
@@ -117,7 +117,7 @@ module  MenusHelper
         puts("html_options: #{html_options}")
         puts("------------ ------------------- -------------------")
 
-        return_link =  link_to("/"+item_link_to, class_options, html_options)
+        return_link =  link_to(item_link_to, class_options, html_options)
         
       when "2"
         return_link = menuItem.rawhtml
