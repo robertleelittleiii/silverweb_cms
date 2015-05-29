@@ -13,7 +13,7 @@
     def add_google_analytics
     tracking_id = Settings.google_analytics
     if not tracking_id.blank? then
-      data = "<script type=\"text/javascript\">
+      data = "<script type=\"text/javascript\" async>
 
   var _gaq = _gaq || [];
   _gaq.push(['_setAccount', '#{tracking_id}']);
@@ -75,18 +75,18 @@
 
     # if File.exists?(File.join(Rails.root, '/assets/javascripts', javascript))
     if  javascript_path != nil then
-      javascript_return = javascript_include_tag(javascript) rescue ""
+      javascript_return = javascript_include_tag(javascript, :async => true) rescue ""
     end
 
     if javascriptaction_path != nil and (javascript_path != javascriptaction_path) then
-      javascript_return = javascript_return + " " + (javascript_include_tag(javascriptaction))rescue ""
+      javascript_return = javascript_return + " " + (javascript_include_tag(javascriptaction, :async => true))rescue ""
     end
     
   
      if not @java_script_custom.nil? and not @java_script_custom.blank?  then
         custom_javascriptaction = "#{params[:controller]}/#{@java_script_custom}"
         custom_javascriptaction_path = Rails.application.assets.resolve(custom_javascriptaction)
-        javascript_return <<  (javascript_include_tag(custom_javascriptaction)) if  custom_javascriptaction_path != nil
+        javascript_return <<  (javascript_include_tag(custom_javascriptaction,:async => true)) if  custom_javascriptaction_path != nil
      end
     
     return javascript_return.html_safe if not javascript_return.blank?
