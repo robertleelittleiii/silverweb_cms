@@ -117,7 +117,7 @@ module  MenusHelper
         puts("html_options: #{html_options}")
         puts("------------ ------------------- -------------------")
 
-        return_link =  link_to(item_link_to, class_options, html_options)
+        return_link =  link_to("/"+item_link_to, class_options, html_options)
         
       when "2"
         return_link = menuItem.rawhtml
