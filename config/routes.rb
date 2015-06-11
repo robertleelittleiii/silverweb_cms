@@ -149,6 +149,7 @@ resources :users do
       get "delete"
     end
   end
+  match '/spellchecker', :controller=>'spelling', :action => 'index', via: [:post]
   
   match  '/forgot', :controller => 'registration', :action => 'forgot', via: [:post]
   match  '/lost',                            :controller => 'registration',     :action => 'lost',  via: [:post]
