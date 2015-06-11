@@ -371,7 +371,7 @@ function ui_ajax_select() {
             data: "id=" + this.getAttribute("data-id") + "&" + this.getAttribute("name") + "=" + selected_item,
             success: function (data)
             {
-                alert(data);
+                // alert(data);
                 if (data === undefined || data === null || data === "")
                 {
                     //display warning
