@@ -932,6 +932,7 @@ function show_page(page_id) {
     {
         page_id = $("div#page-id").first().text()
         if (page_id === "") {
+            location.reload(true);
             return
         }
     }
