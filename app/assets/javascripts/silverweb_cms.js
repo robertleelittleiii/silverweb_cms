@@ -29,6 +29,7 @@
 //= require cloud
 //= require jquery.slides
 //= require jquery-ui-combobox
+//= require jquery.ui.touch-punch.min
 //= require superfish
 //# require turbolinks
 
