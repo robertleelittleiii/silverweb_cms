@@ -517,6 +517,7 @@ function updateAppDiv() {
     $.ajax({
         url: "/site/render_partial",
         dataType: "html",
+        cache: false,
         type: "GET",
         data: "partial_name=/cms_interface/grid_tab_nav.html",
         success: function (data)
