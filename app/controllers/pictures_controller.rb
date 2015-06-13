@@ -141,8 +141,7 @@ class PicturesController < ApplicationController
   private
 
   def picture_params
-  
-    params[:picture].permit( "title", "description", "position", "image", "resource_id", "resource_type")
+    params[:picture].permit( "title", "description", "position", "image", "resource_id", "resource_type", "active_flag")
   end
   
 end
