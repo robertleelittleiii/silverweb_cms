@@ -41,7 +41,8 @@ function menus_index_callDocumentReady() {
     });
     $("a.button-link").button();
     handleOpenedMenus();
-
+    
+    setTimeout(function() {handleOpenedMenus(); console.log("delay called")}, 1000);
 
 }
 
@@ -86,7 +87,7 @@ function makeDraggable(selection)
                     // console.log("menu-id" + $(this).parent().find("div#menu-id").text());
                     parent_menu_id = ui.item.parent().parent().find("#parent-id").text();
                     updateMenu(parent_menu_id);
-
+                    handleOpenedMenus();
                     //  $('.draggable_menu_item').effect('highlight');
                 },
                 url: '/menus/update_order'
@@ -146,13 +147,15 @@ function bindToggleListClick(item) {
 ;
 
 function handleOpenedMenus() {
+    console.log("handleOpenedMenus => called");
+    
     theList = $.cookie('open_menu_list').split(",");
     $.each(theList, function (key, value) {
         if ($("#" + value).length > 0)
         {
             $("#" + value).slideDown();
             // console.log($($("#" + value).parent().find("div.lever-toggle")[0]));
-            $($("#" + value).parent().find("div.lever-toggle")[0]).switchClass("closed","open");
+            $($("#" + value).parent().find("div.lever-toggle")[0]).switchClass("closed", "open");
 
             // $($("#" + value).parent().find("img")[0]).attr("src", $($("#" + value).parent().find("img")[0]).attr("src").replace("closed", "open"))
             $($("#" + value).parent().find("table")[0]).removeClass("has-sub-menus");
@@ -260,6 +263,7 @@ function updateMenuItem(menu_id) {
             menueditClickBinding(this_item);
             makeDraggable(this_item);
             initializeCreateMenu(this_item);
+            handleOpenedMenus();
 
             // console.log($(data).find("div"));
 
@@ -322,6 +326,8 @@ function initializeCreateMenu(selection) {
         menueditClickBinding();
         makeDraggable();
         initializeCreateMenu();
+        handleOpenedMenus();
+
     });
 }
 
