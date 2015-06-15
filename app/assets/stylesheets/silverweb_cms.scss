@@ -95,12 +95,12 @@ a.button-link:hover {
 }
 
 div#edit-pages:hover, div#edit-slider:hover {
-  cursor: pointer;
+    cursor: pointer;
 }
 
 .sites-system-link {
-  cursor: pointer;
-  display: inline-block;
+    cursor: pointer;
+    display: inline-block;
 }
 
 .clearfix:after {
@@ -344,10 +344,12 @@ div.cms-ui-dialog {
     border: grey solid 1px;
     border-width: 1px;
     padding: 10px;
-    border-radius:5px;
+    border-radius: 5px;
     background: rgba(255, 255, 255, 0.6);
     box-shadow: gray 5px 5px 20px;
+    padding-bottom: 30px;
 }
+
 .cms-content.with-title {
     border-top-left-radius: 0px;
     border-top-right-radius: 0px;
@@ -741,5 +743,5 @@ div#notify-container div.info-icon {
 }
 
 .ui-dialog {
-  overflow: visible !important;
+    overflow: visible !important;
 }
