@@ -14,7 +14,7 @@ white-space: pre;
 
 .CodeMirror {
   font-family: monospace;
-  height: 375px;
+  height: 100%;
   color: black;
-  width: 835px;
+  width: 100%;
 }
