@@ -27,9 +27,8 @@ function menus_index_callDocumentReady() {
     requireCss("menus.css");
     if (($.cookie('open_menu_list') == null) || ($.cookie('open_menu_list') == ""))
     {
-        $.cookie('open_menu_list', "null");
+        $.cookie('open_menu_list', "");
     }
-    handleOpenedMenus();
     bindDeleteMenu();
     bindToggleListClick();
     menueditClickBinding();
@@ -40,7 +39,9 @@ function menus_index_callDocumentReady() {
         alert(this.getAttribute("data-message"));
         return false;
     });
-        $("a.button-link").button();
+    $("a.button-link").button();
+    handleOpenedMenus();
+
 
 }
 
@@ -85,7 +86,7 @@ function makeDraggable(selection)
                     // console.log("menu-id" + $(this).parent().find("div#menu-id").text());
                     parent_menu_id = ui.item.parent().parent().find("#parent-id").text();
                     updateMenu(parent_menu_id);
-                    
+
                     //  $('.draggable_menu_item').effect('highlight');
                 },
                 url: '/menus/update_order'
@@ -118,8 +119,8 @@ function bindToggleListClick(item) {
             $(this).parent().parent().parent().parent().parent().next("ul").attr("id")
 
             $.cookie('open_menu_list', $.unique($.merge($.cookie('open_menu_list').split(","), [this_id])))
-            $(this).switchClass("closed","open");
-           // $(this).find("img").attr("src", $(this).find("img").attr("src").replace("closed", "open"))
+            $(this).switchClass("closed", "open");
+            // $(this).find("img").attr("src", $(this).find("img").attr("src").replace("closed", "open"))
             $($(this).parent().parent().parent().parent().parent().parent().find("ul")[0]).slideDown();
             $(this).parent().parent().parent().parent().parent().removeClass("has-sub-menus");
         }
@@ -130,13 +131,13 @@ function bindToggleListClick(item) {
                 var theList = $.cookie('open_menu_list').split(",")
                 theList.splice(theList.indexOf(this_id), 1)
                 $.cookie("open_menu_list", theList)
-                $(this).switchClass("open","closed");
-               // $(this).find("img").attr("src", $(this).find("img").attr("src").replace("open", "closed"))
+                $(this).switchClass("open", "closed");
+                // $(this).find("img").attr("src", $(this).find("img").attr("src").replace("open", "closed"))
                 $($(this).parent().parent().parent().parent().parent().parent().find("ul")[0]).slideUp();
                 $(this).parent().parent().parent().parent().parent().addClass("has-sub-menus");
             }
         }
-        
+
         event.stopPropagation();
 
         return(true);
@@ -281,12 +282,13 @@ function updateMenuList() {
         success: function (data)
         {
             $("div#menu-item-list").html(data);
-            handleOpenedMenus();
             bindDeleteMenu();
             bindToggleListClick();
             menueditClickBinding();
             makeDraggable();
             initializeCreateMenu();
+            handleOpenedMenus();
+
         }
     });
 }
@@ -325,8 +327,8 @@ function initializeCreateMenu(selection) {
 
 
 function bindNewMenuHead() {
-    
-   $('a#new-menu-head').unbind().bind('ajax:beforeSend', function (e, xhr, settings) {
+
+    $('a#new-menu-head').unbind().bind('ajax:beforeSend', function (e, xhr, settings) {
         xhr.setRequestHeader('accept', '*/*;q=0.5, text/html, ' + settings.accepts.html);
         $("body").css("cursor", "progress");
     }).bind('ajax:success', function (xhr, data, status) {
@@ -334,8 +336,8 @@ function bindNewMenuHead() {
         // updateMenuItem(0);
         $("div#menu-item-list").html(data);
         menus_index_callDocumentReady();
-    setUpPurrNotifier("Notice", "New Menu Head Created!'");
+        setUpPurrNotifier("Notice", "New Menu Head Created!'");
     }).bind('ajax:error', function (evt, xhr, status, error) {
-                setUpPurrNotifier("Error", "Menu Creation Failed!'");
-    }); 
-    }
+        setUpPurrNotifier("Error", "Menu Creation Failed!'");
+    });
+}
