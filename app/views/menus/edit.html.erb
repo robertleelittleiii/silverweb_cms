@@ -54,7 +54,7 @@ end %>
 
   <div id="menu-options" data-id="<%=@menu.id%>">
 
-      <%=render :partial=>(@menu_type.select{|name,id| id==@menu.m_type.to_i}.first.first+ "_type.html") rescue ""%>
+      <%=render :partial=>((@menu_type.select{|name,id| id==@menu.m_type}.first.first.downcase+ "_type.html") rescue (@menu_type.select{|name,id| id==@menu.m_type.to_i}.first.first.downcase+ "_type.html")) rescue "none_type.html"%>
 
   </div>
   </p>

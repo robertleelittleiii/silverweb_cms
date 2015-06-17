@@ -24,8 +24,37 @@ module SilverwebCms
     def self.add_nav_item(nav_item)
       @GRID_NAV_LIST << nav_item
     end
+    
+    def self.load_menu_types
+      @MENU_TYPES = [["none",3],["page",1] , ["html",2], ["link",4], ["action",5]]
+    end
+    
+    @MENU_TYPES = nil
+    def self.MENU_TYPES
+      @MENU_TYPES 
+    end
+    
+    def self.add_menu_class(menu_class)
+      @MENU_TYPES << menu_class
+    end
+    
+    
+    def self.load_menu_actions
+      @ACTION_TYPES = [["none",0],["Product Category",1],["Product Category with Page",3], ["Gift Cards",6] ]
+    end
+        
+    @ACTION_TYPES = nil
+    def self.ACTION_TYPES
+      @ACTION_TYPES
+    end
+    
+    def self.add_menu_actions(menu_action)
+      @ACTION_TYPES << menu_action
+    end
   end
 end
  
 SilverwebCms::Config.load_nav_list
+SilverwebCms::Config.load_menu_types
+SilverwebCms::Config.load_menu_actions
 

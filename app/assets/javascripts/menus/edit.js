@@ -27,6 +27,7 @@ function menus_edit_callDocumentReady() {
     bindMenuMType();
     bind_file_upload_to_upload_form();
     ui_ajax_select();
+        $(".best_in_place").best_in_place();
     requireCss("image_libraries/image_list.css");
 };
 

@@ -3,10 +3,11 @@ class MenusController < ApplicationController
   # GET /menus.json
   # uses_tiny_mce(:options => AppConfig.full_mce_options.merge({:width=>"897px"}), :only => [:new, :edit])
 
-  MENU_TYPES = [["none",3],["page",1] , ["html",2], ["link",4], ["action",5]]
+  # MENU_TYPES = [["none",3],["page",1] , ["html",2], ["link",4], ["action",5]]
   #  ACTION_TYPES = [["none",0],["Product Category",1],["Product Category with Subs",2],["Product Category with Page",3],["Product Category Skip Dept",4] ]
   #  ACTION_TYPES = [["none",0],["Product Category",1],["Product Category with Subs",2],["Product Category with Page",3],["Product Category Skip Dept",4], ["Service Passes",5], ["Gift Cards",6] ]
-  ACTION_TYPES = [["none",0],["Product Category",1],["Product Category with Page",3], ["Gift Cards",6] ]
+  # ACTION_TYPES = [["none",0],["Product Category",1],["Product Category with Page",3], ["Gift Cards",6] ]
+  
   CUSTOM_PAGES = [["none",""],["Mix & Match","show_products_with_page_mm"]]
 
   
@@ -47,10 +48,10 @@ class MenusController < ApplicationController
     session[:mainnav_status] = true
     @menu = Menu.find(params[:id])
     @item_edit =  @menu
-    @menu_type= MENU_TYPES
-    @action_type= ACTION_TYPES
+    @menu_type= SilverwebCms::Config.MENU_TYPES
+    @action_type= SilverwebCms::Config.ACTION_TYPES
     @page_templates = CUSTOM_PAGES
-    @partial_action = ACTION_TYPES[@menu.rawhtml.to_i][0].gsub(" ","_").downcase + "_type.html" rescue   ""
+    @partial_action = SilverwebCms::Config.ACTION_TYPES[@menu.rawhtml.to_i][0].gsub(" ","_").downcase + "_type.html" rescue   ""
       
     all_pages = Page.all
     @page_list= [["N O N E (select to clear)",""]]+ all_pages.collect {|e| [e.title, e.id]}
@@ -168,8 +169,8 @@ class MenusController < ApplicationController
   
     @menu = Menu.find(params[:id])
     @item_edit =  @menu
-    @menu_type= MENU_TYPES
-    @action_type= ACTION_TYPES
+    @menu_type= SilverwebCms::Config.MENU_TYPES
+    @action_type= SilverwebCms::Config.ACTION_TYPES
     @page_templates = CUSTOM_PAGES
 
     all_pages = Page.all
@@ -183,11 +184,11 @@ class MenusController < ApplicationController
     # "this is a test"
     name = params[:partial_type].gsub(" ","_")
     #  render_to_string :partial=>(params[:partial_type] + "_type.html")
-    begin
-      render :partial=>(name + "_type.html") 
-    rescue 
-      render :text=>""
-    end
+    #begin
+      render :partial=>(name.downcase + "_type.html") 
+    #rescue 
+    #  render :text=>""
+    # =>  end
     # render :nothing=>true
 
 

@@ -276,6 +276,8 @@ module  MenusHelper
         #                    return_link =  link_to(item_link_to, class_options, html_options)
         #                when 5
         #                   return_link = menuItem.raw_html
+      else
+        return_link =  send(menuItem.m_type, menuItem, html_options, span_options, class_options, options)  
       end     
     
       #puts(return_link)       
@@ -398,7 +400,7 @@ module  MenusHelper
     if not @page_name.blank? then
       @current_sub_menu = Menu.find_by_name(@page_name) || Menu.all[0]
       @parent_name = @current_sub_menu.blank? ? "" : @current_sub_menu.menu.name rescue ""
-      @parent_name = Menu.find(session[:parent_menu_id]).name rescue  "" # menu_id
+      #@parent_name = Menu.find(session[:parent_menu_id]).name rescue  "" # menu_id
     end
     
     returnMenu=""
@@ -413,7 +415,9 @@ module  MenusHelper
       
       breaker_val = params[:breaker] || " | "
       breaker = ""
+
       menu_selected = false
+
       for @menu in @menus 
         if @menus.first == @menu then
           @prehtml=params[:prehtml_first] || params[:prehtml] || ""
@@ -427,26 +431,34 @@ module  MenusHelper
         
         
         menuText =  self.buildmenuitem(@menu,html_options,"", input_params)
-        puts("menuText: #{menuText} menu: #{@menu.name}vs page name: #{params[:current_page]}")
-
+        puts("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
+        puts("menuText: #{menuText} menu: #{@menu.name} vs page name: #{params[:current_page]}")
+        puts("parent_name: #{@parent_name}")
         if not menuText.blank?  then
           if @menu.name == params[:current_page] and not menu_selected
-            menu_selected=true
+            menu_selected=true  
             returnMenu=  returnMenu + breaker + @selected_class + menuText + @posthtml
+            puts("Logic: @menu.name == params[:current_page] and not menu_selected")
           else 
             if @menu.name == @parent_name and not menu_selected then
               returnMenu=  returnMenu + breaker + @selected_class + menuText + @posthtml
-              menu_selected=true
+              menu_selected = true
+              puts("Logic: @menu.name == @parent_name and not menu_selected")
             else
               returnMenu=  returnMenu + breaker + @prehtml+ menuText + @posthtml
             end
           end
         end
+        puts(returnMenu)
+        puts("menu_selected: #{menu_selected}, @menu.name: #{@menu.name}, params[:current_page]: #{params[:current_page]} ")
+        
         breaker = breaker_val
       end
     end
+    # puts("Put S=>  #{h(params.to_json)}")
+    
         
-    return "<div data-menu-params='#{params.to_json}' data-menu-id='#{@top_menu.id rescue 0}' cms-menu-helper='buildhorizontalmenu'>#{returnMenu}</div>".html_safe
+    return ("<div data-menu-params=' "+ h(params.to_json) + "' data-menu-id='#{@top_menu.id rescue 0}' cms-menu-helper='buildhorizontalmenu'>#{returnMenu}</div>").html_safe
   end
 
   def buildhorizontalmenuprodrop(params=nil)
@@ -494,7 +506,7 @@ module  MenusHelper
 
     #	<li class="top"><a href="#nogo1" class="top_link"><span>Home</span></a></li>
 
-    return("<ul data-menu-params='#{params.to_json}' data-menu-id='#{@menu.id rescue "n/a"}' cms-menu-helper='buildhorizontalmenuprodrop' id='navi'>" + returnMenu + "</ul>").html_safe
+    return("<ul data-menu-params='#{h(params.to_json)}' data-menu-id='#{@menu.id rescue "n/a"}' cms-menu-helper='buildhorizontalmenuprodrop' id='navi'>" + returnMenu + "</ul>").html_safe
       
   end
     
@@ -622,7 +634,7 @@ module  MenusHelper
 
     #	<li class="top"><a href="#nogo1" class="top_link"><span>Home</span></a></li>
 
-    return("<ul data-menu-params='#{params.to_json}' data-menu-id='#{@menu.id rescue "n/a"}' cms-menu-helper='buildhorizontalmenusuperfish' #{class_val}>" + returnMenu + "</ul>").html_safe
+    return("<ul data-menu-params='#{h(params.to_json)}' data-menu-id='#{@menu.id rescue "n/a"}' cms-menu-helper='buildhorizontalmenusuperfish' #{class_val}>" + returnMenu + "</ul>").html_safe
       
   end
   
@@ -668,5 +680,19 @@ module  MenusHelper
     end
     return returnMenu   
   end
-
+  
+    
+  def menu_edit_div(menu, div_id="")
+    returnval=""
+    if session[:user_id] then
+      user=User.find(session[:user_id])
+      if user.roles.detect{|role|((role.name=="Admin") | (role.name=="Site Owner"))} then
+        returnval = "<div id=\""+ (div_id=="" ? "edit-menu" : div_id) + "\" class='edit-menu'>"
+        returnval << "<div id='menu-id' class='hidden-item'>#{menu.id}</div>"
+        returnval << image_tag("interface/edit.png",:border=>"0", :class=>"imagebutton", :title => "Edit this Menu") # link_to(image_tag("interface/edit.png",:border=>"0", :class=>"imagebutton", :title => "Edit this Page"),:controller => 'portfolios', :id =>portfolio.id ,  :action => 'edit')
+        returnval << "</div>"
+      end
+    end
+    return returnval.html_safe
+  end
 end

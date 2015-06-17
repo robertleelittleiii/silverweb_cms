@@ -3,7 +3,6 @@
  * and open the template in the editor.
  */
 
-var menu_edit_dialog = ""
 var menus_index_callDocumentReady_called = false;
 
 $(document).ready(function () {
@@ -25,6 +24,8 @@ $(document).ready(function () {
 
 function menus_index_callDocumentReady() {
     requireCss("menus.css");
+    require("menus/shared.js");
+
     if (($.cookie('open_menu_list') == null) || ($.cookie('open_menu_list') == ""))
     {
         $.cookie('open_menu_list', "");
@@ -188,63 +189,7 @@ function bindDeleteMenu(selection) {
 }
 
 
-function menueditClickBinding(selector) {
-    // selectors .edit-menu-item, tr.menu-row 
-    if (typeof selector === 'undefined')
-    {
-        selector = "td.menu-item";
-    }
-    else
-    {
-        var selector = selector + " td.menu-item";
-    }
 
-
-    $(selector).unbind("click").one("click", function () {
-        console.log($(this).find('#menu-id').text());
-        var menu_id = $(this).find('#menu-id').text();
-        var is_iframe = $("application-space").length > 0
-        var url = '/menus/' + menu_id + '/edit?request_type=window&window_type=iframe&as_window=true';
-
-        $(this).effect("highlight", {color: "white"}, 1000);
-
-        $.ajax({
-            url: url,
-            success: function (data)
-            {
-                menu_edit_dialog = createAppDialog(data, "edit-menu", {}, "");
-                var top_parent = $('#top-parent').text();
-                menu_edit_dialog.dialog('open');
-                menu_edit_dialog.dialog({
-                    close: function (event, ui) {
-                        //menuTableAjax.fnDraw();
-                        $('#edit-menu').html("");
-                        $('#edit-menu').dialog("destroy");
-
-                        updateMenuItem(menu_id);
-                        updateMenu(top_parent);
-
-//                        this_item = "div#field_" + menu_id
-
-//                        bindDeleteMenu(this_item);
-//                        bindToggleListClick(this_item);
-//                        menueditClickBinding(this_item);
-//                        makeDraggable(this_item);
-//                        initializeCreateMenu(this_item);
-                        // updateMenuList();
-
-                    }
-                });
-                require("menus/edit.js");
-                menus_edit_callDocumentReady();
-                $("div#edit-menu .best_in_place").best_in_place()
-            }
-        });
-
-
-
-    });
-}
 
 
 function updateMenuItem(menu_id) {
