@@ -400,7 +400,7 @@ module  MenusHelper
     if not @page_name.blank? then
       @current_sub_menu = Menu.find_by_name(@page_name) || Menu.all[0]
       @parent_name = @current_sub_menu.blank? ? "" : @current_sub_menu.menu.name rescue ""
-      #@parent_name = Menu.find(session[:parent_menu_id]).name rescue  "" # menu_id
+      @parent_name = Menu.find(session[:parent_menu_id]).name rescue  ""  if @parent_name.blank? # menu_id
     end
     
     returnMenu=""
