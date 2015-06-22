@@ -90,6 +90,13 @@ module  MenusHelper
         end
       end
      
+       if(menuItem.has_image and not menuItem.pictures.empty?) then
+          image_to_link_to = menuItem.pictures[0].image_url.to_s rescue "interface/missing_image_very_small.png"
+          item_link_to = image_tag(image_to_link_to, :border=>"0", :alt=>menuItem.name.html_safe, :title=>menuItem.name.html_safe)
+        else
+          item_link_to = menuText.html_safe
+        end
+        
       case menuItem.m_type
       when "1"
         # menuText="<span "+ span_options +">"+menuItem.name + "</span>"
@@ -105,12 +112,7 @@ module  MenusHelper
             class_options.merge!({:action => "show_page", :controller =>"site", :id=>menuItem.page_id})
           end
         end
-        if(menuItem.has_image and not menuItem.pictures.empty?) then
-          image_to_link_to = menuItem.pictures[0].image_url.to_s rescue "interface/missing_image_very_small.png"
-          item_link_to = image_tag(image_to_link_to, :border=>"0", :alt=>menuItem.name.html_safe)
-        else
-          item_link_to = menuText.html_safe
-        end
+       
         puts("------------ ------------------- -------------------")
         puts("item_link_to: #{item_link_to}")
         puts("class_options: #{class_options}")
@@ -134,13 +136,7 @@ module  MenusHelper
       when "4"
         #  menuText="<span "+ span_options +">"+menuItem.name + "</span>"
         class_options = menuItem.rawhtml
-      
-        if(menuItem.has_image and not menuItem.pictures.empty?) then
-          image_to_link_to = menuItem.pictures[0].image_url.to_s rescue "interface/missing_image_very_small.png"
-          item_link_to = image_tag(image_to_link_to, :border=>"0", :alt=>menuItem.name.html_safe)
-        else
-          item_link_to = menuText.html_safe
-        end
+     
         return_link =  link_to(item_link_to, class_options, html_options)
 
         #    return_link =  link_to(item_link_to, class_options, html_options.merge!(:target=>"_blank"))
@@ -154,12 +150,6 @@ module  MenusHelper
           top_menu = menuItem.menu
         end
         
-        if(menuItem.has_image and not menuItem.pictures.empty?) then
-          image_to_link_to = menuItem.pictures[0].image_url.to_s rescue "interface/missing_image_very_small.png"
-          item_link_to = image_tag(image_to_link_to, :border=>"0", :alt=>menuItem.name.html_safe)
-        else
-          item_link_to = menuText.html_safe
-        end
         
         class_options.merge!({:controller=>:site, :action=>:show_portfolios,:department_id=>top_menu.name, :category_id=>menuItem.name,})
 
@@ -179,35 +169,16 @@ module  MenusHelper
       
         case menuItem.rawhtml
         when "1"
-          if(menuItem.has_image and not menuItem.pictures.empty?) then
-            image_to_link_to = menuItem.pictures[0].image_url.to_s rescue "interface/missing_image_very_small.png"
-            item_link_to = image_tag(image_to_link_to, :border=>"0", :alt=>menuItem.name.html_safe)
-          else
-            item_link_to = menuText.html_safe
-          end
-        
+          
           class_options.merge!({:controller=>:site, :action=>:show_products, :department_id=>top_menu.name, :category_id=>menuItem.name})
           return_link =  link_to(item_link_to, class_options, html_options)
         
         when "2"
-          if(menuItem.has_image and not menuItem.pictures.empty?) then
-            image_to_link_to = menuItem.pictures[0].image_url.to_s rescue "interface/missing_image_very_small.png"
-            item_link_to = image_tag(image_to_link_to, :border=>"0", :alt=>menuItem.name.html_safe)
-          else
-            item_link_to = menuText.html_safe
-          end
-        
+          
           class_options.merge!({:controller=>:site, :action=>:show_products, :department_id=>top_menu.name, :category_id=>menuItem.name, :category_children=>true})
           return_link =  link_to(item_link_to,class_options , html_options)
         
         when "3"
-          if(menuItem.has_image and not menuItem.pictures.empty?) then
-            image_to_link_to = menuItem.pictures[0].image_url.to_s rescue "interface/missing_image_very_small.png"
-            item_link_to = image_tag(image_to_link_to, :border=>"0", :alt=>menuItem.name.html_safe)
-          else
-            item_link_to = menuText.html_safe
-          end        
-        
           if not menuItem.template.blank? then
             class_options.merge!({:controller=>:site, :action=>:show_products_with_page, :department_id=>(top_menu.name rescue ""), :category_id=>menuItem.name, :get_first_sub=>true, :category_children=>true, :page_id=>menuItem.page_id, :custom_layout=>menuItem.template})
           else
@@ -215,49 +186,25 @@ module  MenusHelper
           end
           return_link =  link_to(item_link_to, class_options, html_options)
         when "4"
-          if(menuItem.has_image and not menuItem.pictures.empty?) then
-            image_to_link_to = menuItem.pictures[0].image_url.to_s rescue "interface/missing_image_very_small.png"
-            item_link_to = image_tag(image_to_link_to, :border=>"0", :alt=>menuItem.name.html_safe)
-          else
-            item_link_to = menuText.html_safe
-          end
-        
+          
           class_options.merge!({:controller=>:site, :action=>:show_products, :department_id=>top_menu.name, :category_id=>menuItem.name, :category_children=>true, :get_first_sub=>true})
           return_link =  link_to(item_link_to,class_options , html_options)
           
         when "5"
-          if(menuItem.has_image and not menuItem.pictures.empty?) then
-            image_to_link_to = menuItem.pictures[0].image_url.to_s rescue "interface/missing_image_very_small.png"
-            item_link_to = image_tag(image_to_link_to, :border=>"0", :alt=>menuItem.name.html_safe)
-          else
-            item_link_to = menuText.html_safe
-          end
-        
+          
           class_options.merge!({:controller=>:site, :action=>:show_products_services, :department_id=>top_menu.name, :category_id=>menuItem.name, :category_children=>true, :get_first_sub=>true})
           return_link =  link_to(item_link_to,class_options , html_options)
        
         when "6"
-          if(menuItem.has_image and not menuItem.pictures.empty?) then
-            image_to_link_to = menuItem.pictures[0].image_url.to_s rescue "interface/missing_image_very_small.png"
-            item_link_to = image_tag(image_to_link_to, :border=>"0", :alt=>menuItem.name.html_safe)
-          else
-            item_link_to = menuText.html_safe
-          end
+          
         
           class_options.merge!({:controller=>:site, :action=>:show_products_services_simple, :department_id=>top_menu.name, :category_id=>menuItem.name, :category_children=>true, :get_first_sub=>true})
           return_link =  link_to(item_link_to,class_options , html_options)
         when "9"
-          if(menuItem.has_image and not menuItem.pictures.empty?) then
-            image_to_link_to = menuItem.pictures[0].image_url.to_s rescue "interface/missing_image_very_small.png"
-            item_link_to = image_tag(image_to_link_to, :border=>"0", :alt=>menuItem.name.html_safe)
-          else
-            item_link_to = menuText.html_safe
-          end
-        
+          
           class_options.merge!({:controller=>:site, :action=>:show_artifact_group, :department_id=>top_menu.name, :category_id=>"", :category_children=>false, :get_first_sub=>true})
           return_link =  link_to(item_link_to,class_options , html_options)
        
-          
         end 
       
       
@@ -565,12 +512,14 @@ module  MenusHelper
           
     else
       if (not user.roles.find_by_name("Admin").nil?)
-        returnval = link_to(image_tag("interface/Button-Delete.png", :border=>"0") , menu, :class=>"delete_menu",  data: { confirm: 'Are you sure?' }, :method => :delete , :remote=>true)
+       # returnval = link_to(image_tag("interface/Button-Delete.png", :border=>"0") , menu, :class=>"delete_menu",  data: { confirm: 'Are you sure?' }, :method => :delete , :remote=>true)
+        returnval = image_tag("interface/Button-Delete.png", :border=>"0", :class=>"delete_menu")
       else
         if menu.parent_id==0
 
         else
-          returnval = link_to(image_tag("interface/Button-Delete.png", :border=>"0") , menu, :class=>"delete_menu",  data: { confirm: 'Are you sure?' } , :method => :delete , :remote=>true)
+        #  returnval = link_to(image_tag("interface/Button-Delete.png", :border=>"0") , menu, :class=>"delete_menu",  data: { confirm: 'Are you sure?' } , :method => :delete , :remote=>true)
+          returnval = image_tag("interface/Button-Delete.png", :border=>"0", :class=>"delete_menu")
         end
           
       end

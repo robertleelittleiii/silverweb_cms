@@ -95,6 +95,7 @@ Rails.application.routes.draw do
       get "render_menu_list"
       post "add_image"
       get "render_menu"
+      get "delete_ajax"
     end
   end
 

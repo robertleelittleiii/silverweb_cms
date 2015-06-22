@@ -242,6 +242,15 @@ class MenusController < ApplicationController
 #    end
   end
 
+  
+  def delete_ajax
+      @menu = Menu.find(params[:id])
+    
+      @menu.destroy
+      render :nothing=>true
+    end
+    
+  
   def delete_image
     @menu = Menu.find(params[:incoming_id])
     @image = Picture.find(params[:id])

@@ -15,7 +15,8 @@
                     <%=menu_delete(menu_list)%>
                 </div>
                 <div align="right" class="add_sub_menu" >
-                    <%=link_to image_tag("interface/Download-icon-16.png", :border=>"0") , {:action=>:create_empty_record,:typeofrecord=>"Child", :parent_id=>menu_list.id}, {:remote=>true, :class=>"create-menu"}%>
+                    <%#=link_to image_tag("interface/Download-icon-16.png", :border=>"0") , {:action=>:create_empty_record,:typeofrecord=>"Child", :parent_id=>menu_list.id}, {:remote=>true, :class=>"create-menu"}%>
+                    <%=image_tag("interface/Download-icon-16.png", :border=>"0",  :class=>"create-menu")%>
                 </div>
             </td>
         </tr>

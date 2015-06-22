@@ -4,14 +4,13 @@
  */
 
 var menus_index_callDocumentReady_called = false;
-
 $(document).ready(function () {
     if (!menus_index_callDocumentReady_called)
     {
         menus_index_callDocumentReady_called = true;
         if ($("#as_window").text() == "true")
         {
-            //  alert("it is a window");
+//  alert("it is a window");
         }
         else
         {
@@ -20,19 +19,16 @@ $(document).ready(function () {
     }
 
 });
-
-
 function menus_index_callDocumentReady() {
     requireCss("menus.css");
     require("menus/shared.js");
-
     if (($.cookie('open_menu_list') == null) || ($.cookie('open_menu_list') == ""))
     {
         $.cookie('open_menu_list', "");
     }
     bindDeleteMenu();
     bindToggleListClick();
-    menueditClickBinding();
+    menueditClickBinding("div.targetable");
     makeDraggable();
     initializeCreateMenu();
     bindNewMenuHead();
@@ -42,9 +38,10 @@ function menus_index_callDocumentReady() {
     });
     $("a.button-link").button();
     handleOpenedMenus();
-    
-    setTimeout(function() {handleOpenedMenus(); console.log("delay called")}, 1000);
-
+    setTimeout(function () {
+        handleOpenedMenus();
+        console.log("delay called")
+    }, 1000);
 }
 
 function addHasChildren(field_table)
@@ -54,9 +51,7 @@ function addHasChildren(field_table)
     $($($(field_table).find("table")[0]).parent().find("ul")[0]).slideDown();
     $($(field_table).find("img")[0]).attr("src", $(field_table).find("img").attr("src").replace("closed", "open"));
     $($(field_table).find("img")[0]).attr("src", $(field_table).find("img").attr("src").replace("disabled", "open"));
-
     $.cookie('open_menu_list', $.unique($.merge($.cookie('open_menu_list').split(","), [$("#field_1").find("ul").first().attr("id")])));
-
 }
 
 function makeDraggable(selection)
@@ -95,7 +90,6 @@ function makeDraggable(selection)
             })
         }
     });
-
 }
 
 function bindToggleListClick(item) {
@@ -141,15 +135,12 @@ function bindToggleListClick(item) {
         }
 
         event.stopPropagation();
-
         return(true);
     });
 }
 ;
-
 function handleOpenedMenus() {
     console.log("handleOpenedMenus => called");
-    
     theList = $.cookie('open_menu_list').split(",");
     $.each(theList, function (key, value) {
         if ($("#" + value).length > 0)
@@ -157,7 +148,6 @@ function handleOpenedMenus() {
             $("#" + value).slideDown();
             // console.log($($("#" + value).parent().find("div.lever-toggle")[0]));
             $($("#" + value).parent().find("div.lever-toggle")[0]).switchClass("closed", "open");
-
             // $($("#" + value).parent().find("img")[0]).attr("src", $($("#" + value).parent().find("img")[0]).attr("src").replace("closed", "open"))
             $($("#" + value).parent().find("table")[0]).removeClass("has-sub-menus");
         }
@@ -165,7 +155,6 @@ function handleOpenedMenus() {
     });
 }
 ;
-
 function bindDeleteMenu(selection) {
 
     if (typeof selection === 'undefined')
@@ -177,16 +166,59 @@ function bindDeleteMenu(selection) {
         var selection = selection + " .delete_menu";
     }
 
-    $(selection).unbind('ajax:success').bind('ajax:success', function () {
-        $(this).parent().parent().parent().parent().parent().fadeOut();
-        $(this).parent().parent().parent().parent().parent().parent().find("ul").fadeOut();
-        $(this).parent().parent().parent().parent().parent().prev("div").hide();
-
-        // $(this).closest('table').fadeOut();
-        // alert("deleted");
-    })
-
+    $(selection).unbind("click").bind("click", function (e) {
+        e.stopPropagation();
+        // alert("clicked");
+        // console.log($(this).parent().parent().parent().find('#page-id').text());
+        var menu_id = $(this).parent().parent().parent().find('#menu-id').text();
+        console.log("the MenuID=> " + menu_id);
+        deleteMenu(menu_id, this);
+        return false;
+    });
 }
+
+function deleteMenu(menu_id, menuItem)
+{
+    var answer = confirm('Are you sure you want to delete this?')
+    if (answer) {
+        $.ajax({
+            url: '/menus/delete_ajax?id=' + menu_id,
+            success: function (data)
+            {
+                setUpPurrNotifier("Notice", "Item Successfully Deleted.");
+                console.log($(menuItem).parent().parent().parent().parent().parent().parent());
+                thisItem = $(menuItem).parent().parent().parent().parent().parent().parent();
+                $(thisItem).fadeOut();
+                $(thisItem).find("ul").fadeOut();
+                //$(thisItem).prev("div").hide();
+            }
+        });
+    }
+}
+
+
+//
+//function bindDeleteMenu(selection) {
+//
+//    if (typeof selection === 'undefined')
+//    {
+//        selection = ".delete_menu";
+//    }
+//    else
+//    {
+//        var selection = selection + " .delete_menu";
+//    }
+//
+//    $(selection).unbind('ajax:success').bind('ajax:success', function () {
+//        $(this).parent().parent().parent().parent().parent().fadeOut();
+//        $(this).parent().parent().parent().parent().parent().parent().find("ul").fadeOut();
+//        $(this).parent().parent().parent().parent().parent().prev("div").hide();
+//
+//        // $(this).closest('table').fadeOut();
+//        // alert("deleted");
+//    })
+//
+//}
 
 
 
@@ -209,7 +241,6 @@ function updateMenuItem(menu_id) {
             makeDraggable(this_item);
             initializeCreateMenu(this_item);
             handleOpenedMenus();
-
             // console.log($(data).find("div"));
 
             //            $("div#menu-item-list").html(data);
@@ -221,7 +252,6 @@ function updateMenuItem(menu_id) {
             //            initializeCreateMenu();
         }
     });
-
 }
 function updateMenuList() {
 
@@ -237,44 +267,102 @@ function updateMenuList() {
             makeDraggable();
             initializeCreateMenu();
             handleOpenedMenus();
-
         }
     });
 }
+
 
 function initializeCreateMenu(selection) {
 
     if (typeof selection === 'undefined')
     {
-        selection = "a.create-menu";
+        selection = "img.create-menu";
     }
     else
     {
-        var selection = selection + " a.create-menu";
+        var selection = selection + " img.create-menu";
     }
 
 
-    $(selection)
-            .unbind("ajax:success").bind("ajax:success", function (event, data, status, xhr) {
-        parent_menu_id = $(this).parent().parent().parent().parent().parent().parent().find("div#parent-id").html();
-        console.log(data);
-        //console.log($("ul#sortable_" + parent_menu_id).html("test..."))
-        $("ul#sortable_" + parent_menu_id).html(data);
-        $($(this).parent().parent().parent().parent().parent().parent().find("ul")[0]).slideDown();
-        // console.log(this);
-        // console.log(parent_menu_id);//.find("div#parent-id")
-        // alert("this is a test");
-        // console.log(event);
-        //handleOpenedMenus();
-        bindDeleteMenu();
-        bindToggleListClick();
-        menueditClickBinding();
-        makeDraggable();
-        initializeCreateMenu();
-        handleOpenedMenus();
-
+    $(selection).unbind("click").bind("click", function (e) {
+        e.stopPropagation();
+        // alert("clicked");
+        // console.log($(this).parent().parent().parent().find('#page-id').text());
+        console.log("in click on add menu")
+        console.log(this);
+        createMenu(this);
+        return false;
     });
 }
+
+
+function createMenu(menuItem)
+{
+    parent_menu_id = $(menuItem).parent().parent().parent().parent().parent().parent().find("div#parent-id").html();
+    //console.log($("ul#sortable_" + parent_menu_id).html("test..."))
+    console.log($(menuItem).parent().parent());
+
+        $.ajax({
+            url: '/menus/create_empty_record?parent_id=' + parent_menu_id + "&typeofrecord=Child",
+            success: function (data)
+            {
+                console.log(data);
+                setUpPurrNotifier("Notice", "Item Successfully Created.");
+                $("ul#sortable_" + parent_menu_id).html(data);
+                $($(this).parent().parent().parent().parent().parent().parent().find("ul")[0]).slideDown();
+                // console.log(this);
+                // console.log(parent_menu_id);//.find("div#parent-id")
+                // alert("this is a test");
+                // console.log(event);
+                //handleOpenedMenus();
+                bindDeleteMenu();
+                bindToggleListClick();
+                menueditClickBinding();
+                makeDraggable();
+                initializeCreateMenu();
+                handleOpenedMenus();
+                updateMenuItem(parent_menu_id)
+               }
+        });
+    
+}
+
+
+
+
+
+//function initializeCreateMenu(selection) {
+//
+//    if (typeof selection === 'undefined')
+//    {
+//        selection = "a.create-menu";
+//    }
+//    else
+//    {
+//        var selection = selection + " a.create-menu";
+//    }
+//
+//
+//    $(selection).unbind("ajax:success").bind("ajax:success", function (event, data, status, xhr) {
+//        event.stopPropagation();
+//        parent_menu_id = $(this).parent().parent().parent().parent().parent().parent().find("div#parent-id").html();
+//        console.log(data);
+//        //console.log($("ul#sortable_" + parent_menu_id).html("test..."))
+//        $("ul#sortable_" + parent_menu_id).html(data);
+//        $($(this).parent().parent().parent().parent().parent().parent().find("ul")[0]).slideDown();
+//        // console.log(this);
+//        // console.log(parent_menu_id);//.find("div#parent-id")
+//        // alert("this is a test");
+//        // console.log(event);
+//        //handleOpenedMenus();
+//        bindDeleteMenu();
+//        bindToggleListClick();
+//        menueditClickBinding();
+//        makeDraggable();
+//        initializeCreateMenu();
+//        handleOpenedMenus();
+//    });
+//}
 
 
 function bindNewMenuHead() {
