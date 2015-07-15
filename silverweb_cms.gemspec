@@ -37,5 +37,6 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'kaminari'
   s.add_runtime_dependency 'rack-mini-profiler'
   s.add_runtime_dependency 'non-stupid-digest-assets'
+  s.add_runtime_dependency 'gravtastic'
   s.add_development_dependency "mysql"
 end
