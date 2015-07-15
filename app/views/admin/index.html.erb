@@ -1,6 +1,10 @@
 
 <%= create_dialog_settings("My Account Information", "650", "500") %>
+<div class="hidden-item">
+    <div id="user-id"><%= session[:user_id] %> </div>
+</div>
 <div class="cms-block" Align="Left">
+    
 <%   $user =  User.find_by_id(session[:user_id])
      $roles = $user.roles
  %>
@@ -25,7 +29,11 @@
          <%else%>
         <%end%>
 
-
+        
+        <div id="avitar-div" title="click on picture to go to gravatar.com and create or edit your avatar.">        
+        <%= link_to(image_tag(@user.gravatar_url,:class=>"avitar"), "http://gravatar.com", :target=>"new") %>
+      </div>        
+        
         <p>
         <b>First Name:</b><br>
         <%=editablefieldcreate("first_name", @user_attributes)%>
@@ -47,8 +55,9 @@
         </p>
         
         <p>
-        <b>Passsword:</b><br>
-<%#=editablefieldcreate2("password", @user)%> (set password)</br>
+        <div class="button-link" id="password-user-item">Change Password</div>
+        
+<%#=editablefieldcreate2("password", @user)%> </br>
         </p>
 
          <%#*<p>%>

@@ -6,6 +6,7 @@ module SilverwebCms
  require 'kaminari'
  require 'jquery-ui-rails'
  require 'non-stupid-digest-assets'
+  #  require 'gavtastic'
 
  # require 'RFC822'
  
@@ -17,7 +18,7 @@ module SilverwebCms
     require 'vestal_versions'
     require 'rack-mini-profiler'
     require 'non-stupid-digest-assets'
-   
+    
     # isolate_namespace SilverwebCms
          ActiveSupport.on_load(:action_controller) do
           include SilverwebCms::Controller # ActiveSupport::Concern

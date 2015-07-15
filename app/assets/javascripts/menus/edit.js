@@ -27,6 +27,7 @@ function menus_edit_callDocumentReady() {
     bindMenuMType();
     bind_file_upload_to_upload_form();
     ui_ajax_select();
+    bindDeleteImage();
         $(".best_in_place").best_in_place();
     requireCss("image_libraries/image_list.css");
 };
@@ -227,6 +228,7 @@ function render_pictures(picture_id) {
                 }
 
             }
+            bindDeleteImage();
             bind_file_upload_to_upload_form();
 
 
@@ -235,6 +237,21 @@ function render_pictures(picture_id) {
 
 }
 
+function bindDeleteImage() {
+    $('a.picture-delete').unbind().bind('ajax:beforeSend', function () {
+        // alert("ajax:before");  
+    }).bind('ajax:success', function () {
+        console.log($(this).parent().parent());
+        $(this).parent().parent().remove();
+        $("div#imagebutton").show();
+        //  alert("ajax:success");  
+    }).bind('ajax:failure', function () {
+        //    alert("ajax:failure");    
+    }).bind('ajax:complete', function () {
+        //   alert("ajax:complete"); 
+    });
+
+}
 $(document).off('focusin').on('focusin', function (e) {
     if ($(event.target).closest(".mce-window").length) {
         e.stopImmediatePropagation();

@@ -1,0 +1,25 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Jul 15, 2015, 12:48:53 PM
+    Author     : rlittle
+*/
+
+div#password-user-item {
+  float: right;
+}
+
+div#avitar-div {
+  float: right;
+  padding: 20px;
+}
+
+img.avitar {
+  padding: 14px;
+  border-style: ridge;
+  border-color: white;
+  border-width: 5px;
+}

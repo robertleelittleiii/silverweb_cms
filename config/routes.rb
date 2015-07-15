@@ -120,7 +120,7 @@ resources :users do
       get "update_roles"
       get "create_empty_record"
       get "delete_ajax"
-      get "update_password"
+      patch "update_password"
     end
   end
   

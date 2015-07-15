@@ -1,5 +1,7 @@
 require 'digest/sha1'
 # require 'RFC822'
+require 'gravtastic'
+ #include Gravtastic
 
 
 class User < ActiveRecord::Base
@@ -26,7 +28,9 @@ class User < ActiveRecord::Base
   has_one :user_attribute
 
   # has_many :orders
-  
+include Gravtastic
+
+  gravtastic :name
   
   # abbreviated for clarity
 

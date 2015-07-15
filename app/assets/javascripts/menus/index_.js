@@ -119,6 +119,7 @@ function bindToggleListClick(item) {
             // $(this).find("img").attr("src", $(this).find("img").attr("src").replace("closed", "open"))
             $($(this).parent().parent().parent().parent().parent().parent().find("ul")[0]).slideDown();
             $(this).parent().parent().parent().parent().parent().removeClass("has-sub-menus");
+            console.log("add sub menus",this, $.cookie("open_menu_list"))
         }
         else
         {
@@ -131,6 +132,7 @@ function bindToggleListClick(item) {
                 // $(this).find("img").attr("src", $(this).find("img").attr("src").replace("open", "closed"))
                 $($(this).parent().parent().parent().parent().parent().parent().find("ul")[0]).slideUp();
                 $(this).parent().parent().parent().parent().parent().addClass("has-sub-menus");
+                console.log("remove sub menus",this, $.cookie("open_menu_list"))
             }
         }
 
@@ -237,7 +239,8 @@ function updateMenuItem(menu_id) {
 
             bindDeleteMenu(this_item);
             bindToggleListClick(this_item);
-            menueditClickBinding(this_item);
+            // menueditClickBinding(this_item);
+            menueditClickBinding();
             makeDraggable(this_item);
             initializeCreateMenu(this_item);
             handleOpenedMenus();
@@ -302,29 +305,29 @@ function createMenu(menuItem)
     //console.log($("ul#sortable_" + parent_menu_id).html("test..."))
     console.log($(menuItem).parent().parent());
 
-        $.ajax({
-            url: '/menus/create_empty_record?parent_id=' + parent_menu_id + "&typeofrecord=Child",
-            success: function (data)
-            {
-                console.log(data);
-                setUpPurrNotifier("Notice", "Item Successfully Created.");
-                $("ul#sortable_" + parent_menu_id).html(data);
-                $($(this).parent().parent().parent().parent().parent().parent().find("ul")[0]).slideDown();
-                // console.log(this);
-                // console.log(parent_menu_id);//.find("div#parent-id")
-                // alert("this is a test");
-                // console.log(event);
-                //handleOpenedMenus();
-                bindDeleteMenu();
-                bindToggleListClick();
-                menueditClickBinding();
-                makeDraggable();
-                initializeCreateMenu();
-                handleOpenedMenus();
-                updateMenuItem(parent_menu_id)
-               }
-        });
-    
+    $.ajax({
+        url: '/menus/create_empty_record?parent_id=' + parent_menu_id + "&typeofrecord=Child",
+        success: function (data)
+        {
+            console.log(data);
+            setUpPurrNotifier("Notice", "Item Successfully Created.");
+            $("ul#sortable_" + parent_menu_id).html(data);
+            $($(this).parent().parent().parent().parent().parent().parent().find("ul")[0]).slideDown();
+            // console.log(this);
+            // console.log(parent_menu_id);//.find("div#parent-id")
+            // alert("this is a test");
+            // console.log(event);
+            //handleOpenedMenus();
+            bindDeleteMenu();
+            bindToggleListClick();
+            menueditClickBinding();
+            makeDraggable();
+            initializeCreateMenu();
+            handleOpenedMenus();
+            updateMenuItem(parent_menu_id)
+        }
+    });
+
 }
 
 

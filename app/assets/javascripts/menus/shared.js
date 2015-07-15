@@ -24,9 +24,10 @@ function menueditClickBinding(selector, table_val) {
 
     $(selector).unbind("click").one("click", function (event) {
         event.stopPropagation();
+        console.log(this);
+        console.log($(this).find('#menu-id').first().text());
+        var menu_id = $(this).find('#menu-id').first().text();
 
-        console.log($(this).find('#menu-id').text());
-        var menu_id = $(this).find('#menu-id').text();
         var is_iframe = $("application-space").length > 0
         var url = '/menus/' + menu_id + '/edit?request_type=window&window_type=iframe&as_window=true';
 
@@ -47,15 +48,20 @@ function menueditClickBinding(selector, table_val) {
 
                         if (typeof updateMenuItem != 'undefined')
                         {
+                         //   console.log("updateMenuItem")
                             updateMenuItem(menu_id);
                         }
                         if (typeof updateMenu != 'undefined')
                         {
+                        //     console.log("updateMenu")
+
                             updateMenu(top_parent);
                         }
                         if ($("div.edit-menu").length > 0) {
                             menueditClickBinding("div.edit-menu", true);
                         }
+                        
+                        menueditClickBinding();
 //                        this_item = "div#field_" + menu_id
 
 //                        bindDeleteMenu(this_item);
@@ -69,7 +75,8 @@ function menueditClickBinding(selector, table_val) {
                 });
                 require("menus/edit.js");
                 menus_edit_callDocumentReady();
-                $("div#edit-menu .best_in_place").best_in_place()
+                $("div#edit-menu .best_in_place").best_in_place();
+
             }
         });
 
