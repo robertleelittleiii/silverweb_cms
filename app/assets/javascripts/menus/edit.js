@@ -28,9 +28,10 @@ function menus_edit_callDocumentReady() {
     bind_file_upload_to_upload_form();
     ui_ajax_select();
     bindDeleteImage();
-        $(".best_in_place").best_in_place();
+    $(".best_in_place").best_in_place();
     requireCss("image_libraries/image_list.css");
-};
+}
+;
 
 
 function bindMenuRawhtml() {
@@ -116,6 +117,7 @@ function bind_file_upload_to_upload_form()
             file = data.files[0];
             data.context = $(tmpl("template-upload", file));
             // $("div.progress").progressbar();
+            $('#pictures').fadeIn();
             $('#pictures').append(data.context);
             var jqXHR = data.submit()
                     .success(function (result, statusText, jqXHR) {

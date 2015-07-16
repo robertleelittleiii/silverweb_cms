@@ -235,15 +235,17 @@
 <%#=link_to("reload!", {:action=>:reload_rails_env}, {})%>
 
       <p>
-        <b> It's <%= Time.now %> </b>
+        <b> Server System time is:  <%= Time.now %> </b>
       </p>
-      <div id="site-status">
+      
+      <div id="site-status" class="<%= site_down() == true ? 'site-down' : 'site-up'  %> ">
         <%=  site_status(site_down()) %>
       </div>
+      
       <p>
         <%=link_to 'Turn Site '+ (site_down() ? "ON" : "OFF"), {:controller => 'admin', :action => 'toggle_index'}, :id=>"site-button", :remote=>true%>
       </p>
-      </br>
+      </br></br>
        <p>
         <b> Click this link to reprocess page images:</b></br>
         <%=link_to 'Reproces page images', {:controller => 'admin', :action => 'reprocess_page_images'}, :id=>"process-image-button", :remote=>true%>

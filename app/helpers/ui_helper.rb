@@ -1,7 +1,7 @@
-  module UiHelper
+module UiHelper
 
-    #  This will hide or show a div based on the given condition.
-    def hidden_div_if(condition, attributes = {})
+  #  This will hide or show a div based on the given condition.
+  def hidden_div_if(condition, attributes = {})
     if condition
       attributes["style"] = "display: none"
     end
@@ -10,7 +10,27 @@
   end
   
       
-    def add_google_analytics
+  def add_google_analytics
+    tracking_id = Settings.google_analytics
+    user_id = User.find(session[:user_id]).name || 'visitor'
+    
+    if not tracking_id.blank? then
+      data ="<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', '#{tracking_id}', 'auto');
+  ga('send', 'pageview');
+  ga('set', '&uid', '#{user_id}'); // Set the user ID using signed-in user_id.
+</script>".html_safe
+      
+      return data
+    end
+  end
+
+  def old_add_google_analytics
     tracking_id = Settings.google_analytics
     if not tracking_id.blank? then
       data = "<script type=\"text/javascript\" async>
@@ -49,11 +69,11 @@
       stylesheet_return = stylesheet_return + " " + (stylesheet_link_tag stylesheetaction) rescue ""
     end
     
-     if not @style_sheet_custom.nil? and not @style_sheet_custom.blank?  then
-        custom_stylesheet = "#{params[:controller]}/#{@style_sheet_custom}"
-        custom_stylesheet_path = Rails.application.assets.resolve(custom_stylesheet)
-        stylesheet_return <<  (stylesheet_link_tag(custom_stylesheet,"data-turbolinks-track"=>"true")) if  custom_stylesheet_path != nil
-     end
+    if not @style_sheet_custom.nil? and not @style_sheet_custom.blank?  then
+      custom_stylesheet = "#{params[:controller]}/#{@style_sheet_custom}"
+      custom_stylesheet_path = Rails.application.assets.resolve(custom_stylesheet)
+      stylesheet_return <<  (stylesheet_link_tag(custom_stylesheet,"data-turbolinks-track"=>"true")) if  custom_stylesheet_path != nil
+    end
      
     return stylesheet_return.html_safe if not stylesheet_return.blank?
     
@@ -83,17 +103,17 @@
     end
     
   
-     if not @java_script_custom.nil? and not @java_script_custom.blank?  then
-        custom_javascriptaction = "#{params[:controller]}/#{@java_script_custom}"
-        custom_javascriptaction_path = Rails.application.assets.resolve(custom_javascriptaction)
-        javascript_return <<  (javascript_include_tag(custom_javascriptaction,:async => true)) if  custom_javascriptaction_path != nil
-     end
+    if not @java_script_custom.nil? and not @java_script_custom.blank?  then
+      custom_javascriptaction = "#{params[:controller]}/#{@java_script_custom}"
+      custom_javascriptaction_path = Rails.application.assets.resolve(custom_javascriptaction)
+      javascript_return <<  (javascript_include_tag(custom_javascriptaction,:async => true)) if  custom_javascriptaction_path != nil
+    end
     
     return javascript_return.html_safe if not javascript_return.blank?
 
   end
   
-   def best_in_place(object, field, opts = {})
+  def best_in_place(object, field, opts = {})
     logger.info("best_in_place")
     logger.info(opts[:class])
   
@@ -235,9 +255,9 @@
       divClass=opts[:divclass]
     end rescue divClass='class="myacountcontentitem"'
     
-      ('<div id="field_'+field_name.to_s + '"' + divClass + '>' +
-          best_in_place(field_pointer, field_name, opts.merge(:type => :checkbox)).html_safe +
-          '</div>').html_safe
+    ('<div id="field_'+field_name.to_s + '"' + divClass + '>' +
+        best_in_place(field_pointer, field_name, opts.merge(:type => :checkbox)).html_safe +
+        '</div>').html_safe
       
     #check_box_tag( "#{field_name}", field_pointer.id, field_pointer[field_name], {
     #    :onchange => "#{remote_function(:url  => {:action => "update_checkbox", :id=>field_pointer.id, :field=>field_name ,:pointer_class=>field_pointer.class},
@@ -280,9 +300,9 @@
       divClass=opts[:divclass]
     end rescue divClass='class="myacountcontentitem"'
     
-      ('<div id="field_'+field_name.to_s + '"' + divClass + '>' +
-          best_in_place(field_pointer, field_name, opts.merge(:type => :checkbox)).html_safe +
-          '</div>').html_safe
+    ('<div id="field_'+field_name.to_s + '"' + divClass + '>' +
+        best_in_place(field_pointer, field_name, opts.merge(:type => :checkbox)).html_safe +
+        '</div>').html_safe
       
     #check_box_tag( "#{field_name}", field_title,is_selected , html_options.merge!({
     #      :onchange => "#{remote_function(:url  => {:action => "update_checkbox_multi", :id=>field_pointer.id, :field=>db_field_name ,:pointer_class=>field_pointer.class, :checkbox_value=>field_title},
@@ -299,7 +319,7 @@
     return return_value.html_safe
   end
   
-   def editablecheckboxtag2  (field_name, field_pointer,field_title, tag_list_name,html_options={}, include_id=false )
+  def editablecheckboxtag2  (field_name, field_pointer,field_title, tag_list_name,html_options={}, include_id=false )
     tag_name="#{tag_list_name.singularize}_list"
     tag_array1= field_pointer.send(tag_name)
     tag_id = field_title[1].to_s || ""
@@ -329,7 +349,7 @@
     return return_value.html_safe
   end
   
-     def ajax_select(field_name, field_object, field_pointer, value_list, prompt='Please Select...', html_options=nil)
+  def ajax_select(field_name, field_object, field_pointer, value_list, prompt='Please Select...', html_options=nil)
         
     html_options==nil ? html_options={:class=>"ui-ajax-select", "data-path"=>url_for(field_pointer).to_s} : ""
     
@@ -340,7 +360,7 @@
   end
   
      
-     def generate_grid_tabnav(*args)
+  def generate_grid_tabnav(*args)
     html_options      = args.first || {}
     icon_list = args.second || {}
     
@@ -406,24 +426,24 @@
     end
     
     the_action_name = options[:action]
-     puts(the_controller_name, the_action_name)
+    puts(the_controller_name, the_action_name)
 
     if session[:user_id] then
       user =  User.find_by_id(session[:user_id])
 
       if options[:role].blank? or user.roles.map {|i| i.name }.include?(options[:role]) then
-      if user.roles.detect{|role|
-          role.rights.detect{|right|
-            ((right.action == the_action_name)|(right.action == "*")|(right.action.include? the_action_name)) && right.controller == the_controller_name
-          }
-        } 
-        puts("html_options[:order]:  #{html_options[:order]}")
+        if user.roles.detect{|role|
+            role.rights.detect{|right|
+              ((right.action == the_action_name)|(right.action == "*")|(right.action.include? the_action_name)) && right.controller == the_controller_name
+            }
+          } 
+          puts("html_options[:order]:  #{html_options[:order]}")
         
-        return("<li id='#{html_options[:name].gsub(/ /,'-')}' class='hidden' >#{link_to(*args,&block)}</li>").html_safe
+          return("<li id='#{html_options[:name].gsub(/ /,'-')}' class='hidden' >#{link_to(*args,&block)}</li>").html_safe
      
-      else 
-        return ""
-      end
+        else 
+          return ""
+        end
       else
         return ""
       end
@@ -512,13 +532,13 @@
   
   def check_permissions(the_action_name,the_controller_name)
  
-   user =  User.find_by_id(session[:user_id])
+    user =  User.find_by_id(session[:user_id])
 
-   return user.roles.detect{|role|
-          role.rights.detect{|right|
-            ((right.action == the_action_name)|(right.action == "*")|(right.action.include? the_action_name)) && right.controller == the_controller_name
-          }
-        }
+    return user.roles.detect{|role|
+      role.rights.detect{|right|
+        ((right.action == the_action_name)|(right.action == "*")|(right.action.include? the_action_name)) && right.controller == the_controller_name
+      }
+    }
   end
   
   
