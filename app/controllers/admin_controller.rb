@@ -25,7 +25,7 @@ class AdminController < ApplicationController
   end
 
 
-def user_administration
+  def user_administration
 
   
   
@@ -108,9 +108,9 @@ def user_administration
   end
   
   def update
-     eval("Settings." + params["settings"].to_a.first[0] + "='" + params["settings"].to_a.first[1] +"'"   )
+    eval("Settings." + params["settings"].to_a.first[0] + "='" + params["settings"].to_a.first[1] +"'"   )
   
-  respond_to do |format|
+    respond_to do |format|
       format.json  { head :ok }
       format.html { head :ok }  
     end  
@@ -119,22 +119,22 @@ def user_administration
   def site_settings
 
     #if params.count > 2 then
-      # we are doing an update on the site settings
+    # we are doing an update on the site settings
     #  eval("Settings." + params["settings"].first[0] + "='" + params["settings"].first[1] +"'"   ) rescue ""
     #else 
+    @settings = Settings.all 
+    if @settings.blank? then
+      Settings.test="blank";
       @settings = Settings.all 
-      if @settings.blank? then
-        Settings.test="blank";
-        @settings = Settings.all 
-      end
-      @all_images = SystemImages.all rescue []
-      @image_class = "none"
-   # end
+    end
+    @all_images = SystemImages.all rescue []
+    @image_class = "none"
+    # end
     @workers = Resque.workers rescue ["Redis not available[#{$!.message}]"]
 
-#    respond_to do |format|
-#      format.html 
-#    end  
+    #    respond_to do |format|
+    #      format.html 
+    #    end  
     
     
   end
@@ -380,7 +380,15 @@ def user_administration
   end
   
   def reprocess_page_images
-    TinyPrint.all.each {|s| s.image.reprocess! if s.image}
+    
+    
+    @pictures = Picture.all
+    
+    @pictures.each do |picture|
+      picture.image.recreate_versions!     
+    end
+    
+    # TinyPrint.all.each {|s| s.image.reprocess! if s.image}
     
     respond_to do |format|
       format.json  { head :ok }
