@@ -12,7 +12,7 @@ module UiHelper
       
   def add_google_analytics
     tracking_id = Settings.google_analytics
-    user_id = User.find(session[:user_id]).name || 'visitor'
+    user_id = User.find(session[:user_id]).name || 'visitor' rescue 'visitor  '
     
     if not tracking_id.blank? then
       data ="<script>
