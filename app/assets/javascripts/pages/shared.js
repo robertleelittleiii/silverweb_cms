@@ -9,7 +9,8 @@ page_edit_dialog = "";
 function pageeditClickBinding(selector) {
     // selectors .edit-page-item, tr.page-row 
 
-    $(selector).unbind("click").one("click", function () {
+    $(selector).unbind("click").one("click", function (event) {
+        event.stopPropagation();
         console.log($(this).find('#page-id').text());
         var page_id = $(this).find('#page-id').text();
         var is_iframe = $("application-space").length > 0
