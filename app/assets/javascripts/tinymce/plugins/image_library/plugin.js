@@ -19,6 +19,8 @@ tinymce.PluginManager.add('image_library', function(editor, url) {
             });
         }
     });
+    
+    
 
     // Adds a menu item to the tools menu
     editor.addMenuItem('Image libary', {
