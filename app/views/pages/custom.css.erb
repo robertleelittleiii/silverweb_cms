@@ -1,7 +1,8 @@
 <%#= render :file=>"/public/stylesheets/global-reset.css" %>
-<%= render :file=>"/assets/fonts.css" %>
-<%= @page.template_name.blank? ? "" : render(:file=>"/assets/site/show_page-#{@page.template_name}.css") %>
-<%= render :file=>"/assets/editor-custom.css" %>
-<%= render :file=>"/assets/#{@page.page_style}"  rescue ""%>
+<%#= render :file=>Rails.application.assets['fonts.css'].pathname.to_s%>
+<%=render :text=>Rails.application.assets['fonts.css'].to_s %>
+<%=(@page.template_name.blank? ? "" : render(:text=>Rails.application.assets["site/show_page-#{@page.template_name}.css"].to_s)) rescue ""%>
+<%=render(:text=>Rails.application.assets["editor-custom.css"].to_s) %>
+<%=render(:text=>Rails.application.assets["#{@page.page_style}"].to_s)  rescue ""%>
 
 

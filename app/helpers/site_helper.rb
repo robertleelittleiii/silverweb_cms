@@ -53,7 +53,7 @@ module SiteHelper
       page.sliders.active.each_with_index do |slider, slide_count| 
         puts("slide count #{slide_count}")
         
-          if(slide_count % item_count) == 0 
+        if(slide_count % item_count) == 0 
           if slide_count  > 1
             returnval =  returnval +  "</ul>"
           end  
@@ -61,7 +61,7 @@ module SiteHelper
           bounceTabs = bounceTabs + "<a href=\"#\">"+ ((slide_count/item_count) + 1).to_s + "</a>"
 
         end  
-         li_default_style = ' style="left: ' + (((slide_count+1)*1000)).to_s  + 'px;"'
+        li_default_style = ' style="left: ' + (((slide_count+1)*1000)).to_s  + 'px;"'
         #        returnval =  returnval + "<h1>" + slider.slider_name + "</h1>"
         returnval =  returnval +  "<li class='" + action_name + " slider-content-float'" + li_default_style + ">" + slider.slider_content 
         returnval = returnval + slide_edit_div(slider)
@@ -175,15 +175,15 @@ module SiteHelper
       returnval = returnval + "<div id=\"nav-gallery\"> \n" # start nav-gallery
       page.sliders.active.each_with_index do |slider, slide_count| 
         
-      bottom_text = slider.slider_tag_line_two.blank? ? bottom_lead_text : slider.slider_tag_line_two
-      bottom_link_text = slider.slider_url.blank? ? ("<div class='#{slider.slider_button_color.to_s}'>" + bottom_text + "</div>") : link_to(bottom_text,slider.slider_url, :class=>slider.slider_button_color)
-      slider_link_text = slider.slider_url.blank? ? (slider.slider_name) : link_to(slider.slider_name,slider.slider_url, :class=>slider.slider_button_color)
+        bottom_text = slider.slider_tag_line_two.blank? ? bottom_lead_text : slider.slider_tag_line_two
+        bottom_link_text = slider.slider_url.blank? ? ("<div class='#{slider.slider_button_color.to_s}'>" + bottom_text + "</div>") : link_to(bottom_text,slider.slider_url, :class=>slider.slider_button_color)
+        slider_link_text = slider.slider_url.blank? ? (slider.slider_name) : link_to(slider.slider_name,slider.slider_url, :class=>slider.slider_button_color)
 
         
         
         puts("slide count #{slide_count}")
-          returnval =  returnval + "<div class='nav-item'> \n" # start nav-item
-          returnval = returnval + slide_edit_div(slider)
+        returnval =  returnval + "<div class='nav-item'> \n" # start nav-item
+        returnval = returnval + slide_edit_div(slider)
 
         #        returnval =  returnval + "<h1>" + slider.slider_name + "</h1>"
         returnval =  returnval +  "<div class='nav-content-overlay'> \n"

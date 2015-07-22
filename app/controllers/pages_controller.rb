@@ -172,7 +172,7 @@ class PagesController < ApplicationController
     end
     
   def custom
-      @page = Page.find(session[:current_page])
+      @page = Page.find(session[:current_page]) rescue ""
     
      respond_to do |format|
       format.css 
