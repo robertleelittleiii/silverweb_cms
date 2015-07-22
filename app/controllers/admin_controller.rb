@@ -127,6 +127,7 @@ class AdminController < ApplicationController
       Settings.test="blank";
       @settings = Settings.all 
     end
+    
     @all_images = SystemImages.all rescue []
     @image_class = "none"
     # end

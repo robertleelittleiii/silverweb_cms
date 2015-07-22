@@ -150,8 +150,18 @@ module UiHelper
       value = Hash[opts[:collection]][!!(v =~ /^[0-9]+$/) ? v.to_i : v] || "Please Select..."
       collection = opts[:collection].to_json
     end
+    
+    #fix for rails settings gem
+    object_class_name = object.class.to_s.gsub("::", "_").underscore  
+    object_class_name = (object_class_name == "settings_active_record_relation" ? "settings" : object_class_name)
+   
+    
     if opts[:type] == :checkbox
-      fieldValue = !!object.send(field)
+      if object_class_name == "settings" then
+         fieldValue = Settings.send(field) == "true" ? true : false
+      else
+         fieldValue = !!object.send(field)
+      end
       if opts[:collection].blank? || opts[:collection].size != 2
         opts[:collection] = ["No", "Yes"]
       end
@@ -163,10 +173,7 @@ module UiHelper
       extraclass = opts[:class] + "'"
     end
     
-    #fix for rails settings gem
-    object_class_name = object.class.to_s.gsub("::", "_").underscore  
-    object_class_name = (object_class_name == "settings_active_record_relation" ? "settings" : object_class_name)
-   
+    
     if object_class_name == "settings" then
       opts[:path] = request.original_url
     end rescue ""
