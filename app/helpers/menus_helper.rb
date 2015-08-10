@@ -90,12 +90,12 @@ module  MenusHelper
         end
       end
      
-       if(menuItem.has_image and not menuItem.pictures.empty?) then
-          image_to_link_to = menuItem.pictures[0].image_url.to_s rescue "interface/missing_image_very_small.png"
-          item_link_to = image_tag(image_to_link_to, :border=>"0", :alt=>menuItem.name.html_safe, :title=>menuItem.name.html_safe)
-        else
-          item_link_to = menuText.html_safe
-        end
+      if(menuItem.has_image and not menuItem.pictures.empty?) then
+        image_to_link_to = menuItem.pictures[0].image_url.to_s rescue "interface/missing_image_very_small.png"
+        item_link_to = image_tag(image_to_link_to, :border=>"0", :alt=>menuItem.name.html_safe, :title=>menuItem.name.html_safe)
+      else
+        item_link_to = menuText.html_safe
+      end
         
       case menuItem.m_type
       when "1"
@@ -512,13 +512,13 @@ module  MenusHelper
           
     else
       if (not user.roles.find_by_name("Admin").nil?)
-       # returnval = link_to(image_tag("interface/Button-Delete.png", :border=>"0") , menu, :class=>"delete_menu",  data: { confirm: 'Are you sure?' }, :method => :delete , :remote=>true)
+        # returnval = link_to(image_tag("interface/Button-Delete.png", :border=>"0") , menu, :class=>"delete_menu",  data: { confirm: 'Are you sure?' }, :method => :delete , :remote=>true)
         returnval = image_tag("interface/Button-Delete.png", :border=>"0", :class=>"delete_menu")
       else
         if menu.parent_id==0
 
         else
-        #  returnval = link_to(image_tag("interface/Button-Delete.png", :border=>"0") , menu, :class=>"delete_menu",  data: { confirm: 'Are you sure?' } , :method => :delete , :remote=>true)
+          #  returnval = link_to(image_tag("interface/Button-Delete.png", :border=>"0") , menu, :class=>"delete_menu",  data: { confirm: 'Are you sure?' } , :method => :delete , :remote=>true)
           returnval = image_tag("interface/Button-Delete.png", :border=>"0", :class=>"delete_menu")
         end
           
@@ -591,6 +591,8 @@ module  MenusHelper
     returnMenu = ""
     returnSubMenu = ""
     html_link_class = ""
+    colorized_class = ""
+
     level = level + 1
     item_tag = params[:item_tag] || "li"
 
@@ -600,16 +602,18 @@ module  MenusHelper
         html_link_class = params[:selected_class]
       else 
         html_link_class = ""
-
       end
+      
+      #puts("-------------->>>> params[:colorize_sub_index_count] #{params[:colorize_sub_index_count]}")
+      
+      if params[:colorize_sub_index_count] then
+        colorized_class = "color-" + (index % params[:colorize_sub_index_count].to_i).to_s
+      else
+        colorized_class = ""
+      end
+        
       if eachmenu.menus.size > 0 then 
-        
-        if params[:colorize_sub_index_count] then
-          colorized_class =    "color-" + (index % params[:colorize_sub_index_count].to_i ).to_s
-        else
-          colorized_class = ""
-        end
-        
+      
         returnSubMenu = self.buildsubmenussuperfish(eachmenu.menus, level, params)
         returnSubMenu = "<#{item_tag}>"+ self.buildmenuitem(eachmenu, {:class=>(html_link_class + " " + colorized_class) }, "", nil ,params)+ returnSubMenu+ "</#{item_tag}>"
       else
