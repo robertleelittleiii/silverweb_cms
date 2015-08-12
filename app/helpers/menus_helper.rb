@@ -435,7 +435,7 @@ module  MenusHelper
         end
 
         if @menu.menus.count>0 then
-          subMenus=self.buildsubmenus(@menu.menus,0)
+          subMenus=self.buildsubmenus(@menu.menus,0, params)
           menuText =  self.buildmenuitem(@menu, {:class=>html_link_class}, "class='down'")
           if not menuText.blank? then
             returnMenu=  returnMenu + breaker + "<li class='top'>"+ menuText +subMenus+ "</li>"
