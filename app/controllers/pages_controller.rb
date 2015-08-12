@@ -50,8 +50,8 @@ class PagesController < ApplicationController
    
     @page = Page.find(params[:id])
     @page.revert_to(params[:version].to_i) if params[:version]
-    @style_type = STYLE_TYPES
-    @template_types = TEMPLATE_TYPES
+    @style_type = [] # []STYLE_TYPES
+    @template_types = [] # TEMPLATE_TYPES
     
    # paths = ActionController::Base.view_paths.map{|i| (i.to_path.include?("silverweb") ? i.to_path : "")}.delete_if(&:empty?)
     paths = ActionController::Base.view_paths
@@ -64,8 +64,24 @@ class PagesController < ApplicationController
         template_types << [template_name + " Template",template_name] if not template_name.blank?
       end
     end
+    
     @template_types = template_types
     
+    #paths to style_type CSS files.
+    
+    style_types = []
+
+    style_path = Rails.root.to_s + "/app/assets/stylesheets" +  "/style_types/*"
+    style_type_files =  Dir.glob(style_path)
+    puts(style_type_files)
+    
+    style_type_files.each do |style_type|
+       css_file_name = style_type.split("/").last
+       style_types << [css_file_name.split(".").first.humanize + " Style",css_file_name] if not css_file_name.blank?
+    end
+        
+    @style_type = [["B L A N K",""]] + style_types if style_types.length >0
+
     puts("New TemplateList:#{ template_types.inspect}")
     
     @item_edit =  @page

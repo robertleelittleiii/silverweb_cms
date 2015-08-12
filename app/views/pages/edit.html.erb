@@ -48,7 +48,7 @@
             <p>
                 <b>Dialog Width and Height(if a pop up window)</b><br>
 
-                <%=editablefieldcreate("dialog_width", @page)%>           <%=editablefieldcreate("dialog_height", @page)%>
+                <%=editablefieldcreate("dialog_width", @page,"Width in Pixels")%>           <%=editablefieldcreate("dialog_height", @page,"Height in Pixels")%>
 
             </p>
 
@@ -58,11 +58,12 @@
 
             </p>
 
+            <% if @style_type.length > 0 then %>
             <p>
                 <b>Style:(leave blank for default)</b><br>
                 <%=ajax_select("page_style","page",@page, @style_type, "Choose Style...")%><br><br>
             </p>
-
+            <% end %>
 
             <p>
                 <b>Meta Description:</b><br>

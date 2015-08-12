@@ -151,3 +151,9 @@ a.version-info.selected {
   background-color: black;
   padding: 4px;
 }
+
+div#field_dialog_height, div#field_dialog_width {
+    display: inline-block;
+    width: 30%;
+    padding-bottom: 15px;
+}

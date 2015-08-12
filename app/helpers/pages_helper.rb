@@ -28,10 +28,10 @@ module PagesHelper
   end
   
   def get_page_style_sheet
-    if @page.blank? then
+    if @page.blank? or @page.page_style.blank? then
         return ""
       else
-        return  stylesheet_link_tag @page.page_style  rescue ""
+        return stylesheet_link_tag("style_types/" + @page.page_style) rescue ""
       end
   end
   
