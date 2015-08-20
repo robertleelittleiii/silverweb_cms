@@ -76,7 +76,7 @@ module UiHelper
     if not @style_sheet_custom.nil? and not @style_sheet_custom.blank?  then
       custom_stylesheet = "#{params[:controller]}/#{@style_sheet_custom}"
       custom_stylesheet_path = Rails.application.assets.resolve(custom_stylesheet)
-      stylesheet_return <<  (stylesheet_link_tag(custom_stylesheet,"data-turbolinks-track"=>"true")) if  custom_stylesheet_path != nil
+      stylesheet_return <<  (stylesheet_link_tag(custom_stylesheet,"data-turbolinks-track"=>"true")) if  custom_stylesheet_path != nil rescue ""
     end
      
     return stylesheet_return.html_safe if not stylesheet_return.blank?
