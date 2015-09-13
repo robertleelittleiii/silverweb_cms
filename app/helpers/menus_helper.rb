@@ -571,9 +571,9 @@ module  MenusHelper
             if subMenus.include?(params[:selected_class]) then
               html_link_class = params[:selected_class]
             end
-            returnMenu=  returnMenu + breaker + "<#{item_tag} class='top #{html_li_class} #{colorized_class}'>"+ self.buildmenuitem(menu, {:class=>html_link_class}, "", nil ,params) +subMenus+ "</#{item_tag}>"
+            returnMenu=  returnMenu + breaker + "<#{item_tag} class='top #{html_li_class} #{colorized_class} #{html_link_class}'>"+ self.buildmenuitem(menu, {:class=>html_link_class}, "", nil ,params) +subMenus+ "</#{item_tag}>"
           else
-            returnMenu=  returnMenu + breaker  + "<#{item_tag} class='top #{html_li_class} #{colorized_class}'>" + self.buildmenuitem(menu, {:class=>html_link_class}, "", nil ,params) + "</#{item_tag}>"
+            returnMenu=  returnMenu + breaker  + "<#{item_tag} class='top #{html_li_class} #{colorized_class} #{html_link_class}'>" + self.buildmenuitem(menu, {:class=>html_link_class}, "", nil ,params) + "</#{item_tag}>"
           end
 
           breaker = breaker_val.html_safe
