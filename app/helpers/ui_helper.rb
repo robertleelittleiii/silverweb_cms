@@ -75,7 +75,7 @@ module UiHelper
     
     if not @style_sheet_custom.nil? and not @style_sheet_custom.blank?  then
       custom_stylesheet = "#{params[:controller]}/#{@style_sheet_custom}"
-      custom_stylesheet_path = Rails.application.assets.resolve(custom_stylesheet)
+      custom_stylesheet_path = Rails.application.assets.find_asset(custom_stylesheet)
       stylesheet_return <<  (stylesheet_link_tag(custom_stylesheet,"data-turbolinks-track"=>"true")) if  custom_stylesheet_path != nil rescue ""
     end
      
@@ -109,7 +109,7 @@ module UiHelper
   
     if not @java_script_custom.nil? and not @java_script_custom.blank?  then
       custom_javascriptaction = "#{params[:controller]}/#{@java_script_custom}"
-      custom_javascriptaction_path = Rails.application.assets.resolve(custom_javascriptaction)
+      custom_javascriptaction_path = Rails.application.assets.find_asset(custom_javascriptaction)
       javascript_return <<  (javascript_include_tag(custom_javascriptaction,:async => true)) if  custom_javascriptaction_path != nil
     end
     
