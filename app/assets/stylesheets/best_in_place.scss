@@ -44,6 +44,10 @@ root {
     display: inline-block;
 } 
 
+.best_in_place[data-type|=textarea] {
+    height: initial;
+}
+
 .best_in_place:hover, #user_account .do_hover {
     /*  padding-right: 1.5em;*/
     /*  background: url("/images/red_pen.png") no-repeat right;*/
