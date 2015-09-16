@@ -18,7 +18,9 @@ Gem::Specification.new do |s|
   s.test_files = Dir["test/**/*"]
 
   s.add_runtime_dependency "tinymce-rails", "4.1.6"
-
+  
+  s.add_runtime_dependency "compass-rails", "~> 2.0.4"
+  
   s.add_runtime_dependency "rails", '~> 4.2', '>= 4.2.0'
   s.add_runtime_dependency 'jquery-rails','~> 4.0', '>= 4.0.3'
   s.add_runtime_dependency 'rmagick','~> 2.15', '>= 2.15.0'
