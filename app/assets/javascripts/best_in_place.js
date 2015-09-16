@@ -644,7 +644,7 @@ BestInPlaceEditor.forms = {
 		});
              };
                 
-            //jQuery(this.element.find("textarea")[0]).elastic();
+            jQuery(this.element.find("textarea")[0]).elastic();
 
             this.element.find("textarea")[0].focus();
             this.element.find("textarea").bind('blur', {
