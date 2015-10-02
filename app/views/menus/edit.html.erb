@@ -7,6 +7,7 @@ end %>
 <div class="hidden-item">
     <div id="top-parent"><%=@menu.find_top_level_parent %></div>
     <div id="max-images">1</div>
+    <div id="current-menu-id"><%=  @menu.id %></div>
 </div>
 
 <!-- <div class="cms-content"> -->
@@ -54,7 +55,7 @@ end %>
 
   <div id="menu-options" data-id="<%=@menu.id%>">
 
-      <%=render :partial=>((@menu_type.select{|name,id| id==@menu.m_type}.first.first.downcase+ "_type.html") rescue (@menu_type.select{|name,id| id==@menu.m_type.to_i}.first.first.downcase+ "_type.html")) rescue "none_type.html"%>
+      <%=render :partial=>((@menu_type.select{|name,id| id==@menu.m_type}.first.first.downcase.gsub(" ","_") + "_type.html") rescue (@menu_type.select{|name,id| id==@menu.m_type.to_i}.first.first.downcase.gsub(" ","_")+ "_type.html")) %><%#rescue "none_type.html"%>
 
   </div>
   </p>

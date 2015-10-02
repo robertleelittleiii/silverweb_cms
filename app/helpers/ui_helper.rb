@@ -158,9 +158,9 @@ module UiHelper
     
     if opts[:type] == :checkbox
       if object_class_name == "settings" then
-         fieldValue = Settings.send(field) == "true" ? true : false
+        fieldValue = Settings.send(field) == "true" ? true : false
       else
-         fieldValue = !!object.send(field)
+        fieldValue = !!object.send(field)
       end
       if opts[:collection].blank? || opts[:collection].size != 2
         opts[:collection] = ["No", "Yes"]
@@ -213,12 +213,16 @@ module UiHelper
         # do nothing
       end
     end
-    puts("value======> #{sanitize(value.to_s, :tags => nil, :attributes => nil)}")
-    if !opts[:sanitize].nil? && !opts[:sanitize]
+    puts("value sanitized ======> #{sanitize(value.to_s, :tags => nil, :attributes => nil)}")
+    puts("value ======> #{value.to_s}")
+    if opts[:sanitize] or opts[:sanitize].nil? then
+      out << " data-sanitize='true'>"
+      out << sanitize(value.to_s.html_safe(), :tags => %w(b i u s a strong em p h1 h2 h3 h4 h5 ul li ol hr pre span img), :attributes => %w(id class))
+      puts("value----> sanitized")
+    else 
       out << " data-sanitize='false'>"
-      out << sanitize(value.to_s, :tags => %w(b i u s a strong em p h1 h2 h3 h4 h5 ul li ol hr pre span img), :attributes => %w(id class))
-    else
-      out << ">#{sanitize(value.to_s, :tags => nil, :attributes => nil)}"
+      out << "#{value.gsub('<', '&lt;').gsub('>', '&gt;') }"
+      puts("value NOT----> sanitized")
     end
     out << "</div>"
     
@@ -242,7 +246,7 @@ module UiHelper
     else
       divClass=opts[:divclass]
     end rescue divClass='class="myacountcontentitem"'
-  
+
     if (field_pointer[field_name].class == String and field_pointer[field_name].length > 85) or opts[:force_textarea] then
       ('<div id="field_'+field_name.to_s + '"' + divClass + '>' +
           best_in_place(field_pointer, field_name, opts.merge(:type => :textarea, :nil => empty_message)).html_safe +
@@ -562,5 +566,15 @@ module UiHelper
     out << " <div id='dialog-name'>#{dialog_name}</div>"
     out << "</div>"
     return out.html_safe
+  end
+  
+  def ajax_select_combo(field_name, field_object, field_pointer, value_list, prompt='Please Select...', html_options=nil)
+        
+    html_options==nil ? html_options={} : ""
+    
+    select(field_object,"#{field_name}", value_list,{ :prompt => prompt}, {"data-id"=>field_pointer.id,
+      }.merge(html_options)
+    ).html_safe
+
   end
 end

@@ -1,4 +1,4 @@
-Rails.application.routes.draw do
+ Rails.application.routes.draw do
   
   resources :admin do
     collection do
@@ -164,8 +164,17 @@ resources :users do
 
   # match '*a.htm' => redirect("/site", :status => 302)
 
-  match ':page_name(.:format)', :controller => 'site', :action => 'show_page',  via: [:get]
-   
+  #
+  #  Using route list:
+  #
+  #       format: match ':page_name(.:format)', :controller => 'site', :action => 'show_page',  via: [:get]
+  #
+  #
+  
+  SilverwebCms::Config.DIRECT_ROUTE_LIST.each do |route|
+    match route[:match], :controller=>route[:controller], :action=>route[:action],  via: route[:via] 
+  end
+  
   root :to => "site#index"
 
 end

@@ -20,7 +20,7 @@ module SilverwebCms
     require 'non-stupid-digest-assets'
     
     # isolate_namespace SilverwebCms
-         ActiveSupport.on_load(:action_controller) do
+   ActiveSupport.on_load(:action_controller) do
           include SilverwebCms::Controller # ActiveSupport::Concern
          end
     initializer :append_migrations do |app|

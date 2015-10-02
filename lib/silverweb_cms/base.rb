@@ -51,10 +51,37 @@ module SilverwebCms
     def self.add_menu_actions(menu_action)
       @ACTION_TYPES << menu_action
     end
+  
+    # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+    #     R O U T E S  T O  A D D  F O R  D I R E C T  U R L  L I N K
+    # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+    # 
+    # 
+    # This will hold a hash of routes and actions for direct links via names.
+    
+    @DIRECT_ROUTE_LIST = nil
+
+    # Accessor used to access plugin configuration settings (returns a Hash that
+    # directly corresponds to the contents of <tt>config/vtools_ui.yml</tt>)
+    def self.DIRECT_ROUTE_LIST
+      @DIRECT_ROUTE_LIST
+    end
+    
+    #match ':page_name(.:format)', :controller => 'site', :action => 'show_page',  via: [:get]
+
+    
+    def self.load_route_list
+      @DIRECT_ROUTE_LIST = [{:match=>":page_name(.:format)", :controller=>'site', :action=>'show_page', :via=>:get}]
+    end
+    
+    def self.add_route_item(route_item)
+      @DIRECT_ROUTE_LIST.insert(0,route_item)
+    end
   end
 end
- 
+
 SilverwebCms::Config.load_nav_list
 SilverwebCms::Config.load_menu_types
 SilverwebCms::Config.load_menu_actions
+SilverwebCms::Config.load_route_list
 

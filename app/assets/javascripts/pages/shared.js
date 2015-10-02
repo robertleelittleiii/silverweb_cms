@@ -37,9 +37,13 @@ function pageeditClickBinding(selector) {
                                 show_page(page_id);
                             }
                         }
-                        tinyMCE.editors[0].destroy();
+                        pageeditClickBinding("div#edit-pages");
+
+                        //tinyMCE.editors[0].destroy();
+                        top.tinymce.activeEditor.destroy();
                         $('#edit-page').html("");
                         $('#edit-page').dialog("destroy");
+                        
 
                     }
                 });
