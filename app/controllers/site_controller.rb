@@ -996,7 +996,36 @@ class SiteController < ApplicationController
 #    return return_list
 #  end
     
-  
+  def create_menu_lowest_child_list(menu_name, menu_id=nil,with_id=true)
+          if menu_id.blank? then
+            if menu_name.blank? then
+              return []
+            else
+              @start_menu = Menu.find_by_name(menu_name)
+              if @start_menu.blank? then
+                return "no menu found"
+              end
+            end
+          else
+            @start_menu = Menu.find(menu_id)
+          end
+      
+          @menus = Menu.find_menu(@start_menu.id)
+      
+          return_list = []
+          @menus.each do |menu|
+            if menu.menus.size == 0 then
+              if with_id then
+                return_list = return_list + [[menu.name, menu.id]]
+              else
+                return_list = return_list + [menu.name]
+              end
+            else
+              return_list= return_list + create_menu_lowest_child_list("",menu.id,with_id)
+            end
+          end
+          return return_list
+        end
 
   
   protected
