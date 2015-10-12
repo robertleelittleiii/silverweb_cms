@@ -51,12 +51,16 @@ function call_document_ready_on_show_page() {
 }
 
 function start_flex_sliders() {
+        slideshow_nav_pagination = $("#slider-nav").text();
+        slideshow_effect = $("#slider-effect").text();
+        slideshow_auto = $("#slider-auto").text() || "true"
+        slideshow_speed = $("#slider-speed").text() || "5000"
 
     if ($('.flexslider').length > 0) {
         require("jquery.flexslider.js");
         $('.flexslider').flexslider({start: function () {
                 $('#page-slider-gallary-page').fadeIn();
-            }, directionNav: true, animationSpeed: 2000, slideshowSpeed: 5000});
+            }, directionNav: slideshow_nav_pagination, animationSpeed: 2000, slideshowSpeed: slideshow_speed});
 
     }
 }
