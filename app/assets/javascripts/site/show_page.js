@@ -51,7 +51,7 @@ function call_document_ready_on_show_page() {
 }
 
 function start_flex_sliders() {
-        slideshow_nav_pagination = $("#slider-nav").text();
+        slideshow_nav_pagination = $("#slider-nav").text() === "true";
         slideshow_effect = $("#slider-effect").text();
         slideshow_auto = $("#slider-auto").text() || "true"
         slideshow_speed = $("#slider-speed").text() || "5000"
