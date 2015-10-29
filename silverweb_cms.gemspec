@@ -35,6 +35,7 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency "acts-as-taggable-on", '~> 3.5', '>= 3.5.0'
   # s.add_dependency "rails-settings-cached", "0.4.1"
   s.add_runtime_dependency 'rails-settings-cached', '0.4.1' 
+  # s.add_runtime_dependency 'robertleelittleiii/vestal_versions'
   s.add_runtime_dependency 'carrierwave'
   s.add_runtime_dependency 'kaminari'
   s.add_runtime_dependency 'rack-mini-profiler'
