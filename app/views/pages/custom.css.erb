@@ -2,8 +2,8 @@
 <%#= render :file=>Rails.application.assets['fonts.css'].pathname.to_s%>
 
 <%=render :text=>Rails.application.assets['fonts.css'].to_s.html_safe %>
-<%=(@page.template_name.blank? ? "" : render(:text=>Rails.application.assets["site/show_page-#{@page.template_name}.css"].to_s)) rescue ""%>
-<%=render(:text=>Rails.application.assets["editor-custom.css"].to_s) %>
-<%=render(:text=>Rails.application.assets["#{@page.page_style}"].to_s)  rescue ""%>
+<%=(@page.template_name.blank? ? "" : render(:text=>Rails.application.assets["site/show_page-#{@page.template_name}.css"].to_s.html_safe)) rescue ""%>
+<%=render(:text=>Rails.application.assets["editor-custom.css"].to_s.html_safe) %>
+<%=render(:text=>Rails.application.assets["#{@page.page_style}"].to_s.html_safe)  rescue ""%>
 
 
