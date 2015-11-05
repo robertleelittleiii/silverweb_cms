@@ -113,8 +113,8 @@ class PicturesController < ApplicationController
   def render_pictures
     class_name =  params[:class_name]
   
-    @pictures = class_name.classify.constantize.where(id: params[:id]).first.pictures
-    
+    @pictures = class_name.classify.constantize.where(id: params[:id]).first.pictures.order(created_at: :desc)
+
     if class_name.blank? then
       render(:partial=>"/pictures/picture_list.html", locals: {picture_list: @pictures} )
     else

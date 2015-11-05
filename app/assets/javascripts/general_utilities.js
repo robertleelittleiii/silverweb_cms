@@ -385,6 +385,36 @@ function ui_ajax_select() {
     });
 }
 
+function ui_ajax_settings_select() {
+
+    $("select.ui-ajax-settings-select").bind("change", function () {
+        selected_item = $(this).val();
+        controller = this.getAttribute("data-path")
+
+        //alert(this.getAttribute("data-id"));
+
+
+        $.ajax({
+            url: controller, // controller + "/update",
+            dataType: "json",
+            type: "PUT",
+            data: "id=" + this.getAttribute("data-id") + "&settings[" + this.getAttribute("name") + "=" + selected_item,
+            success: function (data)
+            {
+                // alert(data);
+                if (data === undefined || data === null || data === "")
+                {
+                    //display warning
+                }
+                else
+                {
+
+                }
+            }
+        });
+    });
+}
+
 
 function updateMenu(menu_id)
 {

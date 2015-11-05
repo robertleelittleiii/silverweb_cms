@@ -235,19 +235,6 @@ module SiteHelper
     return returnval.html_safe
   end
   
-  def product_edit_div(product)
-    returnval=""
-    if session[:user_id] then
-      user=User.find(session[:user_id])
-      if user.roles.detect{|role|((role.name=="Admin") | (role.name=="Site Owner"))} then
-        returnval="<div id=\"edit-product\" class=\"edit-product\">"
-        returnval=returnval+image_tag("interface/edit.png",:border=>"0", :class=>"imagebutton", :title => "Edit this Product")
-        returnval=returnval + "</div>"
-
-      end
-    end
-    return returnval.html_safe
-  end
 
   def page_edit_div(page, div_id="")
     returnval=""

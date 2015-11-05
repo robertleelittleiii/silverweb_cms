@@ -56,7 +56,7 @@ function sliders_bind_file_paste_to_upload_form()
             file = data.files[0];
             data.context = $(tmpl("template-upload", file));
             // $("div.progress").progressbar();
-            // $('#pictures').append(data.context);
+            // $('#pictures').prepend(data.context);
             var jqXHR = data.submit()
                     .success(function (result, statusText, jqXHR) {
 

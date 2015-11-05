@@ -1,7 +1,7 @@
 class ImageLibrariesController < ApplicationController
   
   def image_list
-    @pictures = Picture.all
+    @pictures = Picture.all.order(created_at: :desc)
     
      respond_to do |format|
       format.html # image_list.html.erb

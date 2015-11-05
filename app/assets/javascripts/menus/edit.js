@@ -118,7 +118,7 @@ function bind_file_upload_to_upload_form()
             data.context = $(tmpl("template-upload", file));
             // $("div.progress").progressbar();
             $('#pictures').fadeIn();
-            $('#pictures').append(data.context);
+            $('#pictures').prepend(data.context);
             var jqXHR = data.submit()
                     .success(function (result, statusText, jqXHR) {
 
