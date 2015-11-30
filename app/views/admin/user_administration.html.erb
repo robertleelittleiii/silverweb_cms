@@ -26,6 +26,7 @@
     <% end %> <br>
     <div id="user-actions">
 <%= link_to('New User',{ :action=>:create_empty_record, :controller=>:users, :typeofrecord=>"user", :request_type=>"window"}, :id=>"new-user",:class=>"button-link", :remote => true  )%>
+<%= link_to('Export',{ :action=>:index, :controller=>:users, :typeofrecord=>"user",:format=>"csv", :request_type=>"window"}, :id=>"new-user",:class=>"button-link", :target => "newwindow"  )%>
     </div>
     <hr>
 

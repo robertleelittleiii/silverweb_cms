@@ -22,6 +22,8 @@ class UsersController < ApplicationController
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @users }
+      format.csv { send_data @users.to_csv }
+
     end
   end
 

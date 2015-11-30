@@ -156,7 +156,30 @@ include Gravtastic
       raise "Can't delete last user"
     end
   end
+  
+def self.to_csv
+    # attributes = %w{id email name}
 
+    CSV.generate(headers: true) do |csv|
+          csv << ["Firstname", "Lastname", "Email"]
+
+    # data rows
+    all.each do |user|
+      #  csv << user.attributes.values_at(*column_names)
+        csv << [user.user_attribute.first_name, user.user_attribute.last_name, user.name]
+
+      end
+      
+    end
+    
+  
+  end
+
+#  def name
+#    "#{first_name} #{last_name}"
+#  end
+  
+  
 
   private
 
