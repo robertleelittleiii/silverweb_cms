@@ -373,7 +373,12 @@ module UiHelper
       puts("found_item: '#{found_item}'")
       html_options==nil ? html_options={:class=>"ui-ajax-settings-select", "data-path"=>url_for(request.original_url).to_s } : ""
       select_tag(field_name, options_for_select(value_list, Settings.send(field_name)), html_options)
-  else
+    elsif (field_object == "cart") then
+      found_item = value_list.index{|a| a[1]== Cart.send(field_name) }
+      puts("found_item: '#{found_item}'")
+      html_options==nil ? html_options={:class=>"ui-ajax-cart-select", "data-path"=>url_for(request.original_url).to_s } : ""
+      select_tag(field_name, options_for_select(value_list, Cart.send(field_name)), html_options)
+    else
       html_options==nil ? html_options={:class=>"ui-ajax-select", "data-path"=>url_for(field_pointer).to_s ,"data-id"=>field_pointer.id} : ""
       select(field_object,"#{field_name}", value_list,{ :prompt => prompt}, html_options )
     end
