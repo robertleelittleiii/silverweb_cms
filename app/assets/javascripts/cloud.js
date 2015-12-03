@@ -147,7 +147,7 @@ function checkLoginStatus()
 //
 
 
-function loadLoginBox() {
+function loadLoginBox(url_to_goto) {
 
     $.ajax({
         url: "/site/login",
@@ -167,7 +167,7 @@ function loadLoginBox() {
             $(".login-enclosure").hide();
             $(".login-enclosure").css("opacity", 1);
             toggle_login_box(true);
-            bindLoginClick();
+            bindLoginClick(url_to_goto);
             bindLoginForgotLink();
             bindLoginRegisterLink();
             bindResetClick();
@@ -234,7 +234,7 @@ function bindLogoutClick() {
 
     });
 }
-function bindLoginClick() {
+function bindLoginClick(url_to_goto) {
     $('#login-form').bind('ajax:beforeSend', function (evt, xhr, settings) {
         // alert("ajax:before");  
         console.log('ajax:before');
@@ -249,7 +249,7 @@ function bindLoginClick() {
         console.log(evt);
         console.log(data);
         if (data.sucessfull) {
-            login_sucessfull();
+            login_sucessfull(url_to_goto);
         }
         else
         {
@@ -357,7 +357,7 @@ function check_login_status() {
 
 }
 
-function login_sucessfull() {
+function login_sucessfull(url_to_goto) {
 
     //   toggle_login_box(false);
 
@@ -402,10 +402,18 @@ function login_sucessfull() {
 
 
     updateFooterDiv();
-    updateAppDiv();
     updateSecurityDiv();
     show_page();
     
+    if (! (typeof url_to_goto == "undefined"))
+    {
+        window.location = url_to_goto
+    }
+    else
+    {
+        updateAppDiv();
+
+    }
 
     // check_login_status();
 
