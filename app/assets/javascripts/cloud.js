@@ -212,9 +212,10 @@ function bindLogoutClick() {
         console.log(status);
         console.log(xhr);
         updateFooterDiv();
-        updateAppDiv();
+        // updateAppDiv();
         updateSecurityDiv();
-        show_page();
+        // show_page();
+        update_content();
 
     }).bind('ajax:error', function (evt, xhr, status, error) {
         // alert("ajax:failure"); 
@@ -401,9 +402,11 @@ function login_sucessfull(url_to_goto) {
 
 
 
+
     updateFooterDiv();
     updateSecurityDiv();
-    show_page();
+    update_content();
+    // show_page();
     
     if (! (typeof url_to_goto == "undefined"))
     {
@@ -411,7 +414,7 @@ function login_sucessfull(url_to_goto) {
     }
     else
     {
-        updateAppDiv();
+        // updateAppDiv();
 
     }
 
@@ -935,6 +938,7 @@ function call_document_ready(theAction) {
     }
 }
 
+
 function show_page(page_id) {
 
     if (typeof page_id === 'undefined')
@@ -958,4 +962,30 @@ function show_page(page_id) {
         }
     });
 
+}
+
+function update_content() {
+
+  var  data_update_url = $("div#data-reload").attr('data-page-params');
+  var  data_content_update_call = $("div#data-reload").attr('data-page-update');
+  
+    if (typeof data_update_url === 'undefined')
+    {
+            location.reload(true);
+            return
+        }
+    
+    $.ajax({
+        url: data_update_url,
+        type: 'get',
+        success: function (data)
+        {
+            $("div#content").html(data);
+           if(typeof eval(data_content_update_call) == "function") {
+               eval(data_content_update_call+ "()")
+           }
+          
+        }
+    });
+    
 }

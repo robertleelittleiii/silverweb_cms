@@ -20,6 +20,9 @@ module SiteHelper
   #  </div>
   #</div>
   #        
+  def page_data_attr
+        return ("<div id='data-reload' class='hidden-item' data-page-params='site/show_page?id=#{@page.id}' data-page-update='call_document_ready_on_show_page'></div>").html_safe
+  end
   
   def display_html(data)
     data.html_safe
