@@ -407,8 +407,8 @@ function login_sucessfull(url_to_goto) {
     updateSecurityDiv();
     update_content();
     // show_page();
-    
-    if (! (typeof url_to_goto == "undefined"))
+
+    if (!(typeof url_to_goto == "undefined"))
     {
         window.location = url_to_goto
     }
@@ -640,8 +640,8 @@ function bindAppClick() {
         var windowType = $.url(this.href).param("window_type");
         var theController = $.url(this.href).segment(1);
         var theAction = $.url(this.href).segment(2) || "index"
-        
-      
+
+
 
         if (windowType == "iframe") {
             //   alert("This is an iframe app.");
@@ -678,17 +678,17 @@ function bindAppClick() {
                 thisDialog.scrollTop(0);
             }
         }
-        
+
         console.log(status);
         console.log(xhr);
 
         console.log(this.href);
 
-        requireCss(theController + "/" + ( theAction=='index' ? 'index_' : theAction )+ ".css");
-        require(theController + "/" + ( theAction=='index' ? 'index_' : theAction )+ ".js");
+        requireCss(theController + "/" + (theAction == 'index' ? 'index_' : theAction) + ".css");
+        require(theController + "/" + (theAction == 'index' ? 'index_' : theAction) + ".js");
 
         console.log(theController + "_" + theAction + "_callDocumentReady");
-        
+
         try
         {
             if ((typeof (theController + "_" + theAction + "_callDocumentReady") == 'function') | (typeof (eval(theController + "_" + theAction + "_callDocumentReady")) == 'function')) {
@@ -966,26 +966,58 @@ function show_page(page_id) {
 
 function update_content() {
 
-  var  data_update_url = $("div#data-reload").attr('data-page-params');
-  var  data_content_update_call = $("div#data-reload").attr('data-page-update');
-  
+    var data_update_url = $("div#data-reload").attr('data-page-params');
+    var data_content_update_call = $("div#data-reload").attr('data-page-update');
+    var data_additional = $("div#data-reload").attr('data-additional');
+
     if (typeof data_update_url === 'undefined')
     {
-            location.reload(true);
-            return
-        }
-    
+        location.reload(true);
+        return
+    }
+
     $.ajax({
         url: data_update_url,
         type: 'get',
         success: function (data)
         {
             $("div#content").html(data);
-           if(typeof eval(data_content_update_call) == "function") {
-               eval(data_content_update_call+ "()")
-           }
-          
+            try {
+                if (typeof eval(data_content_update_call) == "function") {
+                    eval(data_content_update_call + "()")
+                }
+            } catch (err)
+            {
+
+            }
+            try {
+                if (typeof (data_content_update_call + "_callDocumentReady") != undefined) {
+                    if (typeof eval(data_content_update_call + "_callDocumentReady") == "function") {
+                        eval(data_content_update_call + "_callDocumentReady()")
+                    }
+                }
+            } catch (err)
+            {
+
+            }
+
+            try {
+                if (typeof eval(data_additional) == "function") {
+                    eval(data_additional + "()")
+                }
+            } catch (err)
+            {
+
+            }
+            try {
+                if (typeof eval(data_additional + "_callDocumentReady") == "function") {
+                    eval(data_additional + "_callDocumentReady()")
+                }
+            }
+            catch (err)
+            {
+            }
         }
     });
-    
+
 }
