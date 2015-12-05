@@ -7,18 +7,19 @@ class RegistrationController < ApplicationController
     if @user.nil?
 
       flash[:notice] = "Your account has already been activated"
-      redirect_to :action=>:login, :controller=>:admin
+      redirect_to :action=>:index, :controller=>:site
     else
       #     if request.post?  
       @user.delete_activation_code
       flash[:notice] = "Account successfully activated for #{@user.name}"
-      redirect_to :action=>:login, :controller=>:admin
+      redirect_to :action=>:index, :controller=>:site
       #     else
       #        render :action => :password_is_reset
       #     end
 
     end
   end
+  
   def testinventory 
     @product_detail = ProductDetail.find(params[:id])
     $hostfull=request.protocol + request.host_with_port

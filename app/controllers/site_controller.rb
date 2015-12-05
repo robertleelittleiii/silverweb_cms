@@ -97,13 +97,13 @@ class SiteController < ApplicationController
     @regtype=params[:register][:regtype]||""
     if not @user then
       if request.post? and params[:user]
-        @user = User.create(params[:user])
+        @user = User.create(params[:user].permit("name", "password", "password_confirmation"))
           
         @role_name = params[:register][:role]
         @role = Role.find_by_name(@role_name)
         @user.roles << @role
 
-        @user_attribute = UserAttribute.create(params[:user_attributes])
+        @user_attribute = UserAttribute.create(params[:user_attributes].permit("first_name", "last_name"))
         @user_attribute.user_id=@user.id
         @user_attribute.save
       
@@ -1029,7 +1029,7 @@ class SiteController < ApplicationController
 
   
   protected
-
+  
   def authorize
     return true
   end

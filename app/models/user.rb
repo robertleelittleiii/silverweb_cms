@@ -74,13 +74,13 @@ include Gravtastic
   def create_reset_code
     @reset = true
     self.attributes = {password_reset_code: Digest::SHA1.hexdigest( Time.now.to_s.split(//).sort_by {rand}.join )}
-    save(false)
+    save(validate: false)
   end
 
   def create_activation_code
     @created=true
     self.attributes = {activation_code: Digest::SHA1.hexdigest( Time.now.to_s.split(//).sort_by {rand}.join )}
-    save(false)
+    save(validate: false)
   end
 
   def not_activated?
@@ -104,9 +104,9 @@ include Gravtastic
   end
 
   def reset_activation_code
-    @lost_activation_code=true
-    save(false)
-  end
+    @losavest_activation_code=true
+    save(validate: false)
+  end 
   
   def resend_activation_code
     @lost_activation_code=true
@@ -114,13 +114,13 @@ include Gravtastic
   
   def delete_reset_code
     self.attributes = {password_reset_code: nil}
-    save(false)
+    save(validate: false)
   end
 
   def delete_activation_code
     @activated=true
     self.attributes = {activation_code: nil, activated_at: Time.now}
-    save(false)
+    save(validate: false)
   end
   # 'password' is a virtual attribute
   def password

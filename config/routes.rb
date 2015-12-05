@@ -152,10 +152,10 @@ resources :users do
   end
   match '/spellchecker', :controller=>'spelling', :action => 'index', via: [:post]
   
-  match  '/forgot', :controller => 'registration', :action => 'forgot', via: [:post]
-  match  '/lost',                            :controller => 'registration',     :action => 'lost',  via: [:post]
-  match '/reset/:reset_code',                  :controller => 'registration',     :action => 'reset', via: [:post]
-  match '/activate/:activation_code',          :controller => 'registration',     :action => 'activate', via: [:post]
+  match  '/forgot', :controller => 'registration', :action => 'forgot', via: [:get]
+  match  '/lost',                            :controller => 'registration',     :action => 'lost',  via: [:get]
+  match '/reset/:reset_code',                  :controller => 'registration',     :action => 'reset', via: [:get]
+  match '/activate/:activation_code',          :controller => 'registration',     :action => 'activate', via: [:get]
   
   
  #  match ':page_name(.:format)', :controller => 'site', :action => 'show_page',  via: [:get]
