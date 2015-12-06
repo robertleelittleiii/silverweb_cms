@@ -48,7 +48,9 @@ function call_document_ready_on_show_page() {
     
    activate_slides();
    start_flex_sliders();
-  pageeditClickBinding("div#edit-pages");
+   
+    require("pages/shared.js");
+    pageeditClickBinding("div#edit-pages");
 
 }
 
