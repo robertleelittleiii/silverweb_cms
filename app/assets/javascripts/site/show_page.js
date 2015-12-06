@@ -46,8 +46,10 @@ function call_document_ready_on_show_page() {
 
     }
     
-    activate_slides();
+   activate_slides();
    start_flex_sliders();
+  pageeditClickBinding("div#edit-pages");
+
 }
 
 function start_flex_sliders() {
