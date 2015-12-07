@@ -2,7 +2,7 @@ class Picture < ActiveRecord::Base
 
   
   belongs_to :menues, :polymorphic => true
-  belongs_to :products, :polymorphic => true
+  belongs_to :product, :polymorphic => true
   belongs_to :settings
   belongs_to :advertisement, :polymorphic => true
   
