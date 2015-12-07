@@ -120,7 +120,9 @@ module UiHelper
   def best_in_place(object, field, opts = {})
     logger.info("best_in_place")
     logger.info(opts[:class])
-  
+    puts("object: #{object}, field: #{field}, opts: #{opts.inspect}")
+    puts("object: #{object}, field: #{field}, opts: #{opts.inspect}")
+
     opts[:type] ||= :input
     opts[:collection] ||= []
 
@@ -182,7 +184,7 @@ module UiHelper
     
     out = "<div class='best_in_place " + extraclass
     out << " id='best_in_place_#{object_class_name}_#{field}'"
-    out << " data-url='#{opts[:path].blank? ? url_for(object).to_s : url_for(opts[:path])}'"
+    out << " data-url='#{opts[:path].blank? ? url_for(object).to_s : url_for(opts[:path]) rescue "/"}'"
     out << " data-object='#{object_class_name}'"
     out << " data-collection='#{collection}'" unless collection.blank?
     out << " data-attribute='#{field}'"
@@ -237,6 +239,7 @@ module UiHelper
   
   def editablefieldcreate(field_name,field_pointer, empty_message="Click me to add content!", opts = {})
  
+    # puts("field_name: #{field_name}, field_pointer: #{field_pointer}, opts: #{opts.inspect}")
     if field_pointer.blank? then
       flash[:notice] = field_name + " not found !!"
       return "ERROR"

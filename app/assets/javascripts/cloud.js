@@ -972,8 +972,10 @@ function update_content() {
 
     if (typeof data_update_url === 'undefined')
     {
-        location.reload(true);
-        return
+        if ($("div#nav-grid-links").css('display') != "none") {
+            location.reload(true);
+            return
+        }
     }
 
     $.ajax({
