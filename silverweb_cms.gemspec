@@ -42,6 +42,7 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'non-stupid-digest-assets'
   s.add_runtime_dependency 'gravtastic'
   s.add_development_dependency "mysql"
+  s.add_development_dependency 'gem_reloader'
   s.add_runtime_dependency 'sitemap_generator'
   
 end
