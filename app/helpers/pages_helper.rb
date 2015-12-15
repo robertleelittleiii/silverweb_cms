@@ -6,12 +6,14 @@ module PagesHelper
       puts("Category selected for get_page_name")
       out << @category_id
     else
-      puts("Page.name selected for get_page_name")
+      puts("Page.name selected for get_page_name: #{@page.inspect}, @page_name: #{@page_name}")
 
       out << @page.name rescue @page_name rescue ""
+   #  out << (@page.blank? ? (@page_name.blank? ? "n/a" : @page_name) : @page.name)
+
     end
     puts("out: #{out}")
-
+    
     return out
   end
   

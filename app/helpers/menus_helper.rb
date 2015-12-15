@@ -328,7 +328,7 @@ module  MenusHelper
   end
 
   def buildhorizontalmenu(params=nil)
-    puts(params.inspect)
+    puts("build menu params: #{params.inspect}")
     html_options = {}
     
     html_options.merge!({:class=>params[:class]}) 
@@ -343,7 +343,8 @@ module  MenusHelper
     @selected_class = params[:selected_class] || ""
     
     @page_name = params[:current_page] || ""
-    
+    # @page_name = (params[:current_page] || "") if @page_name.blank?
+
     if not @page_name.blank? then
       @current_sub_menu = Menu.find_by_name(@page_name) || Menu.all[0]
       @parent_name = @current_sub_menu.blank? ? "" : @current_sub_menu.menu.name rescue ""
@@ -373,7 +374,7 @@ module  MenusHelper
             @prehtml=params[:prehtml_last] || params[:prehtml] || ""
           end
         end
-        
+                
         
         
         
@@ -381,6 +382,8 @@ module  MenusHelper
         puts("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
         puts("menuText: #{menuText} menu: #{@menu.name} vs page name: #{params[:current_page]}")
         puts("parent_name: #{@parent_name}")
+        puts("page_name: #{@page_name}")
+        
         if not menuText.blank?  then
           if @menu.name == params[:current_page] and not menu_selected
             menu_selected=true  
@@ -398,7 +401,7 @@ module  MenusHelper
         end
         puts(returnMenu)
         puts("menu_selected: #{menu_selected}, @menu.name: #{@menu.name}, params[:current_page]: #{params[:current_page]} ")
-        
+       
         breaker = breaker_val
       end
     end
