@@ -262,7 +262,7 @@ div#nav-grid-links {
   height: 100%;
   background-color: rgba(0, 0, 0, 0.6);
   position: fixed;
-  z-index: 100;
+  z-index: 105;
 }
 
 a.icon-button {
@@ -442,4 +442,30 @@ div.validation-error-message-div:hover + div.validation-error-message {
     z-index: 20;
     position: absolute;
     opacity: 0.5;
+}
+
+div#grid-nav {
+
+    -webkit-transition: all 1000ms ease;
+    -moz-transition: all 1000ms ease;
+    -ms-transition: all 1000ms ease;
+    -o-transition: all 1000ms ease;
+    transition: all 1000ms ease;
+}
+
+@media screen and (max-width: 524px) {
+    div#grid-nav {
+        top:-500px;
+    }
+    
+   .hide-grid {
+    display: inline-block !important;
+    background: rgba(255, 255, 255, 0.7);
+    position: absolute;
+    height: 20px;
+    bottom: -22px;
+    margin-left: 35%;
+    margin-right: 35%;
+    width: 22%;
+}
 }

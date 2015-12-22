@@ -16,11 +16,11 @@ module SilverwebCms
       
       def cms_authorize
         
-         before_filter :authenticate,
+        before_filter :authenticate,
           :authorize,
           :except => :login  
         
-         include SilverwebCmsInternals
+        include SilverwebCmsInternals
 
       end
       
@@ -36,7 +36,15 @@ module SilverwebCms
     
     module SilverwebCmsInternals
       extend ActiveSupport::Concern
-
+      
+      def redirect_back_or_default(default = root_url, *args)
+        if request.env['HTTP_REFERER'].present? && request.env['HTTP_REFERER'] != request.env['REQUEST_URI']
+          redirect_to :back, *args
+        else
+          redirect_to default, *args
+        end
+      end
+       
       def authenticate
         # put an exception here for self registration
         puts "In Authenticate"
@@ -62,7 +70,7 @@ module SilverwebCms
           user =  User.find_by_id(session[:user_id])
           
           if user.roles.where(:name=>"Admin").length>0 then
-                Rack::MiniProfiler.authorize_request
+            Rack::MiniProfiler.authorize_request
           end
           
           unless user.roles.detect{|role|
@@ -82,24 +90,24 @@ module SilverwebCms
       extend ActiveSupport::Concern
 
       def authenticate
-       return true
+        return true
       end
 
       def authorize
-       return true
+        return true
       end
     end
   
     
-      def cms_layout(default="application")
-        if request.xhr? then
-          false
-        elsif params[:as_window] then
-          "cms_dialog"
-        else
-          default
-        end
+    def cms_layout(default="application")
+      if request.xhr? then
+        false
+      elsif params[:as_window] then
+        "cms_dialog"
+      else
+        default
       end
+    end
 
   end
 end

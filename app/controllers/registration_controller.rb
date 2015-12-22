@@ -1,5 +1,5 @@
 class RegistrationController < ApplicationController
-
+  
   def activate
     $hostfull=request.protocol + request.host_with_port
 
@@ -76,8 +76,8 @@ class RegistrationController < ApplicationController
       @user = User.find_by_name(params[:user][:name])
       if @user
         @user.create_reset_code
-         UserNotifier.reset_notification(@user, $hostfull).deliver
-#         UserNotifier.reset_notification2(@user, @hostfull)
+        UserNotifier.reset_notification(@user, $hostfull).deliver
+        #         UserNotifier.reset_notification2(@user, @hostfull)
         flash[:notice] = "Reset code sent to #{@user.name}"
       else
         flash[:notice] = "#{params[:user][:name]} does not exist in system"

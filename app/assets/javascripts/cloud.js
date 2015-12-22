@@ -88,13 +88,36 @@ function initial_animation() {
 
 
 function toggle_login_box(display_now) {
-    if (display_now) {
-        $(".login-enclosure").fadeIn(500);
-    }
-    else
-    {
-        $(".login-enclosure").fadeOut(500);
 
+    if (window.matchMedia("only screen and (max-width: 524px)").matches) {
+        if (display_now) {
+            $("#login-backdrop").hide();
+            $(".login-enclosure").css("display", "block");
+            $("#login-backdrop").fadeIn(500);
+            $("form#login-form").css("top", "0px");
+
+        }
+        else
+        {
+            $("form#login-form").css("top", "-350px");
+            $(".login-enclosure").css("opacity", "0");
+            $(".login-enclosure").css("display", "none");
+
+            //$(".login-enclosure").fadeOut(500);
+            //$("form#login-form").css("top","-350px");
+            // $(".login-enclosure").slideUp(500);
+
+        }
+    }
+    else {
+        if (display_now) {
+            $(".login-enclosure").fadeIn(500);
+        }
+        else
+        {
+            $(".login-enclosure").fadeOut(500);
+
+        }
     }
 }
 
@@ -160,12 +183,13 @@ function loadLoginBox(url_to_goto) {
             if ($("#login-enclosure-container").length == 0)
             {
                 $("body").append($(loginContainer));
-
             }
 
             $("#login-enclosure-container").html(data);
             $(".login-enclosure").hide();
             $(".login-enclosure").css("opacity", 1);
+            $("form#login-form").css("top", "0px");
+
             toggle_login_box(true);
             bindLoginClick(url_to_goto);
             bindLoginForgotLink();
@@ -186,11 +210,29 @@ function loadLoginBox(url_to_goto) {
 
 function bindCancelClick() {
     $("a#cancel-button").click(function (e) {
-        $("#login-backdrop").fadeOut(500);
-        $(".login-enclosure").fadeOut(500, function () {
-            $("#login-enclosure-container").html("");
-            $("#login-enclosure-container").remove();
-        });
+
+        if (window.matchMedia("only screen and (max-width: 524px)").matches) {
+
+            $("#login-backdrop").fadeOut(500);
+            $("form#login-form").css("top", "-350px");
+            $(".login-enclosure").fadeOut(500, function () {
+                $("#login-enclosure-container").html("");
+                $("#login-enclosure-container").remove();
+            });
+
+            //$(".login-enclosure").fadeOut(500);
+            //$("form#login-form").css("top","-350px");
+            // $(".login-enclosure").slideUp(500);
+
+        }
+        else {
+            $("#login-backdrop").fadeOut(500);
+            $(".login-enclosure").fadeOut(500, function () {
+                $("#login-enclosure-container").html("");
+                $("#login-enclosure-container").remove();
+            });
+        }
+
     });
 }
 
@@ -483,7 +525,15 @@ function updateSecurityDiv()
             }
             else
             {
-                $("#security-div").html(data);
+                if ($("div#admin-nav.normal").length > 0) {
+                    $("div#admin-nav.normal #security-div").html(data);
+                    $("div#admin-nav.small #security-div").html(data);
+                }
+                else
+                {
+                    $("#security-div").html(data);
+
+                }
                 bindMyAccountClick();
                 bindCloseIframe();
                 bindLoginButton();
@@ -549,7 +599,17 @@ function updateAppDiv() {
                 $("#nav-grid-links").html(data);
                 $(".grid_tabnav ul li").removeClass("hidden");
                 // $("#grid-nav").fadeIn();
-                $("#nav-grid-links").fadeIn();
+                if (window.matchMedia("only screen and (max-width: 524px)").matches)
+                {
+                     $("#nav-grid-links").fadeIn();
+                     $("#grid-nav").css("top", "0px");
+                } 
+                else
+                {
+                        $("#nav-grid-links").fadeIn();
+                        $("#grid-nav").css("top", "0px");
+
+           }
 
                 bindAppClick();
                 bindCloseGrid();
@@ -561,20 +621,36 @@ function updateAppDiv() {
 }
 
 function bindCloseGrid() {
+    
+    bindHideGrid();
+
     $("a.button-close").button({
         icons: {
             primary: "ui-icon-close"
         },
         text: false
     }).click(function () {
-
-        $("#nav-grid-links").fadeOut();
-
+      $("#nav-grid-links").fadeOut();
     });
 
 }
 
+function bindHideGrid() {
+     $("div.hide-grid").button({
+        icons: {
+            primary: "ui-icon-grip-solid-horizontal"
+        },
+        text: false
+    }).click(function () {
+
+      $("#grid-nav").css("top", "-500px");
+      $("#nav-grid-links").fadeOut();
+
+    });
+}
+
 function bindCloseIframe() {
+    
     $("#hide-iframe").click(function () {
 
         $("#application-space").addClass("hidden");
@@ -602,14 +678,39 @@ function clear_user_locks() {
 }
 
 function bindMyAccount() {
-    $("#my-account").click(function () {
-        updateAppDiv()
-        // $("#nav-grid-links").fadeIn();
-
-    });
+    if ($("div#admin-nav.normal").length > 0) {
+        $("div#admin-nav #my-account").click(function () {
+            updateAppDiv();
+        });
+    }
+    else
+    {
+        $("div#admin-nav.normal #my-account").click(function () {
+            updateAppDiv();
+            // $("#nav-grid-links").fadeIn();
+        });
+        $("div#admin-nav.small #my-account").click(function () {
+            updateAppDiv();
+        });
+    }
 
 }
+function bindIconButtonClick() {
+    $('.icon-button').click(function (e) {
+        if (window.matchMedia("only screen and (max-width: 524px)").matches) {
+            the_url = $(this).attr("href").replace("window", "");
+            console.log(the_url);
+            // e.stopPropagation(); 
+            window.location = the_url;
+
+        }
+    })
+}
+
 function bindAppClick() {
+
+    bindIconButtonClick();
+
     $('.icon-button').bind('ajax:beforeSend', function (evt, xhr, settings) {
         // alert("ajax:before");  
         console.log('ajax:before');
