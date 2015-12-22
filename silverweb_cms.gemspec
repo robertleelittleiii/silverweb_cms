@@ -20,7 +20,7 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency "tinymce-rails", "4.2.6"
   
   s.add_runtime_dependency "compass" , "~> 1.0.0"
-  s.add_runtime_dependency "saas-rails" , "4.0.5"
+  s.add_runtime_dependency "saas-rails" , "5.0.4"
   s.add_runtime_dependency "spockets" , "2.12.4"
   s.add_runtime_dependency "compass-rails" , "~> 2.0.4"
   
