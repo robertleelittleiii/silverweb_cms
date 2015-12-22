@@ -26,6 +26,7 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency "sprockets", '2.12.4'
   s.add_runtime_dependency "sprockets-rails", '2.3.3'
   s.add_runtime_dependency 'jquery-rails','~> 4.0', '>= 4.0.3'
+  s.add_runtime_dependency 'web-console','2.2.1'
   s.add_runtime_dependency 'rmagick','~> 2.15', '>= 2.15.0'
 
   s.add_runtime_dependency 'jquery-ui-rails'
