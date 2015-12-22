@@ -22,7 +22,7 @@ Gem::Specification.new do |s|
   # s.add_runtime_dependency "compass" , "~> 1.0.0"
   # s.add_runtime_dependency "sass-rails" , "5.0.0"
   # s.add_runtime_dependency "sprockets" , "3.5.2"
-  s.add_runtime_dependency "compass-rails" , "~> 2.0.4"
+  # s.add_runtime_dependency "compass-rails" , "~> 2.0.4"
   
   s.add_runtime_dependency "rails", '~> 4.2', '>= 4.2.0'
   s.add_runtime_dependency 'jquery-rails','~> 4.0', '>= 4.0.3'
