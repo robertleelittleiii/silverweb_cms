@@ -43,9 +43,7 @@ function menueditClickBinding(selector, table_val) {
                 menu_edit_dialog.dialog({
                     close: function (event, ui) {
                         //menuTableAjax.fnDraw();
-                        $('#edit-menu-dialog').html("");
-                        $('#edit-menu-dialog').dialog("destroy");
-
+                       
                         if (typeof updateMenuItem != 'undefined')
                         {
                          //   console.log("updateMenuItem")
@@ -70,6 +68,11 @@ function menueditClickBinding(selector, table_val) {
 //                        makeDraggable(this_item);
 //                        initializeCreateMenu(this_item);
                         // updateMenuList();
+                        //tinyMCE.editors[0].destroy();
+                        top.tinymce.activeEditor.destroy();
+                        $('#edit-menu-dialog').html("");
+                        $('#edit-menu-dialog').dialog("destroy");
+                       
 
                     }
                 });

@@ -30,9 +30,9 @@ function pages_edit_callDocumentReady() {
         activate: function (event, ui) {
             if ($(ui.newTab[0]).find('a').text() == "Live Preview")
             {
-                console.log("updated!")
+                console.log("updated!");
                 $('iframe.preview').each(function () {
-                    this.contentWindow.location.reload(true)
+                    this.contentWindow.location.reload(true);
                 });
             }
 
@@ -85,7 +85,7 @@ function activate_scroller_sort() {
                     $('#sliders').effect('highlight');
                 },
                 url: '/sliders/sort'
-            })
+            });
         }
     });
 }
@@ -174,13 +174,18 @@ function pages_bind_file_paste_to_upload_form()
             data.context = $(tmpl("template-upload", file));
             // $("div.progress").progressbar();
             // $('#pictures').prepend(data.context);
+            image_tag = "<img src='/assets/interface/ajax-loader-big.gif'/>";
+            top.tinymce.activeEditor.undoManager.add();
+            top.tinymce.activeEditor.insertContent(image_tag);
+            top.tinymce.activeEditor.undoManager.add();
+            
             var jqXHR = data.submit()
                     .success(function (result, statusText, jqXHR) {
 
-                        //   console.log("------ - fileupload: Success - -------");
-                        //  console.log(result);
-                        //   console.log(statusText);
-                        //   console.log(jqXHR);
+//                         console.log("------ - fileupload: Success - -------");
+//                         console.log(result);
+//                         console.log(statusText);
+//                         console.log(jqXHR);
 
                         //  console.log(JSON.stringify(jqXHR.responseJSON["attachment"]));
 
@@ -197,7 +202,7 @@ function pages_bind_file_paste_to_upload_form()
                         {
                             top.tinymce.activeEditor.undoManager.undo();
                             //  console.log(result.image.url)
-                            image_tag = "<img src='" + result.image.url + "'/>"
+                            image_tag = "<img src='" + result.image.url + "'/>";
                             top.tinymce.activeEditor.insertContent(image_tag);
                             console.log("success");
                             //  render_pictures();
@@ -205,11 +210,12 @@ function pages_bind_file_paste_to_upload_form()
 
                     })
                     .error(function (jqXHR, statusText, errorThrown) {
-                        // console.log("------ - fileupload: Error - -------");
-                        // console.log(jqXHR.status);
-                        // console.log(statusText);
-                        // console.log(errorThrown);
-                        // console.log(jqXHR.responseText);
+//                        console.log("------ - fileupload: Error - -------");
+//                        console.log(jqXHR.status);
+//                        console.log(statusText);
+//                        console.log(errorThrown);
+//                        console.log(jqXHR.responseText);
+                        top.tinymce.activeEditor.undoManager.undo();
                         if (jqXHR.status == "200")
                         {
                             //render_pictures();
@@ -258,16 +264,16 @@ function pages_bind_file_paste_to_upload_form()
         //data.context.text('');
     }).bind('fileuploadpaste', function (e, data) {
         /* ... */
-        image_tag = "<img src='/assets/interface/ajax-loader-big.gif'/>"
-        top.tinymce.activeEditor.undoManager.add();
-        top.tinymce.activeEditor.insertContent(image_tag);
-        top.tinymce.activeEditor.undoManager.add();
+        // image_tag = "<img src='/assets/interface/ajax-loader-big.gif'/>"
+        // top.tinymce.activeEditor.undoManager.add();
+        // top.tinymce.activeEditor.insertContent(image_tag);
+        // top.tinymce.activeEditor.undoManager.add();
 
         // assets/interface/ajax-loader.gif
-        console.log("paste event.")
+        console.log("paste event.");
 
 
-    })
+    });
 }
 
 function bind_download_to_files()
@@ -276,7 +282,7 @@ function bind_download_to_files()
     $("div.file-item div#logo-links").bind("click",
             function () {
                 var href = $($(this)[0]).find('a').attr('href');
-                window.location.href = href
+                window.location.href = href;
             });
 }
 
@@ -290,7 +296,7 @@ function sliderEditClickBinding(selector) {
         console.log(e.target.id);
         console.log($(this).find('#slider-id').text());
         var slider_id = $(this).find('#slider-id').text();
-        var is_iframe = $("application-space").length > 0
+        var is_iframe = $("application-space").length > 0;
 
         var url = '/sliders/' + slider_id + '/edit?request_type=window&window_type=iframe&as_window=true';
 
