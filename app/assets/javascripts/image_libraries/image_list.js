@@ -17,6 +17,7 @@ $(document).ready(function () {
     initialize_edit_button();
     initialize_insert_image_button();
     activate_buttons();
+    bindDeleteImage();
 });
 
 //$(document).on('focusin', function(e) {
@@ -26,14 +27,14 @@ $(document).ready(function () {
 //});
 
 function activate_buttons() {
-    
+
     $("div.ui-button a").button();
 }
-function bind_paste_body_zone(){
-    
+function bind_paste_body_zone() {
+
     $('body').fileupload({
-    pasteZone: $('body')
-});
+        pasteZone: $('body')
+    });
 
 }
 function bind_mouseover()
@@ -41,13 +42,13 @@ function bind_mouseover()
 
     $("div.file-block")
             .unbind("mouseenter").mouseenter(function () {
-                $(this).parent().find("div.hover-block").fadeIn();
-                // console.log("fadeIn");
-            })
+        $(this).parent().find("div.hover-block").fadeIn();
+        // console.log("fadeIn");
+    })
             .unbind("mouseleave").mouseleave(function () {
-                 $(this).parent().find("div.hover-block").fadeOut();
-               //   console.log("fadeOut");
-           });
+        $(this).parent().find("div.hover-block").fadeOut();
+        //   console.log("fadeOut");
+    });
 
 //$("div.file-block").hover(function() {
 //                //$(this).parent().find("div.hover-block").css('opacity','1');
@@ -64,7 +65,7 @@ function render_pictures(picture_id) {
         dataType: "html",
         url: '/pictures/render_picture',
         cache: false,
-        data: "id="+picture_id,
+        data: "id=" + picture_id,
         success: function (data)
         {
             $("div#pictures").prepend(data).hide().fadeIn();
@@ -73,7 +74,7 @@ function render_pictures(picture_id) {
             initialize_insert_image_button();
             initialize_edit_button();
             activate_buttons();
-            
+
         }
     });
 
@@ -114,10 +115,10 @@ function bind_file_upload_to_upload_form()
 
                         console.log(JSON.stringify(jqXHR.responseJSON["attachment"]));
 
-                        console.log(typeof(jqXHR.responseText));
+                        console.log(typeof (jqXHR.responseText));
 // specifically for IE8. 
                         if (typeof (jqXHR.responseText) == "undefined") {
-                            setUpPurrNotifier( "Notice", jqXHR.responseJSON["attachment"][0]);
+                            setUpPurrNotifier("Notice", jqXHR.responseJSON["attachment"][0]);
                             data.context.remove();
                         }
                         else
@@ -134,13 +135,13 @@ function bind_file_upload_to_upload_form()
                         // console.log(jqXHR.responseText);
                         if (jqXHR.status == "200")
                         {
-                         //   render_pictures();
+                            //   render_pictures();
                         }
                         else
                         {
                             var obj = jQuery.parseJSON(jqXHR.responseText);
                             // console.log(typeof obj["attachment"][0])
-                            setUpPurrNotifier( "Notice", obj["attachment"][0]);
+                            setUpPurrNotifier("Notice", obj["attachment"][0]);
                             data.context.remove();
                         }
 //                        if (jqXHR.statusText == "success") {
@@ -179,25 +180,26 @@ function bind_file_upload_to_upload_form()
         data.context.remove();
         //data.context.text('');
     });
-};
+}
+;
 
 
 function initialize_insert_button()
-        {
-            $("a.insert-picture")
-                    .bind("ajax:beforeSend", function(evt, xhr, settings) {
-                 //alert("ajax:beforeSend");
+{
+    $("a.insert-picture")
+            .bind("ajax:beforeSend", function (evt, xhr, settings) {
+                //alert("ajax:beforeSend");
             })
-                    .bind("ajax:success", function(evt, data, status, xhr) {
+            .bind("ajax:success", function (evt, data, status, xhr) {
                 // alert("ajax:success");
                 // edit_picture_dialog(data);
-                 top.tinymce.activeEditor.insertContent(data);
+                top.tinymce.activeEditor.insertContent(data);
 
-                    })
-                    .bind('ajax:complete', function(evt, xhr, status) {
-                 //alert("ajax:complete");
             })
-                    .bind("ajax:error", function(evt, xhr, status, error) {
+            .bind('ajax:complete', function (evt, xhr, status) {
+                //alert("ajax:complete");
+            })
+            .bind("ajax:error", function (evt, xhr, status, error) {
                 //  alert("ajax:error");
 
                 var $form = $(this),
@@ -209,10 +211,10 @@ function initialize_insert_button()
                     console.log(xhr);
                     console.log(status);
                     console.log(error);
-                    
+
                     errors = $.parseJSON(xhr.responseText);
                     console.log(errors);
-                    
+
                 } catch (err) {
                     // If the responseText is not valid JSON (like if a 500 exception was thrown), populate errors with a generic error message.
                     errors = {
@@ -231,29 +233,29 @@ function initialize_insert_button()
                 }
 
                 errorText += "</ul>";
-                    console.log(errorText);
+                console.log(errorText);
 
                 // Insert error list into form
                 setUpNotifier("error.png", "Warning", errorText);
             });
 
-        }
-        
-  function initialize_insert_image_button()
-        {
-            $("a.insert-image").unbind()
-                    .bind("ajax:beforeSend", function(evt, xhr, settings) {
-                 //alert("ajax:beforeSend");
+}
+
+function initialize_insert_image_button()
+{
+    $("a.insert-image").unbind()
+            .bind("ajax:beforeSend", function (evt, xhr, settings) {
+                //alert("ajax:beforeSend");
             })
-                    .bind("ajax:success", function(evt, data, status, xhr) {
+            .bind("ajax:success", function (evt, data, status, xhr) {
                 // alert("ajax:success");
                 insert_picture_dialog(data);
-                
+
             })
-                    .bind('ajax:complete', function(evt, xhr, status) {
-                 //alert("ajax:complete");
+            .bind('ajax:complete', function (evt, xhr, status) {
+                //alert("ajax:complete");
             })
-                    .bind("ajax:error", function(evt, xhr, status, error) {
+            .bind("ajax:error", function (evt, xhr, status, error) {
                 //  alert("ajax:error");
 
                 var $form = $(this),
@@ -265,10 +267,10 @@ function initialize_insert_button()
                     console.log(xhr);
                     console.log(status);
                     console.log(error);
-                    
+
                     errors = $.parseJSON(xhr.responseText);
                     console.log(errors);
-                    
+
                 } catch (err) {
                     // If the responseText is not valid JSON (like if a 500 exception was thrown), populate errors with a generic error message.
                     errors = {
@@ -287,28 +289,28 @@ function initialize_insert_button()
                 }
 
                 errorText += "</ul>";
-                    console.log(errorText);
+                console.log(errorText);
 
                 // Insert error list into form
                 setUpNotifier("error.png", "Warning", errorText);
             });
 
-        }
-        
-  function initialize_edit_button()
-        {
-            $("a.edit-picture").unbind()
-                    .bind("ajax:beforeSend", function(evt, xhr, settings) {
-                 //alert("ajax:beforeSend");
+}
+
+function initialize_edit_button()
+{
+    $("a.edit-picture").unbind()
+            .bind("ajax:beforeSend", function (evt, xhr, settings) {
+                //alert("ajax:beforeSend");
             })
-                    .bind("ajax:success", function(evt, data, status, xhr) {
+            .bind("ajax:success", function (evt, data, status, xhr) {
                 // alert("ajax:success");
                 edit_picture_dialog(data);
             })
-                    .bind('ajax:complete', function(evt, xhr, status) {
-                 //alert("ajax:complete");
+            .bind('ajax:complete', function (evt, xhr, status) {
+                //alert("ajax:complete");
             })
-                    .bind("ajax:error", function(evt, xhr, status, error) {
+            .bind("ajax:error", function (evt, xhr, status, error) {
                 //  alert("ajax:error");
 
                 var $form = $(this),
@@ -320,10 +322,10 @@ function initialize_insert_button()
                     console.log(xhr);
                     console.log(status);
                     console.log(error);
-                    
+
                     errors = $.parseJSON(xhr.responseText);
                     console.log(errors);
-                    
+
                 } catch (err) {
                     // If the responseText is not valid JSON (like if a 500 exception was thrown), populate errors with a generic error message.
                     errors = {
@@ -342,20 +344,20 @@ function initialize_insert_button()
                 }
 
                 errorText += "</ul>";
-                    console.log(errorText);
+                console.log(errorText);
 
                 // Insert error list into form
                 setUpNotifier("error.png", "Warning", errorText);
             });
 
-        }
-        
-        
-        
-        function edit_picture_dialog(data) {
+}
+
+
+
+function edit_picture_dialog(data) {
 
     // alert("ajax:success");
-        picture_edit_dialog = createAppDialog(data, "edit-picture", {}, "");
+    picture_edit_dialog = createAppDialog(data, "edit-picture", {}, "");
 
     //initialize_save_button();
     //$('.datepicker').datepicker();
@@ -390,36 +392,36 @@ function initialize_insert_button()
     //initilize_filter_buttons();
 
 }
-        
-        
-  function link_to_picture(picture_id, picture_size) {
+
+
+function link_to_picture(picture_id, picture_size) {
     $.ajax({
         dataType: "html",
         url: '/pictures/insert',
         cache: false,
-        data: {id: picture_id, size:picture_size},
+        data: {id: picture_id, size: picture_size},
         success: function (data)
         {
             console.log(data);
             $(picture_insert_dialog).dialog("close");
             top.tinymce.activeEditor.insertContent(data);
-                        
+
         },
-        error: function (jqXHR, statusText, errorThrown) 
+        error: function (jqXHR, statusText, errorThrown)
         {
-       
-         setUpPurrNotifier("Error", "Please select valid image size.");
-                        
+
+            setUpPurrNotifier("Error", "Please select valid image size.");
+
         }
     });
 
 }
-        
-     function insert_picture_dialog(data) {
-               
-      picture_insert_dialog = createAppDialogAdv(data, "insert-picture", {
+
+function insert_picture_dialog(data) {
+
+    picture_insert_dialog = createAppDialogAdv(data, "insert-picture", {
         completion: function completionCallback() {
-        console.log("Complete");
+            console.log("Complete");
         },
         "Insert": function savedClicked() {
             console.log("Insert Image");
@@ -427,14 +429,27 @@ function initialize_insert_button()
             picture_id = $("div#insert-picture div#picture-id").text();
             link_to_picture(picture_id, image_size);
             console.log("Size:" + image_size);
-            
+
         },
         "Cancel": function cancelClicked() {
-           console.log("Cancel.")
-           $(this).dialog("close");
+            console.log("Cancel.")
+            $(this).dialog("close");
         }
-            }, "Insert,Cancel");
+    }, "Insert,Cancel");
 
 }
-        
-        
+
+function bindDeleteImage() {
+    $('a.picture-delete').unbind().bind('ajax:beforeSend', function () {
+        // alert("ajax:before");  
+    }).bind('ajax:success', function () {
+        console.log($(this).parent().parent());
+        $(this).parent().parent().remove();
+        //  alert("ajax:success");  
+    }).bind('ajax:failure', function () {
+        //    alert("ajax:failure");    
+    }).bind('ajax:complete', function () {
+        //   alert("ajax:complete"); 
+    });
+
+}
