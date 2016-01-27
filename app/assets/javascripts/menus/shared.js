@@ -69,11 +69,12 @@ function menueditClickBinding(selector, table_val) {
 //                        initializeCreateMenu(this_item);
                         // updateMenuList();
                         //tinyMCE.editors[0].destroy();
-                        top.tinymce.activeEditor.destroy();
-                        $('#edit-menu-dialog').html("");
+                        if (top.tinymce.activeEditor != null)
+                        {
+                            top.tinymce.activeEditor.destroy();
+                        }
                         $('#edit-menu-dialog').dialog("destroy");
-                       
-
+                        $('#edit-menu-dialog').html("");
                     }
                 });
                 require("menus/edit.js");
