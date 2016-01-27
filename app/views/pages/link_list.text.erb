@@ -3,8 +3,8 @@
         <% @pages.each do |page| %>
         {title:"<%= page.title %>", value: "./<%= page.title %>"} <%= ((page == @last_page) and not (@pdfs.length > 0)) ? "" : ", " %>
         <% end %>
-        <%=@pdfs.length > 0 ? '{title: " - - - PDF List Below - - - ", value: ""},'.html_safe : "" %>
+        <%=@pdfs.length > 0 ? '{title: " - - - PDF List Below - - - ", value: "./"},'.html_safe : "" %>
          <% @pdfs.each do |pdf| %>
-        {title: "<%= pdf.image_file_name %>", value: ".<%= pdf.image.url %>"} <%= pdf == @last_pdf ? "" : ", " %>
+        {title: "<%= pdf.file_name %>", value: ".<%= pdf.image.url %>"} <%= pdf == @last_pdf ? "" : ", " %>
         <% end %>
 ]

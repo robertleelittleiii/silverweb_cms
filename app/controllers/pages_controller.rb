@@ -198,7 +198,7 @@ class PagesController < ApplicationController
   
   def link_list
     @pages = Page.order(:title)
-    @pdfs = TinyPrint.where("image_file_name like '%.pdf'") rescue []
+    @pdfs = Picture.where("image like '%.pdf'") rescue []
     @last_pdf = @pdfs.last rescue ""
     @last_page = @pages.last
   end

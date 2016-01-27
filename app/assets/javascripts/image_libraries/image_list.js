@@ -30,13 +30,107 @@ function activate_buttons() {
 
     $("div.ui-button a").button();
 }
-function bind_paste_body_zone() {
+//function bind_paste_body_zone() {
+//
+//    $('body').fileupload({
+//        pasteZone: $('body')
+//    });
 
+//}
+
+function bind_paste_body_zone()
+{
+    bind_download_to_files();
     $('body').fileupload({
-        pasteZone: $('body')
-    });
+        pasteZone: $('body'),
+        dataType: "json",
+        add: function (e, data) {
+            file = data.files[0];
+            data.context = $(tmpl("template-upload", file));
+            // $("div.progress").progressbar();
+            $('#pictures').prepend(data.context);
+            var jqXHR = data.submit()
+                    .success(function (result, statusText, jqXHR) {
 
+                        console.log("------ - fileupload: Success - -------");
+                        console.log(result);
+                        console.log(result.id);
+                        console.log(statusText);
+                        console.log(jqXHR);
+
+                        console.log(JSON.stringify(jqXHR.responseJSON["attachment"]));
+
+                        console.log(typeof (jqXHR.responseText));
+// specifically for IE8. 
+                        if (typeof (jqXHR.responseText) == "undefined") {
+                            setUpPurrNotifier("Notice", jqXHR.responseJSON["attachment"][0]);
+                            data.context.remove();
+                        }
+                        else
+                        {
+                            render_pictures(result.id);
+                           
+                        }
+
+                    })
+                    .error(function (jqXHR, statusText, errorThrown) {
+                        // console.log("------ - fileupload: Error - -------");
+                        // console.log(jqXHR.status);
+                        // console.log(statusText);
+                        // console.log(errorThrown);
+                        // console.log(jqXHR.responseText);
+                        if (jqXHR.status == "200")
+                        {
+                            //   render_pictures();
+                        }
+                        else
+                        {
+                            var obj = jQuery.parseJSON(jqXHR.responseText);
+                            // console.log(typeof obj["attachment"][0])
+                            setUpPurrNotifier("Notice", obj["attachment"][0]);
+                            data.context.remove();
+                        }
+//                        if (jqXHR.statusText == "success") {
+//                            render_pictures();
+//                            // It succeeded and we need to update the file list.
+//                        }
+//                        else {
+//                            var obj = jQuery.parseJSON(jqXHR.responseText);
+//                            setUpPurrNotifier("info.png", "Notice", obj["attachment"][0]);
+//                            data.context.remove();
+//                        }
+
+                    })
+                    .complete(function (result, textStatus, jqXHR) {
+                        // console.log("------ - fileupload: Complete - -------");
+                        // console.log(result);
+                        // console.log(textStatus);
+                        // console.log(jqXHR);
+                    });
+        },
+        progress: function (e, data) {
+            if (data.context)
+            {
+                progress = parseInt(data.loaded / data.total * 100, 10);
+                data.context.find('.bar').css('width', progress + '%');
+            }
+        },
+        done: function (e, data) {
+            // console.log(e);
+            // console.log(data);
+            data.context.text('');
+        }
+    }).bind('fileuploaddone', function (e, data) {
+        // console.log(e);
+        // console.log(data);
+        data.context.remove();
+      
+
+        //data.context.text('');
+    });
 }
+;
+
 function bind_mouseover()
 {
 
@@ -74,7 +168,8 @@ function render_pictures(picture_id) {
             initialize_insert_image_button();
             initialize_edit_button();
             activate_buttons();
-
+            bind_download_to_files();
+            bindDeleteImage();
         }
     });
 
@@ -124,6 +219,7 @@ function bind_file_upload_to_upload_form()
                         else
                         {
                             render_pictures(result.id);
+                           
                         }
 
                     })
