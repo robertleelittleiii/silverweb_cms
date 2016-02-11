@@ -150,6 +150,9 @@ resources :users do
       get "delete"
     end
   end
+  
+  post "mailer/simple_form"
+
   match '/spellchecker', :controller=>'spelling', :action => 'index', via: [:post]
   
   match  '/forgot', :controller => 'registration', :action => 'forgot', via: [:get]
