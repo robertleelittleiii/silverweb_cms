@@ -7,7 +7,7 @@
     <h1>You have a contact request from , <%= @user %></h1>
     <p>
       EmailAddress: <%= @user %> <br/>
-      <%= @form_data.gsub(/\n/, '</br></br>').html_safe %>.<br/>
+      <%= @form_data.gsub(/\n/, '<br><br>').html_safe %>.<br/>
     </p>
   </body>
 </html>
