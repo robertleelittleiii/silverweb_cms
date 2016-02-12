@@ -414,7 +414,8 @@ module  MenusHelper
   def buildhorizontalmenuprodrop(params=nil)
     @menu_id= params[:menu_id]
     returnMenu=""
-
+    html_li_class = params[:html_li_class]
+    
     @menu = Menu.find_by_name(@menu_id)
 
     if @menu.blank?  then
@@ -441,12 +442,12 @@ module  MenusHelper
           subMenus=self.buildsubmenus(@menu.menus,0, params)
           menuText =  self.buildmenuitem(@menu, {:class=>html_link_class}, "class='down'")
           if not menuText.blank? then
-            returnMenu=  returnMenu + breaker + "<li class='top'>"+ menuText +subMenus+ "</li>"
+            returnMenu=  returnMenu + breaker + "<li class='top #{html_li_class}'>"+ menuText +subMenus+ "</li>"
           end
         else
           menuText =  self.buildmenuitem(@menu, {:class=>html_link_class}, "")
           if not menuText.blank? then
-            returnMenu=  returnMenu + breaker  + "<li class='top'>" + menuText + "</li>"
+            returnMenu=  returnMenu + breaker  + "<li class='top #{html_li_class}'>" + menuText + "</li>"
           end
         end
 
