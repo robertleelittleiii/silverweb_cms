@@ -367,23 +367,27 @@ module UiHelper
     return return_value.html_safe
   end
   
-  def ajax_select(field_name, field_object, field_pointer, value_list, prompt='Please Select...', html_options=nil)
+  def ajax_select(field_name, field_object, field_pointer, value_list, prompt='Please Select...', html_options={})
     puts(" - - - - - - - - - -  - - - - - - - - - - -  -  - - - ")
     puts(field_name, field_object, field_pointer.class, value_list.inspect)
     puts("Settings.send(field_name): '#{Settings.send(field_name)}'")
     if (field_object == "settings") then
       found_item = value_list.index{|a| a[1]== Settings.send(field_name) }
       puts("found_item: '#{found_item}'")
-      html_options==nil ? html_options={:class=>"ui-ajax-settings-select", "data-path"=>url_for(request.original_url).to_s } : ""
+      # html_options==nil ? html_options={:class=>"ui-ajax-settings-select", "data-path"=>url_for(request.original_url).to_s } : ""
+      html_options = html_options.merge({:class=>"ui-ajax-settings-select", "data-path"=>url_for(request.original_url).to_s })
       select_tag(field_name, options_for_select(value_list, Settings.send(field_name)), html_options)
     elsif (field_object == "cart") then
       found_item = value_list.index{|a| a[1]== @cart.send(field_name) }
       puts("@CART = #{@cart.inspect}")
       puts("found_item: '#{found_item}'")
-      html_options==nil ? html_options={:class=>"ui-ajax-cart-select", "data-path"=>url_for(field_pointer).to_s } : ""
-      select_tag(field_name, options_for_select(value_list, @cart.send(field_name)), html_options)
+      # html_options==nil ? html_options={:class=>"ui-ajax-cart-select", "data-path"=>url_for(field_pointer).to_s } : ""
+        html_options = html_options.merge({:class=>"ui-ajax-cart-select", "data-path"=>url_for(field_pointer).to_s })
+    select_tag(field_name, options_for_select(value_list, @cart.send(field_name)), html_options)
     else
-      html_options==nil ? html_options={:class=>"ui-ajax-select", "data-path"=>url_for(field_pointer).to_s ,"data-id"=>field_pointer.id} : ""
+      html_options = html_options.merge({:class=>"ui-ajax-select", "data-path"=>url_for(field_pointer).to_s ,"data-id"=>field_pointer.id })
+
+      # html_options==nil ? html_options={:class=>"ui-ajax-select", "data-path"=>url_for(field_pointer).to_s ,"data-id"=>field_pointer.id} : ""
       select(field_object,"#{field_name}", value_list,{ :prompt => prompt}, html_options )
     end
     
