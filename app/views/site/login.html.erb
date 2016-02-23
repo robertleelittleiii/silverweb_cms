@@ -99,7 +99,7 @@
                   <DIV CLASS="L11G" STYLE="margin-bottom:10px">Please fill out this form to register.</DIV>
                   <BR>
                   <div id="ds_component">
-                    <%@role_name="Customer"%>
+                    <%@role_name= Settings.default_registration || "customer"%>
     <%# form_tag :controller=>"registration", :action => 'registration'  do |f| %>
                       <table cellspacing=0 class="ds_login">
                         <tr >
@@ -161,7 +161,7 @@
 
 
                       <%=fields_for :register do |r| -%>
-                        <%= r.hidden_field :role, :value=>"customer"%><br/>
+                        <%= r.hidden_field :role, :value=>@role_name%><br/>
                         <%= r.hidden_field :regtype, :value=>action_name%><br/>
                       <%end%>
                     </div>

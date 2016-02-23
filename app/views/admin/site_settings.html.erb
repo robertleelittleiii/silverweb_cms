@@ -93,6 +93,11 @@
         <%=link_to 'Reproces all images', {:controller => 'admin', :action => 'reprocess_page_images'}, :id=>"process-image-button", :remote=>true%>
       </p>
       </br>
+      <p>
+        <b>Default new user group: (defaults to customer)</b><br>
+        <%=editablefieldcreate("default_registration", @settings)%>
+      </p>
+      
      
 
     </div>

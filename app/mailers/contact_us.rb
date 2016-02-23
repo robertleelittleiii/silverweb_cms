@@ -1,5 +1,5 @@
 class ContactUs < ActionMailer::Base
-  default :from => "admin@squirtinibikini.com"
+  default :from => "noreply@onewhere.com"
 
   # Subject can be set in your I18n file at config/locales/en.yml
   # with the following lookup:
