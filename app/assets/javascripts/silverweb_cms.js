@@ -31,6 +31,7 @@
 //= require jquery-ui-combobox
 //= require jquery.ui.touch-punch.min
 //= require superfish
+//= require jquery.history
 //# require turbolinks
 
 //
