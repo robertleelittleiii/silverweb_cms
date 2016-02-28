@@ -276,7 +276,7 @@ BestInPlaceEditor.prototype = {
         }
         else
         {
-            s = s.replace(/</g,'&lt;').replace(/>/g,'&gt;')
+            s = s.replace(/</g, '&lt;').replace(/>/g, '&gt;')
         }
         return jQuery.trim(s);
     },
@@ -304,6 +304,11 @@ BestInPlaceEditor.prototype = {
     // Handlers ////////////////////////////////////////////////////////////////
 
     loadSuccessCallback: function (data) {
+        // console.log("data=(" + data + ")");
+        if (data.length > 1) {
+            dataJson = jQuery.parseJSON(data);
+        }
+
         if ((this.element.html() == '<div class="data-nil">' + this.nil + '</div>') | (this.element.html() == ""))
         {
             this.isNil = true;
@@ -311,7 +316,14 @@ BestInPlaceEditor.prototype = {
         }
         else
         {
-            this.element.html(data[this.objectName]);
+            if (typeof (dataJson) != "undefined") {
+                this.element.html(dataJson[this.objectName]);
+            }
+            if ((typeof (dataJson) != "undefined") && (typeof (dataJson["message"]) != "undefined") && (dataJson["message"].length > 0)) {
+                setUpPurrNotifier("Warning", dataJson["message"]);
+
+            }
+
 
         }
 
