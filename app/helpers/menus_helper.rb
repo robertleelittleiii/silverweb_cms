@@ -475,23 +475,26 @@ module  MenusHelper
     returnSubMenu = ""
     level = level + 1
     for eachmenu in inputMenus
-      if eachmenu.name== @article_name then
-        menu_text = "<div class='menu-selected'><span>" + eachmenu.name + "</span></div>"
-      else
-        menu_text = self.buildmenuitem(eachmenu, html_options.merge!( (eachmenu.menus.size > 0 ? {:class=>"fly"} : {})),"")
-      end
-      
-      if eachmenu.menus.size > 0 then
-        if eachmenu.menu_active then
-          returnSubMenu = self.buildsubmenus(eachmenu.menus, level ,params)
-          returnSubMenu = "<li class='mid'>"+ menu_text + returnSubMenu+ "</li>"
+      if eachmenu.menu_active then
+
+        if eachmenu.name== @article_name then
+          menu_text = "<div class='menu-selected'><span>" + eachmenu.name + "</span></div>"
         else
-          reutrnSubMenu= ""
+          menu_text = self.buildmenuitem(eachmenu, html_options.merge!( (eachmenu.menus.size > 0 ? {:class=>"fly"} : {})),"")
         end
-      else
-        returnSubMenu = "<li>" + menu_text + "</li>"
+      
+        if eachmenu.menus.size > 0 then
+          if eachmenu.menu_active then
+            returnSubMenu = self.buildsubmenus(eachmenu.menus, level ,params)
+            returnSubMenu = "<li class='mid'>"+ menu_text + returnSubMenu+ "</li>"
+          else
+            reutrnSubMenu= ""
+          end
+        else
+          returnSubMenu = "<li>" + menu_text + "</li>"
+        end
+        returnMenu = returnMenu + returnSubMenu
       end
-      returnMenu = returnMenu + returnSubMenu
     end
 
     if level == 1 then
@@ -602,7 +605,8 @@ module  MenusHelper
 
     
     inputMenus.each_with_index  do |eachmenu, index | 
-      if eachmenu.name == params[:current_page]
+           if eachmenu.menu_active then
+ if eachmenu.name == params[:current_page]
         html_link_class = params[:selected_class]
       else 
         html_link_class = ""
@@ -625,7 +629,7 @@ module  MenusHelper
       end
       returnMenu = returnMenu + returnSubMenu
     end
-
+    end
     if level == 1 then
       returnMenu = "<ul>" + returnMenu + "</ul>"
     end
@@ -635,6 +639,7 @@ module  MenusHelper
     if level > 2 then
       returnMenu =  "<ul>" + returnMenu +"</ul>"
     end
+    
     return returnMenu   
   end
   
