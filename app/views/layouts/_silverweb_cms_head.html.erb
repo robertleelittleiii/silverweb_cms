@@ -1,6 +1,6 @@
 <!-- controller/action based style sheet and javascript -->
 
-<%= favicon_link_tag 'favicon.ico' %>
+<%= favicon_link_tag @favicon || 'favicon.ico' %>
 <%= show_meta_page_data(@page) %>
 
 <title><%=Settings.company_name%> : <%=get_page_title%></title>
