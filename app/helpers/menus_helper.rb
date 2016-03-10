@@ -605,30 +605,30 @@ module  MenusHelper
 
     
     inputMenus.each_with_index  do |eachmenu, index | 
-           if eachmenu.menu_active then
- if eachmenu.name == params[:current_page]
-        html_link_class = params[:selected_class]
-      else 
-        html_link_class = ""
-      end
+      if eachmenu.menu_active then
+        if eachmenu.name == params[:current_page]
+          html_link_class = params[:selected_class]
+        else 
+          html_link_class = ""
+        end
       
-      #puts("-------------->>>> params[:colorize_sub_index_count] #{params[:colorize_sub_index_count]}")
+        #puts("-------------->>>> params[:colorize_sub_index_count] #{params[:colorize_sub_index_count]}")
       
-      if params[:colorize_sub_index_count] then
-        colorized_class = "color-" + (index % params[:colorize_sub_index_count].to_i).to_s
-      else
-        colorized_class = ""
-      end
+        if params[:colorize_sub_index_count] then
+          colorized_class = "color-" + (index % params[:colorize_sub_index_count].to_i).to_s
+        else
+          colorized_class = ""
+        end
         
-      if eachmenu.menus.size > 0 then 
+        if eachmenu.menus.size > 0 then 
       
-        returnSubMenu = self.buildsubmenussuperfish(eachmenu.menus, level, params)
-        returnSubMenu = "<#{item_tag}>"+ self.buildmenuitem(eachmenu, {:class=>(html_link_class + " " + colorized_class) }, "", nil ,params)+ returnSubMenu+ "</#{item_tag}>"
-      else
-        returnSubMenu = "<#{item_tag}>" + self.buildmenuitem(eachmenu, {:class=>(html_link_class + " " + colorized_class) },  "", nil ,params) + "</#{item_tag}>"
+          returnSubMenu = self.buildsubmenussuperfish(eachmenu.menus, level, params)
+          returnSubMenu = "<#{item_tag}>"+ self.buildmenuitem(eachmenu, {:class=>(html_link_class + " " + colorized_class) }, "", nil ,params)+ returnSubMenu+ "</#{item_tag}>"
+        else
+          returnSubMenu = "<#{item_tag}>" + self.buildmenuitem(eachmenu, {:class=>(html_link_class + " " + colorized_class) },  "", nil ,params) + "</#{item_tag}>"
+        end
+        returnMenu = returnMenu + returnSubMenu
       end
-      returnMenu = returnMenu + returnSubMenu
-    end
     end
     if level == 1 then
       returnMenu = "<ul>" + returnMenu + "</ul>"
