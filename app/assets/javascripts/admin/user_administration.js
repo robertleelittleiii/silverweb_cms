@@ -86,6 +86,35 @@ function admin_user_administration_callDocumentReady() {
 
 
 
+function deleteUser(user_id)
+{
+    var answer = confirm('Are you sure you want to delete this user?')
+    if (answer) {
+        $.ajax({
+            url: '/users/delete_ajax?id='+ user_id,
+            
+            success: function (data)
+            {
+                setUpPurrNotifier("Notice", "User Successfully Deleted.");
+                userTableAjax.fnDraw();
+
+            }
+        });
+
+    }
+}
+
+function bindDeleteUser() {
+    $(".delete-user-item").on("click", function (e) {
+
+        // console.log($(this).parent().parent().parent().find('#page-id').text());
+        var user_id = $(this).parent().parent().parent().find('#user-id').text();
+        deleteUser(user_id);
+        return false;
+    });
+}
+
+
 function createUserDialog() {
 
     $('#edit-user-dialog').dialog({
@@ -209,70 +238,71 @@ function createUserTable() {
             $(".best_in_place").best_in_place();
             passwordClickBinding();
             usereditClickBinding();
-            bindDeleteUser();
+           bindDeleteUser();
+
         }
     });
 }
 
 
-function bindDeleteUser(callbackFunction) {
-    $('.delete-user-item').unbind('ajax:success');
-    $('.delete-user-item').bind('ajax:beforeSend', function (evt, xhr, settings) {
-        // alert("ajax:before");  
-        console.log('ajax:before');
-        console.log(evt);
-        console.log(xhr);
-        console.log(settings);
-
-        $("#loader_progress").show();
-
-
-
-    }).bind('ajax:success', function (evt, data, status, xhr) {
-        //  alert("ajax:success"); 
-        console.log('ajax:success');
-        console.log(evt);
-        console.log("date:" + data + ":");
-
-        $("#loader_progress").show();
-        theTarget = this.parentNode.parentNode;
-        var aPos = userTableAjax.fnGetPosition(theTarget);
-        userTableAjax.fnDeleteRow(aPos);
-        userTableAjax.fnDraw();
-        $("#loader_progress").hide();
-
-        if (typeof callbackFunction == 'function')
-        {
-            callbackFunction();
-        }
-
-        console.log(status);
-        console.log(xhr);
-
-    }).bind('ajax:error', function (evt, xhr, status, error) {
-        // alert("ajax:failure"); 
-        console.log('ajax:error');
-        console.log(evt);
-        console.log(xhr);
-        console.log(status);
-        console.log(error);
-
-        alert("Error:" + JSON.parse(data.responseText)["error"]);
-        $("#loader_progress").hide();
-
-
-    }).bind('ajax:complete', function (evt, xhr, status) {
-        //    alert("ajax:complete");  
-        console.log('ajax:complete');
-        console.log(evt);
-        console.log(xhr);
-        // console.log(status);
-        $("#loader_progress").hide();
-
-
-    });
-
-}
+//function bindDeleteUser(callbackFunction) {
+//    $('.delete-user-item').unbind('ajax:success');
+//    $('.delete-user-item').bind('ajax:beforeSend', function (evt, xhr, settings) {
+//        // alert("ajax:before");  
+//        console.log('ajax:before');
+//        console.log(evt);
+//        console.log(xhr);
+//        console.log(settings);
+//
+//        $("#loader_progress").show();
+//
+//
+//
+//    }).bind('ajax:success', function (evt, data, status, xhr) {
+//        //  alert("ajax:success"); 
+//        console.log('ajax:success');
+//        console.log(evt);
+//        console.log("date:" + data + ":");
+//
+//        $("#loader_progress").show();
+//        theTarget = this.parentNode.parentNode;
+//        var aPos = userTableAjax.fnGetPosition(theTarget);
+//        userTableAjax.fnDeleteRow(aPos);
+//        userTableAjax.fnDraw();
+//        $("#loader_progress").hide();
+//
+//        if (typeof callbackFunction == 'function')
+//        {
+//            callbackFunction();
+//        }
+//
+//        console.log(status);
+//        console.log(xhr);
+//
+//    }).bind('ajax:error', function (evt, xhr, status, error) {
+//        // alert("ajax:failure"); 
+//        console.log('ajax:error');
+//        console.log(evt);
+//        console.log(xhr);
+//        console.log(status);
+//        console.log(error);
+//
+//        alert("Error:" + JSON.parse(data.responseText)["error"]);
+//        $("#loader_progress").hide();
+//
+//
+//    }).bind('ajax:complete', function (evt, xhr, status) {
+//        //    alert("ajax:complete");  
+//        console.log('ajax:complete');
+//        console.log(evt);
+//        console.log(xhr);
+//        // console.log(status);
+//        $("#loader_progress").hide();
+//
+//
+//    });
+//
+//}
 function admin_user_administration_callDocumentReady() {
     requireCss("tables.css");
 

@@ -9,7 +9,7 @@
    "<%= editablefieldcreate('first_name',  user.user_attribute,"First",{:divclass=>"table-item"}).gsub("\"", "'").html_safe() %>",
    "<%= editablefieldcreate('last_name', user.user_attribute,"Last",{:divclass=>"table-item"}  ).gsub("\"", "'").html_safe() %>",
    "<%= user.roles.collect {|p| [ p.name] }.join(', ') %>",
-   "<center><%=link_to(image_tag('interface/delete.png', :border=>'0'),{ :action=>:delete_ajax, :id=>user.id},{ :confirm => 'Are you sure?', :class=>'delete-user-item', :remote=>true,:title=>"Delete User"}).gsub("\"", "'").html_safe() + "     "+
+   "<center><%=("<div class='delete-user-item'>" + image_tag('interface/delete.png', :border=>'0').gsub("\"", "'").html_safe() + "</div>").gsub("\"", "'").html_safe() + "     "+
      link_to(image_tag('interface/edit.png', :border=>'0', :width=>"20"),"#",{:onclick=>"return(false)", :class=>'edit-user-item', :title=>"Edit User"}).gsub("\"", "'").html_safe() + "     "+
      link_to(image_tag('interface/lock16.png', :border=>'0'),"#",{:onclick=>"return(false)",:class=>'password-user-item', :title=>"Change Password"}).gsub("\"", "'").html_safe() %> </center>"
   ] <% if @objects.last != user then %> , <% end %>

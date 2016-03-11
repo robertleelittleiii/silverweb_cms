@@ -51,3 +51,8 @@ background-color: rgba(125, 125, 125, 0.5);
 #user-table_wrapper {
 padding-top: 20px;
 }
+
+div.delete-user-item {
+    cursor: pointer;
+    display: inline-block;
+}
