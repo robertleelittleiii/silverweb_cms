@@ -1,4 +1,8 @@
 class UserNotifier < ActionMailer::Base
+ 
+  include Rails.application.routes.url_helpers
+  include ActionView::Helpers::UrlHelper
+  
   default :from=>"admin@littleconsultingnj.com"
 
   
@@ -20,7 +24,7 @@ class UserNotifier < ActionMailer::Base
     @user=user
     @hostfull=host
     @admin_email = Settings.admin_email || self.default_params[:from]
-    @site_name = Settings.company_url
+    @site_name = ("The " + Settings.company_name + " Team </br>" + link_to(Settings.company_url, "http://" + Settings.company_url )).html_safe
     @cc_emai_address = Settings.cc_email_address || ""
     mail(:from=>@admin_email, :cc=>@cc_emai_address, :to => "#{user.user_attribute.first_name} #{user.user_attribute.last_name}<#{user.name}>", :subject => "Welcome to Our Store!!")
   end
