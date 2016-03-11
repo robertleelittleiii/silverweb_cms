@@ -259,6 +259,11 @@ function bindLogoutClick() {
         // show_page();
         update_content();
 
+        if (!(typeof updateSiteDivsLogout == "undefined"))
+        {
+            updateSiteDivsLogout();
+        }
+
     }).bind('ajax:error', function (evt, xhr, status, error) {
         // alert("ajax:failure"); 
         console.log('ajax:error');
@@ -449,6 +454,12 @@ function login_sucessfull(url_to_goto) {
     updateSecurityDiv();
     update_content();
     // show_page();
+    // if updateSiteDivs is defined for site then...
+
+    if (!(typeof updateSiteDivsLogin == "undefined"))
+    {
+        updateSiteDivsLogin();
+    }
 
     if (!(typeof url_to_goto == "undefined"))
     {
@@ -601,15 +612,15 @@ function updateAppDiv() {
                 // $("#grid-nav").fadeIn();
                 if (window.matchMedia("only screen and (max-width: 524px)").matches)
                 {
-                     $("#nav-grid-links").fadeIn();
-                     $("#grid-nav").css("top", "0px");
-                } 
+                    $("#nav-grid-links").fadeIn();
+                    $("#grid-nav").css("top", "0px");
+                }
                 else
                 {
-                        $("#nav-grid-links").fadeIn();
-                        $("#grid-nav").css("top", "0px");
+                    $("#nav-grid-links").fadeIn();
+                    $("#grid-nav").css("top", "0px");
 
-           }
+                }
 
                 bindAppClick();
                 bindCloseGrid();
@@ -621,7 +632,7 @@ function updateAppDiv() {
 }
 
 function bindCloseGrid() {
-    
+
     bindHideGrid();
 
     $("a.button-close").button({
@@ -630,27 +641,27 @@ function bindCloseGrid() {
         },
         text: false
     }).click(function () {
-      $("#nav-grid-links").fadeOut();
+        $("#nav-grid-links").fadeOut();
     });
 
 }
 
 function bindHideGrid() {
-     $("div.hide-grid").button({
+    $("div.hide-grid").button({
         icons: {
             primary: "ui-icon-grip-solid-horizontal"
         },
         text: false
     }).click(function () {
 
-      $("#grid-nav").css("top", "-500px");
-      $("#nav-grid-links").fadeOut();
+        $("#grid-nav").css("top", "-500px");
+        $("#nav-grid-links").fadeOut();
 
     });
 }
 
 function bindCloseIframe() {
-    
+
     $("#hide-iframe").click(function () {
 
         $("#application-space").addClass("hidden");
