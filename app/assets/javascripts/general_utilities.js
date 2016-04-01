@@ -463,6 +463,211 @@ function createButtonList(call_backs,buttons_to_build)
 
 }
 
+function createAppDialogUtil(theContent, dialog_id, completion_callback, completion_button) {
+
+    console.log(typeof (completion_button))
+
+    var completion_button = (typeof (completion_button) == "undefined") ? "Close" : completion_button
+
+    console.log(typeof (completion_button));
+    console.log(completion_button);
+
+
+    if ($("#" + dialog_id).length == 0)
+    {
+        var dialogContainer = "<div id='" + dialog_id + "'></div>";
+        $("body").append($(dialogContainer));
+    }
+    else
+    {
+        dialogContainer = $("#" + dialog_id);
+    }
+    // $('#app-dialog').html(theContent);
+    theContent = '<input type="hidden" autofocus="autofocus" />' + theContent
+
+    $('#' + dialog_id).html(theContent);
+
+    theHeight = $('#' + dialog_id + ' #dialog-height').text() || "500";
+    theWidth = $('#' + dialog_id + ' #dialog-width').text() || "500";
+    theTitle = $('#' + dialog_id + ' #dialog-name').html() || "Edit";
+
+    theAppDialog = $('#' + dialog_id).dialog({
+        autoOpen: false,
+        modal: true,
+        title: theTitle,
+        width: theWidth,
+        height: theHeight,
+        buttons: [
+            {
+                text: completion_button,
+                click: function ()
+                {
+                    // Do what needs to be done to complete 
+
+//                    if (typeof (completion_callback) == "function")
+//                    {
+//                        completion_callback();
+//                    }
+
+                    $(this).dialog("close");
+
+                }
+            }],
+        close: function (event, ui) {
+
+
+
+            $('#' + dialog_id).html("");
+            $('#' + dialog_id).dialog("destroy");
+            $('#' + dialog_id).html("");
+
+            if (typeof (completion_callback) == "function")
+            {
+                completion_callback();
+            }
+
+            try {
+                if (typeof (refresh_user_live_edit) == 'function') {
+                    refresh_user_live_edit();
+                }
+            }
+            catch (e) {
+                // statements to handle any exceptions
+                console.log(e); // pass exception object to error handler
+            }
+
+            //   alert('closed');
+        },
+        open: function (event, ui) {
+            popUpAlertifExists();
+            $(this).parent().find("span.ui-dialog-title").html(theTitle)
+        },
+        create: function (event, ui) {
+        }
+
+
+    });
+
+
+//    theAppDialog.dialog({
+//        // title: theTitle,
+//        width: theWidth,
+//        height: theHeight
+//    });
+
+    // $(dialogContainer).parent().find("span.ui-dialog-title").replaceWith(theTitle)
+
+    theAppDialog.dialog("open");
+
+    return(theAppDialog)
+}
+
+
+function createAppDialogCancel(theContent, dialog_id, completion_callback, completion_button) {
+
+    console.log(typeof (completion_button))
+
+    var completion_button = (typeof (completion_button) == "undefined") ? "Close" : completion_button
+
+    console.log(typeof (completion_button));
+    console.log(completion_button);
+
+
+    if ($("#" + dialog_id).length == 0)
+    {
+        var dialogContainer = "<div id='" + dialog_id + "'></div>";
+        $("body").append($(dialogContainer));
+    }
+    else
+    {
+        dialogContainer = $("#" + dialog_id);
+    }
+    // $('#app-dialog').html(theContent);
+    theContent = '<input type="hidden" autofocus="autofocus" />' + theContent
+
+    $('#' + dialog_id).html(theContent);
+
+    theHeight = $('#' + dialog_id + ' #dialog-height').text() || "500";
+    theWidth = $('#' + dialog_id + ' #dialog-width').text() || "500";
+    theTitle = $('#' + dialog_id + ' #dialog-name').html() || "Edit";
+
+    theAppDialog = $('#' + dialog_id).dialog({
+        autoOpen: false,
+        modal: true,
+        title: theTitle,
+        width: theWidth,
+        height: theHeight,
+        buttons: [
+            {
+                text: "Cancel",
+                click: function () {
+                    $(this).dialog("close");
+
+                },
+                id: "cancle-button"
+
+            },
+            {
+                text: completion_button,
+                click: function ()
+                {
+                    // Do what needs to be done to complete 
+
+                    if (typeof (completion_callback) == "function")
+                    {
+                        completion_callback();
+                    }
+
+                    $(this).dialog("close");
+
+                }
+            }
+        ],
+        close: function (event, ui) {
+
+
+
+            $('#' + dialog_id).html("");
+            $('#' + dialog_id).dialog("destroy");
+            $('#' + dialog_id).html("");
+
+            try {
+                if (typeof (refresh_user_live_edit) == 'function') {
+                    refresh_user_live_edit();
+                }
+            }
+            catch (e) {
+                // statements to handle any exceptions
+                console.log(e); // pass exception object to error handler
+            }
+
+            //   alert('closed');
+        },
+        open: function (event, ui) {
+            popUpAlertifExists();
+            $(this).parent().find("span.ui-dialog-title").html(theTitle)
+        },
+        create: function (event, ui) {
+        }
+
+
+    });
+
+
+//    theAppDialog.dialog({
+//        // title: theTitle,
+//        width: theWidth,
+//        height: theHeight
+//    });
+
+    // $(dialogContainer).parent().find("span.ui-dialog-title").replaceWith(theTitle)
+
+    theAppDialog.dialog("open");
+
+    return(theAppDialog)
+}
+
+
 /*
  * 
  *  Sample call of the createAppDialogAdv

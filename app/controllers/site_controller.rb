@@ -8,6 +8,8 @@ class SiteController < ApplicationController
 
   cms_skip_authorize
   
+   protect_from_forgery except: :session_active
+   
   # uses_tiny_mce(:options => AppConfig.default_mce_options, :only => [:new, :edit])
 
   # login code
@@ -49,6 +51,7 @@ class SiteController < ApplicationController
   
   def logout_ajax
     session[:user_id] = nil
+    session[:active]=false
     flash.now[:notice] = "User logged out."
 
     respond_to do |format|
@@ -283,6 +286,10 @@ class SiteController < ApplicationController
   def show_prop_slideshow_partial
     @properties = Property.find_properties(params[:realtor_id])
     render :partial => "show_prop_slideshow", :format=>"html"
+  end
+  
+   def  session_active
+    render :text=> session[:active] || "false"
   end
   
 #  def show_products_with_page

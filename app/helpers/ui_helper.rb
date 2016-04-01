@@ -122,7 +122,7 @@ module UiHelper
     logger.info(opts[:class])
     puts("object: #{object}, field: #{field}, opts: #{opts.inspect}")
     puts("object: #{object}, field: #{field}, opts: #{opts.inspect}")
-
+  
     opts[:type] ||= :input
     opts[:collection] ||= []
 
@@ -154,15 +154,15 @@ module UiHelper
     end
     
     #fix for rails settings gem
-    object_class_name = object.class.to_s.gsub("::", "_").underscore  
+    object_class_name = object.class.to_s.gsub("::", "_").underscore
     object_class_name = (object_class_name == "settings_active_record_relation" ? "settings" : object_class_name)
-   
+
     
     if opts[:type] == :checkbox
       if object_class_name == "settings" then
         fieldValue = Settings.send(field) == "true" ? true : false
       else
-        fieldValue = !!object.send(field)
+      fieldValue = !!object.send(field)
       end
       if opts[:collection].blank? || opts[:collection].size != 2
         opts[:collection] = ["No", "Yes"]
@@ -174,7 +174,7 @@ module UiHelper
     if !opts[:class].blank? 
       extraclass = opts[:class] + "'"
     end
-    
+           
     
     if object_class_name == "settings" then
       opts[:path] = request.original_url
@@ -208,24 +208,21 @@ module UiHelper
       when "time"
         value =  Time.parse(value.to_s).strftime(opts[:format_string]) if not value.blank?
       when "date"
-        value =  Date.parse(value.to_s).strftime(opts[:format_string]) if not value.blank?
+          value =  Date.parse(value.to_s).strftime(opts[:format_string]) if not value.blank?
       when "currency"
         value =  number_to_currency(value) if not value.blank?
       else
         # do nothing
       end
     end
-    puts("value sanitized ======> #{sanitize(value.to_s, :tags => nil, :attributes => nil)}")
-    puts("value ======> #{value.to_s}")
-    if opts[:sanitize] or opts[:sanitize].nil? then
-      out << " data-sanitize='true'>"
-      out << sanitize(value.to_s.html_safe(), :tags => %w(b i u s a strong em p h1 h2 h3 h4 h5 ul li ol hr pre span img), :attributes => %w(id class))
-      puts("value----> sanitized")
-    else 
+    
+    if !opts[:sanitize].nil? && !opts[:sanitize]
       out << " data-sanitize='false'>"
-      out << "#{value.gsub('<', '&lt;').gsub('>', '&gt;') }"
-      puts("value NOT----> sanitized")
+      out << sanitize(value.to_s, :tags => %w(b i u s a strong em p h1 h2 h3 h4 h5 ul li ol hr pre span img), :attributes => %w(id class))
+    else
+      out << ">#{sanitize(value.to_s, :tags => nil, :attributes => nil)}"
     end
+    
     out << "</div>"
     
     if !opts[:validation_message].blank? then
@@ -245,10 +242,10 @@ module UiHelper
       return "ERROR"
     end
     if opts[:divclass].nil? then
-      divClass='class="myaccountcontentitem"'
+      divClass='class="cms-contentitem"'
     else
       divClass=opts[:divclass]
-    end rescue divClass='class="myacountcontentitem"'
+    end rescue divClass='class="cms-contentitem"'
 
     if (field_pointer[field_name].class == String and field_pointer[field_name].length > 85) or opts[:force_textarea] then
       ('<div id="field_'+field_name.to_s + '"' + divClass + '>' +
@@ -261,6 +258,24 @@ module UiHelper
     end
   end
   
+  def editabledatefieldcreate(field_name,field_pointer, empty_message="Click me to add content!", opts = {})
+
+    if field_pointer.blank? then
+      flash[:notice] = field_name + " not found !!"
+      return "ERROR"
+    end
+    if opts[:divclass].nil? then
+      divClass='class="cms-contentitem"'
+    else
+      divClass=opts[:divclass]
+    end rescue divClass='class="cms-contentitem"'
+    
+    ('<div id="field_'+field_name.to_s + '"' + divClass + '>' +
+        best_in_place(field_pointer, field_name,opts.merge( :type => :date, :nil => empty_message)).html_safe +
+        '</div>').html_safe
+     
+  end
+  
   def editablecheckboxedit (field_name, field_pointer,field_title, opts = {})
   
     if field_pointer.blank? then
@@ -268,12 +283,12 @@ module UiHelper
       return "ERROR"
     end
     if opts[:divclass].nil? then
-      divClass='class="myaccountcontentitem"'
+      divClass='class="cms-contentitem"'
     else
       divClass=opts[:divclass]
-    end rescue divClass='class="myacountcontentitem"'
+    end rescue divClass='class="cms-contentitem"'
     
-    ('<div id="field_'+field_name.to_s + '"' + divClass + '>' +
+    ('<div id="field_'+field_name.to_s + '"' + divClass + '> ' + (!field_title.blank? ?   '<div class="checkbox-title">' + field_title + ": </div>" : "") +
         best_in_place(field_pointer, field_name, opts.merge(:type => :checkbox)).html_safe +
         '</div>').html_safe
       
@@ -292,6 +307,7 @@ module UiHelper
     end
     return content_tag(:div,return_value, html_options,false)
   end
+  
   def create_group_checkbox_live(field_name, field_pointer, value_list, html_options={})
     
     return_value = ""
@@ -313,12 +329,12 @@ module UiHelper
       return "ERROR"
     end
     if opts[:divclass].nil? then
-      divClass='class="myaccountcontentitem"'
+      divClass='class="cms-contentitem"'
     else
       divClass=opts[:divclass]
-    end rescue divClass='class="myacountcontentitem"'
+    end rescue divClass='class="cms-contentitem"'
     
-    ('<div id="field_'+field_name.to_s + '"' + divClass + '>' +
+    ('<div id="field_'+field_name.to_s + '"' + divClass + '> ' + (!field_title.blank? ?   '<div class="checkbox-title">' + field_title + ": </div>" : "") +
         best_in_place(field_pointer, field_name, opts.merge(:type => :checkbox)).html_safe +
         '</div>').html_safe
       
@@ -385,8 +401,10 @@ module UiHelper
         html_options = html_options.merge({:class=>"ui-ajax-cart-select", "data-path"=>url_for(field_pointer).to_s })
     select_tag(field_name, options_for_select(value_list, @cart.send(field_name)), html_options)
     else
-      html_options = html_options.merge({:class=>"ui-ajax-select", "data-path"=>url_for(field_pointer).to_s ,"data-id"=>field_pointer.id })
-
+      
+      html_options = html_options.merge({"data-path"=>url_for(field_pointer).to_s ,"data-id"=>field_pointer.id }) rescue {}
+      html_options[:class] = html_options[:class] + " ui-ajax-select" rescue "ui-ajax-select"
+      
       # html_options==nil ? html_options={:class=>"ui-ajax-select", "data-path"=>url_for(field_pointer).to_s ,"data-id"=>field_pointer.id} : ""
       select(field_object,"#{field_name}", value_list,{ :prompt => prompt}, html_options )
     end
@@ -395,7 +413,7 @@ module UiHelper
   end
   
      
-  def generate_grid_tabnav(*args)
+   def generate_grid_tabnav(*args)
     html_options      = args.first || {}
     icon_list = args.second || {}
     
@@ -411,30 +429,14 @@ module UiHelper
     out << "<div #{grid_div_class} #{grid_div_id}>"
     out << "<ul #{grid_ul_class} #{grid_ul_id}>"
     icon_list.each  do |item|
-      
+      additional_args = item[:additional_args] ||{}
+      additional_params = item[:additional_params] ||{}
+
       window_type = item[:window_type] || ""
       
-      out << tab_link(navigation_icon(item[:name]),{:controller=>item[:controller], :action=>item[:action], :request_type=>"window", :window_type=>window_type, :role=>item[:role]}, {:name=>item[:name].gsub(/ /, '-')  ,:class=>grid_li_class, :remote=>true}) # rescue ""
+      out << tab_link(navigation_icon(item[:name],item[:icon]),{:controller=>item[:controller], :action=>item[:action], :request_type=>"window", :window_type=>window_type, :role=>item[:role]}.merge!(additional_args), {:tooltip=> item[:tooltip], :name=>item[:name].gsub(/ /, '-')  ,:class=>grid_li_class, :remote=>true}.merge!(additional_params))
     end
-    #
-    #    {"Home"=>{:controller=>'admin', :action=>'index'}, 
-    #      "Site Settings"=>{:controller=>'admin', :action=>'index'}, 
-    #      "Feeds"=>{:controller=>'admin', :action=>'index'}, 
-    #      "Menu"=>{:controller=>'admin', :action=>'index'}, 
-    #      "Pages"=>{:controller=>'admin', :action=>'index'}, 
-    #      "Users"=>{:controller=>'admin', :action=>'index'}, 
-    #      "Rights"=>{:controller=>'admin', :action=>'index'}, 
-    #      "Roles"=>{:controller=>'admin', :action=>'index'}
-    #    }
-    #    out << tab_link(navigation_icon("Home"), {:controller=>'admin', :action=>'index'}, {:class=> 'myCssClass', :id=>'myCssId'})
-    #    out << tab_link(navigation_icon('Site Settings'), :controller=>'admin', :action=>'site_settings')
-    #    out << tab_link( navigation_icon('Feeds'),     :controller=> 'feed_management', :action=>'index')
-    #    out << tab_link( navigation_icon('Menu'), :controller=> 'menus', :action=>'index')
-    #    out << tab_link( navigation_icon('Pages'), :controller=> 'pages', :action=>'index')
-    #    out << tab_link( navigation_icon('Users'),     :controller => 'users', :action=>'index')
-    #    out <<  tab_link( navigation_icon('Rights'),     :controller=> 'rights', :action=>'index')
-    #    out << tab_link( navigation_icon('Roles'),     :controller=> 'roles', :action=>'index')
-    # 
+    
     out << "</ul>"
     out << "</div>"
     
@@ -461,7 +463,7 @@ module UiHelper
     end
     
     the_action_name = options[:action]
-    puts(the_controller_name, the_action_name)
+    # puts(the_controller_name, the_action_name)
 
     if session[:user_id] then
       user =  User.find_by_id(session[:user_id])
@@ -472,9 +474,9 @@ module UiHelper
               ((right.action == the_action_name)|(right.action == "*")|(right.action.include? the_action_name)) && right.controller == the_controller_name
             }
           } 
-          puts("html_options[:order]:  #{html_options[:order]}")
+          #  puts("html_options[:order]:  #{html_options[:order]}")
         
-          return("<li id='#{html_options[:name].gsub(/ /,'-')}' class='hidden' >#{link_to(*args,&block)}</li>").html_safe
+          return("<li id='#{html_options[:name].gsub(/ /,'-')}' class='hidden #{options[:role].to_s.downcase}' title='#{html_options[:tooltip].to_s}'>" + link_to(*args,&block) + "</li>").html_safe
      
         else 
           return ""
@@ -547,11 +549,14 @@ module UiHelper
     end
   end
      
-  def navigation_icon(name)
+  def navigation_icon(name, icon='')
+    
+    icon = icon.blank? ? name : icon
+    
     out = ""
      
     out << "<div class='navigation-icon'>"
-    out << image_tag("interface/system_icons/"+name.downcase+".png", {:class=>"navigation-image"})
+    out << image_tag("interface/system_icons/"+icon.downcase+".png", {:class=>"navigation-image"})
     out << "<div class='navigation-icon-name'>"
     out << name
     out << "</div>"

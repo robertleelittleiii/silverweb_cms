@@ -1,15 +1,19 @@
 class CreatePageTemplates < ActiveRecord::Migration
   def self.up
-    create_table :page_templates do |t|
-      t.string :title
-      t.string :description
-      t.text :body
+    if not ActiveRecord::Base.connection.table_exists? 'page_templates' then
+      create_table :page_templates do |t|
+        t.string :title
+        t.string :description
+        t.text :body
 
-      t.timestamps
+        t.timestamps
+      end
     end
   end
 
   def self.down
-    drop_table :page_templates
+    if ActiveRecord::Base.connection.table_exists? 'page_templates' then
+      drop_table :page_templates
+    end
   end
 end

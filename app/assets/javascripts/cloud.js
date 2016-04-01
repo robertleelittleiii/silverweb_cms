@@ -10,6 +10,9 @@
 //
 
 var interval;
+var cloud1id;
+var cloud2id;
+var cloud3id;
 
 function cloud1() {
     body_width = ($("body").width() + 150) + "px";
@@ -141,7 +144,7 @@ function checkLoginStatus()
             if (data == "true") {
 
                 logedIn();
-
+                stop_animation();
             }
             else
             {
@@ -664,6 +667,7 @@ function bindCloseIframe() {
 
     $("#hide-iframe").click(function () {
 
+        $("#nav-grid-links").fadeIn();
         $("#application-space").addClass("hidden");
         $($currentApplicationId).removeClass("blowup");
         $(".grid_tabnav ul li").removeClass("hidden");
@@ -774,7 +778,7 @@ function bindAppClick() {
             else
             {
                 //   alert("this is a dialog!")
-                //var thisDialog = createEditDialog(data);
+                 //var thisDialog = createEditDialog(data);
                 var thisDialog = createAppDialog(data, "app-dialog", {
                     completion: function completionCallback() {
                         $("div#nav-grid-links").fadeIn();

@@ -1,0 +1,222 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Jan 10, 2016, 5:05:23 PM
+    Author     : rlittle
+*/
+
+div.cloud-app-content{
+   background-image: image_url("patterns/cloth_alike_2X.png");
+    background-repeat: repeat-xy;   
+    overflow: hidden;
+    padding: 20px;
+    margin: 0px 50px 10px 50px;
+    border-top-color: darkGray;
+    border-left-color: #CCC;
+    border-right-color: #CCC;
+    border-bottom-color: #CCC;
+    border-style: solid;
+    border-width: 1px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+div.field-block {
+    border: 1px solid black;
+    background: white;
+    border-radius: 5px;
+    display: inline-block;
+    position: relative;
+    margin-bottom: 10px;
+    margin-left:10px;
+}
+
+div.field-block.left {
+    float:left;
+}
+div.field-block.right {
+    float:right;
+}
+
+div.field-header {
+
+    background: #4c944c image_url("jquery-ui/images/ui-bg_highlight-soft_75_4c944c_1x100.png") 50% 50% repeat-x;
+    color: #222222;
+    font-weight: bold;
+
+    /* color: white;
+    background-color: #333; */
+    font-size: 18px;
+    padding: 4px;
+    text-align: center;
+    font-weight: bold;
+}
+
+div.field-group {
+    padding:5px;
+    
+}
+
+.field-item {
+    padding-bottom: 11px !important;
+}
+.field-item.last{
+    padding-bottom: 1px !important;
+}
+.field-item.first{
+    padding-top: 10px !important;
+}
+
+div.field-title {
+    width: 115px;
+    display: inline-block;
+    padding-left: 20px;
+    text-align: right;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+
+div.field-entry {
+    display: inline-block;
+    position: relative;
+    padding-right: 20px;
+}
+
+div.field-upper-lable {
+    padding-left: 12px;
+    display: inline-block;
+    position: relative;
+    font-size: 14px;
+    font-weight: bold;
+}
+div.data-nil {
+    color: lightgrey;
+}
+
+form.form_in_place {
+    height:18px !important;
+}
+
+.best_in_place_adj {
+    font-size: 15px;
+    margin-top: -7px;
+    margin-right: -12px;
+    margin-bottom: -3px;
+    margin-left: -2px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12pt;
+    width:50px;
+    height: 24px;
+}
+.best_in_place {
+    padding: inherit;
+    cursor: hand;
+    cursor: pointer;
+    -moz-transition: background 0.5s linear;
+    -o-transition: background 0.5s linear;
+    -webkit-transition: background 0.5s linear;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -o-border-radius: 5px;
+    -ms-border-radius: 5px;
+    -khtml-border-radius: 5px;
+    border-radius: 5px;
+    height: 16px;
+}
+
+
+.best_in_place:hover, #user_account .do_hover {
+      padding: inherit;
+      /* background: url("/images/red_pen.png") no-repeat right; */
+      background-color: #CCC;
+}
+
+
+div.jqEasyCounterMsg {
+position: absolute;
+right: 0px;
+/* color: lightgrey !important;*/
+width: 100% !important;
+min-width: 100px;
+}
+
+
+.cloud-app-contentitem {
+    margin-top: 0;
+    padding-bottom: 0;
+    padding-left: 0px;
+    display: inline-block;
+    margin-bottom: 0px;
+    font-size: 12pt;
+    font-weight: normal;
+    padding: 0px;
+    padding-right: 20px;
+    margin: 0px 0px 0px 0px;
+}
+
+div.cloud-app-heading {
+    margin: 0px 50px 0px 50px;
+    font-family: Arial,Helvetica,sans-serif;
+    border-style: solid;
+    border-width: 1px;
+    height: 24px;
+    padding-left: 15px;
+    padding-top: 6px;
+    background-color: lightGrey;
+    font-weight: bold;
+    font-size: 18px;
+    border-top-color: #CCC;
+    border-left-color: #CCC;
+    border-right-color: darkGray;
+    border-bottom-color: darkGray;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    color:#777;
+}
+
+div.cloud-app-header {
+background-color: white;
+    color: #777;
+    font-family: "Lucida Grande",Geneva,Arial,Verdana,san-serif;
+    font-size: 24px;
+    font-weight: bold;
+    text-align: left;
+    padding-bottom: 10px;
+    background-image: -ms-linear-gradient(top, white 0%, #C7C7C7 100%);
+    background-image: -moz-linear-gradient(top, white 0%, #C7C7C7 100%);
+    background-image: -o-linear-gradient(top, white 0%, #C7C7C7 100%);
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, white), color-stop(1, #C7C7C7));
+    background-image: -webkit-linear-gradient(top, white 0%, #C7C7C7 100%);
+    background-image: linear-gradient(to bottom, white 0%, #C7C7C7 100%);
+    padding-left: 20px;
+    border-bottom: 2px solid grey;
+    margin: 0px 50px 10px 50px;
+    height: 30px;
+    padding-top: 20px;
+    border-radius: 15px;
+}
+
+
+.uneditable {
+    color:darkgrey;
+}
+
+
+.top-menu {
+position: absolute;
+top: 19px;
+left: 70px;
+}
+
+div.cloud-app-block {
+    margin-left: 0px;
+    margin-top: -5px;
+    padding-top: 10px;
+    padding-bottom: 30px;
+    border: 1px solid grey;
+    min-width: 1320px;
+}

@@ -79,7 +79,7 @@ class UserNotifier < ActionMailer::Base
     @site_name = Settings.company_url
     @admin_email = Settings.admin_email || self.default_params[:from]
 
-    mail(:from=>@admin_email,:to => "#{user.user_attribute.first_name} #{user.user_attribute.last_name}<#{user.name}>", :subject => "Activation for #{Settings.company_name || "our store."}")
+    mail(:from=>@admin_email,:to => "#{user.user_attribute.first_name} #{user.user_attribute.last_name}<#{user.name}>", :subject => "Activation for #{Settings.company_name || "our store." }")
   end
   
   

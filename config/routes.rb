@@ -10,6 +10,8 @@
       get "reprocess_page_images"
       get "update_ajax"
       get "update"
+      post "clear_user_locks"
+      post "refresh_user_live_edit"
     end
   end
   resources :site do
@@ -23,6 +25,7 @@
       get "logout_ajax"
       get "render_partial"
       get "load_asset"
+      post "session_active"
    end 
   end
   

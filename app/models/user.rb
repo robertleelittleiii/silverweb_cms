@@ -5,8 +5,9 @@ require 'gravtastic'
 
 
 class User < ActiveRecord::Base
-  #  include RFC822
-  RFC822_valid = begin
+  include RailsSettings::Extend
+  
+    RFC822_valid = begin
     qtext = '[^\\x0d\\x22\\x5c\\x80-\\xff]'
     dtext = '[^\\x0d\\x5b-\\x5d\\x80-\\xff]'
     atom = '[^\\x00-\\x20\\x22\\x28\\x29\\x2c\\x2e\\x3a-' +
@@ -24,8 +25,8 @@ class User < ActiveRecord::Base
   end
   
   has_and_belongs_to_many :roles
-  
   has_one :user_attribute
+  has_one :user_live_edit, :autosave => true
 
   # has_many :orders
 include Gravtastic
@@ -173,6 +174,16 @@ def self.to_csv
     end
     
   
+  end
+
+def self.get_active
+    @user_list = []
+    @session_list = ActiveRecord::SessionStore::Session.all
+    @session_list.each do |a_session| 
+      @user = (a_session.data["user_id"].nil? ? nil : User.find(a_session.data["user_id"])) rescue nil
+      @user_list << {:user=> @user, :session=>a_session.data} if not @user.nil?
+    end 
+    return @user_list
   end
 
 #  def name

@@ -120,11 +120,19 @@ class UsersController < ApplicationController
 
   # PUT /users/1
   # PUT /users/1.xml
-  def update
+ def update
     @user = User.find(params[:id])
+    if params[:user].keys.first.include?("settings")
+      settings_params = params["user"].keys.first.split(".")
+      eval("@user." + settings_params[0] + "." + settings_params[1] + "='" + params["user"].values.first + "'" ) rescue ""
+      updated = true 
+    else
+      updated =  @user.update_attributes(params[:user])
+    end
 
     respond_to do |format|
-      if @user.update_attributes(user_params)
+      
+      if updated
         flash[:notice] = "User #{@user.name} was successfully updated."
         format.html { redirect_to(:action=>'index') }
         format.json  { head :ok }

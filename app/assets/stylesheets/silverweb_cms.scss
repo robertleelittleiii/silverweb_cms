@@ -746,3 +746,15 @@ div#notify-container div.info-icon {
 .ui-dialog {
     overflow: visible !important;
 }
+
+
+div.checkbox-title {
+    display: inline-block;
+    font-size: small;
+    font-weight: bolder;
+    padding-left: 12px;
+    baseline-shift: super;
+    vertical-align: 1px;
+        padding-right: 5px;
+
+}
