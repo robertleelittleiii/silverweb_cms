@@ -1,6 +1,6 @@
 module FlexsliderHelper
   
-  def show_flexslider_gallary(page, effect="fade", slider_id="flexslider")
+  def show_flexslider_gallary(page, effect="slide", slider_id="flexslider")
     if not page.blank? and page.has_slider then
       
       # info for javascript 

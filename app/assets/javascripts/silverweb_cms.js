@@ -48,7 +48,8 @@ $(document).ready(function () {
     $(".datepicker").datepicker();
 
     ui_ajax_select();
-
+    ui_ajax_checkbox();
+    
     $("a.button-link").button();
     enablePageEdit();
     enableSliderEdit();

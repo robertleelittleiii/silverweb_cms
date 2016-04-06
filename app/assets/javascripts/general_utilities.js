@@ -385,6 +385,56 @@ function ui_ajax_select() {
     });
 }
 
+
+function ui_ajax_checkbox() {
+
+    $("input.ui-ajax-checkbox").bind("change", function () {
+        
+        dataUrl = this.getAttribute("data-url");
+        dataMethod = this.getAttribute("data-method");
+        dataType = this.getAttribute("data-type");
+        isChecked = $(this).is(':checked');
+        dataClass = this.getAttribute("data-class");
+        fieldName = this.getAttribute("name");
+        checkType = this.getAttribute("data-check-type");
+        checkBoxValue = this.getAttribute("checkbox_value");
+        
+        var dataObj = {};
+        dataObj[dataClass]= {};
+        if (checkType=="boolean")
+        {
+          dataObj[dataClass][fieldName] = (isChecked ? 1 : 0) 
+        }
+        else
+        {
+           dataObj[dataClass][fieldName] = (isChecked ? checkBoxValue : "") 
+        }
+
+        
+        //alert(this.getAttribute("data-id"));
+
+        $.ajax({
+            url: dataUrl, // controller + "/update",
+            dataType: dataType,
+            type: dataMethod,
+            data: dataObj,
+            success: function (data)
+            {
+                // alert(data);
+                if (data === undefined || data === null || data === "")
+                {
+                    //display warning
+                }
+                else
+                {
+
+                }
+            }
+        });
+    });
+}
+
+
 function ui_ajax_settings_select() {
 
     $("select.ui-ajax-settings-select").bind("change", function () {
