@@ -9,7 +9,7 @@ and open the template in the editor.
 */
 
 div.cloud-app-content{
-   background-image: image_url("patterns/cloth_alike_2X.png");
+    background-image: image_url("patterns/cloth_alike_2X.png");
     background-repeat: repeat-xy;   
     overflow: hidden;
     padding: 20px;
@@ -57,7 +57,7 @@ div.field-header {
 
 div.field-group {
     padding:5px;
-    
+
 }
 
 .field-item {
@@ -126,22 +126,26 @@ form.form_in_place {
     -khtml-border-radius: 5px;
     border-radius: 5px;
     height: 16px;
+    padding-left:0px
+
 }
 
 
 .best_in_place:hover, #user_account .do_hover {
-      padding: inherit;
-      /* background: url("/images/red_pen.png") no-repeat right; */
-      background-color: #CCC;
+    padding: inherit;
+    /* background: url("/images/red_pen.png") no-repeat right; */
+    background-color: #CCC;
+    padding-left:0px
+
 }
 
 
 div.jqEasyCounterMsg {
-position: absolute;
-right: 0px;
-/* color: lightgrey !important;*/
-width: 100% !important;
-min-width: 100px;
+    position: absolute;
+    right: 0px;
+    /* color: lightgrey !important;*/
+    width: 100% !important;
+    min-width: 100px;
 }
 
 
@@ -179,7 +183,7 @@ div.cloud-app-heading {
 }
 
 div.cloud-app-header {
-background-color: white;
+    background-color: white;
     color: #777;
     font-family: "Lucida Grande",Geneva,Arial,Verdana,san-serif;
     font-size: 24px;
@@ -207,9 +211,9 @@ background-color: white;
 
 
 .top-menu {
-position: absolute;
-top: 19px;
-left: 70px;
+    position: absolute;
+    top: 19px;
+    left: 70px;
 }
 
 div.cloud-app-block {

@@ -258,6 +258,327 @@ module UiHelper
     end
   end
   
+module UiHelper
+
+  #  This will hide or show a div based on the given condition.
+  def hidden_div_if(condition, attributes = {})
+    if condition
+      attributes["style"] = "display: none"
+    end
+    attrs = tag_options(attributes.stringify_keys)
+    "<div #{attrs}>".html_safe
+  end
+  
+      
+  def add_google_analytics
+    tracking_id = Settings.google_analytics
+    begin 
+      user_id = User.find(session[:user_id]).name || 'visitor' 
+    rescue
+      user_id = 'visitor'
+    end
+    
+    if not tracking_id.blank? then
+      data ="<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', '#{tracking_id}', 'auto');
+  ga('send', 'pageview');
+  ga('set', '&uid', '#{user_id}'); // Set the user ID using signed-in user_id.
+</script>".html_safe
+      
+      return data
+    end
+  end
+
+  def old_add_google_analytics
+    tracking_id = Settings.google_analytics
+    if not tracking_id.blank? then
+      data = "<script type=\"text/javascript\" async>
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', '#{tracking_id}']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>".html_safe
+      return data
+    end
+    
+  end
+  
+  #  This will autoload css files based on the controller and/or action
+  def controller_stylesheet_link_tag
+    stylesheet = "#{params[:controller]}.css"
+    stylesheet_path = Rails.application.assets.find_asset(stylesheet)
+
+    stylesheetaction = "#{params[:controller]}/#{params[:action]=="index" ? "index_" : params[:action]}.css"
+    stylesheetaction_path = Rails.application.assets.find_asset(stylesheetaction)
+
+    stylesheet_return = ""
+  
+    if  stylesheet_path != nil then
+      stylesheet_return = stylesheet_link_tag stylesheet rescue ""
+    end
+    
+    if stylesheetaction_path != nil and (stylesheet_path != stylesheetaction_path) then
+      stylesheet_return = stylesheet_return + " " + (stylesheet_link_tag stylesheetaction) rescue ""
+    end
+    
+    if not @style_sheet_custom.nil? and not @style_sheet_custom.blank?  then
+      custom_stylesheet = "#{params[:controller]}/#{@style_sheet_custom}"
+      custom_stylesheet_path = Rails.application.assets.find_asset(custom_stylesheet)
+      stylesheet_return <<  (stylesheet_link_tag(custom_stylesheet,"data-turbolinks-track"=>"true")) if  custom_stylesheet_path != nil rescue ""
+    end
+     
+    return stylesheet_return.html_safe if not stylesheet_return.blank?
+    
+  end
+  
+  #  This will autoload javascript files based on the controller and/or action 
+
+  def controller_javascript_include_tag
+    
+    javascript = "#{params[:controller]}.js"
+    javascript_path = Rails.application.assets.find_asset(javascript)
+
+    javascriptaction = "#{params[:controller]}/#{params[:action]=="index" ? "index_" : params[:action]}.js"
+    javascriptaction_path = Rails.application.assets.find_asset(javascriptaction)
+
+    javascript_return = ""
+           
+    # Rails.application.assets.find_asset(javascriptaction) != nil
+
+    # if File.exists?(File.join(Rails.root, '/assets/javascripts', javascript))
+    if  javascript_path != nil then
+      javascript_return = javascript_include_tag(javascript, :async => true) rescue ""
+    end
+
+    if javascriptaction_path != nil and (javascript_path != javascriptaction_path) then
+      javascript_return = javascript_return + " " + (javascript_include_tag(javascriptaction, :async => true))rescue ""
+    end
+    
+  
+    if not @java_script_custom.nil? and not @java_script_custom.blank?  then
+      custom_javascriptaction = "#{params[:controller]}/#{@java_script_custom}"
+      custom_javascriptaction_path = Rails.application.assets.find_asset(custom_javascriptaction)
+      javascript_return <<  (javascript_include_tag(custom_javascriptaction,:async => true)) if  custom_javascriptaction_path != nil
+    end
+    
+    return javascript_return.html_safe if not javascript_return.blank?
+
+  end
+  
+  def best_in_place(object, field, opts = {})
+    logger.info("best_in_place")
+    logger.info(opts[:class])
+    puts("object: #{object}, field: #{field}, opts: #{opts.inspect}")
+    puts("object: #{object}, field: #{field}, opts: #{opts.inspect}")
+  
+    opts[:type] ||= :input
+    opts[:collection] ||= []
+
+    field = field.to_s
+    puts("bestinplace->>> field is: #{field}")
+    puts("bestinplace->>> Object is: #{object.inspect}")
+    
+    field_items = field.split(".")
+    
+    if field.include?("[") and field.include?("]") then
+      array_index = field.scan(/\[(.*?)\]/).flatten.first.to_i
+      field_name = field.split("[").first
+      value = object.send(field_name)[array_index] rescue ""
+    else
+      value = (field_items.length > 1 ? object.send(field_items[0]).send(field_items[1]) : object.send(field) ) rescue object[field]
+    end
+    
+    value = value.blank? ? "" : value
+    
+    puts("bestinplace->>> Value is: #{value}")
+
+    collection = nil
+    if opts[:type] == :select && !opts[:collection].blank?
+      v = object.send(field)
+      logger.info(v)
+      logger.info(opts[:collection])
+      value = Hash[opts[:collection]][!!(v =~ /^[0-9]+$/) ? v.to_i : v] || "Please Select..."
+      collection = opts[:collection].to_json
+    end
+    
+    #fix for rails settings gem
+    object_class_name = object.class.to_s.gsub("::", "_").underscore
+    object_class_name = (object_class_name == "settings_active_record_relation" ? "settings" : object_class_name)
+
+    
+    if opts[:type] == :checkbox
+      if object_class_name == "settings" then
+        fieldValue = Settings.send(field) == "true" ? true : false
+      else
+      fieldValue = !!object.send(field)
+      end
+      if opts[:collection].blank? || opts[:collection].size != 2
+        opts[:collection] = ["No", "Yes"]
+      end
+      value = fieldValue ? opts[:collection][1] : opts[:collection][0]
+      collection = opts[:collection].to_json
+    end
+    extraclass = "'"
+    if !opts[:class].blank? 
+      extraclass = opts[:class] + "'"
+    end
+           
+    
+    if object_class_name == "settings" then
+      opts[:path] = request.original_url
+    end rescue ""
+    
+    puts("object-class-name in bestinplace: #{object_class_name}")
+    
+    out = "<div class='best_in_place " + extraclass
+    out << " id='best_in_place_#{object_class_name}_#{field}'"
+    out << " data-url='#{opts[:path].blank? ? url_for(object).to_s : url_for(opts[:path]) rescue "/"}'"
+    out << " data-object='#{object_class_name}'"
+    out << " data-collection='#{collection}'" unless collection.blank?
+    out << " data-attribute='#{field}'"
+    out << " data-activator='#{opts[:activator]}'" unless opts[:activator].blank?
+    out << " data-nil='#{opts[:nil].to_s}'" unless opts[:nil].blank?
+    out << " data-type='#{opts[:type].to_s}'"
+    out << " data-max-length='#{opts[:max_length].to_s}'" unless opts[:max_length].blank?
+    out << " data-format='#{opts[:format_string].to_s}'" unless opts[:format_string].blank?
+    out << " data-format-type'#{opts[:format_type].to_s}'" unless opts[:format_type].blank?
+
+    # formating options if set
+    #  :format_type 
+    #      "date"
+    #           Will look at the opt[:format_string] to format as datetime.
+    #      "currency"
+    #           Will simply use the rails number_to_currency on the value to format.
+    #
+    
+    if not opts[:format_type].blank?  then
+      case opts[:format_type] 
+      when "time"
+        value =  Time.parse(value.to_s).strftime(opts[:format_string]) if not value.blank?
+      when "date"
+          value =  Date.parse(value.to_s).strftime(opts[:format_string]) if not value.blank?
+      when "currency"
+        value =  number_to_currency(value) if not value.blank?
+      else
+        # do nothing
+      end
+    end
+    
+    if !opts[:sanitize].nil? && !opts[:sanitize]
+      out << " data-sanitize='false'>"
+      out << sanitize(value.to_s, :tags => %w(b i u s a strong em p h1 h2 h3 h4 h5 ul li ol hr pre span img), :attributes => %w(id class))
+    else
+      out << ">#{sanitize(value.to_s, :tags => nil, :attributes => nil)}"
+    end
+    
+    out << "</div>"
+    
+    if !opts[:validation_message].blank? then
+      out << "<lable data-attribute='#{field}' class='best_in_place_validation'>"
+      out << opts[:validation_message]
+      out << "</lable>"
+    end
+    
+    return out
+  end
+  
+  def editablefieldcreate(field_name,field_pointer, empty_message="Click me to add content!", opts = {})
+ 
+    # puts("field_name: #{field_name}, field_pointer: #{field_pointer}, opts: #{opts.inspect}")
+    if field_pointer.blank? then
+      flash[:notice] = field_name + " not found !!"
+      return "ERROR"
+    end
+    if opts[:divclass].nil? then
+      divClass='class="cms-contentitem"'
+    else
+      divClass=opts[:divclass]
+    end rescue divClass='class="cms-contentitem"'
+
+    if (field_pointer[field_name].class == String and field_pointer[field_name].length > 85) or opts[:force_textarea] then
+      ('<div id="field_'+field_name.to_s + '"' + divClass + '>' +
+          best_in_place(field_pointer, field_name, opts.merge(:type => :textarea, :nil => empty_message)).html_safe +
+          '</div>').html_safe
+    else 
+      ('<div id="field_'+field_name.to_s + '"' + divClass + '>' +
+          best_in_place(field_pointer, field_name, opts.merge(:type => :input, :nil => empty_message)).html_safe +
+          '</div>').html_safe
+    end
+  end
+  
+
+  def editabledatefieldcreate(field_name,field_pointer, empty_message="Click me to add content!", opts = {})
+
+    if field_pointer.blank? then
+      flash[:notice] = field_name + " not found !!"
+      return "ERROR"
+    end
+    if opts[:divclass].nil? then
+      divClass='class="cms-contentitem"'
+    else
+      divClass=opts[:divclass]
+    end rescue divClass='class="cms-contentitem"'
+    
+    ('<div id="field_'+field_name.to_s + '"' + divClass + '>' +
+        best_in_place(field_pointer, field_name,opts.merge( :type => :date, :nil => empty_message)).html_safe +
+        '</div>').html_safe
+     
+  end
+  
+  
+  def editablecheckboxtag (field_name, field_pointer,field_title, opts = {})
+  
+    if field_pointer.blank? then
+      flash[:notice] = field_name + " not found !!"
+      return "ERROR"
+    end
+    if opts[:divclass].nil? then
+      divClass='class="cms-contentitem"'
+    else
+      divClass=opts[:divclass]
+    end rescue divClass='class="cms-contentitem"'
+    
+    check_action = opts[:check_action] || :update
+    check_value = opts[:check_value] || true
+    check_box_checked = opts[:check_box_checked] || (field_pointer[field_name] == check_value)
+    
+    
+   #  ('<div id="field_'+field_name.to_s + '"' + divClass + '> ' + (!field_title.blank? ?   '<div class="checkbox-title">' + field_title + ": </div>" : "") +
+   #     best_in_place(field_pointer, field_name, opts.merge(:type => :checkbox)).html_safe +
+   #    '</div>').html_safe
+      
+      ('<div id="field_'+field_name.to_s + '"' + divClass + '> ' + (!field_title.blank? ?   '<div class="checkbox-title">' + field_title + ": </div>" : "") +
+      
+  #      check_box_tag("#{field_name}", check_value, check_box_checked, {class: "ajax-check",
+        check_box_tag("#{field_name}", field_pointer, field_pointer[field_name], {data:{remote: true}, class: "ajax-check"}) + 
+    #        data: {
+       #       remote: true,
+       #       url: url_for( action: check_action, id: field_pointer.id)
+      #       }})
+      #   + 
+     
+     # check_box_tag( "#{field_name}", field_pointer.id, field_pointer[field_name], {
+     #   :onchange => "#{remote_function(:url  => {:action => "update_checkbox", :id=>field_pointer.id, :field=>field_name ,:pointer_class=>field_pointer.class},
+     #   :with => "'current_status='+checked")}"})+field_title
+       
+      '</div>').html_safe
+
+  end
+  
+  
+=======
   def editabledatefieldcreate(field_name,field_pointer, empty_message="Click me to add content!", opts = {})
 
     if field_pointer.blank? then
