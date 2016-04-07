@@ -126,7 +126,11 @@ form.form_in_place {
     -khtml-border-radius: 5px;
     border-radius: 5px;
     height: 16px;
-    padding-left:0px
+    padding-left:0px;
+    vertical-align: top;
+    display: inline-block;
+    margin-top: 0px;
+
 
 }
 

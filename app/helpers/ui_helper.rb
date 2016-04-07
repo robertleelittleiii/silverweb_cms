@@ -242,17 +242,17 @@ module UiHelper
       return "ERROR"
     end
     if opts[:divclass].nil? then
-      divClass='class="cms-contentitem"'
+      divClass='cms-contentitem'
     else
-      divClass=opts[:divclass]
-    end rescue divClass='class="cms-contentitem"'
+      divClass=opts[:divclass] + " cms-contentitem"
+    end rescue divClass='cms-contentitem'
 
     if (field_pointer[field_name].class == String and field_pointer[field_name].length > 85) or opts[:force_textarea] then
-      ('<div id="field_'+field_name.to_s + '"' + divClass + '>' +
+      ("<div id='field_#{field_name.to_s}' class='#{divClass}'>" +
           best_in_place(field_pointer, field_name, opts.merge(:type => :textarea, :nil => empty_message)).html_safe +
           '</div>').html_safe
     else 
-      ('<div id="field_'+field_name.to_s + '"' + divClass + '>' +
+      ("<div id='field_#{field_name.to_s}' class='#{divClass}'>" +
           best_in_place(field_pointer, field_name, opts.merge(:type => :input, :nil => empty_message)).html_safe +
           '</div>').html_safe
     end
@@ -265,23 +265,25 @@ module UiHelper
       return "ERROR"
     end
     if opts[:divclass].nil? then
-      divClass='class="cms-contentitem"'
+      divClass='cms-contentitem'
     else
       divClass=opts[:divclass]
-    end rescue divClass='class="cms-contentitem"'
+    end rescue divClass='cms-contentitem'
     
-    ('<div id="field_'+field_name.to_s + '"' + divClass + '>' +
+    ("<div id='field_#{field_name.to_s}' class='#{divClass}'>" +
         best_in_place(field_pointer, field_name,opts.merge( :type => :date, :nil => empty_message)).html_safe +
         '</div>').html_safe
      
   end
   
-  def editablecheckboxeditmulti (field_name, field_pointer ,field_title, html_options={})
+  def editablecheckboxeditmulti (field_name, field_pointer ,field_title, opts={})
 
     db_field_name= field_name.split("-").first
     is_selected = field_pointer[db_field_name].split(",").include?(field_title) rescue false  
+    divClass = (opts[:divclass].blank? ? "cms-contentitem ajax-check-multi" : opts[:divclass])
     
-    (check_box_tag("#{field_name}", field_title, is_selected, 
+    
+    ( "<div class='#{divClass}' >"  + check_box_tag("#{field_name}", field_title, is_selected, 
       data:{
         remote: true,
         method: "PUT",
@@ -295,13 +297,24 @@ module UiHelper
       }, 
       :class => "ajax-check-multi",
       checkbox_value: field_title
-    )+field_title).html_safe
+    )+field_title + "</div>").html_safe
       
     # check_box_tag( "#{field_name}",field_title, is_selected , html_options.merge!({
     #       :onchange => "#{remote_function(:url  => {:action => "update_checkbox_multi", :id=>field_pointer.id, :field=>db_field_name ,:pointer_class=>field_pointer.class, :checkbox_value=>field_title},
     #       :with => "'current_status='+checked")}"}))+field_title
 
   end
+  
+  
+#                 <b> Sample: editablecheckboxtag </b></br>
+#                <p>
+#                    <%= editablecheckboxtag("billing_type", @job,"testing", {:check_value => "testing"}) %>
+#                </p>
+#                <b> Sample: editablecheckboxeditmulti </b></br>
+#                <p>
+#                    <%= editablecheckboxeditmulti("document_list", @job,"testing") %>
+#                </p>
+
   
   def editablecheckboxtag (field_name, field_pointer,field_title, opts = {})
   
