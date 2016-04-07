@@ -377,6 +377,7 @@ BestInPlaceEditor.forms = {
                     .attr('style', 'display:inline'),
                     input_elt = jQuery(document.createElement('input'))
                     .attr('type', 'text')
+                    .attr('class', 'best_in_place_adj')
                     .attr('name', this.attributeName)
                     .attr('value', this.sanitizeValue(this.oldValue));
             if (this.inner_class !== null) {

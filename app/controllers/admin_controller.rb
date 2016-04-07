@@ -397,4 +397,19 @@ class AdminController < ApplicationController
     end  
   end
   
+  def clear_user_locks
+        user =  User.find_by_id(session[:user_id])
+
+        session[:current_action] = ""
+        session[:current_controller] = ""
+        session[:current_record_id] = 0
+              
+        user.user_live_edit.current_type = ""
+        user.user_live_edit.current_action = ""
+        user.user_live_edit.current_id = 0
+        user.user_live_edit.save  
+      
+        render :nothing=>true
+
+  end
 end
