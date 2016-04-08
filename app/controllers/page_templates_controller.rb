@@ -109,11 +109,6 @@ class PageTemplatesController < ApplicationController
     redirect_to(:controller=>:page_templates, :action=>:edit, :id=>@page_template)
   end
 
-  def template_list
-    @page_templates = PageTemplate.order(:title)
-    
-    @last_page_template = @page_templates.last
-  end
   
   def page_template_table
     @objects = current_objects(params)

@@ -204,6 +204,30 @@ class SiteController < ApplicationController
     end
   end
 
+  
+  #  these were moved to allow free (un authorized) access so that the TMC editor can be used 
+  #  freely without being limited to have access to creae pages.
+  
+  def custom
+      @page = Page.find(session[:current_page]) rescue ""
+    
+     respond_to do |format|
+      format.css 
+    end
+  end
+  
+  def link_list
+    @pages = Page.order(:title)
+    @pdfs = Picture.where("image like '%.pdf'") rescue []
+    @last_pdf = @pdfs.last rescue ""
+    @last_page = @pages.last
+  end
+  
+  def template_list
+    @page_templates = PageTemplate.order(:title)
+    
+    @last_page_template = @page_templates.last
+  end
 
   def show_page_popup
     session[:mainnav_status] = false

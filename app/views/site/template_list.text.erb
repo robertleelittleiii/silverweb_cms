@@ -1,0 +1,6 @@
+ [
+    // Name, URL
+        <% @page_templates.each do |template| %>
+        {title:"<%= template.title %>", url: "../page_templates/insert?id=<%= template.id %>", description: "<%= template.description%> "} <%= ((template == @last_page_template)) ? "" : ", " %>
+        <% end %>
+]
