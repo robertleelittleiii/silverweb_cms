@@ -1,4 +1,4 @@
- Rails.application.routes.draw do
+Rails.application.routes.draw do
   
   resources :admin do
     collection do
@@ -26,7 +26,10 @@
       get "render_partial"
       get "load_asset"
       post "session_active"
-   end 
+      get "custom"
+      get "link_list"
+      get "template_list"
+    end 
   end
   
   resource :pictures do
@@ -41,12 +44,12 @@
   
   resource :image_library do
     collection do
-    get "image_list"
-    post "image_list"
+      get "image_list"
+      post "image_list"
     end
   end
   
-    resources :page_templates do
+  resources :page_templates do
     collection do
       get "create_empty_record"
       get "template_list"
@@ -116,7 +119,7 @@
 
   resources :rights
 
-resources :users do
+  resources :users do
     collection do
       get "user_table"
       get "change_password" 
@@ -135,7 +138,6 @@ resources :users do
       get "get_sliders_list"
       get "page_table"
       get "delete_ajax"
-      get "custom"
       get "link_list"
       post "update_checkbox_tag"
     end
@@ -164,7 +166,7 @@ resources :users do
   match '/activate/:activation_code',          :controller => 'registration',     :action => 'activate', via: [:get]
   
   
- #  match ':page_name(.:format)', :controller => 'site', :action => 'show_page',  via: [:get]
+  #  match ':page_name(.:format)', :controller => 'site', :action => 'show_page',  via: [:get]
  
   # match ':controller(/:action(/:id(.:format)))'
 

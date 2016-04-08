@@ -74,17 +74,17 @@ module SilverwebCms
           end
           
           if ['edit', 'index'].include? action_name  then
-        session[:current_action] = action_name
-        session[:current_controller] = self.class.controller_path.classify
-        session[:current_record_id] = params[:id]
-        if user.user_live_edit.blank? then
-          user.user_live_edit = UserLiveEdit.new
-        end
-        user.user_live_edit.current_type = self.class.controller_path.classify
-        user.user_live_edit.current_action = action_name
-        user.user_live_edit.current_id = params[:id]
-        user.user_live_edit.save      
-      end
+            session[:current_action] = action_name
+            session[:current_controller] = self.class.controller_path.classify
+            session[:current_record_id] = params[:id]
+            if user.user_live_edit.blank? then
+              user.user_live_edit = UserLiveEdit.new
+            end
+            user.user_live_edit.current_type = self.class.controller_path.classify
+            user.user_live_edit.current_action = action_name
+            user.user_live_edit.current_id = params[:id]
+            user.user_live_edit.save      
+          end
           unless user.roles.detect{|role|
               role.rights.detect{|right|
                 ((right.action == action_name)|(right.action == "*")|(right.action.include? action_name)) && right.controller == self.class.controller_path
