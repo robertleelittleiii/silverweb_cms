@@ -8,13 +8,15 @@ class CreateSettingsTable < ActiveRecord::Migration
         t.string  :target_type, :limit => 30
         t.timestamps
       end
+   
+      add_index :settings, [ :target_type, :target_id, :var ], :unique => true
+
     end
 
-    add_index :settings, [ :target_type, :target_id, :var ], :unique => true
   end
 
   def self.down
-    if ActiveRecord::Base.connection.table_exists? 'sessions' then
+    if ActiveRecord::Base.connection.table_exists? 'settings' then
 
       drop_table :settings
     end
