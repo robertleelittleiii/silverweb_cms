@@ -494,10 +494,10 @@ module UiHelper
       icon_list = args.second || {}
     
       grid_div_class = html_options[:grid_div_class].blank? ? "" : ("class='" + html_options[:grid_div_class]+"'")
-      grid_div_id = html_options[:grid_div_id].blank? ? "" : ("id=" + html_options[:grid_div_id]+"'")
+      grid_div_id = html_options[:grid_div_id].blank? ? "" : ("id='" + html_options[:grid_div_id]+"'")
   
-      grid_ul_class = html_options[:grid_ul_class].blank? ? "" : ("class=" + html_options[:grid_ul_class]+"'")
-      grid_ul_id = html_options[:grid_ul_id].blank? ? "" : ("id=" + html_options[:grid_ul_id]+"'")
+      grid_ul_class = html_options[:grid_ul_class].blank? ? "" : ("class='" + html_options[:grid_ul_class]+"'")
+      grid_ul_id = html_options[:grid_ul_id].blank? ? "" : ("id='" + html_options[:grid_ul_id]+"'")
    
       grid_li_class = html_options[:grid_li_class].blank? ? "" : (html_options[:grid_li_class])
    
