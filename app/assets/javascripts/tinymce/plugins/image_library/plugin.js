@@ -7,6 +7,7 @@ tinymce.PluginManager.add('image_library', function(editor, url) {
         tooltip: 'Insert/add image from library',
         onclick: function() {
             // Open window
+            
             editor.windowManager.open({
                 title: 'Image Libary',
                 url: '/image_library/image_list?as_window=true',

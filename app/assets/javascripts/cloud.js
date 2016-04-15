@@ -400,6 +400,8 @@ function userLoggedIn() {
 function check_login_status() {
     check_login_status = $("#check_login_status").text();
 
+    check_login_status = check_login_status == "" ? "10000" : check_login_status;
+
     if (typeof interval != "number") {
         interval = setInterval(function () {
             userLoggedIn();
@@ -588,50 +590,52 @@ function updateFooterDiv()
 ;
 resultData = ""
 function updateAppDiv() {
-
-    $.ajax({
-        url: "/site/render_partial",
-        dataType: "html",
-        cache: false,
-        type: "GET",
-        data: "partial_name=/cms_interface/grid_tab_nav.html",
-        success: function (data)
-        {
-            resultData = data;
-            //alert(data);
-            if (data === undefined || data === null || data === "")
+    // check and make sure that we are not using the CMS_dialog!
+    if ($("div#layout-name").text() != "cms_dialog") {
+        $.ajax({
+            url: "/site/render_partial",
+            dataType: "html",
+            cache: false,
+            type: "GET",
+            data: "partial_name=/cms_interface/grid_tab_nav.html",
+            success: function (data)
             {
-                //display warning
-            }
-            else
-            {
-                if ($("#nav-grid-links").length === 0) {
-                    var gridContainer = "<div style='display:none' id='nav-grid-links'></div>";
-                    $("body").prepend($(gridContainer));
-                }
-
-                $("#nav-grid-links").html(data);
-                $(".grid_tabnav ul li").removeClass("hidden");
-                // $("#grid-nav").fadeIn();
-                if (window.matchMedia("only screen and (max-width: 524px)").matches)
+                resultData = data;
+                //alert(data);
+                if (data === undefined || data === null || data === "")
                 {
-                    $("#nav-grid-links").fadeIn();
-                    $("#grid-nav").css("top", "0px");
+                    //display warning
                 }
                 else
                 {
-                    $("#nav-grid-links").fadeIn();
-                    $("#grid-nav").css("top", "0px");
+
+                    if ($("#nav-grid-links").length === 0) {
+                        var gridContainer = "<div style='display:none' id='nav-grid-links'></div>";
+                        $("body").prepend($(gridContainer));
+                    }
+
+                    $("#nav-grid-links").html(data);
+                    $(".grid_tabnav ul li").removeClass("hidden");
+                    // $("#grid-nav").fadeIn();
+                    if (window.matchMedia("only screen and (max-width: 524px)").matches)
+                    {
+                        $("#nav-grid-links").fadeIn();
+                        $("#grid-nav").css("top", "0px");
+                    }
+                    else
+                    {
+                        $("#nav-grid-links").fadeIn();
+                        $("#grid-nav").css("top", "0px");
+
+                    }
+
+                    bindAppClick();
+                    bindCloseGrid();
 
                 }
-
-                bindAppClick();
-                bindCloseGrid();
-
             }
-        }
-    });
-
+        });
+    }
 }
 
 function bindCloseGrid() {
@@ -778,7 +782,7 @@ function bindAppClick() {
             else
             {
                 //   alert("this is a dialog!")
-                 //var thisDialog = createEditDialog(data);
+                //var thisDialog = createEditDialog(data);
                 var thisDialog = createAppDialog(data, "app-dialog", {
                     completion: function completionCallback() {
                         $("div#nav-grid-links").fadeIn();

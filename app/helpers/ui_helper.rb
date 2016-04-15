@@ -343,7 +343,7 @@ module UiHelper
       checkbox_value: field_title,
       "data-path"=>url_for(field_pointer).to_s ,
       "data-id"=>field_pointer.id,
-      "data-class"=>field_pointer.class.name.downcase,
+      "data-class"=>field_pointer.class.name.underscore,
       "data-action"=>check_action,
       "data-check-type"=> (opts[:check_value].blank? ? "boolean" : "string")
     )+field_title).html_safe
@@ -462,6 +462,7 @@ module UiHelper
       puts(" - - - - - - - - - -  - - - - - - - - - - -  -  - - - ")
       puts(field_name, field_object, field_pointer.class, value_list.inspect)
       puts("Settings.send(field_name): '#{Settings.send(field_name)}'")
+      puts("field_pointer[field_name]: '#{field_pointer[field_name]}'")
       if (field_object == "settings") then
         found_item = value_list.index{|a| a[1]== Settings.send(field_name) }
         puts("found_item: '#{found_item}'")
@@ -481,7 +482,7 @@ module UiHelper
         html_options[:class] = html_options[:class] + " ui-ajax-select" rescue "ui-ajax-select"
       
         # html_options==nil ? html_options={:class=>"ui-ajax-select", "data-path"=>url_for(field_pointer).to_s ,"data-id"=>field_pointer.id} : ""
-        select(field_object,"#{field_name}", value_list,{ :prompt => prompt}, html_options )
+        select(field_object, field_name, options_for_select(value_list, field_pointer[field_name]),{ :prompt => prompt}, html_options )
       end
     
 

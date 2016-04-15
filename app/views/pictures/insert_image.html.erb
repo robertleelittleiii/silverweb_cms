@@ -31,7 +31,7 @@
         <div class="cms-content">
             <p>
                 <b>Select Size to Insert:</b><br>
-                <%=select_tag("Image Size",options_for_select(@image_class_list)   , {id: "image-size", prompt: "Choose Size..."})%><br><br>
+                <%=select_tag("Image Size",options_for_select(@image_class_list)   , {id: "image-size"})%><br><br>
             </p>
 
             <%#=button_tag "Insert", id: "insert-button", data: { disable_with: "Please wait..." } %>
