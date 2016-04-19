@@ -1,0 +1,12 @@
+<div class="hidden-item" id="right-id"><%=@right.id%></div>
+<div class="hidden-item">
+  <div id="as_window"><%=params[:as_window]%></div>
+  <div id="dialog-height">850</div>
+  <div id="dialog-width">500</div>
+  <div id="dialog-name">Update Actions for <%=h @right.name %></div>
+</div>
+
+<b>Actions:</b><br>
+
+   <%=create_group_checkbox_live("action", @right, @action_list,{:class=>"action-item"}) %>
+

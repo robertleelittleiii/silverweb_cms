@@ -192,8 +192,8 @@ class PagesController < ApplicationController
   private
 
   def current_objects(params={})
-    current_page = (params[:iDisplayStart].to_i/params[:iDisplayLength].to_i rescue 0)+1
-    @current_objects = Page.page(current_page).per(params[:iDisplayLength]).order("#{datatable_columns(params[:iSortCol_0])} #{params[:sSortDir_0] || "DESC"}").where(conditions(params))
+    current_page = (params[:start].to_i/params[:length].to_i rescue 0)+1
+    @current_objects = Page.page(current_page).per(params[:length]).order("#{datatable_columns(params[:order]["0"][:column])} #{params[:order]["0"][:dir]  || "DESC"}").where(conditions(params))
   end
   
 
@@ -218,9 +218,9 @@ class PagesController < ApplicationController
     
     conditions = []
    
-    conditions << "(pages.id LIKE '%#{params[:sSearch]}%' OR
-       pages.title LIKE '%#{params[:sSearch]}%' OR 
-       pages.body LIKE '%#{params[:sSearch]}%')" if(params[:sSearch])
+    conditions << "(pages.id LIKE '%#{params[:search][:value]}%' OR
+       pages.title LIKE '%#{params[:search][:value]}%' OR 
+       pages.body LIKE '%#{params[:search][:value]}%')" if(params[:search][:value])
     return conditions.join(" AND ")
     
     

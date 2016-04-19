@@ -1,27 +1,22 @@
 
 var pageTableAjax = "";
 var pages_index_callDocumentReady_called = false;
-
 $(document).ready(function () {
     if (!pages_index_callDocumentReady_called)
     {
         pages_index_callDocumentReady_called = true;
         if ($("#as_window").text() == "true")
         {
-            //  alert("it is a window");
-        }
-        else
+//  alert("it is a window");
+        } else
         {
             pages_index_callDocumentReady();
         }
     }
 });
-
-
 function pages_index_callDocumentReady() {
     requireCss("tables.css");
     require("pages/shared.js");
-
     if ($('#mainnav:visible').length != 0)
     {
         $("div#page-middle-left").hide();
@@ -34,15 +29,12 @@ function pages_index_callDocumentReady() {
 
     // reatePageDialog();
     //    $("body").css("cursor", "progress");[
-    //    pageTableOld=$('#page-table-old').dataTable({
+    //    pageTableOld=$('#page-table-old').DataTable({
     //        "aLengthMenu": [[-1, 10, 25, 50], ["All", 10, 25, 50]]
     //    });
     $("body").css("cursor", "progress");
-
     createPageTable();
-
     $("body").css("cursor", "default");
-
     //
     //    $('#page-table .page-row').bind('click', function(){
     //        $(this).addClass('row_selected');
@@ -55,7 +47,7 @@ function pages_index_callDocumentReady() {
     //        theTarget=this.parentNode.parentNode;
     //        var aPos = pageTableAjax.fnGetPosition( theTarget );
     //        pageTableAjax.fnDeleteRow(aPos);
-    //        pageTableAjax.fnDraw();
+    //        pageTableAjax.draw();
     //        $("body").css("cursor", "default");[]
     //    });
 
@@ -68,7 +60,6 @@ function pages_index_callDocumentReady() {
     $(".edit_page").bind('ajax:success', function (xhr, data, status) {
         $('#edit-password-dialog').dialog('close');
     });
-
 //    $('a#new-page').unbind().bind('ajax:beforeSend', function (e, xhr, settings) {
 //        xhr.setRequestHeader('accept', '*/*;q=0.5, text/html, ' + settings.accepts.html);
 //        $("body").css("cursor", "progress");
@@ -76,7 +67,7 @@ function pages_index_callDocumentReady() {
 //
 //    $('a#new-page').bind('ajax:success', function (xhr, data, status) {
 //        $("body").css("cursor", "default");
-//        pageTableAjax.fnDraw();
+//        pageTableAjax.draw();
 //        setUpPurrNotifier("Notice", "New Page Created!'");
 //    });
 
@@ -84,9 +75,7 @@ function pages_index_callDocumentReady() {
     // createPasswordDialog();
     // createPageDialog();
     bindNewPage();
-    
     $("a.button-link").button();
-
 }
 
 
@@ -96,16 +85,13 @@ function deletePage(page_id)
     var answer = confirm('Are you sure you want to delete this?')
     if (answer) {
         $.ajax({
-            url: '/pages/delete_ajax?id='+ page_id,
-            
+            url: '/pages/delete_ajax?id=' + page_id,
             success: function (data)
             {
                 setUpPurrNotifier("Notice", "Item Successfully Deleted.");
-                pageTableAjax.fnDraw();
-
+                pageTableAjax.draw();
             }
         });
-
     }
 }
 
@@ -139,23 +125,21 @@ function createPageDialog() {
 
                 {
                     $(this).dialog("close");
-
                     $.ajax({
                         url: '/pages/delete_ajax?id=' + page_id,
                         success: function (data)
                         {
-                            pageTableAjax.fnDraw();
+                            pageTableAjax.draw();
                         }
                     });
-                }
-                else
+                } else
                 {
 
                 }
             },
             "Ok": function () {
                 $(this).dialog("close");
-                pageTableAjax.fnDraw();
+                pageTableAjax.draw();
             }
         }
 
@@ -166,51 +150,85 @@ function createPageDialog() {
 
 function createPageTable() {
     console.log("create table");
-    pageTableAjax = $('#page-table').dataTable({
-        "iDisplayLength": 25,
-        "aLengthMenu": [[25, 50, 100], [25, 50, 100]],
-        "bStateSave": true,
-        "fnStateSave": function (oSettings, oData) {
-            localStorage.setItem('DataTables_pages_' + window.location.pathname, JSON.stringify(oData));
+    pageTableAjax = $('#page-table').DataTable({
+        pageLength: 25,
+        lengthMenu: [[25, 50, 100], [25, 50, 100]],
+        stateSave: true,
+        stateSaveCallback: function (settings, data) {
+            localStorage.setItem('DataTables_pages_' + window.location.pathname, JSON.stringify(data));
         },
-        "fnStateLoad": function (oSettings) {
+        stateLoadCallback: function (settings) {
             return JSON.parse(localStorage.getItem('DataTables_pages_' + window.location.pathname));
         },
-        "bProcessing": true,
-        "bServerSide": true,
-        "aaSorting": [[1, "asc"]],
-        "sAjaxSource": "/pages/page_table",
-        "fnRowCallback": function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
-            $(nRow).addClass('page-row');
-            $(nRow).addClass('gradeA');
-            return nRow;
+        processing: true,
+        order: [[0, "asc"]],
+        serverSide: true,
+        searchDelay: 500,
+        ajax: {
+            url: "/pages/page_table",
+            type: "post"
         },
-        "fnInitComplete": function () {
+        rowCallback: function (row, data, index) {
+            $(row).addClass('page-row');
+            $(row).addClass('gradeA');
+            //return row;
+        },
+        initComplete: function () {
             // $(".best_in_place").best_in_place(); 
 
         },
-        "fnDrawCallback": function () {
+        drawCallback: function (settings) {
             $(".best_in_place").best_in_place();
             //pageeditClickBinding(".edit-page-item");
             pageeditClickBinding("tr.page-row");
             bindDeletePage();
+            $("td.dataTables_empty").attr("colspan", "20")
+
         }
+
+//"iDisplayLength": 25,
+//        "aLengthMenu": [[25, 50, 100], [25, 50, 100]],
+//        "bStateSave": true,
+//        "fnStateSave": function (oSettings, oData) {
+//        localStorage.setItem('DataTables_pages_' + window.location.pathname, JSON.stringify(oData));
+//        },
+//        "fnStateLoad": function (oSettings) {
+//        return JSON.parse(localStorage.getItem('DataTables_pages_' + window.location.pathname));
+//        },
+//        "bProcessing": true,
+//        "bServerSide": true,
+//        "aaSorting": [[1, "asc"]],
+//        "sAjaxSource": "/pages/page_table",
+//        "fnRowCallback": function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+//        $(nRow).addClass('page-row');
+//                $(nRow).addClass('gradeA');
+//                return nRow;
+//        },
+//        "fnInitComplete": function () {
+//        // $(".best_in_place").best_in_place(); 
+//
+//        },
+//        "drawCallback": function () {
+//        $(".best_in_place").best_in_place();
+//                //pageeditClickBinding(".edit-page-item");
+//                pageeditClickBinding("tr.page-row");
+//                bindDeletePage();
+//        }
     });
 }
 
 function bindNewPage() {
-    
-   $('a#new-page').unbind().bind('ajax:beforeSend', function (e, xhr, settings) {
+
+    $('a#new-page').unbind().bind('ajax:beforeSend', function (e, xhr, settings) {
         xhr.setRequestHeader('accept', '*/*;q=0.5, text/html, ' + settings.accepts.html);
         $("body").css("cursor", "progress");
     }).bind('ajax:success', function (xhr, data, status) {
         $("body").css("cursor", "default");
-        pageTableAjax.fnDraw();
+        pageTableAjax.draw();
         setUpPurrNotifier("Notice", "New Page Created!'");
     }).bind('ajax:error', function (evt, xhr, status, error) {
-                setUpPurrNotifier("Error", "Page Creation Failed!'");
-    }); 
-
+        setUpPurrNotifier("Error", "Page Creation Failed!'");
+    });
 //    $('a#new-page').bind('ajax:beforeSend', function (evt, xhr, settings) {
 //        // alert("ajax:before");  
 //        console.log('ajax:before');
@@ -262,7 +280,7 @@ function bindNewPage() {
 function bindDeletePage() {
     $(".delete-page-item").on("click", function (e) {
 
-        // console.log($(this).parent().parent().parent().find('#page-id').text());
+// console.log($(this).parent().parent().parent().find('#page-id').text());
         var page_id = $(this).parent().parent().parent().find('#page-id').text();
         deletePage(page_id);
         return false;
@@ -334,9 +352,8 @@ function bindDeletePage() {
 
 function edit_page_dialog(data) {
 
-    // alert("ajax:success");
+// alert("ajax:success");
     page_edit_dialog = createAppDialog(data, "edit-page", {}, "");
-
     //initialize_save_button();
     //$('.datepicker').datepicker();
     //tiny_mce_initializer();
@@ -371,7 +388,7 @@ function edit_page_dialog(data) {
 
 }
 
-$(document).off('focusin').on('focusin', function(e) {
+$(document).off('focusin').on('focusin', function (e) {
     if ($(event.target).closest(".mce-window").length) {
         e.stopImmediatePropagation();
     }

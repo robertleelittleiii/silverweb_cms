@@ -54,7 +54,7 @@ Rails.application.routes.draw do
       get "create_empty_record"
       get "template_list"
       get "index"
-      get "page_template_table"
+      post "page_template_table"
       get "insert"
     end
   end
@@ -109,7 +109,7 @@ Rails.application.routes.draw do
 
   resources :roles do
     collection do
-      get "role_table"
+      post "role_table"
       get "change_password" 
       get "update_rights"
       get "create_empty_record"
@@ -117,11 +117,18 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :rights
+  resources :rights do
+    collection do
+      post "right_table"
+      get "delete_ajax"
+      get "create_empty_record"
+      get "update_actions"
+    end
+  end
 
   resources :users do
     collection do
-      get "user_table"
+      post "user_table"
       get "change_password" 
       get "update_roles"
       get "create_empty_record"
@@ -136,7 +143,7 @@ Rails.application.routes.draw do
     collection do
       get "create_empty_record"
       get "get_sliders_list"
-      get "page_table"
+      post "page_table"
       get "delete_ajax"
       get "link_list"
       post "update_checkbox_tag"

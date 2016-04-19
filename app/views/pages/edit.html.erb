@@ -162,13 +162,13 @@
     <div id="preview-tab">
         <div class="cms-content">
             <div class="display-area">
-                <div style="display:inline-block; width:600px">
+                <div style="display:inline-block; width:600px; height:400px">
                     <b>Full Screen:</b><br>
-                    <iframe class="preview" src="<%= (not @page.menu.blank?)? @page.page_url :  url_for(:controller=> :site, :action=>:show_page, :id=>@page, :only_path=>true)%>" align="left" width="1024" height="800"></iframe>
+                    <iframe class="preview" src="<%= (not @page.menu.blank?)? @page.page_url :  url_for(:controller=> :site, :action=>:show_page, :id=>@page, :only_path=>true)%>" align="left" width="1024" height="800" style="width:1024px !important; height:800px !important"></iframe>
                 </div>
-                <div style="display:inline-block; width:200px">
+                <div style="display:inline-block; width:200px; height:400px">
                     <b>Mobile:</b><br>
-                    <iframe class="preview" src="<%= (not @page.menu.blank?)? @page.page_url :  url_for(:controller=> :site, :action=>:show_page, :id=>@page, :only_path=>true)%>" align="left" width="400" height="800"></iframe>
+                    <iframe class="preview" src="<%= (not @page.menu.blank?)? @page.page_url :  url_for(:controller=> :site, :action=>:show_page, :id=>@page, :only_path=>true)%>" align="left" width="400" height="800" style="width:400px !important; height:800px !important" ></iframe>
                 </div>
             </div>
         </div>

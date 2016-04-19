@@ -27,7 +27,7 @@ function pageeditClickBinding(selector) {
                 page_edit_dialog.dialog({
                     close: function (event, ui) {
                         if ($("table#page-table").length > 0)
-                            pageTableAjax.fnDraw();
+                            pageTableAjax.draw();
                         
                         if ($("div#edit-page").length > 0)
                         {

@@ -1,26 +1,56 @@
-<div class="cms-block">
-<h1>Listing Rights</h1>
-
-<table>
-  <tr>
-    <th>Name</th>
-  </tr>
-
-<% for right in @rights %>
-  <tr>
-    <td><%=h right.name %></td>
-    <td><%=h right.controller %></td>
-    <td><%=h right.action %></td>
-    
-    <td><%= link_to 'Show', right %></td>
-    <td><%= link_to 'Edit', edit_right_path(right) %></td>
-    <td><%= link_to 'Destroy', right, :confirm => 'Are you sure?',
-                                        :method => :delete %></td>
-  </tr>
-<% end %>
-</table>
-
-<br />
-
-<%= link_to 'New right', new_right_path%>
+<%#
+# To change this template, choose Tools | Templates
+# and open the template in the editor.
+%>
+<div class="hidden-item">
+    <div id="as_window"><%=params[:request_type]=="window"%></div>
+    <div id="dialog-height">546</div>
+    <div id="dialog-width">850</div>
+    <div id="dialog-name">Rights</div>
 </div>
+
+<div class="m-block">
+    <div align="center">
+        <!-- START:flash -->
+        <% if flash[:notice] -%>
+          <div id="notice"><%= flash[:notice] %></div>
+        <% end -%>
+        <!-- END:flash -->
+    </div>
+
+    <div id="right-list">
+        <%if not params[:request_type]=="window" then%>
+          <h1  class="cms-header">Rights <%=image_tag "ajax-loader2.gif", :id=>"loader_progress" ,:style=>"display:none"%></h1>
+        <%  else %>
+          <%=image_tag "ajax-loader2.gif", :id=>"loader_progress" ,:style=>"display:none"%>
+        <% end %> <br>
+        <div id="right-actions">
+            <%= link_to('New Right',{ :action=>:create_empty_record, :controller=>:rights, :format=>"json", :typeofrecord=>"right", :request_type=>"window"}, :id=>"new-right",:class=>"button-link", :remote => true  )%>
+        </div>
+
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" class="display" id="right-table">
+            <thead>
+                <tr>
+                    <th >ID</th>
+                    <th width="400" >Name</th>
+                    <th width="200">Controller</th>
+                    <th width="500" style="max-width: 500px;">Actions</th>
+                    <th width="100" style="text-align: center;">- - -</th>
+                </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th>ID</th>
+                     <th width="400" >Name</th>
+                    <th width="200">Controller</th>
+                    <th width="500" style="max-width: 500px;">Actions</th>
+                    <th width="100" style="text-align: center;">- - -</th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+

@@ -123,8 +123,8 @@ class PageTemplatesController < ApplicationController
   
   private
   def current_objects(params={})
-    current_page = (params[:iDisplayStart].to_i/params[:iDisplayLength].to_i rescue 0)+1
-    @current_objects = PageTemplate.page(current_page).per(params[:iDisplayLength]).order("#{datatable_columns(params[:iSortCol_0])} #{params[:sSortDir_0] || "DESC"}").where(conditions(params))
+    current_page = (params[:start].to_i/params[:length].to_i rescue 0)+1
+    @current_objects = PageTemplate.page(current_page).per(params[:length]).order("#{datatable_columns(params[:order]["0"][:column])} #{params[:order]["0"][:dir]  || "DESC"}").where(conditions(params))
   end
   
 
@@ -149,9 +149,9 @@ class PageTemplatesController < ApplicationController
     
     conditions = []
    
-    conditions << "(page_templates.id LIKE '%#{params[:sSearch]}%' OR
-       page_templates.title LIKE '%#{params[:sSearch]}%' OR 
-       page_templates.body LIKE '%#{params[:sSearch]}%')" if(params[:sSearch])
+    conditions << "(page_templates.id LIKE '%#{params[:search][:value]}%' OR
+       page_templates.title LIKE '%#{params[:search][:value]}%' OR 
+       page_templates.body LIKE '%#{params[:search][:value]}%')" if(params[:search][:value])
     return conditions.join(" AND ")
     
     

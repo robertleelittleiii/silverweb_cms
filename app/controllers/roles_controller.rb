@@ -1,78 +1,78 @@
 class RolesController < ApplicationController
 
   def index
-   @roles = Role.all.order(:name)
+    @roles = Role.all.order(:name)
 
-  respond_to do |format|
+    respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @roles }
+    end
   end
-end
   def edit
     @role = Role.find(params[:id])
 
-      respond_to do |format|
+    respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @role }
-      end
+    end
   end
 
   def new
     @role = Role.new
 
-     respond_to do |format|
+    respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @role }
-     end
+    end
   end
 
   def view
-        @role = Role.find(params[:id], :include => :rights)
-        @rights = Right.all.order(:name)
+    @role = Role.find(params[:id], :include => :rights)
+    @rights = Right.all.order(:name)
 
-      respond_to do |format|
+    respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @role }
-       end
+    end
   end
 
-#  def update_rights
-#    @role = Role.find(params[:id], :include => :rights)
-#    @rights = Right.find(:all, :order => :name)
-#
-#    respond_to do |format|
-#      format.html # index.html.erb
-#      format.xml  { render :xml => @role }
-#    end
-#  end
+  #  def update_rights
+  #    @role = Role.find(params[:id], :include => :rights)
+  #    @rights = Right.find(:all, :order => :name)
+  #
+  #    respond_to do |format|
+  #      format.html # index.html.erb
+  #      format.xml  { render :xml => @role }
+  #    end
+  #  end
   
   
-def record
-  @role = Role.find(params[:id])
-  @role.rights.create(params[:right])
-  redirect_to :action => 'view', :id => params[:id]
-end
+  def record
+    @role = Role.find(params[:id])
+    @role.rights.create(params[:right])
+    redirect_to :action => 'view', :id => params[:id]
+  end
 
-def record2
+  def record2
 		@role = Role.find(params[:id])
 		@rights = (Right.find(params[:role][:right_ids]) if params[:role][:right_ids])
 		@role.rights = (@rights || [])
 		if @role.save
       flash[:notice] = "Roles rights were successfully updated."
-  redirect_to :action => 'view', :id => params[:id]
+      redirect_to :action => 'view', :id => params[:id]
 		else
       flash[:error] = 'There was a problem updating the roles for this user.'
-  redirect_to :action => 'view', :id => params[:id]
+      redirect_to :action => 'view', :id => params[:id]
 		end
 	end
 
   def show
-        @role = Role.find(params[:id])
+    @role = Role.find(params[:id])
 
-      respond_to do |format|
+    respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @role }
-       end
+    end
   end
 
   def create
@@ -83,11 +83,11 @@ def record2
         flash[:notice] = "role #{@role.name} was successfully created."
         format.html { redirect_to(:action=>'index') }
         format.xml  { render :xml => @role, :status => :created,
-                             :location => @role }
+          :location => @role }
       else
         format.html { render :action => "new" }
         format.xml  { render :xml => @role.errors,
-                             :status => :unprocessable_entity }
+          :status => :unprocessable_entity }
       end
     end
   end
@@ -97,31 +97,30 @@ def record2
 
     respond_to do |format|
       if @role.update_attributes(role_params)
-        flash[:notice] = "role #{@role.name} was successfully updated."
-        format.html { redirect_to(:action=>'index') }
-        format.xml  { head :ok }
+        format.html { redirect_to(action: "edit", notice: "Role #{@role.name} was successfully updated.") }
+        format.json { render :json=> {:notice => "Right #{@role.name} was successfully updated."} }
       else
         format.html { render :action => "edit" }
         format.xml  { render :xml => @role.errors,
-                             :status => :unprocessable_entity }
+          :status => :unprocessable_entity }
       end
     end
   end
 
- def destroy
-  @role = Role.find(params[:id])
-  begin
-    @role.destroy
+  def destroy
+    @role = Role.find(params[:id])
+    begin
+      @role.destroy
       flash[:notice] = "role #{role.name} deleted"
-  rescue Exception => e
-    flash[:notice] = e.message
-  end
-  respond_to do |format|
-    format.html { redirect_to(roles_url) }
-    format.xml { head :ok }
-  end
+    rescue Exception => e
+      flash[:notice] = e.message
+    end
+    respond_to do |format|
+      format.html { redirect_to(roles_url) }
+      format.xml { head :ok }
+    end
 
-end
+  end
 
   def update_rights
     @role = Role.find(params[:id])
@@ -138,7 +137,7 @@ end
       else
         puts("Remove from list")
         @role.rights.delete(@right)
-end
+      end
       @role.save
       
     end
@@ -155,7 +154,7 @@ end
     @role.name = "Role_" + Time.now.to_i.to_s
     @role.save
     
-     respond_to do |format|
+    respond_to do |format|
       format.html {redirect_to(:controller=>:roles, :action=>:edit, :id=>@role.id)}
       format.json { render :json=>@role }
     end
@@ -178,8 +177,8 @@ end
   private
 
   def current_objects(params={})
-    current_page = (params[:iDisplayStart].to_i/params[:iDisplayLength].to_i rescue 0)+1
-    @current_objects = Role.page(current_page).per(params[:iDisplayLength]) .order("#{datatable_columns(params[:iSortCol_0])} #{params[:sSortDir_0] || "DESC"}").where(conditions)
+    current_page = (params[:start].to_i/params[:length].to_i rescue 0)+1
+    @current_objects = Role.page(current_page).per(params[:length]) .order("#{datatable_columns(params[:order]["0"][:column])} #{params[:order]["0"][:dir]  || "DESC"}").where(conditions)
       
   end
   
@@ -200,12 +199,12 @@ end
 
   def conditions
     conditions = []
-    conditions << "(roles.name LIKE '%#{params[:sSearch]}%')" if(params[:sSearch])
+    conditions << "(roles.name LIKE '%#{params[:search][:value]}%')" if(params[:search][:value])
     return conditions.join(" AND ")
   end
  
   
-    private
+  private
 
   
   def role_params

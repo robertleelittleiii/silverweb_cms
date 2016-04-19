@@ -101,19 +101,19 @@ tr.page-row {
 }
 
 iframe.preview{
-  -moz-transform: scale(0.5, 0.5); 
-  -webkit-transform: scale(0.5, 0.5); 
-  -o-transform: scale(0.5, 0.5);
-  -ms-transform: scale(0.5, 0.5);
-  transform: scale(0.5, 0.5); 
-  -moz-transform-origin: top left;
-  -webkit-transform-origin: top left;
-  -o-transform-origin: top left;
-  -ms-transform-origin: top left;
-  transform-origin: top left;
-  margin-bottom:-300px;
-  display:inline-block;
-  position:relitive;
+  -moz-transform: scale(0.5, 0.5) !important; 
+  -webkit-transform: scale(0.5, 0.5) !importants; 
+  -o-transform: scale(0.5, 0.5) !important;
+  -ms-transform: scale(0.5, 0.5) !important;
+  transform: scale(0.5, 0.5) !important; 
+  -moz-transform-origin: top left !important;
+  -webkit-transform-origin: top left !important;
+  -o-transform-origin: top left !important;
+  -ms-transform-origin: top left !important;
+  transform-origin: top left !important;
+  margin-bottom:-300px !important;
+  display:inline-block !important;
+  position:relitive !important;
 
 }
 

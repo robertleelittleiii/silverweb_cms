@@ -263,12 +263,12 @@ end
   private
 
   def current_objects(params={})
-    current_page = (params[:iDisplayStart].to_i/params[:iDisplayLength].to_i rescue 0)+1
-    role_ids = User.select('users.id').joins(:roles).where("roles.name like '%#{params[:sSearch]}%'").collect(&:id)
-    user_attributes_ids = User.select('users.id').joins(:user_attribute).where("user_attributes.last_name like '%#{params[:sSearch]}%' or user_attributes.first_name like '%#{params[:sSearch]}%'").collect(&:id)
+    current_page = (params[:start].to_i/params[:length].to_i rescue 0)+1
+    role_ids = User.select('users.id').joins(:roles).where("roles.name like '%#{params[:search][:value]}%'").collect(&:id)
+    user_attributes_ids = User.select('users.id').joins(:user_attribute).where("user_attributes.last_name like '%#{params[:search][:value]}%' or user_attributes.first_name like '%#{params[:search][:value]}%'").collect(&:id)
     all_ids = User.select('u.id').from("users u").where(conditions).collect(&:id)
     
-    @current_objects = User.page(current_page).per( params[:iDisplayLength]).where(:id => (role_ids + all_ids + user_attributes_ids)).includes(:user_attribute).order("#{datatable_columns(params[:iSortCol_0])} #{params[:sSortDir_0] || "DESC"}") 
+    @current_objects = User.page(current_page).per( params[:length]).where(:id => (role_ids + all_ids + user_attributes_ids)).includes(:user_attribute).order("#{datatable_columns(params[:order]["0"][:column])} #{params[:order]["0"][:dir]  || "DESC"}") 
     
   end
 
@@ -292,7 +292,7 @@ end
 
   def conditions
     conditions = []
-    conditions << "(u.name LIKE '%#{params[:sSearch]}%')" if(params[:sSearch])
+    conditions << "(u.name LIKE '%#{params[:search][:value]}%')" if(params[:search][:value])
     return conditions.join(" AND ")
   end
 
