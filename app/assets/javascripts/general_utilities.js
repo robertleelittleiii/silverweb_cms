@@ -5,7 +5,9 @@
 
 function getRailsTimeStamp()
 {
-    return $("script").attr("src").split('?')[1]
+    // return $("script").attr("src").split('?')[1]
+    
+    return $("script").first().attr("src").split('-')[1].split(".")[0]
 }
 // 
 // CSS 3D Utitlities
