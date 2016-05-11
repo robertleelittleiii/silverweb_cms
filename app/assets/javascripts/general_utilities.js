@@ -7,7 +7,8 @@ function getRailsTimeStamp()
 {
     // return $("script").attr("src").split('?')[1]
     
-    return $("script").first().attr("src").split('-')[1].split(".")[0]
+    // return $("script").first().attr("src").split('-')[1].split(".")[0]
+   
 }
 // 
 // CSS 3D Utitlities
@@ -114,7 +115,7 @@ function sz(t) {
 //
 function require(script) {
     var theUrl = "/assets/" + script;
-    var theTimeStamp = getRailsTimeStamp();
+   // var theTimeStamp = getRailsTimeStamp();
 
     // $("script[src='/javascripts/ie_fixes.js?1361329086']")
 
@@ -153,7 +154,7 @@ function require(script) {
 //
 //
 function requireCss(cssFile) {
-    var theTimeStamp = getRailsTimeStamp();
+  // var theTimeStamp = getRailsTimeStamp();
     // if (cssFile.charAt(0) == "/") {
     var href = "/assets/" + cssFile
     if (!$("link[href^='" + href + "']").length) {
