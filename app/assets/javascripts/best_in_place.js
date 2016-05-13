@@ -47,7 +47,6 @@ function autoGrowInput(o, inputField) {
         minWidth: 5,
         comfortZone: 2
     }, o);
-
     jQuery(inputField).filter('input:text').each(function () {
 
         var minWidth = o.minWidth || jQuery(inputField).width(),
@@ -73,49 +72,45 @@ function autoGrowInput(o, inputField) {
                     // Enter new content into testSubject
                     var escaped = val.replace(/&/g, '&amp;').replace(/\s/g, ' ').replace(/</g, '&lt;').replace(/>/g, '&gt;');
                     testSubject.html(escaped);
-
                     // Calculate new width + whether to change
                     var testerWidth = testSubject.width(),
                             newWidth = (testerWidth + o.comfortZone) >= minWidth ? testerWidth + o.comfortZone : minWidth,
                             currentWidth = input.width(),
                             isValidWidthChange = (newWidth < currentWidth && newWidth >= minWidth)
                             || (newWidth > minWidth && newWidth < o.maxWidth);
-
                     // Animate width
                     if (isValidWidthChange) {
                         input.width(newWidth);
                     }
 
                 };
-
         testSubject.insertAfter(input);
-
         jQuery(this).bind('hover keyup keydown blur update focus', check);
-
     });
-
     return this;
-
 }
 ;
 // stub for success
 
 function BestInPlaceCallBack(input) {
+    // console.log("-- BestInPlaceCallBack --");
 }
 ;
-
 function BestInPlaceCallBackInit(input) {
+    // console.log("-- BestInPlaceCallBackInit --");
+
 }
 ;
-
 function BestInPlaceCallBackBind(input) {
+    // console.log("-- BestInPlaceCallBackBind --");
+
 }
 ;
-
 function BestInPlaceCallBackNoChange(input) {
+    // console.log("-- BestInPlaceCallBackNoChange --");
+
 }
 ;
-
 function BestInPlaceEditor(e) {
     this.element = jQuery(e);
     this.initOptions();
@@ -127,8 +122,32 @@ function BestInPlaceEditor(e) {
     }, this.clickHandler);
 }
 
+function BestInPlaceEditorObject(e) {
+    if (typeof jQuery(this).data('bestInPlaceEditor') == "undefined") {
+        jQuery(e).best_in_place();
+    }
+
+
+    return jQuery(e).data().bestInPlaceEditor;
+}
+
+
+jQuery.fn.best_in_place_callback = function (hook_name, function_code) {
+    this.each(function () {
+        if (typeof jQuery(this).data('bestInPlaceEditor') == "undefined") {
+            jQuery(e).best_in_place();
+        }        
+        jQuery(this).data('bestInPlaceEditor')[hook_name] = function_code;
+    });
+    return this;
+}
+
+function BestInPlaceEditorGroup(e) {
+
+}
+
 BestInPlaceEditor.prototype = {
-    // Public Interface Functions //////////////////////////////////////////////
+// Public Interface Functions //////////////////////////////////////////////
 
     activate: function () {
 
@@ -150,22 +169,46 @@ BestInPlaceEditor.prototype = {
         }, this.clickHandler);
     },
     update: function () {
+        // console.log(this.getValue());
+        // console.log(this.oldValue);
+        // console.log(!this.dirty == "true");
+
         var editor = this;
         if (this.formType in {
             "input": 1,
             "textarea": 1,
             "date": 1
-        } && this.getValue() == this.oldValue && !this.dirty == "true")
-        { // Avoid request if no change is made
-            this.abort();
-            BestInPlaceCallBackNoChange(this);
-            return true;
-        }
+        } && this.getValue() == this.oldValue)
+                //       } && this.getValue() == this.oldValue && !this.dirty == "true")
+                { // Avoid request if no change is made
+                    this.abort();
+                    // console.log("-------------------------------------------");
+                    // console.log("Testing callBackNoChange:");
+                    // console.log(this);
+                    // console.log(typeof this.callBackNoChange);
+
+                    BestInPlaceCallBackNoChange(this);
+                    if (typeof (this.callBackNoChange) == "function")
+                    {
+                        this.callBackNoChange(this);
+                    }
+
+                    return true;
+                }
 
         // if it is empty then the result is nil/empty
         this.isNil = (this.getValue() == "");
-
         BestInPlaceCallBackInit(this);
+        // console.log("-------------------------------------------");
+        // console.log("Testing callBackInit:");
+        // console.log(this);
+        // console.log(typeof this.callBackInit);
+
+        if (typeof (this.callBackInit) == "function")
+        {
+            this.callBackInit(this);
+        }
+
         var current_editor = this;
         editor.ajax({
             "type": "post",
@@ -173,12 +216,21 @@ BestInPlaceEditor.prototype = {
             "data": editor.requestData(),
             "success": function (data) {
                 BestInPlaceCallBack(current_editor);
+                // console.log("-------------------------------------------");
+                // console.log("Testing callBackSuccess:");
+                // console.log(current_editor);
+                // console.log(typeof current_editor.callBackSuccess);
+
+                if (typeof (current_editor.callBackSuccess) == "function")
+                {
+                    current_editor.callBackSuccess(current_editor);
+                }
+
                 //old way BestInPlaceCallBack(editor);
 
-                //               console.log("sucessfull");
+                //               console.log("successfull");
                 //               console.log(data);
                 editor.loadSuccessCallback(data);
-
             },
             "error": function (request, error) {
                 //          console.log("an error occured");
@@ -218,9 +270,14 @@ BestInPlaceEditor.prototype = {
             self.attributeName = self.attributeName || jQuery(this).attr("data-attribute");
             self.nil = self.nil || jQuery(this).attr("data-nil");
             self.maxLength = self.maxLength || jQuery(this).attr("data-max-length");
-            self.dirty = self.dirty || jQuery(this).attr("data-dirty");
-        });
+            // self.dirty = self.dirty || jQuery(this).attr("data-dirty");
 
+            // adding callbacks for each instance
+            self.callBackSuccess = self.callBackSuccess || jQuery(this).attr("data-call-back-success");
+            self.callBackInit = self.callBackInit || jQuery(this).attr("data-call-back-init");
+            self.callBackBind = self.callBackBind || jQuery(this).attr("data-call-back-bind");
+            self.callBackNoChange = self.callBackNoChange || jQuery(this).attr("data-call-back-no-change");
+        });
         // Try Rails-id based if parents did not explicitly supply something
         self.element.parents().each(function () {
             var res = this.id.match(/^(\w+)_(\d+)jQuery/i);
@@ -228,7 +285,6 @@ BestInPlaceEditor.prototype = {
                 self.objectName = self.objectName || res[1];
             }
         });
-
         // Load own attributes (overrides all others)
         self.url = self.element.attr("data-url") || self.url || document.location.pathname;
         self.collection = self.element.attr("data-collection") || self.collection;
@@ -238,12 +294,16 @@ BestInPlaceEditor.prototype = {
         self.activator = self.element.attr("data-activator") || self.element;
         self.nil = self.element.attr("data-nil") || self.nil || "-";
         self.maxLength = self.element.attr("data-max-length") || self.maxLength;
-        self.dirty = self.element.attr("data-dirty") || self.dirty;
+        // self.dirty = self.element.attr("data-dirty") || self.dirty;
 
+        // adding callbacks for each instance
+        self.callBackSuccess = self.callBackSuccess || jQuery(this).attr("data-call-back-success");
+        self.callBackInit = self.callBackInit || jQuery(this).attr("data-call-back-init");
+        self.callBackBind = self.callBackBind || jQuery(this).attr("data-call-back-bind");
+        self.callBackNoChange = self.callBackNoChange || jQuery(this).attr("data-call-back-no-change");
         if (!self.element.attr("data-sanitize")) {
             self.sanitize = true;
-        }
-        else {
+        } else {
             self.sanitize = (self.element.attr("data-sanitize") == "true");
         }
 
@@ -273,8 +333,7 @@ BestInPlaceEditor.prototype = {
             var tmp = document.createElement("DIV");
             tmp.innerHTML = s;
             s = jQuery.trim(tmp.textContent || tmp.innerText).replace(/"/g, '&quot;').replace(/'/g, '&#39;');
-        }
-        else
+        } else
         {
             s = s.replace(/</g, '&lt;').replace(/>/g, '&gt;')
         }
@@ -285,10 +344,8 @@ BestInPlaceEditor.prototype = {
         // To prevent xss attacks, a csrf token must be defined as a meta attribute
         csrf_token = jQuery('meta[name=csrf-token]').attr('content');
         csrf_param = jQuery('meta[name=csrf-param]').attr('content');
-
         var data = "_method=put";
         data += "&" + this.objectName + '[' + this.attributeName + ']=' + encodeURIComponent(this.getValue());
-
         if (csrf_param !== undefined && csrf_token !== undefined) {
             data += "&" + csrf_param + "=" + encodeURIComponent(csrf_token);
         }
@@ -313,15 +370,13 @@ BestInPlaceEditor.prototype = {
         {
             this.isNil = true;
             this.element.html("<div class='data-nil'>" + this.nil + "</div>");
-        }
-        else
+        } else
         {
             if (typeof (dataJson) != "undefined") {
                 this.element.html(dataJson[this.objectName]);
             }
             if ((typeof (dataJson) != "undefined") && (typeof (dataJson["message"]) != "undefined") && (dataJson["message"].length > 0)) {
                 setUpPurrNotifier("Warning", dataJson["message"]);
-
             }
 
 
@@ -334,17 +389,14 @@ BestInPlaceEditor.prototype = {
     },
     loadErrorCallback: function (request, error) {
         this.element.html(this.oldValue);
-
         // Display all error messages from server side validation
         jQuery.each(jQuery.parseJSON(request.responseText), function (index, value) {
             var container = jQuery("<span class='flash-error'></span>").html(value);
             setUpPurrNotifier(index, value[0]);
-
             //           console.log("index:" + index + " value:" + value);
 
             //container.purr();
         });
-
         // Binding back after being clicked
         jQuery(this.activator).bind('click', {
             editor: this
@@ -356,17 +408,27 @@ BestInPlaceEditor.prototype = {
     },
     setHtmlAttributes: function () {
         var formField = this.element.find(this.formType);
-
         if (this.html_attrs) {
             var attrs = jQuery.parseJSON(this.html_attrs);
             for (var key in attrs) {
                 formField.attr(key, attrs[key]);
             }
         }
+    },
+    // simple setters to set callbacks.
+    setSuccessCallback: function (successCallbackFunction) {
+        this.callBackSuccess = successCallbackFunction;
+    },
+    setInitCallback: function (initCallbackFunction) {
+        this.callBackInit = initCallbackFunction;
+    },
+    setBindCallback: function (bindCallbackFunction) {
+        this.callBackBind = bindCallbackFunction;
+    },
+    setNoChangeCallback: function (noChangeCallbackFunction) {
+        this.callBackNoChange = noChangeCallbackFunction;
     }
 };
-
-
 BestInPlaceEditor.forms = {
     "date": {
         activateForm: function () {
@@ -386,14 +448,21 @@ BestInPlaceEditor.forms = {
             output.append(input_elt)
 
             this.element.html(output);
-
             BestInPlaceCallBackBind(this);
+            // console.log("-------------------------------------------");
+            // console.log("Testing callBackBind:");
+            // console.log(this);
+            // console.log(typeof this.callBackBind);
+
+            if (typeof (this.callBackBind) == "function")
+            {
+                this.callBackBind(this);
+            }
 
             this.setHtmlAttributes();
             this.element.find('input')[0].select();
             this.element.find("form").bind('submit', {editor: this}, BestInPlaceEditor.forms.input.submitHandler);
             this.element.find("input").bind('keyup', {editor: this}, BestInPlaceEditor.forms.input.keyupHandler);
-
             this.element.find('input')
                     .datepicker({
                         onClose: function () {
@@ -471,10 +540,17 @@ BestInPlaceEditor.forms = {
             var output = '<form class="form_in_place" action="javascript:void(0)" style="display:inline;">';
             output += '<input type="text"  class="best_in_place_adj" value="' + this.sanitizeValue(this.oldValue) + '"></form>';
             this.element.html(output);
-
             BestInPlaceCallBackBind(this);
-            jQuery(this.element.find('input')).autoGrowInput();
+            // console.log("-------------------------------------------");
+            // console.log("Testing callBackBind:");
+            // console.log(this);
+            // console.log(typeof this.callBackBind);
 
+            if (typeof (this.callBackBind) == "function")
+            {
+                this.callBackBind(this);
+            }
+            jQuery(this.element.find('input')).autoGrowInput();
             // added jqEasyCounter
             if (this.maxLength > 0) {
                 jQuery(this.element.find('input')).jqEasyCounter({
@@ -484,10 +560,8 @@ BestInPlaceEditor.forms = {
                 });
             }
             ;
-
             if (this.element.find('input').width() < 5)
                 this.element.find('input').width("5");
-
             //console.log(this.element.find('input'))
 
             this.element.find('input')[0].select();
@@ -521,8 +595,6 @@ BestInPlaceEditor.forms = {
                 //    jQuery(this).parent().parent().parent().next().next().find(".best_in_place").trigger('click');
                 list = jQuery(".best_in_place");
                 thisID = jQuery.inArray(jQuery(this).parent().parent()[0], list);
-
-
                 if (event.shiftKey)
                 {
                     // eval("jQuery(this).parent().parent().parent().prev().prev().prev().find('.best_in_place').trigger('click')")
@@ -535,9 +607,7 @@ BestInPlaceEditor.forms = {
                     wait(10);
                     jQuery(list[thisID - 1]).trigger('click');
                     wait(10);
-
-                }
-                else
+                } else
                 {
                     //    console.log(jQuery(this).parent().parent());
                     //   console.log(jQuery(list[0]));
@@ -617,21 +687,26 @@ BestInPlaceEditor.forms = {
             // grab width and height of text
             width = this.element.css('width');
             height = this.element.css('height');
-
             // construct the form
             var output = '<form action="javascript:void(0)" style="display:inline;"><textarea>';
             output += this.sanitizeValue(this.oldValue);
             output += '</textarea></form>';
             this.element.html(output);
-
             BestInPlaceCallBackBind(this);
+            // console.log("-------------------------------------------");
+            // console.log("Testing callBackBind:");
+            // console.log(this);
+            // console.log(typeof this.callBackBind);
 
+            if (typeof (this.callBackBind) == "function")
+            {
+                this.callBackBind(this);
+            }
             // set width and height of textarea
             jQuery(this.element.find("textarea")[0]).css({
                 'min-width': width,
                 'min-height': height
             });
-
             // added jqEasyCounter
             if (this.maxLength > 0) {
                 jQuery(this.element.find('textarea')).jqEasyCounter({
@@ -641,9 +716,7 @@ BestInPlaceEditor.forms = {
                 });
             }
             ;
-
             jQuery(this.element.find("textarea")[0]).elastic();
-
             this.element.find("textarea")[0].focus();
             this.element.find("textarea").bind('blur', {
                 editor: this
@@ -670,16 +743,15 @@ BestInPlaceEditor.forms = {
         }
     }
 };
-
 jQuery.fn.best_in_place = function () {
     this.each(function () {
-        jQuery(this).data('bestInPlaceEditor', new BestInPlaceEditor(this));
+        // Only initialize the editor if it is not already initialized!
+        if (typeof jQuery(this).data('bestInPlaceEditor') == "undefined") {
+            jQuery(this).data('bestInPlaceEditor', new BestInPlaceEditor(this));
+        }
     });
     return this;
 };
-
-
-
 /**
  *	@name							Elastic
  *	@descripton						Elastic is Jquery plugin that grow and shrink your textareas automaticliy
@@ -708,7 +780,6 @@ jQuery.fn.best_in_place = function () {
                 'fontFamily',
                 'width',
                 'fontWeight'];
-
             return this.each(function () {
 
                 // Elastic only works on textareas
@@ -727,7 +798,6 @@ jQuery.fn.best_in_place = function () {
                         maxheight = parseInt(jQuerytextarea.css('max-height'), 10) || Number.MAX_VALUE,
                         goalheight = 0,
                         i = 0;
-
                 // Opera returns max-height of -1 if not set
                 if (maxheight < 0) {
                     maxheight = Number.MAX_VALUE;
@@ -736,7 +806,6 @@ jQuery.fn.best_in_place = function () {
                 // Append the twin to the DOM
                 // We are going to meassure the height of this, not the textarea.
                 jQuerytwin.appendTo(jQuerytextarea.parent());
-
                 // Copy the essential styles (mimics) from the textarea to the twin
                 var i = mimics.length;
                 while (i--) {
@@ -752,7 +821,6 @@ jQuery.fn.best_in_place = function () {
                             'height': curratedHeight + 'px',
                             'overflow': overflow
                         });
-
                     }
                 }
 
@@ -762,15 +830,12 @@ jQuery.fn.best_in_place = function () {
 
                     // Get curated content from the textarea.
                     var textareaContent = jQuerytextarea.val().replace(/&/g, '&amp;').replace(/  /g, '&nbsp;').replace(/<|>/g, '&gt;').replace(/\n/g, '<br />');
-
                     // Compare curated content with curated twin.
                     var twinContent = jQuerytwin.html().replace(/<br>/ig, '<br />');
-
                     if (textareaContent + '&nbsp;' != twinContent) {
 
                         // Add an extra white space so new rows are added when you are at the end of a row.
                         jQuerytwin.html(textareaContent + '&nbsp;');
-
                         // Change textarea height if twin plus the height of one line differs more than 3 pixel from textarea height
                         if (Math.abs(jQuerytwin.height() + lineHeight - jQuerytextarea.height()) > 3) {
 
@@ -793,12 +858,10 @@ jQuery.fn.best_in_place = function () {
                 jQuerytextarea.css({
                     'overflow': 'hidden'
                 });
-
                 // Update textarea size on keyup, change, cut and paste
                 jQuerytextarea.bind('keyup change cut paste', function () {
                     update();
                 });
-
                 // Compact textarea on blur
                 // Lets animate this....
                 jQuerytextarea.bind('blur', function () {
@@ -810,18 +873,14 @@ jQuery.fn.best_in_place = function () {
                         }
                     }
                 });
-
                 // And this line is to catch the browser paste event
                 jQuery(document).on('input paste', jQuerytextarea, function (e) {
                     setTimeout(update, 250);
                     return;
                 });
-
                 // Run update once when elastic is initialized
                 update();
-
             });
-
         }
     });
 })(jQuery);

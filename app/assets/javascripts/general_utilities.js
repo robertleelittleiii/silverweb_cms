@@ -112,7 +112,7 @@ function sz(t) {
 //
 function require(script) {
     var theUrl = "/assets/" + script;
-    var theTimeStamp = getRailsTimeStamp();
+   // var theTimeStamp = getRailsTimeStamp();
 
     // $("script[src='/javascripts/ie_fixes.js?1361329086']")
 
@@ -151,7 +151,7 @@ function require(script) {
 //
 //
 function requireCss(cssFile) {
-    var theTimeStamp = getRailsTimeStamp();
+   // var theTimeStamp = getRailsTimeStamp();
     // if (cssFile.charAt(0) == "/") {
     var href = "/assets/" + cssFile
     if (!$("link[href^='" + href + "']").length) {

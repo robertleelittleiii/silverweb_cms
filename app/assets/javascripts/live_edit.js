@@ -101,9 +101,9 @@ function updateUserList()
 function check_lock_status() {
     update_user_status();
     
-    check_lock_status = $("#check_lock_status").text().trim();
+    var check_lock_status = $("#check_lock_status").text().trim();
     
-    check_lock_status = check_lock_status == "" ? 1000 : check_lock_status
+    var check_lock_status = check_lock_status == "" ? 1000 : check_lock_status
     
     if (typeof live_edit_interval != "number") {
         live_edit_interval = setInterval(function() {
