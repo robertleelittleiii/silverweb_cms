@@ -268,7 +268,7 @@ end
     user_attributes_ids = User.select('users.id').joins(:user_attribute).where("user_attributes.last_name like '%#{params[:search][:value]}%' or user_attributes.first_name like '%#{params[:search][:value]}%'").collect(&:id)
     all_ids = User.select('u.id').from("users u").where(conditions).collect(&:id)
     
-    @current_objects = User.page(current_page).per( params[:length]).where(:id => (role_ids + all_ids + user_attributes_ids)).includes(:user_attribute).order("#{datatable_columns(params[:order]["0"][:column])} #{params[:order]["0"][:dir]  || "DESC"}") 
+    @current_objects = User.eager_load(:user_attribute).page(current_page).per( params[:length]).where(:id => (role_ids + all_ids + user_attributes_ids)).includes(:user_attribute).order("#{datatable_columns(params[:order]["0"][:column])} #{params[:order]["0"][:dir]  || "DESC"}") 
     
   end
 
