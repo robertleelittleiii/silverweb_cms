@@ -10,7 +10,7 @@ module FlexsliderHelper
       returnval =  returnval + "<div id='slider-width'>#{page.slider_width}</div> \n"
       returnval =  returnval + "<div id='slider-height'>#{page.slider_height}</div> \n"
       returnval =  returnval + "<div id='slider-nav'>#{page.slider_show_nav}</div> \n"
-      returnval =  returnval + "<div id='slider-effect'>#{effect}</div> \n"
+#      returnval =  returnval + "<div id='slider-effect'>#{effect}</div> \n"
       returnval =  returnval + "</div> \n"
       
       returnval = returnval + "<div class='flexslider'> \n"

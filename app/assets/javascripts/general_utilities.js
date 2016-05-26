@@ -5,7 +5,10 @@
 
 function getRailsTimeStamp()
 {
-    return $("script").attr("src").split('?')[1]
+    // return $("script").attr("src").split('?')[1]
+    
+    // return $("script").first().attr("src").split('-')[1].split(".")[0]
+   
 }
 // 
 // CSS 3D Utitlities
@@ -152,6 +155,7 @@ function require(script) {
 //
 function requireCss(cssFile) {
    // var theTimeStamp = getRailsTimeStamp();
+  // var theTimeStamp = getRailsTimeStamp();
     // if (cssFile.charAt(0) == "/") {
     var href = "/assets/" + cssFile
     if (!$("link[href^='" + href + "']").length) {

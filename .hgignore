@@ -36,3 +36,4 @@ bin/*
 ^log/redis-server\.log$
 ^log/resque\.work\.log$
 ^log/test\.log$
+.DS_Store
