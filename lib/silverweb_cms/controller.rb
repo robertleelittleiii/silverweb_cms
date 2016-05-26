@@ -69,6 +69,9 @@ module SilverwebCms
         else
           user =  User.find_by_id(session[:user_id])
           
+          session[:last_seen]=Time.now
+          session[:ip_address]= request.remote_ip rescue "n/a"
+           
           if user.roles.where(:name=>"Admin").length>0 then
             Rack::MiniProfiler.authorize_request
           end
