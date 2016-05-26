@@ -123,6 +123,11 @@ function BestInPlaceEditor(e) {
 }
 
 function BestInPlaceEditorObject(e) {
+    if (jQuery(e).length==0) 
+    {
+        return ([]);
+        
+    }
     if (typeof jQuery(this).data('bestInPlaceEditor') == "undefined") {
         jQuery(e).best_in_place();
     }
@@ -417,19 +422,19 @@ BestInPlaceEditor.prototype = {
     },
     // simple setters to set callbacks.
     setSuccessCallback: function (successCallbackFunction) {
-        this.callBackSuccess = successCallbackFunction;
+        this.callBackSuccess =  this.length > 0 ? successCallbackFunction : "";
     },
     setInitCallback: function (initCallbackFunction) {
-        this.callBackInit = initCallbackFunction;
+        this.callBackInit =   this.length > 0 ? initCallbackFunction : "";
     },
     setBindCallback: function (bindCallbackFunction) {
-        this.callBackBind = bindCallbackFunction;
+        this.callBackBind =  this.length > 0 ? bindCallbackFunction : "";
     },
     setNoChangeCallback: function (noChangeCallbackFunction) {
-        this.callBackNoChange = noChangeCallbackFunction;
+        this.callBackNoChange = this.length > 0 ? noChangeCallbackFunction : "";
     }
 };
-BestInPlaceEditor.forms = {
+BestInPlaceEditor.forms = { 
     "date": {
         activateForm: function () {
             var that = this,

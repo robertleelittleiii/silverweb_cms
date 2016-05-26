@@ -31,6 +31,8 @@ class SiteController < ApplicationController
     if user then
       session[:active]=true
       session[:last_seen]=Time.now
+      session[:ip_address]= request.remote_ip rescue "n/a"
+
       session[:user_id] = user.id
       login_success = true
       flash.now[:notice] = "Login Sucessfull, Welcome!!"
