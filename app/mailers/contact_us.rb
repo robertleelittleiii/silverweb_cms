@@ -7,10 +7,12 @@ class ContactUs < ActionMailer::Base
   #   en.contact_us.send_mail.subject
   #
   
-    def send_mail (form_data, from, to, subject)
-    from = Settings.admin_email || "noreply@onewhere.com"
+   def send_mail (form_data, from, to, subject)
+      
+      @user=from
+      
+      from = Settings.admin_email || "noreply@onewhere.com"
     @form_data=form_data
-    @user=from
     puts("stuff", @form_data, from, to, subject)
     mail(:to => to,:from=>from, :subject => subject)
   end
