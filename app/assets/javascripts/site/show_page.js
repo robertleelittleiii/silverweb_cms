@@ -5,33 +5,33 @@
 
 // TODO:  Add ajax function to load pictures based on properties object.
 
-$(window).scroll(function () { 
+$(window).scroll(function () {
     if ($(window).scrollTop() > $('body').height() / 2) {
         $("div#page-scrollback-image").fadeIn();
-    }
-    else
+    } else
     {
         $("div#page-scrollback-image").fadeOut();
 
-    } 
+    }
 });
 
-$(document).load(function(){
-     if ($("#slider-nav").text() == "false"){
-         $("a.slidesjs-navigation").hide();
-         console.log("slider nav hidden.");
-        };
-        
+$(document).load(function () {
+    if ($("#slider-nav").text() == "false") {
+        $("a.slidesjs-navigation").hide();
+        console.log("slider nav hidden.");
+    }
+    ;
+
 });
 
 
-$(document).ready(function(){
- call_document_ready_on_show_page();
+$(document).ready(function () {
+    call_document_ready_on_show_page();
 });
 
 
 function call_document_ready_on_show_page() {
-           setupPagePopup();
+    setupPagePopup();
 
     // update left to correct height.
     $("#page-middle-left").height($("#page-body").height() + parseInt($("#page-body").css("margin-top")))
@@ -42,31 +42,54 @@ function call_document_ready_on_show_page() {
     {
         $("div#page-middle-left").hide();
         $("div#content").width("100%");
-        $('#Content').css('background',"white")
+        $('#Content').css('background', "white")
 
     }
-    
-   activate_slides();
-   start_flex_sliders();
-   
+
+    activate_slides();
+    start_flex_sliders();
+
     require("pages/shared.js");
     pageeditClickBinding("div#edit-pages");
 
 }
 
 function start_flex_sliders() {
-        slideshow_nav_pagination = $("#slider-nav").text() === "true";
-        slideshow_effect = $("#slider-effect").text();
-        slideshow_auto = $("#slider-auto").text()=="true" ? true : false
-        slideshow_speed = $("#play-speed").text() || "5000"
+    slideshow_nav_pagination = $("#slider-nav").text() === "true";
+    slideshow_effect = $("#slider-effect").text();
+    slideshow_auto = $("#slider-auto").text() == "true" ? true : false
+    slideshow_speed = $("#play-speed").text() || "5000"
 
-    if ($('.flexslider').length > 0) {
+    slideshow_itemswidth = $("#slider-width").text() || "210"
+
+
+
+ if ($('.flexslider.carousel').length > 0) {
+        require("jquery.flexslider.js");
+        // page-slider-gallary-page$('#page-slider-gallary-page').fadeIn();
+        
+         $('.flexslider.carousel').flexslider({
+    animation: "slide",
+    animationLoop: false,
+    itemWidth: Number(slideshow_itemswidth),
+    itemMargin: 10
+  });
+        
+       // $('.flexslider.carousel').flexslider({start: function () {
+       //         $('#page-slider-gallary-page').fadeIn();
+       //     }, animation: slideshow_effect, animationLoop: false, itemWidth: slideshow_itemswidth, itemMargin: 5});
+
+    }
+    else if ($('.flexslider').length > 0) {
         require("jquery.flexslider.js");
         $('.flexslider').flexslider({start: function () {
                 $('#page-slider-gallary-page').fadeIn();
-            }, slideshow: slideshow_auto, animation: slideshow_effect ,directionNav: slideshow_nav_pagination, animationSpeed: 2000, slideshowSpeed: slideshow_speed});
+            }, slideshow: slideshow_auto, animation: slideshow_effect, directionNav: slideshow_nav_pagination, animationSpeed: 2000, slideshowSpeed: slideshow_speed});
 
     }
+
+   
+
 }
 
 function activate_slides() {
@@ -74,10 +97,9 @@ function activate_slides() {
     if (($("div#slides3").length > 0))
     {
         $("#page-slider-gallary-page").show();
-    }
-    else
+    } else
     {
-        $("#page-slider-gallary-page").hide();
+    //    $("#page-slider-gallary-page").hide();
 
     }
 
@@ -173,10 +195,9 @@ function activate_slides() {
             $("#slides3").css("overflow", "visible");
 
         }
-    $("#page-slider-gallary-page").css("position", "absolute");
+        $("#page-slider-gallary-page").css("position", "absolute");
 
-    }
-    else
+    } else
     {
         $("#page-slider-gallary-page").css("top", "0px");
         $("#page-slider-gallary-page").css("overflow", "hidden");
@@ -186,32 +207,32 @@ function activate_slides() {
 }
 
 function setupPagePopup() {
-    $.each($('.page-popup-link'),function(){
-        var  page_to_open = $(this).attr('href');
-        $(this).attr('href','#');
-        $(this).attr('onClick','return(0);');
-        $(this).attr("page-to-open",page_to_open);
-    // console.log(this);
+    $.each($('.page-popup-link'), function () {
+        var page_to_open = $(this).attr('href');
+        $(this).attr('href', '#');
+        $(this).attr('onClick', 'return(0);');
+        $(this).attr("page-to-open", page_to_open);
+        // console.log(this);
     });
-      
-    $('.page-popup-link').click( function(){
-        var  page_to_open = $(this).attr('page-to-open');
-        var  page_name = $(this).attr('title') || "popup-page";
+
+    $('.page-popup-link').click(function () {
+        var page_to_open = $(this).attr('page-to-open');
+        var page_name = $(this).attr('title') || "popup-page";
 
         $.ajax({
-            url: page_to_open, 
-            success: function(data) 
+            url: page_to_open,
+            success: function (data)
             {
-                pageViewDialog = createAppDialog(page_name,data);
+                pageViewDialog = createAppDialog(page_name, data);
                 $("div.ui-dialog-titlebar").hide();
-                $("div.ui-dialog .ui-dialog-buttonpane").css("border-width","0px");
+                $("div.ui-dialog .ui-dialog-buttonpane").css("border-width", "0px");
                 $(".ui-dialog .ui-dialog-buttonpane button span").html("X");
-                
+
                 dialogHeight = $(".ui-dialog").height();
                 dialogWidth = $(".ui-dialog").width();
                 $(".ui-dialog").css("background", "none");
-                 $(".ui-dialog").css("border", "none");
-                
+                $(".ui-dialog").css("border", "none");
+
                 $(".ui-dialog .ui-dialog-buttonpane").css("background", "none");
 
                 $(".ui-dialog .ui-dialog-buttonpane button").css("position", "absolute");
@@ -221,16 +242,16 @@ function setupPagePopup() {
 
                 pageViewDialog.dialog('open');
                 pageViewDialog.dialog({
-                    close: function( event, ui ) {
+                    close: function (event, ui) {
                         $('#app-dialog').html("");
-                        $('#app-dialog').dialog( "destroy" );
+                        $('#app-dialog').dialog("destroy");
                     }
                 });
-            // require("roles/update_rights.js");
-            // update_rights_callDocumentReady();
+                // require("roles/update_rights.js");
+                // update_rights_callDocumentReady();
 
 
-            // setupRolesSelection();
+                // setupRolesSelection();
             }
         });
     });
