@@ -147,6 +147,7 @@ Rails.application.routes.draw do
       get "delete_ajax"
       get "link_list"
       post "update_checkbox_tag"
+      get "custom"
     end
   end
   
