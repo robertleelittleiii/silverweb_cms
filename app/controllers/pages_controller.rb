@@ -187,6 +187,21 @@ class PagesController < ApplicationController
       render :nothing=>true
     end
     
+  def custom
+      @page = Page.find(session[:current_page]) rescue ""
+    
+     respond_to do |format|
+      format.css 
+    end
+  end
+  
+  
+  def link_list
+    @pages = Page.order(:title)
+    @pdfs = Picture.where("image like '%.pdf'") rescue []
+    @last_pdf = @pdfs.last rescue ""
+    @last_page = @pages.last
+  end
  
   
   private
