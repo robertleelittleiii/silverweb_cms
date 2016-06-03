@@ -16,8 +16,7 @@ $(document).ready(function () {
         if ($("#as_window").text() == "true")
         {
             //  alert("it is a window");
-        }
-        else
+        } else
         {
             pages_edit_callDocumentReady();
         }
@@ -178,7 +177,7 @@ function pages_bind_file_paste_to_upload_form()
             top.tinymce.activeEditor.undoManager.add();
             top.tinymce.activeEditor.insertContent(image_tag);
             top.tinymce.activeEditor.undoManager.add();
-            
+
             var jqXHR = data.submit()
                     .success(function (result, statusText, jqXHR) {
 
@@ -197,8 +196,7 @@ function pages_bind_file_paste_to_upload_form()
                             top.tinymce.activeEditor.undoManager.undo();
                             setUpPurrNotifier("info.png", "Notice", jqXHR.responseJSON["attachment"][0]);
                             data.context.remove();
-                        }
-                        else
+                        } else
                         {
                             top.tinymce.activeEditor.undoManager.undo();
                             //  console.log(result.image.url)
@@ -219,8 +217,7 @@ function pages_bind_file_paste_to_upload_form()
                         if (jqXHR.status == "200")
                         {
                             //render_pictures();
-                        }
-                        else
+                        } else
                         {
                             //var obj = jQuery.parseJSON(jqXHR.responseText);
                             // console.log(typeof obj["attachment"][0])
@@ -306,13 +303,23 @@ function sliderEditClickBinding(selector) {
             url: url,
             success: function (data)
             {
-                $("form#picture-paste-page").fileupload('destroy');
+                if ($("form#picture-paste-page").length > 0) {
+                    try {
+                        $("form#picture-paste-page").fileupload('destroy');
+                    } catch (err) {
+                        console.log(err.message);
+                    }
+                }
+
                 tinyMCE.EditorManager.execCommand('mceRemoveEditor', true, "page_body");
 
                 slider_edit_dialog = createAppDialog(data, "edit-slider-dialog", {}, "");
                 slider_edit_dialog.dialog({
                     close: function (event, ui) {
                         updateSliderList();
+                        tinyMCE_editor_slide = tinymce.activeEditor;
+                        tinyMCE_editor_slide.remove();
+
                         $('#edit-slider-dialog').html("");
                         $('#edit-slider-dialog').dialog("destroy");
                         tinymce.EditorManager.execCommand('mceAddEditor', true, "page_body");
