@@ -71,22 +71,22 @@ module UiHelper
     stylesheet_path = asset_available? stylesheet
     
     puts('testingtestingtesting');
-    puts("----> stylesheet_path: '#{stylesheet_path}'");
+    puts("stylesheet: #{stylesheet}----> stylesheet_path: '#{stylesheet_path}'");
     
     stylesheetaction = "#{params[:controller]}/#{params[:action]=="index" ? "index_" : params[:action]}.css"
    #  stylesheetaction_path = Rails.application.assets.find_asset(stylesheetaction)
    #  stylesheetaction_path = Rails.application.assets_manifest.files.values.map{|v| v['logical_path']}.include?('#{stylesheetaction}')
     stylesheetaction_path = asset_available? stylesheetaction
 
-    puts("---> stylesheetaction_path '#{stylesheetaction_path}'");
+    puts("stylesheetaction: #{stylesheetaction}---> stylesheetaction_path '#{stylesheetaction_path}'");
 
     stylesheet_return = ""
   
-    if  !stylesheet_path then
+    if  stylesheet_path then
       stylesheet_return = stylesheet_link_tag stylesheet rescue ""
     end
     
-    if !stylesheetaction_path then # and (stylesheet_path != stylesheetaction_path) then
+    if stylesheetaction_path then # and (stylesheet_path != stylesheetaction_path) then
       stylesheet_return = stylesheet_return + " " + (stylesheet_link_tag stylesheetaction) rescue ""
     end
     
@@ -95,7 +95,7 @@ module UiHelper
   #    custom_stylesheet_path = Rails.application.assets.find_asset(custom_stylesheet)
   #     custom_stylesheet_path = Rails.application.assets_manifest.files.values.map{|v| v['logical_path']}.include?('#{custom_stylesheet}')
       custom_stylesheet_path = asset_available? custom_stylesheet
-   stylesheet_return <<  (stylesheet_link_tag(custom_stylesheet,"data-turbolinks-track"=>"true")) if  !custom_stylesheet_path rescue ""
+   stylesheet_return <<  (stylesheet_link_tag(custom_stylesheet,"data-turbolinks-track"=>"true")) if  custom_stylesheet_path rescue ""
     end
      
     return stylesheet_return.html_safe if not stylesheet_return.blank?
@@ -110,23 +110,27 @@ module UiHelper
 #    javascript_path = Rails.application.assets.find_asset(javascript)
 #    javascript_path = Rails.application.assets_manifest.files.values.map{|v| v['logical_path']}.include?('#{javascript}')
     javascript_path = asset_available? javascript
-
+  puts('testingtestingtesting');
+    puts("javascript: #{javascript}----> javascript_path: '#{javascript_path}'");
+ 
     javascriptaction = "#{params[:controller]}/#{params[:action]=="index" ? "index_" : params[:action]}.js"
  #   javascriptaction_path = Rails.application.assets.find_asset(javascriptaction)
  #   javascriptaction_path = Rails.application.assets_manifest.files.values.map{|v| v['logical_path']}.include?('#{javascriptaction}')
     javascriptaction_path = asset_available? javascriptaction
-
+  puts('testingtestingtesting');
+    puts("javascriptaction: #{javascriptaction}----> javascriptaction_path: '#{javascriptaction_path}'");
+ 
     javascript_return = ""
            
     # Rails.application.assets.find_asset(javascriptaction) != nil
 
     # if File.exists?(File.join(Rails.root, '/assets/javascripts', javascript))
-    if  !javascript_path then
+    if  javascript_path then
       javascript_return = javascript_include_tag(javascript, :async => true) rescue ""
     end
 
-    if !javascriptaction_path  then # and (javascript_path != javascriptaction_path) then
-      javascript_return = javascript_return + " " + (javascript_include_tag(javascriptaction, :async => true))rescue ""
+    if javascriptaction_path  then # and (javascript_path != javascriptaction_path) then
+      javascript_return = javascript_return + " " + (javascript_include_tag(javascriptaction, :async => true)) rescue ""
     end
     
   
@@ -136,7 +140,7 @@ module UiHelper
  #     custom_javascriptaction_path = Rails.application.assets_manifest.files.values.map{|v| v['logical_path']}.include?('#{custom_javascriptaction}')
     custom_javascriptaction_path = asset_available? custom_javascriptaction
 
-      javascript_return <<  (javascript_include_tag(custom_javascriptaction,:async => true)) if  !custom_javascriptaction_path
+      javascript_return <<  (javascript_include_tag(custom_javascriptaction,:async => true)) if  custom_javascriptaction_path
     end
     
     return javascript_return.html_safe if not javascript_return.blank?
