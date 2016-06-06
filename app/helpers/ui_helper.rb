@@ -86,7 +86,7 @@ module UiHelper
       stylesheet_return = stylesheet_link_tag stylesheet rescue ""
     end
     
-    if !stylesheetaction_path and (stylesheet_path != stylesheetaction_path) then
+    if !stylesheetaction_path then # and (stylesheet_path != stylesheetaction_path) then
       stylesheet_return = stylesheet_return + " " + (stylesheet_link_tag stylesheetaction) rescue ""
     end
     
@@ -125,7 +125,7 @@ module UiHelper
       javascript_return = javascript_include_tag(javascript, :async => true) rescue ""
     end
 
-    if !javascriptaction_path  and (javascript_path != javascriptaction_path) then
+    if !javascriptaction_path  then # and (javascript_path != javascriptaction_path) then
       javascript_return = javascript_return + " " + (javascript_include_tag(javascriptaction, :async => true))rescue ""
     end
     
