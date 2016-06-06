@@ -58,10 +58,12 @@ module UiHelper
   #  This will autoload css files based on the controller and/or action
   def controller_stylesheet_link_tag
     stylesheet = "#{params[:controller]}.css"
-    stylesheet_path = Rails.application.assets.find_asset(stylesheet)
+  #  stylesheet_path = Rails.application.assets.find_asset(stylesheet)
+    stylesheet_path = Rails.application.assets_manifest.files.values.map{|v| v['logical_path']}.include?('#{stylesheet}')
 
     stylesheetaction = "#{params[:controller]}/#{params[:action]=="index" ? "index_" : params[:action]}.css"
-    stylesheetaction_path = Rails.application.assets.find_asset(stylesheetaction)
+   #  stylesheetaction_path = Rails.application.assets.find_asset(stylesheetaction)
+    stylesheetaction_path = Rails.application.assets_manifest.files.values.map{|v| v['logical_path']}.include?('#{stylesheetaction}')
 
     stylesheet_return = ""
   
@@ -75,8 +77,9 @@ module UiHelper
     
     if not @style_sheet_custom.nil? and not @style_sheet_custom.blank?  then
       custom_stylesheet = "#{params[:controller]}/#{@style_sheet_custom}"
-      custom_stylesheet_path = Rails.application.assets.find_asset(custom_stylesheet)
-      stylesheet_return <<  (stylesheet_link_tag(custom_stylesheet,"data-turbolinks-track"=>"true")) if  custom_stylesheet_path != nil rescue ""
+  #    custom_stylesheet_path = Rails.application.assets.find_asset(custom_stylesheet)
+      custom_stylesheet_path = Rails.application.assets_manifest.files.values.map{|v| v['logical_path']}.include?('#{custom_stylesheet}')
+     stylesheet_return <<  (stylesheet_link_tag(custom_stylesheet,"data-turbolinks-track"=>"true")) if  custom_stylesheet_path != nil rescue ""
     end
      
     return stylesheet_return.html_safe if not stylesheet_return.blank?
@@ -88,10 +91,12 @@ module UiHelper
   def controller_javascript_include_tag
     
     javascript = "#{params[:controller]}.js"
-    javascript_path = Rails.application.assets.find_asset(javascript)
+#    javascript_path = Rails.application.assets.find_asset(javascript)
+    javascript_path = Rails.application.assets_manifest.files.values.map{|v| v['logical_path']}.include?('#{javascript}')
 
     javascriptaction = "#{params[:controller]}/#{params[:action]=="index" ? "index_" : params[:action]}.js"
-    javascriptaction_path = Rails.application.assets.find_asset(javascriptaction)
+ #   javascriptaction_path = Rails.application.assets.find_asset(javascriptaction)
+    javascriptaction_path = Rails.application.assets_manifest.files.values.map{|v| v['logical_path']}.include?('#{javascriptaction}')
 
     javascript_return = ""
            
@@ -110,6 +115,8 @@ module UiHelper
     if not @java_script_custom.nil? and not @java_script_custom.blank?  then
       custom_javascriptaction = "#{params[:controller]}/#{@java_script_custom}"
       custom_javascriptaction_path = Rails.application.assets.find_asset(custom_javascriptaction)
+      custom_javascriptaction_path = Rails.application.assets_manifest.files.values.map{|v| v['logical_path']}.include?('#{custom_javascriptaction}')
+
       javascript_return <<  (javascript_include_tag(custom_javascriptaction,:async => true)) if  custom_javascriptaction_path != nil
     end
     
