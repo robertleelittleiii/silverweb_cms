@@ -60,18 +60,20 @@ module UiHelper
     stylesheet = "#{params[:controller]}.css"
   #  stylesheet_path = Rails.application.assets.find_asset(stylesheet)
     stylesheet_path = Rails.application.assets_manifest.files.values.map{|v| v['logical_path']}.include?('#{stylesheet}')
-
+    puts('testingtestingtesting');
+    puts("stylesheet_path: '#{stylesheet_path}'");
+    
     stylesheetaction = "#{params[:controller]}/#{params[:action]=="index" ? "index_" : params[:action]}.css"
    #  stylesheetaction_path = Rails.application.assets.find_asset(stylesheetaction)
     stylesheetaction_path = Rails.application.assets_manifest.files.values.map{|v| v['logical_path']}.include?('#{stylesheetaction}')
 
     stylesheet_return = ""
   
-    if  stylesheet_path != nil then
+    if  stylesheet_path != false then
       stylesheet_return = stylesheet_link_tag stylesheet rescue ""
     end
     
-    if stylesheetaction_path != nil and (stylesheet_path != stylesheetaction_path) then
+    if stylesheetaction_path != false and (stylesheet_path != stylesheetaction_path) then
       stylesheet_return = stylesheet_return + " " + (stylesheet_link_tag stylesheetaction) rescue ""
     end
     
@@ -103,11 +105,11 @@ module UiHelper
     # Rails.application.assets.find_asset(javascriptaction) != nil
 
     # if File.exists?(File.join(Rails.root, '/assets/javascripts', javascript))
-    if  javascript_path != nil then
+    if  javascript_path != false then
       javascript_return = javascript_include_tag(javascript, :async => true) rescue ""
     end
 
-    if javascriptaction_path != nil and (javascript_path != javascriptaction_path) then
+    if javascriptaction_path != false and (javascript_path != javascriptaction_path) then
       javascript_return = javascript_return + " " + (javascript_include_tag(javascriptaction, :async => true))rescue ""
     end
     
