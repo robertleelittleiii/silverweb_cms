@@ -430,7 +430,7 @@ BestInPlaceEditor.prototype = {
       //  this.callBackInit =   this.length > 0 ? initCallbackFunction : "";
     },
     setBindCallback: function (bindCallbackFunction) {
-        this.callBackBind - bindCallbackFunction;
+        this.callBackBind = bindCallbackFunction;
        // this.callBackBind =  this.length > 0 ? bindCallbackFunction : "";
     },
     setNoChangeCallback: function (noChangeCallbackFunction) {
