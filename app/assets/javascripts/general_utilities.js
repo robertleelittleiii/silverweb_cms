@@ -569,16 +569,15 @@ function createAppDialogUtil(theContent, dialog_id, completion_callback, complet
             }],
         close: function (event, ui) {
 
-
+  if (typeof (completion_callback) == "function")
+            {
+                completion_callback();
+            }
 
             $('#' + dialog_id).html("");
             $('#' + dialog_id).dialog("destroy");
             $('#' + dialog_id).html("");
 
-            if (typeof (completion_callback) == "function")
-            {
-                completion_callback();
-            }
 
             try {
                 if (typeof (refresh_user_live_edit) == 'function') {
