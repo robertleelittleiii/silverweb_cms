@@ -422,16 +422,20 @@ BestInPlaceEditor.prototype = {
     },
     // simple setters to set callbacks.
     setSuccessCallback: function (successCallbackFunction) {
-        this.callBackSuccess =  this.length > 0 ? successCallbackFunction : "";
+        this.callBackSuccess = successCallbackFunction;
+      //  this.callBackSuccess =  this.length > 0 ? successCallbackFunction : "";
     },
     setInitCallback: function (initCallbackFunction) {
-        this.callBackInit =   this.length > 0 ? initCallbackFunction : "";
+        this.callBackInit = initCallbackFunction;
+      //  this.callBackInit =   this.length > 0 ? initCallbackFunction : "";
     },
     setBindCallback: function (bindCallbackFunction) {
-        this.callBackBind =  this.length > 0 ? bindCallbackFunction : "";
+        this.callBackBind - bindCallbackFunction;
+       // this.callBackBind =  this.length > 0 ? bindCallbackFunction : "";
     },
     setNoChangeCallback: function (noChangeCallbackFunction) {
-        this.callBackNoChange = this.length > 0 ? noChangeCallbackFunction : "";
+        this.callBackNoChange = noChangeCallbackFunction;
+//        this.callBackNoChange = this.length > 0 ? noChangeCallbackFunction : "";
     }
 };
 BestInPlaceEditor.forms = { 
