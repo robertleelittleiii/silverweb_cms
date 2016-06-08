@@ -1,7 +1,7 @@
 <%#= render :file=>"/public/stylesheets/global-reset.css" %>
 <%#= render :file=>Rails.application.assets['fonts.css'].pathname.to_s%>
 
-<%=render :text=>File.read(Rails.root.to_s + "/public" + ActionController::Base.helpers.compute_asset_path('fonts.css'))%>
+<%=render :file=>(Rails.root.to_s + "/public" + ActionController::Base.helpers.compute_asset_path('fonts.css'))%>
 
 // tiny mce body override
 html body#tinymce{
