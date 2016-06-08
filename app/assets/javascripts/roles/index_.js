@@ -122,7 +122,7 @@ function roleeditClickBinding() {
     $('.edit-role-item').click(function () {
         role_id = $(this).parent().parent().parent().find('#role-id').text().trim();
         $.ajax({
-            url: '/roles/update_roles' + '?id=+' + role_id + '&as_window=true',
+            url: '/roles/update_rights' + '?id=+' + role_id + '&as_window=true',
             success: function (data)
             {
                 editRoleDialog = createAppDialog(data, "edit-role");
@@ -134,8 +134,8 @@ function roleeditClickBinding() {
                         editRoleDialog.dialog("destroy");
                     }
                 });
-                require("roles/update_roles.js");
-                update_roles_callDocumentReady();
+                require("roles/update_rights.js");
+                update_rights_callDocumentReady();
                 // setupRolesSelection();
             }
         });
