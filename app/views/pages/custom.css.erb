@@ -1,16 +1,16 @@
 <%#= render :file=>"/public/stylesheets/global-reset.css" %>
 <%#= render :file=>Rails.application.assets['fonts.css'].pathname.to_s%>
 
-<%=render :text=>ActionController::Base.helpers.compute_asset_path('fonts.css').to_s.html_safe %>
+<%=render :file=>ActionController::Base.helpers.compute_asset_path('fonts.css').to_s.html_safe %>
 
 // tiny mce body override
 html body#tinymce{
     background-color: white;
 }
-<%=render :text=>ActionController::Base.helpers.compute_asset_path('website.css').to_s.html_safe %>
-<%=(@page.template_name.blank? ? "" : render(:text=>ActionController::Base.helpers.compute_asset_path("site/show_page-#{@page.template_name}.css").to_s.html_safe)) rescue ""%>
-<%=render(:text=>ActionController::Base.helpers.compute_asset_path("editor-custom.css").to_s.html_safe) %>
-<%=render(:text=>ActionController::Base.helpers.compute_asset_path("#{@page.page_style}").to_s.html_safe)  rescue ""%>
+<%=render :file=>ActionController::Base.helpers.compute_asset_path('website.css').to_s.html_safe %>
+<%=(@page.template_name.blank? ? "" : render(:file=>ActionController::Base.helpers.compute_asset_path("site/show_page-#{@page.template_name}.css").to_s.html_safe)) rescue ""%>
+<%=render(:file=>ActionController::Base.helpers.compute_asset_path("editor-custom.css").to_s.html_safe) %>
+<%=render(:file=>ActionController::Base.helpers.compute_asset_path("#{@page.page_style}").to_s.html_safe)  rescue ""%>
 
 
 // tiny mce body override
