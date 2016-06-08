@@ -7,10 +7,10 @@
 html body#tinymce{
     background-color: white;
 }
-<%=render :text=>File.read(Rails.root.to_s + "/public" + ActionController::Base.helpers.compute_asset_path('website.css')) %>
-<%=(@page.template_name.blank? ? "" : render(:text=>File.read(Rails.root.to_s + "/public" + ActionController::Base.helpers.compute_asset_path("site/show_page-#{@page.template_name}.css")))) rescue ""%>
-<%=render(:text=>File.read(Rails.root.to_s + "/public" + ActionController::Base.helpers.compute_asset_path("editor-custom.css"))) %>
-<%=render(:text=>File.read(Rails.root.to_s + "/public" + ActionController::Base.helpers.compute_asset_path("#{@page.page_style}")))  rescue ""%>
+<%=render :file=>(Rails.root.to_s + "/public" + ActionController::Base.helpers.compute_asset_path('website.css')) %>
+<%=(@page.template_name.blank? ? "" : render(:file=>(Rails.root.to_s + "/public" + ActionController::Base.helpers.compute_asset_path("site/show_page-#{@page.template_name}.css")))) rescue ""%>
+<%=render(:file=>(Rails.root.to_s + "/public" + ActionController::Base.helpers.compute_asset_path("editor-custom.css"))) %>
+<%=render(:file=>(Rails.root.to_s + "/public" + ActionController::Base.helpers.compute_asset_path("#{@page.page_style}")))  rescue ""%>
 
 
 // tiny mce body override
