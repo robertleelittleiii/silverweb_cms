@@ -1,16 +1,16 @@
 <%#= render :file=>"/public/stylesheets/global-reset.css" %>
 <%#= render :file=>Rails.application.assets['fonts.css'].pathname.to_s%>
 
-<%=render :text=>Rails.application.assets['fonts.css'].to_s.html_safe %>
+<%=render :file=>(Rails.root.to_s + "/public" + ActionController::Base.helpers.compute_asset_path('fonts.css'))%>
 
 // tiny mce body override
 html body#tinymce{
     background-color: white;
 }
-<%=render :text=>Rails.application.assets['website.css'].to_s.html_safe %>
-<%=(@page.template_name.blank? ? "" : render(:text=>Rails.application.assets["site/show_page-#{@page.template_name}.css"].to_s.html_safe)) rescue ""%>
-<%=render(:text=>Rails.application.assets["editor-custom.css"].to_s.html_safe) %>
-<%=render(:text=>Rails.application.assets["#{@page.page_style}"].to_s.html_safe)  rescue ""%>
+<%=render :file=>(Rails.root.to_s + "/public" + ActionController::Base.helpers.compute_asset_path('website.css')) %>
+<%=(@page.template_name.blank? ? "" : render(:file=>(Rails.root.to_s + "/public" + ActionController::Base.helpers.compute_asset_path("site/show_page-#{@page.template_name}.css")))) rescue ""%>
+<%=render(:file=>(Rails.root.to_s + "/public" + ActionController::Base.helpers.compute_asset_path("editor-custom.css"))) %>
+<%=render(:file=>(Rails.root.to_s + "/public" + ActionController::Base.helpers.compute_asset_path("#{@page.page_style}")))  rescue ""%>
 
 
 // tiny mce body override
