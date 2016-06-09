@@ -217,8 +217,8 @@ class AdminController < ApplicationController
      
   def toggle_index
     time_items = Settings.down_time.split(":") 
-    up_time = Time.now + time_items[0].to_i.days + time_items[1].to_i.hours + time_items[2].to_i.minutes 
-    out_time =   up_time.strftime("%m/%d/%Y %I:%M %p")   #=> "6/9/2016 10:25 AM"
+    up_time = Time.now.utc + time_items[0].to_i.days + time_items[1].to_i.hours + time_items[2].to_i.minutes 
+    out_time =   up_time.strftime("%m/%d/%Y %I:%M %p UTC")   #=> "6/9/2016 10:25 AM"
 
     begin
       FileUtils.mv 'public/index.html', 'public/index.off'
