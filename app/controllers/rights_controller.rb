@@ -113,9 +113,9 @@ class RightsController < ApplicationController
     
   
   def right_table
-    @controllers = []
+    @controllers = ["global"]
     routes= Rails.application.routes.routes.map do |route|
-      @controllers = (@controllers << route.defaults[:controller]).uniq 
+    @controllers = (@controllers << route.defaults[:controller]).uniq 
     end
     
     @objects = current_objects(params)
