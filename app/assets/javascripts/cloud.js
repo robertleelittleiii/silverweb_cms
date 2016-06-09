@@ -21,6 +21,14 @@ function cloud1() {
     }, 10000).animate({
         left: "-150px"
     }, 0)
+    
+    // since the login screen doesn't have any watching of the system, we will use the animation timeout to allow 
+    //a function to be called by the application to perform some login screen checks (if necessary).
+    
+    if (typeof LoginScreenCallback == "function") {
+        LoginScreenCallback();
+    }
+    
     cloud1id = setTimeout("cloud1()", 10000);
 }
 function cloud2() {
@@ -387,7 +395,7 @@ function userLoggedIn() {
             }
             else
             {
-                window.location = "/"
+                window.location = "/?nocache=" + (new Date()).getTime();
                 // alert("refresh to site");
             }
             console.log(data);
