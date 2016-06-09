@@ -92,6 +92,12 @@
         <%=link_to 'Turn Site '+ (site_down() ? "ON" : "OFF"), {:controller => 'admin', :action => 'toggle_index'}, :id=>"site-button", :remote=>true%>
       </p>
       </br></br>
+      
+          <p>
+        <b>Time to be down (in days:hours:min)</b><br>
+        <%=editablefieldcreate("down_time", @settings)%>
+      </p>
+      
        <p>
         <b> Click this link to reprocess all images:</b></br>
         <%=link_to 'Reproces all images', {:controller => 'admin', :action => 'reprocess_page_images'}, :id=>"process-image-button", :remote=>true%>
