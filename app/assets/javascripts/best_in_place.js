@@ -155,17 +155,25 @@ BestInPlaceEditor.prototype = {
 // Public Interface Functions //////////////////////////////////////////////
 
     activate: function () {
-
+        // this.isNil = (this.element.html() == "");
+        this.initNil();
         var elem = ((this.isNil) | (this.element.html() == '<div class="data-nil">' + this.nil + '</div>')) ? "" : this.element.html();
-        // console.log("'" + elem + "'");
-        // console.log("'" + "<div class='data-nil'>" + this.nil + "</div>" + "'");
-        // console.log(elem == "<div class='data-nil'>" + this.nil + "</div>");
+//        console.log("----------------------------------------------------------");
+//        console.log("'" + elem + "'");
+//        console.log("'" + this.getValue() + "'");
+//        console.log("'" + "<div class='data-nil'>" + this.nil + "</div>" + "'");
+//        console.log(elem == "<div class='data-nil'>" + this.nil + "</div>");
+//        console.log(this);
+//        console.log(this.element);  
+//        console.log(this.element.html());  
+//        console.log(this.isNil);
+//        console.log("----------------------------------------------------------");
         this.oldValue = elem;
         jQuery(this.activator).unbind("click", this.clickHandler);
         this.activateForm();
     },
     abort: function () {
-        if (this.isNil)
+       if (this.isNil)
             this.element.html("<div class='data-nil'>" + this.nil + "</div>");
         else
             this.element.html(this.oldValue);
@@ -226,6 +234,9 @@ BestInPlaceEditor.prototype = {
                 // console.log(current_editor);
                 // console.log(typeof current_editor.callBackSuccess);
 
+                current_editor.isNil = (current_editor.element.html() == "");
+                current_editor.oldValue = (current_editor.element.html());
+                
                 if (typeof (current_editor.callBackSuccess) == "function")
                 {
                     current_editor.callBackSuccess(current_editor);
@@ -235,14 +246,14 @@ BestInPlaceEditor.prototype = {
 
                 //               console.log("successfull");
                 //               console.log(data);
-                editor.loadSuccessCallback(data);
+                current_editor.loadSuccessCallback(data);
             },
             "error": function (request, error) {
                 //          console.log("an error occured");
                 //           console.log(error);
                 //          console.log(request);
-
-                editor.loadErrorCallback(request, error);
+                current_editor.loadErrorCallback(request, error);
+                //current_editor.abort();
             }
         });
         if (this.formType == "select") {
@@ -316,6 +327,9 @@ BestInPlaceEditor.prototype = {
         {
             self.values = jQuery.parseJSON(self.collection);
         }
+       
+       self.initNil();
+        
     },
     bindForm: function () {
         this.activateForm = BestInPlaceEditor.forms[this.formType].activateForm;
@@ -327,6 +341,8 @@ BestInPlaceEditor.prototype = {
             this.isNil = true
             this.element.html("<div class='data-nil'>" + this.nil + "</div>")
         }
+        else
+            this.isNil= false
     },
     getValue: function () {
         alert("The form was not properly initialized. getValue is unbound");
@@ -393,7 +409,16 @@ BestInPlaceEditor.prototype = {
         }, this.clickHandler);
     },
     loadErrorCallback: function (request, error) {
-        this.element.html(this.oldValue);
+ //       console.log("------>" );
+ //       console.log(this.oldValue);
+        if (this.oldValue != "" ) {
+                    this.element.html(this.oldValue);
+        }
+        else 
+            this.element.html("<div class='data-nil'>" + this.nil + "</div>");
+       
+        
+        
         // Display all error messages from server side validation
         jQuery.each(jQuery.parseJSON(request.responseText), function (index, value) {
             var container = jQuery("<span class='flash-error'></span>").html(value);

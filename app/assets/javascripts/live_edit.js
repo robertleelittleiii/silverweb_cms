@@ -219,6 +219,7 @@ function reload_best_in_place_item(the_item) {
         {
             $("div#" + object_class_id +" #" + the_id).text(data);
             $("div#" + object_class_id +" #" + the_id).best_in_place();
+            BestInPlaceEditorObject("div#" + object_class_id +" #" + the_id).initNil();
             console.log("div#" + object_class_id +" #" + the_id);
             console.log(data);
 

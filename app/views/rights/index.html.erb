@@ -20,9 +20,7 @@
 
     <div id="right-list">
         <%if not params[:request_type]=="window" then%>
-          <h1  class="cms-header">Rights <%=image_tag "ajax-loader2.gif", :id=>"loader_progress" ,:style=>"display:none"%></h1>
-        <%  else %>
-          <%=image_tag "ajax-loader2.gif", :id=>"loader_progress" ,:style=>"display:none"%>
+          <h1  class="cms-header">Rights</h1>         
         <% end %> <br>
         <div id="right-actions">
             <%= link_to('New Right',{ :action=>:create_empty_record, :controller=>:rights, :format=>"json", :typeofrecord=>"right", :request_type=>"window"}, :id=>"new-right",:class=>"button-link", :remote => true  )%>

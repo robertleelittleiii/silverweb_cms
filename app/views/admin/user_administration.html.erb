@@ -20,9 +20,7 @@
 
     <div id="user-list">
         <%if not params[:request_type]=="window" then%>
-          <h1  class="cms-header">User Administration <%=image_tag "interface/ajax-loader2.gif", :id=>"loader_progress" ,:style=>"display:none"%></h1>
-        <%  else %>
-          <%=image_tag "interface/ajax-loader2.gif", :id=>"loader_progress" ,:style=>"display:none"%>
+          <h1  class="cms-header">User Administration </h1>
         <% end %> <br>
         <div id="user-actions">
             <%= link_to('New User',{ :action=>:create_empty_record, :controller=>:users, :typeofrecord=>"user", :request_type=>"window"}, :id=>"new-user",:class=>"button-link", :remote => true  )%>
