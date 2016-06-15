@@ -245,7 +245,7 @@ function updated_changed_fields() {
 
 }
 
-function reload_best_in_place_item(the_item) {
+function reload_best_in_place_item(the_item, completion_callback) {
     console.log("---------   start reload_best_in_place_item  ----------------");
     console.log(the_item);
 
@@ -270,6 +270,11 @@ function reload_best_in_place_item(the_item) {
             $("div#" + object_class_id + " #" + the_id).text(data);
             $("div#" + object_class_id + " #" + the_id).best_in_place();
             BestInPlaceEditorObject("div#" + object_class_id + " #" + the_id).initNil();
+            
+            if (typeof completion_callback == "function") {
+                completion_callback(the_item)
+            }
+ 
             console.log("div#" + object_class_id + " #" + the_id);
             console.log(data);
             console.log("---------   end reload_best_in_place_item  ----------------");

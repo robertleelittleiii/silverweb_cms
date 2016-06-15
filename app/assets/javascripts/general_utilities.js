@@ -137,7 +137,7 @@ function require(script) {
                 }
                 // all good...
             },
-            error: function () {
+            fail: function () {
                 console.warn("Could not load script " + script);
             }
         });
@@ -176,7 +176,7 @@ function requireCss(cssFile) {
                 //your callback
             },
             fail: function () {
-                alert("fail");
+                console.warn("Could not load script " + script);
             }
         });
     }
@@ -393,7 +393,11 @@ function ui_ajax_select(success_callback) {
                 {
 
                 }
+            },
+             fail: function (jqXHR, textStatus, errorThrown) {
+                setUpNotifier("error.png", "Warning", textStatus);
             }
+            
         });
     });
 }
