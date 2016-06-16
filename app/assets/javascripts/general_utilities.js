@@ -361,7 +361,7 @@ function createAppDialog(theContent, dialog_id, call_backs, buttons_to_show_in) 
 
 function ui_ajax_select(success_callback) {
 
-    $("select.ui-ajax-select").bind("change", function () {
+    $("select.ui-ajax-select").off("change").on("change", function () {
         selected_item = $(this).val();
         controller = this.getAttribute("data-path")
         that = this

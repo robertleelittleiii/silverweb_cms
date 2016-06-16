@@ -414,9 +414,14 @@ BestInPlaceEditor.prototype = {
         if (this.oldValue != "" ) {
                     this.element.html(this.oldValue);
         }
-        else 
+        else {
             this.element.html("<div class='data-nil'>" + this.nil + "</div>");
-       
+        }
+        
+        console.log("------>" );
+        console.log(request);
+        console.log(error );
+
         
         
         // Display all error messages from server side validation
