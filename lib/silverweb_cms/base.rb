@@ -29,7 +29,27 @@ module SilverwebCms
       @MENU_TYPES = [["none",3],["page",1] , ["html",2], ["link",4], ["action",5]]
     end
     
+    # MENU FIELDS TO ALLOW LATER GEMS TO ADD TO MENU OBJECT.
+    
+    @MENU_FIELDS = [""]
+    
+    def self.load_menu_fields
+      @MENU_FIELDS = [""]
+    end
+    
+    
+    def self.add_menu_fields(menu_fields)
+         @MENU_FIELDS << menu_fields
+    end
+    
+    def self.MENU_FIELDS
+      @MENU_FIELDS
+    end
+    
+    # MENU TYPES
+    
     @MENU_TYPES = nil
+    
     def self.MENU_TYPES
       @MENU_TYPES 
     end
@@ -83,5 +103,6 @@ end
 SilverwebCms::Config.load_nav_list
 SilverwebCms::Config.load_menu_types
 SilverwebCms::Config.load_menu_actions
+SilverwebCms::Config.load_menu_fields
 SilverwebCms::Config.load_route_list
 

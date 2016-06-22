@@ -24,9 +24,9 @@ $(document).ready(function () {
 function menus_edit_callDocumentReady() {
     //alert("called.");
     bindMenuRawhtml();
+    ui_ajax_select();
     bindMenuMType();
     bind_file_upload_to_upload_form();
-    ui_ajax_select();
     bindDeleteImage();
     $(".best_in_place").best_in_place();
     requireCss("image_libraries/image_list.css");
@@ -65,8 +65,6 @@ function bindMenuRawhtml() {
     });
 }
 
-
-
 function bindMenuMType() {
     $("#menu_m_type").bind("change", function () {
         selected_item = $("#menu_m_type option:selected");
@@ -92,6 +90,7 @@ function bindMenuMType() {
                     //initTinyMCE();
                     bindMenuRawhtml();
                     ui_ajax_select();
+                    bindMenuMType();
                 }
             }
         });

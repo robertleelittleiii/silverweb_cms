@@ -10,6 +10,7 @@ class MenusController < ApplicationController
   
   CUSTOM_PAGES = [["none",""],["Mix & Match","show_products_with_page_mm"]]
 
+  ALLOWABLE_MENU_PARAMS = ["name", "page_id", "parent_id", "has_submenu", "m_order", "m_type", "rawhtml", "url", "has_image", "menu_active", "template"]
   
   def index 
     session[:mainnav_status] = true
@@ -319,7 +320,7 @@ class MenusController < ApplicationController
 
   private
   def menu_params
-    params[:menu].permit( "name", "page_id", "parent_id", "has_submenu", "m_order", "m_type", "rawhtml", "url", "has_image", "menu_active", "template")
+    params[:menu].permit(ALLOWABLE_MENU_PARAMS + SilverwebCms::Config.MENU_FIELDS )
   end
 
 
