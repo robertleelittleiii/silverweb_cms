@@ -606,7 +606,7 @@ module  MenusHelper
     
     inputMenus.each_with_index  do |eachmenu, index | 
       if eachmenu.menu_active then
-        if eachmenu.name == params[:current_page]
+       if eachmenu.name == params[:current_page]
           html_link_class = params[:selected_class]
         else 
           html_link_class = ""
