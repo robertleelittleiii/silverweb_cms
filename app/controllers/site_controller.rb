@@ -1068,6 +1068,9 @@ class SiteController < ApplicationController
   end
 
   def authenticate
+    # always create a session.
+    session.delete 'init'
+
     return true
   end
 end

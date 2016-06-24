@@ -504,7 +504,7 @@ module UiHelper
         puts("@CART = #{@cart.inspect}")
         puts("found_item: '#{found_item}'")
         # html_options==nil ? html_options={:class=>"ui-ajax-cart-select", "data-path"=>url_for(field_pointer).to_s } : ""
-        html_options = html_options.merge({:class=>"ui-ajax-cart-select", "data-path"=>url_for(field_pointer).to_s },"data-attribute"=>field_name, "data-object"=>field_object)
+        html_options = html_options.merge({:class=>"ui-ajax-cart-select", "data-path"=>url_for(field_pointer).to_s ,"data-attribute"=>field_name, "data-object"=>field_object})
         select_tag(field_name, options_for_select(value_list, @cart.send(field_name)), html_options)
       else
       

@@ -146,10 +146,14 @@ module SilverwebCms
       extend ActiveSupport::Concern
 
       def authenticate
+        session[:init] = true
+
         return true
       end
 
       def authorize
+        session[:init] = true
+
         return true
       end
     end
