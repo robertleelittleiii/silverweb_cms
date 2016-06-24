@@ -44,13 +44,13 @@ namespace :session_watcher do
     up_time = Time.now.utc + time_items[0].to_i.days + time_items[1].to_i.hours + time_items[2].to_i.minutes 
     out_time =   up_time.strftime("%m/%d/%Y %I:%M %p UTC")   #=> "6/9/2016 10:25 AM"
 
-    FileUtils.mv  'public/index.off',  'public/index.html'
+    FileUtils.mv  'public/index.off',  'public/index.html' rescue puts "index.off not found (moved by other process)"
     File.write('public/splash/waittime.js', "// Auto written by silverweb_cms \n\r \n\r var TargetDate = \"#{out_time}\"; \n")    
   end
   
   desc "Enable Site -- for system maintenance"
   task :site_on => :environment do
-    FileUtils.mv  'public/index.html',  'public/index.off'
+    FileUtils.mv  'public/index.html',  'public/index.off' rescue puts "index.index not found (moved by other process)"
   end
 
 end
