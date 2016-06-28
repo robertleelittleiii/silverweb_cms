@@ -27,6 +27,6 @@
     <%=display_html(@page.body) rescue @page%>
   </div>
   <div id="page-scrollback-image" style="display:none;">
-    <%=link_to(image_tag("site/scrollback_image.png"), "#top-of-page")%>
+    <%=link_to(asset_available?("site/scrollback_image.png") ? image_tag("site/scrollback_image.png"): "", "#top-of-page")%>
   </div>
 </div>

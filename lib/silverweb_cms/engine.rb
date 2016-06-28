@@ -19,6 +19,7 @@ module SilverwebCms
     require 'rack-mini-profiler'
     require 'non-stupid-digest-assets'
     require 'sitemap_generator'
+    require 'rack-mini-profiler'
     
     # isolate_namespace SilverwebCms
    ActiveSupport.on_load(:action_controller) do
