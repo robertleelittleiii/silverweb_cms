@@ -71,7 +71,7 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
        puts "testing"
-      logger.error("controller #{self.class.controller_path}")
+      logger.info("controller #{self.class.controller_path}")
       logger.info("action: #{action_name}")
       @newAttributes = UserAttribute.new()
 

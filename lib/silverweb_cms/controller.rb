@@ -48,7 +48,7 @@ module SilverwebCms
       def authenticate
         # put an exception here for self registration
         puts "In Authenticate"
-        logger.error("controller #{self.class.controller_path}")
+        logger.info("controller #{self.class.controller_path}")
         logger.info("action: #{action_name}")
 
         if(self.class.controller_path == "users" && action_name=="create")
