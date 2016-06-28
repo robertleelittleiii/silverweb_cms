@@ -406,14 +406,14 @@ function userLoggedIn() {
 }
 
 function check_login_status() {
-    check_login_status = $("#check_login_status").text();
+    check_login_status_time = $("#check_login_status").text();
 
-    check_login_status = check_login_status == "" ? "10000" : check_login_status;
+    check_login_status_time = check_login_status_time == "" ? "10000" : check_login_status_time;
 
     if (typeof interval != "number") {
         interval = setInterval(function () {
             userLoggedIn();
-        }, check_login_status);
+        }, check_login_status_time);
     }
 
 }
