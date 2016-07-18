@@ -7,6 +7,18 @@
 html body#tinymce{
     background-color: white;
 }
+
+html body#tinymce li.selector {
+    display: inline-block !important;
+    height: 50px;
+    color: white;
+    width: 100%;
+    height: 50px;
+    background: red;
+    font-size: 35px;
+    text-align: center;
+}
+
 <%=render :text=>Rails.application.assets['website.css'].to_s.html_safe %>
 <%=(@page.template_name.blank? ? "" : render(:text=>Rails.application.assets["site/show_page-#{@page.template_name}.css"].to_s.html_safe)) rescue ""%>
 <%=render(:text=>Rails.application.assets["editor-custom.css"].to_s.html_safe) %>
