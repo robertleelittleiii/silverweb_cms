@@ -237,8 +237,10 @@ module  MenusHelper
   end
   
   def buildverticlesubmenu(params=nil)
+    puts("-------------------> #{params.inspect}")
+    puts("******************> #{params[:menu_name]}")
+    @menu_id = Menu.where(:name=>params[:menu_name]).first.id  || session[:parent_menu_id] || 0
     
-    @menu_id= session[:parent_menu_id] || 0
     puts("in build sub menu with:", session[:parent_menu_id] , @menu_id)
     
     if @menu_id==0 then
@@ -261,8 +263,8 @@ module  MenusHelper
     
       puts(@menus.inspect)
       for @menu in @menus.menus
-        puts(@menu.name)
-        if @menu.name== @article_name
+        puts("@menu.name: #{@menu.name}, @article_name: #{@article_name} ")
+        if @menu.name.downcase == @article_name.downcase
           returnMenu = returnMenu + params[:selected_class] + "<div class='menu-selected'>" + @menu.name + "</div>" + @posthtml
         else
           menuText =  self.buildmenuitem(@menu,html_options,"")
