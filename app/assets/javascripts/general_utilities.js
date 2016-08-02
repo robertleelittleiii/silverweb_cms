@@ -6,9 +6,9 @@
 function getRailsTimeStamp()
 {
     // return $("script").attr("src").split('?')[1]
-    
+
     // return $("script").first().attr("src").split('-')[1].split(".")[0]
-   
+
 }
 // 
 // CSS 3D Utitlities
@@ -67,28 +67,23 @@ function customizeForDevice() {
     if (checker.android) {
         return("mobile:android");
         // $('.android-only').show();
-    }
-    else if (checker.iPad) {
+    } else if (checker.iPad) {
         return("mobile:ipad");
 
         //  $('.idevice-only').show();
-    }
-    else if (checker.iphone) {
+    } else if (checker.iphone) {
         return("mobile:iphone");
 
         //  $('.idevice-only').show();
-    }
-    else if (checker.blackberry) {
+    } else if (checker.blackberry) {
         return("mobile:blackberry");
 
         //  $('.berry-only').show();
-    }
-    else if (checker.palm) {
+    } else if (checker.palm) {
         return("mobile:palm");
 
         //  $('.berry-only').show();
-    }
-    else {
+    } else {
         return(ua);
     }
 //  $('.unknown-device').show();
@@ -115,7 +110,7 @@ function sz(t) {
 //
 function require(script) {
     var theUrl = "/assets/" + script;
-   // var theTimeStamp = getRailsTimeStamp();
+    // var theTimeStamp = getRailsTimeStamp();
 
     // $("script[src='/javascripts/ie_fixes.js?1361329086']")
 
@@ -141,8 +136,7 @@ function require(script) {
                 console.warn("Could not load script " + script);
             }
         });
-    }
-    else
+    } else
     {
         //      alert("Not Loaded");
 
@@ -154,8 +148,8 @@ function require(script) {
 //
 //
 function requireCss(cssFile) {
-   // var theTimeStamp = getRailsTimeStamp();
-  // var theTimeStamp = getRailsTimeStamp();
+    // var theTimeStamp = getRailsTimeStamp();
+    // var theTimeStamp = getRailsTimeStamp();
     // if (cssFile.charAt(0) == "/") {
     var href = "/assets/" + cssFile
     if (!$("link[href^='" + href + "']").length) {
@@ -179,8 +173,7 @@ function requireCss(cssFile) {
                 console.warn("Could not load script " + script);
             }
         });
-    }
-    else
+    } else
     {
         //  alert("Not Loaded");
     }
@@ -316,8 +309,7 @@ function createAppDialog(theContent, dialog_id, call_backs, buttons_to_show_in) 
     {
         var dialogContainer = "<div id='" + dialog_id + "' class='cms-ui-dialog'></div>";
         $("body").append($(dialogContainer));
-    }
-    else
+    } else
     {
         dialogContainer = $("#" + dialog_id);
     }
@@ -375,29 +367,28 @@ function ui_ajax_select(success_callback) {
             data: "id=" + this.getAttribute("data-id") + "&" + this.getAttribute("name") + "=" + selected_item,
             success: function (data, textStatus, jqXHR)
             {
-              //  console.log(data);
-              //  console.log(textStatus);
-              //  console.log(jqXHR);
-              //  console.log(that);
-                
+                //  console.log(data);
+                //  console.log(textStatus);
+                //  console.log(jqXHR);
+                //  console.log(that);
+
                 if (typeof success_callback == "function")
                 {
-                    success_callback(that,data);
+                    success_callback(that, data);
                 }
                 // alert(data);
                 if (data === undefined || data === null || data === "")
                 {
                     //display warning
-                }
-                else
+                } else
                 {
 
                 }
             },
-             fail: function (jqXHR, textStatus, errorThrown) {
+            fail: function (jqXHR, textStatus, errorThrown) {
                 setUpNotifier("error.png", "Warning", textStatus);
             }
-            
+
         });
     });
 }
@@ -406,7 +397,7 @@ function ui_ajax_select(success_callback) {
 function ui_ajax_checkbox() {
 
     $("input.ui-ajax-checkbox").bind("change", function () {
-        
+
         dataUrl = this.getAttribute("data-url");
         dataMethod = this.getAttribute("data-method");
         dataType = this.getAttribute("data-type");
@@ -415,19 +406,18 @@ function ui_ajax_checkbox() {
         fieldName = this.getAttribute("name");
         checkType = this.getAttribute("data-check-type");
         checkBoxValue = this.getAttribute("checkbox_value");
-        
+
         var dataObj = {};
-        dataObj[dataClass]= {};
-        if (checkType=="boolean")
+        dataObj[dataClass] = {};
+        if (checkType == "boolean")
         {
-          dataObj[dataClass][fieldName] = (isChecked ? 1 : 0) 
-        }
-        else
+            dataObj[dataClass][fieldName] = (isChecked ? 1 : 0)
+        } else
         {
-           dataObj[dataClass][fieldName] = (isChecked ? checkBoxValue : "") 
+            dataObj[dataClass][fieldName] = (isChecked ? checkBoxValue : "")
         }
 
-        
+
         //alert(this.getAttribute("data-id"));
 
         $.ajax({
@@ -441,8 +431,7 @@ function ui_ajax_checkbox() {
                 if (data === undefined || data === null || data === "")
                 {
                     //display warning
-                }
-                else
+                } else
                 {
 
                 }
@@ -472,8 +461,7 @@ function ui_ajax_settings_select() {
                 if (data === undefined || data === null || data === "")
                 {
                     //display warning
-                }
-                else
+                } else
                 {
 
                 }
@@ -499,15 +487,15 @@ function updateMenu(menu_id)
                 menu.replaceWith(data);
                 if (typeof (application_ready_function) == "function")
                 {
-                application_ready_function();
-            }
+                    application_ready_function();
+                }
                 // console.log(data);
             }
         });
     }
 }
 
-function createButtonList(call_backs,buttons_to_build)
+function createButtonList(call_backs, buttons_to_build)
 {
     button_list = {};
 
@@ -525,12 +513,12 @@ function createButtonList(call_backs,buttons_to_build)
         };
 
     });
-    
+
     return (button_list);
 
 }
 
-function createAppDialogUtil(theContent, dialog_id, completion_callback, completion_button) {
+function createAppDialogUtil(theContent, dialog_id, completion_callback, completion_button, beforeclose_callback) {
 
     console.log(typeof (completion_button))
 
@@ -544,8 +532,7 @@ function createAppDialogUtil(theContent, dialog_id, completion_callback, complet
     {
         var dialogContainer = "<div id='" + dialog_id + "'></div>";
         $("body").append($(dialogContainer));
-    }
-    else
+    } else
     {
         dialogContainer = $("#" + dialog_id);
     }
@@ -580,9 +567,20 @@ function createAppDialogUtil(theContent, dialog_id, completion_callback, complet
 
                 }
             }],
+        beforeClose: function (event, ui)
+        {
+            var close_dialog = true;
+
+            if (typeof (beforeclose_callback) == "function")
+            {
+                close_dialog = beforeclose_callback(event, ui);
+
+            }
+            return close_dialog;
+        },
         close: function (event, ui) {
 
-  if (typeof (completion_callback) == "function")
+            if (typeof (completion_callback) == "function")
             {
                 completion_callback();
             }
@@ -596,8 +594,7 @@ function createAppDialogUtil(theContent, dialog_id, completion_callback, complet
                 if (typeof (refresh_user_live_edit) == 'function') {
                     refresh_user_live_edit();
                 }
-            }
-            catch (e) {
+            } catch (e) {
                 // statements to handle any exceptions
                 console.log(e); // pass exception object to error handler
             }
@@ -643,8 +640,7 @@ function createAppDialogCancel(theContent, dialog_id, completion_callback, compl
     {
         var dialogContainer = "<div id='" + dialog_id + "'></div>";
         $("body").append($(dialogContainer));
-    }
-    else
+    } else
     {
         dialogContainer = $("#" + dialog_id);
     }
@@ -701,8 +697,7 @@ function createAppDialogCancel(theContent, dialog_id, completion_callback, compl
                 if (typeof (refresh_user_live_edit) == 'function') {
                     refresh_user_live_edit();
                 }
-            }
-            catch (e) {
+            } catch (e) {
                 // statements to handle any exceptions
                 console.log(e); // pass exception object to error handler
             }
@@ -737,21 +732,21 @@ function createAppDialogCancel(theContent, dialog_id, completion_callback, compl
 /*
  * 
  *  Sample call of the createAppDialogAdv
-createAppDialogAdv("this is test content","test-dialog",{
-        completion: function completionCallback() {
-        console.log("Complete");
-        },
-        "Save as Draft": function savedClicked() {
-            console.log("Saved")
-        },
-        "Cancel": function cancelClicked() {
-           console.log("Canceled.")
-        },
-        "Submit": function submitClicked() {
-           console.log("Submitted.")
-            }}, "Submit,Save as Draft,Cancel")
-            
-*/
+ createAppDialogAdv("this is test content","test-dialog",{
+ completion: function completionCallback() {
+ console.log("Complete");
+ },
+ "Save as Draft": function savedClicked() {
+ console.log("Saved")
+ },
+ "Cancel": function cancelClicked() {
+ console.log("Canceled.")
+ },
+ "Submit": function submitClicked() {
+ console.log("Submitted.")
+ }}, "Submit,Save as Draft,Cancel")
+ 
+ */
 
 function createAppDialogAdv(theContent, dialog_id, call_backs, buttons_to_show_in) {
 // completion_callback, save_callback, cancel_callback, submit_callback
@@ -761,14 +756,13 @@ function createAppDialogAdv(theContent, dialog_id, call_backs, buttons_to_show_i
     {
         var dialogContainer = "<div id='" + dialog_id + "'></div>";
         $("body").append($(dialogContainer));
-    }
-    else
+    } else
     {
         dialogContainer = $("#" + dialog_id);
     }
 
-    button_list = createButtonList(call_backs,buttons_to_show_in);
-    
+    button_list = createButtonList(call_backs, buttons_to_show_in);
+
     theContent = '<input type="hidden" autofocus="autofocus" />' + theContent
     theAppDialog = $('#' + dialog_id).dialog({
         autoOpen: false,
@@ -811,7 +805,8 @@ function findMyEvents(me) {
         console.log($(me)[0])
         console.log($._data($(me)[0], 'events'))
         $._data($(me)[0], 'events')
-    };
+    }
+    ;
     for (var i = 0; i < $(me).children().length; i++) {
         findMyEvents($(me).children()[i])
     }
