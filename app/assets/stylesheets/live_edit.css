@@ -342,3 +342,7 @@ div#user-info-block {
 display: inline-block;
 position: relative;
 }
+
+div.user-initials {
+    cursor: help;
+}

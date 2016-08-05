@@ -2,6 +2,8 @@ class AdminController < ApplicationController
   # just display the form and wait for user to
   # enter a name and password
 
+    protect_from_forgery except: :clear_user_locks
+
   def login
     session[:user_id] = nil
     if request.post?
