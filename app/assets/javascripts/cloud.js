@@ -677,8 +677,7 @@ function bindHideGrid() {
 
 function bindCloseIframe() {
 
-    $("#hide-iframe").click(function () {
-
+    $("#hide-iframe").off("click").on("click",function () {
         $("#nav-grid-links").fadeIn();
         $("#application-space").addClass("hidden");
         $($currentApplicationId).removeClass("blowup");
