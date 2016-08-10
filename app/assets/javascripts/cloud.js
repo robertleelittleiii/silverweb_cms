@@ -21,14 +21,14 @@ function cloud1() {
     }, 10000).animate({
         left: "-150px"
     }, 0)
-    
+
     // since the login screen doesn't have any watching of the system, we will use the animation timeout to allow 
     //a function to be called by the application to perform some login screen checks (if necessary).
-    
+
     if (typeof LoginScreenCallback == "function") {
         LoginScreenCallback();
     }
-    
+
     cloud1id = setTimeout("cloud1()", 10000);
 }
 function cloud2() {
@@ -107,8 +107,7 @@ function toggle_login_box(display_now) {
             $("#login-backdrop").fadeIn(500);
             $("form#login-form").css("top", "0px");
 
-        }
-        else
+        } else
         {
             $("form#login-form").css("top", "-350px");
             $(".login-enclosure").css("opacity", "0");
@@ -119,12 +118,10 @@ function toggle_login_box(display_now) {
             // $(".login-enclosure").slideUp(500);
 
         }
-    }
-    else {
+    } else {
         if (display_now) {
             $(".login-enclosure").fadeIn(500);
-        }
-        else
+        } else
         {
             $(".login-enclosure").fadeOut(500);
 
@@ -153,8 +150,7 @@ function checkLoginStatus()
 
                 logedIn();
                 stop_animation();
-            }
-            else
+            } else
             {
                 setTimeout("initial_animation()", 200);
 
@@ -235,8 +231,7 @@ function bindCancelClick() {
             //$("form#login-form").css("top","-350px");
             // $(".login-enclosure").slideUp(500);
 
-        }
-        else {
+        } else {
             $("#login-backdrop").fadeOut(500);
             $(".login-enclosure").fadeOut(500, function () {
                 $("#login-enclosure-container").html("");
@@ -250,20 +245,20 @@ function bindCancelClick() {
 function bindLogoutClick() {
     $('a#sign-out-button').bind('ajax:beforeSend', function (evt, xhr, settings) {
         // alert("ajax:before");  
-        console.log('ajax:before');
-        console.log(evt);
-        console.log(xhr);
-        console.log(settings);
+        // console.log('ajax:before');
+        // console.log(evt);
+        // console.log(xhr);
+        // console.log(settings);
 
 
     }).bind('ajax:success', function (evt, data, status, xhr) {
         //  alert("ajax:success"); 
-        console.log('ajax:success');
-        console.log(evt);
-        console.log(data);
-        console.log(data.message)
-        console.log(status);
-        console.log(xhr);
+        // console.log('ajax:success');
+        // console.log(evt);
+        // console.log(data);
+        // console.log(data.message)
+        // console.log(status);
+        // console.log(xhr);
         updateFooterDiv();
         // updateAppDiv();
         updateSecurityDiv();
@@ -277,18 +272,18 @@ function bindLogoutClick() {
 
     }).bind('ajax:error', function (evt, xhr, status, error) {
         // alert("ajax:failure"); 
-        console.log('ajax:error');
-        console.log(evt);
-        console.log(xhr);
-        console.log(status);
-        console.log(error);
+        // console.log('ajax:error');
+        // console.log(evt);
+        // console.log(xhr);
+        // console.log(status);
+        // console.log(error);
 
     }).bind('ajax:complete', function (evt, xhr, status) {
         //    alert("ajax:complete");  
-        console.log('ajax:complete');
-        console.log(evt);
-        console.log(xhr);
-        console.log(status);
+        // console.log('ajax:complete');
+        // console.log(evt);
+        // console.log(xhr);
+        // console.log(status);
 
 
     });
@@ -296,21 +291,20 @@ function bindLogoutClick() {
 function bindLoginClick(url_to_goto) {
     $('#login-form').bind('ajax:beforeSend', function (evt, xhr, settings) {
         // alert("ajax:before");  
-        console.log('ajax:before');
-        console.log(evt);
-        console.log(xhr);
-        console.log(settings);
+        // console.log('ajax:before');
+        // console.log(evt);
+        // console.log(xhr);
+        // console.log(settings);
 
 
     }).bind('ajax:success', function (evt, data, status, xhr) {
         //  alert("ajax:success"); 
-        console.log('ajax:success');
-        console.log(evt);
-        console.log(data);
+        // console.log('ajax:success');
+        // console.log(evt);
+        // console.log(data);
         if (data.sucessfull) {
             login_sucessfull(url_to_goto);
-        }
-        else
+        } else
         {
             $(".login-enclosure").effect("shake", {
                 times: 3
@@ -319,23 +313,23 @@ function bindLoginClick(url_to_goto) {
         }
 
 
-        console.log(status);
-        console.log(xhr);
+        // console.log(status);
+        // console.log(xhr);
 
     }).bind('ajax:error', function (evt, xhr, status, error) {
         // alert("ajax:failure"); 
-        console.log('ajax:error');
-        console.log(evt);
-        console.log(xhr);
-        console.log(status);
-        console.log(error);
+        // console.log('ajax:error');
+        // console.log(evt);
+        // console.log(xhr);
+        // console.log(status);
+        // console.log(error);
 
     }).bind('ajax:complete', function (evt, xhr, status) {
         //    alert("ajax:complete");  
-        console.log('ajax:complete');
-        console.log(evt);
-        console.log(xhr);
-        // console.log(status);
+        // console.log('ajax:complete');
+        // console.log(evt);
+        // console.log(xhr);
+        // // console.log(status);
 
 
     });
@@ -345,38 +339,38 @@ function bindLoginClick(url_to_goto) {
 function bindResetClick() {
     $('#recover-form').bind('ajax:beforeSend', function (evt, xhr, settings) {
         // alert("ajax:before");  
-        console.log('ajax:before');
-        console.log(evt);
-        console.log(xhr);
-        console.log(settings);
+        // console.log('ajax:before');
+        // console.log(evt);
+        // console.log(xhr);
+        // console.log(settings);
 
 
     }).bind('ajax:success', function (evt, data, status, xhr) {
         //  alert("ajax:success"); 
-        console.log('ajax:success');
-        console.log(evt);
-        console.log(data);
+        // console.log('ajax:success');
+        // console.log(evt);
+        // console.log(data);
         setUpPurrNotifier("Notice", data.message);
         $('div.login-form').toggleClass('flipped');
         $("input[name='name']").val("");
 
-        console.log(status);
-        console.log(xhr);
+        // console.log(status);
+        // console.log(xhr);
 
     }).bind('ajax:error', function (evt, xhr, status, error) {
         // alert("ajax:failure"); 
-        console.log('ajax:error');
-        console.log(evt);
-        console.log(xhr);
-        console.log(status);
-        console.log(error);
+        // console.log('ajax:error');
+        // console.log(evt);
+        // console.log(xhr);
+        // console.log(status);
+        // console.log(error);
 
     }).bind('ajax:complete', function (evt, xhr, status) {
         //    alert("ajax:complete");  
-        console.log('ajax:complete');
-        console.log(evt);
-        console.log(xhr);
-        // console.log(status);
+        // console.log('ajax:complete');
+        // console.log(evt);
+        // console.log(xhr);
+        // // console.log(status);
 
 
     });
@@ -392,13 +386,12 @@ function userLoggedIn() {
         {
             if (data == true) {
                 //  alert("do nothing");
-            }
-            else
+            } else
             {
                 window.location = "/?nocache=" + (new Date()).getTime();
                 // alert("refresh to site");
             }
-            console.log(data);
+            // console.log(data);
 
         }
     });
@@ -477,8 +470,7 @@ function login_sucessfull(url_to_goto) {
     if (!(typeof url_to_goto == "undefined"))
     {
         window.location = url_to_goto
-    }
-    else
+    } else
     {
         // updateAppDiv();
 
@@ -546,14 +538,12 @@ function updateSecurityDiv()
             if (data === undefined || data === null || data === "")
             {
                 //display warning
-            }
-            else
+            } else
             {
                 if ($("div#admin-nav.normal").length > 0) {
                     $("div#admin-nav.normal #security-div").html(data);
                     $("div#admin-nav.small #security-div").html(data);
-                }
-                else
+                } else
                 {
                     $("#security-div").html(data);
 
@@ -584,8 +574,7 @@ function updateFooterDiv()
             if (data === undefined || data === null || data === "")
             {
                 //display warning
-            }
-            else
+            } else
             {
                 $("#footer").html(data);
                 bindMyAccountClick();
@@ -613,8 +602,7 @@ function updateAppDiv() {
                 if (data === undefined || data === null || data === "")
                 {
                     //display warning
-                }
-                else
+                } else
                 {
 
                     if ($("#nav-grid-links").length === 0) {
@@ -629,8 +617,7 @@ function updateAppDiv() {
                     {
                         $("#nav-grid-links").fadeIn();
                         $("#grid-nav").css("top", "0px");
-                    }
-                    else
+                    } else
                     {
                         $("#nav-grid-links").fadeIn();
                         $("#grid-nav").css("top", "0px");
@@ -677,7 +664,7 @@ function bindHideGrid() {
 
 function bindCloseIframe() {
 
-    $("#hide-iframe").off("click").on("click",function () {
+    $("#hide-iframe").off("click").on("click", function () {
         $("#nav-grid-links").fadeIn();
         $("#application-space").addClass("hidden");
         $($currentApplicationId).removeClass("blowup");
@@ -708,8 +695,7 @@ function bindMyAccount() {
         $("div#admin-nav #my-account").click(function () {
             updateAppDiv();
         });
-    }
-    else
+    } else
     {
         $("div#admin-nav.normal #my-account").click(function () {
             updateAppDiv();
@@ -725,7 +711,7 @@ function bindIconButtonClick() {
     $('.icon-button').click(function (e) {
         if (window.matchMedia("only screen and (max-width: 524px)").matches) {
             the_url = $(this).attr("href").replace("window", "");
-            console.log(the_url);
+            // console.log(the_url);
             // e.stopPropagation(); 
             window.location = the_url;
 
@@ -739,22 +725,22 @@ function bindAppClick() {
 
     $('.icon-button').bind('ajax:beforeSend', function (evt, xhr, settings) {
         // alert("ajax:before");  
-        console.log('ajax:before');
-        console.log(evt);
-        console.log(xhr);
-        console.log(settings);
-        console.log(this);
+        // console.log('ajax:before');
+        // console.log(evt);
+        // console.log(xhr);
+        // console.log(settings);
+        // console.log(this);
         $(this).find("#ajax-wait img").show();
 
     }).bind('ajax:success', function (evt, data, status, xhr) {
         //  alert("ajax:success"); 
         $(this).find("#ajax-wait img").hide();
 
-        console.log('ajax:success');
-        console.log(evt);
-        console.log(data);
-        console.log(this);
-        console.log(this.href);
+        // console.log('ajax:success');
+        // console.log(evt);
+        // console.log(data);
+        // console.log(this);
+        // console.log(this.href);
         $currentApplicationId = $(this).parent();
         $(this).parent().addClass("blowup");
         $(".grid_tabnav ul li").addClass("hidden");
@@ -776,8 +762,7 @@ function bindAppClick() {
             var thisApp = createiFrameOverlay(theController, data, this.href);
             $("#cloud-switch").fadeIn();
             updateFooterDiv();
-        }
-        else {
+        } else {
 
             if (windowType == "app")
 
@@ -785,8 +770,7 @@ function bindAppClick() {
                 var thisApp = createAppOverlay(theController, data);
 
                 //   alert("This is an app");
-            }
-            else
+            } else
             {
                 //   alert("this is a dialog!")
                 //var thisDialog = createEditDialog(data);
@@ -803,54 +787,57 @@ function bindAppClick() {
                 $(thisDialog).find(".best_in_place").best_in_place();
 
                 thisDialog.scrollTop(0);
+
+                //// console.log(status);
+                //// console.log(xhr);
+
+                //// console.log(this.href);
+
+                requireCss(theController + "/" + (theAction == 'index' ? 'index_' : theAction) + ".css");
+                require(theController + "/" + (theAction == 'index' ? 'index_' : theAction) + ".js");
+
+                //// console.log(theController + "_" + theAction + "_callDocumentReady");
+
+                try
+                {
+                    if ((typeof (theController + "_" + theAction + "_callDocumentReady") == 'function') | (typeof (eval(theController + "_" + theAction + "_callDocumentReady")) == 'function')) {
+                        eval(theController + "_" + theAction + "_callDocumentReady()");
+                    }
+                } catch (e) {
+                    // statements to handle any exceptions
+                    // console.log(e); // pass exception object to error handler
+                }
+
             }
         }
 
-        console.log(status);
-        console.log(xhr);
+        //// console.log(status);
+        //// console.log(xhr);
 
-        console.log(this.href);
+        //// console.log(this.href);
 
-        requireCss(theController + "/" + (theAction == 'index' ? 'index_' : theAction) + ".css");
-        require(theController + "/" + (theAction == 'index' ? 'index_' : theAction) + ".js");
-
-        console.log(theController + "_" + theAction + "_callDocumentReady");
-
-        try
-        {
-            if ((typeof (theController + "_" + theAction + "_callDocumentReady") == 'function') | (typeof (eval(theController + "_" + theAction + "_callDocumentReady")) == 'function')) {
-                eval(theController + "_" + theAction + "_callDocumentReady()");
-            }
-        }
-        catch (e) {
-            // statements to handle any exceptions
-            console.log(e); // pass exception object to error handler
-        }
-
-
-
-
+        //// console.log(theController + "_" + theAction + "_callDocumentReady");
 
 
     }).bind('ajax:error', function (evt, xhr, status, error) {
         // alert("ajax:failure"); 
-        console.log('ajax:error');
-        console.log(evt);
-        console.log(xhr);
-        console.log(status);
-        console.log(error);
+        // console.log('ajax:error');
+        // console.log(evt);
+        // console.log(xhr);
+        // console.log(status);
+        // console.log(error);
 
         $(this).find("#ajax-wait img").hide();
         setUpPurrNotifier("Network Error", "A network error has occured, please click the icon again.")
 
     }).bind('ajax:complete', function (evt, xhr, status) {
         //    alert("ajax:complete");  
-        console.log('ajax:complete');
-        console.log(evt);
-        console.log(xhr);
+        // console.log('ajax:complete');
+        // console.log(evt);
+        // console.log(xhr);
         $('#edit-dialog').scrollTop(0);
 
-        // console.log(status);
+        // // console.log(status);
 
 
     });
@@ -1000,43 +987,42 @@ function bindLoginRegisterLink() {
 function bindRegisterClick() {
     $('#registration-form').bind('ajax:beforeSend', function (evt, xhr, settings) {
         // alert("ajax:before");  
-        console.log('ajax:before');
-        console.log(evt);
-        console.log(xhr);
-        console.log(settings);
+        // console.log('ajax:before');
+        // console.log(evt);
+        // console.log(xhr);
+        // console.log(settings);
 
 
     }).bind('ajax:success', function (evt, data, status, xhr) {
         //  alert("ajax:success"); 
-        console.log('ajax:success');
-        console.log(evt);
-        console.log(data);
+        // console.log('ajax:success');
+        // console.log(evt);
+        // console.log(data);
         setUpPurrNotifier("Notice", data.message);
         if (data.sucessfull) {
             login_sucessfull();
-        }
-        else
+        } else
         {
             $('div.login-form').toggleClass('flipped-register');
             $("input[name='name']").val("");
         }
-        console.log(status);
-        console.log(xhr);
+        // console.log(status);
+        // console.log(xhr);
 
     }).bind('ajax:error', function (evt, xhr, status, error) {
         // alert("ajax:failure"); 
-        console.log('ajax:error');
-        console.log(evt);
-        console.log(xhr);
-        console.log(status);
-        console.log(error);
+        // console.log('ajax:error');
+        // console.log(evt);
+        // console.log(xhr);
+        // console.log(status);
+        // console.log(error);
 
     }).bind('ajax:complete', function (evt, xhr, status) {
         //    alert("ajax:complete");  
-        console.log('ajax:complete');
-        console.log(evt);
-        console.log(xhr);
-        // console.log(status);
+        // console.log('ajax:complete');
+        // console.log(evt);
+        // console.log(xhr);
+        // // console.log(status);
 
 
     });
@@ -1058,8 +1044,7 @@ function call_document_ready(theAction) {
     try
     {
         eval(the_function);
-    }
-    catch (err)
+    } catch (err)
     {
 
     }
@@ -1142,8 +1127,7 @@ function update_content() {
                 if (typeof eval(data_additional + "_callDocumentReady") == "function") {
                     eval(data_additional + "_callDocumentReady()")
                 }
-            }
-            catch (err)
+            } catch (err)
             {
             }
         }
