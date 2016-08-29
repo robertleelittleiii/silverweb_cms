@@ -239,7 +239,7 @@ module  MenusHelper
   def buildverticlesubmenu(params=nil)
     puts("-------------------> #{params.inspect}")
     puts("******************> #{params[:menu_name]}")
-    @menu_id = Menu.where(:name=>params[:menu_name]).first.id  || session[:parent_menu_id] || 0
+    @menu_id = Menu.where(:name=>params[:menu_name]).first.id  || session[:parent_menu_id] || 0 rescue 0
     
     puts("in build sub menu with:", session[:parent_menu_id] , @menu_id)
     

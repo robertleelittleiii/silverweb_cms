@@ -54,6 +54,14 @@ module UiHelper
     end
     
   end
+  
+   def add_pintrest_verification_code 
+    pintrest_id = Settings.pintrest_id
+    if not pintrest_id.blank? then
+    "<meta name='p:domain_verify' content='#{pintrest_id}'//>".html_safe
+    end
+  end
+  
   def asset_available? logical_path
     if Rails.configuration.assets.compile
       Rails.application.precompiled_assets.include? logical_path

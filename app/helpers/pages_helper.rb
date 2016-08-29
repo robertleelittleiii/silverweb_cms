@@ -37,14 +37,27 @@ module PagesHelper
       end
   end
   
-  def page_info(page)
+  def page_info(page,full_screen="false")
     returnval = "<div id=\"attr-pages\" class=\"hidden-item\">"
     returnval << "<div id=\"page-id\">"+(page.id.to_s rescue "-1")+"</div>"
-    
+    returnval << "<div id=\"full-screen\">"+(page.full_screen.to_s rescue full_screen)+"</div>"
+    returnval << ((page.pop_up_page_link.blank? ? "" :"<div id=\"pop-up-page-link\">"+(page.pop_up_page_link.to_s ) rescue "" ) +"</div>")
     returnval=returnval + "</div>"
     return returnval.html_safe
  
   end
+  
+ 
+  
+#  def page_attr_display(page,full_screen="false")
+#    returnval=""
+#    returnval="<div id=\"attr-pages\" class=\"hidden-item\">"
+#    returnval=returnval+"<div id=\"full-screen\">"+(page.full_screen.to_s rescue full_screen)+"</div>"
+#    returnval=returnval+ ((page.pop_up_page_link.blank? ? "" :"<div id=\"pop-up-page-link\">"+(page.pop_up_page_link.to_s ) rescue "" ) +"</div>")
+#    returnval=returnval + "</div>"
+#    return returnval.html_safe
+# 
+#  end
   
   
 end
