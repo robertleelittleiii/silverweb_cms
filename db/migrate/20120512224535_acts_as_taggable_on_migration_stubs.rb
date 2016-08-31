@@ -1,4 +1,4 @@
-class ActsAsTaggableOnMigration < ActiveRecord::Migration
+class ActsAsTaggableOnMigrationStubs < ActiveRecord::Migration
   def self.up
     # Stub..do nothing.. for khoandco
   end
