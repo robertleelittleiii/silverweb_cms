@@ -13,6 +13,10 @@ class CreateUserLiveEdits < ActiveRecord::Migration
     end
   end
 
+  #
+  #
+  #
+  
   def self.down
     if  ActiveRecord::Base.connection.table_exists? 'user_live_edits' then
       drop_table :user_live_edits
