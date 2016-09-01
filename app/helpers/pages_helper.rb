@@ -30,11 +30,15 @@ module PagesHelper
   end
   
   def get_page_style_sheet
-    if @page.blank? or @page.page_style.blank? then
+    begin
+      if @page.blank? or @page.page_style.blank? then
         return ""
       else
         return stylesheet_link_tag("style_types/" + @page.page_style) rescue ""
       end
+    rescue
+      return ""
+    end
   end
   
   def page_info(page,full_screen="false")
