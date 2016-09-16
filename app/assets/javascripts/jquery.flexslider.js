@@ -1,5 +1,5 @@
 /*
- * jQuery FlexSlider v2.6.1
+ * jQuery FlexSlider v2.6.3
  * Copyright 2012 WooThemes
  * Contributing Author: Tyler Smith
  */
@@ -776,12 +776,8 @@
           }
         } else { // FADE:
           if (!touch) {
-            //slider.slides.eq(slider.currentSlide).fadeOut(slider.vars.animationSpeed, slider.vars.easing);
-            //slider.slides.eq(target).fadeIn(slider.vars.animationSpeed, slider.vars.easing, slider.wrapup);
-
             slider.slides.eq(slider.currentSlide).css({"zIndex": 1}).animate({"opacity": 0}, slider.vars.animationSpeed, slider.vars.easing);
             slider.slides.eq(target).css({"zIndex": 2}).animate({"opacity": 1}, slider.vars.animationSpeed, slider.vars.easing, slider.wrapup);
-
           } else {
             slider.slides.eq(slider.currentSlide).css({ "opacity": 0, "zIndex": 1 });
             slider.slides.eq(target).css({ "opacity": 1, "zIndex": 2 });
@@ -911,6 +907,8 @@
             slider.container.empty().append(slider.slides);
           }
         }
+        console.log(slider.slides.first());
+        console.log(slider.slides.last());
         // INFINITE LOOP && !CAROUSEL:
         if (slider.vars.animationLoop && !carousel) {
           slider.cloneCount = 2;
