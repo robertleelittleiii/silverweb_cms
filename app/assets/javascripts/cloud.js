@@ -264,6 +264,7 @@ function bindLogoutClick() {
         updateSecurityDiv();
         // show_page();
         update_content();
+        call_login_callbacks();
 
         if (!(typeof updateSiteDivsLogout == "undefined"))
         {
@@ -459,6 +460,7 @@ function login_sucessfull(url_to_goto) {
     updateFooterDiv();
     updateSecurityDiv();
     update_content();
+    call_login_callbacks();
     // show_page();
     // if updateSiteDivs is defined for site then...
 
@@ -1073,6 +1075,21 @@ function show_page(page_id) {
             enableSliderEdit();
         }
     });
+
+}
+
+function call_login_callbacks() {
+
+    var data_update_url = $("div#post-login-callback").attr('data-post-login-callback');
+
+    try {
+        if (typeof eval(data_update_url) == "function") {
+            eval(data_update_url + "()")
+        }
+    } catch (err)
+    {
+
+    }
 
 }
 

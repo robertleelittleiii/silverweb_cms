@@ -19,6 +19,20 @@ html body#tinymce li.selector {
     text-align: center;
 }
 
+html body#tinymce p.selector {
+    display: block !important;
+    height: 59px;
+    text-align: center;
+    width: 100%;
+    background-color: red;
+    color: white;
+    font-size: 40px;
+}
+
+html body#tinymce p.selector:after {
+    content:"SELECTOR";
+}
+
 <%=render :text=>Rails.application.assets['website.css'].to_s.html_safe %>
 <%=(@page.template_name.blank? ? "" : render(:text=>Rails.application.assets["site/show_page-#{@page.template_name}.css"].to_s.html_safe)) rescue ""%>
 <%=render(:text=>Rails.application.assets["editor-custom.css"].to_s.html_safe) %>
