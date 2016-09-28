@@ -252,6 +252,7 @@ module SiteHelper
         end
       end
     rescue
+      returnval=""
     end
     return returnval.html_safe
 
