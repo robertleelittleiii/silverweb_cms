@@ -106,6 +106,7 @@ function toggle_login_box(display_now) {
             $(".login-enclosure").css("display", "block");
             $("#login-backdrop").fadeIn(500);
             $("form#login-form").css("top", "0px");
+            $("input#name").focus();
 
         } else
         {
@@ -121,6 +122,7 @@ function toggle_login_box(display_now) {
     } else {
         if (display_now) {
             $(".login-enclosure").fadeIn(500);
+            $("input#name").focus();
         } else
         {
             $(".login-enclosure").fadeOut(500);
@@ -196,6 +198,7 @@ function loadLoginBox(url_to_goto) {
             $(".login-enclosure").hide();
             $(".login-enclosure").css("opacity", 1);
             $("form#login-form").css("top", "0px");
+            $("input#name").focus();
 
             toggle_login_box(true);
             bindLoginClick(url_to_goto);
@@ -1005,7 +1008,7 @@ function bindRegisterClick() {
             login_sucessfull();
         } else
         {
-            $('div.login-form').toggleClass('flipped-register');
+                $('div.login-form').toggleClass('flipped-register');
             $("input[name='name']").val("");
         }
         // console.log(status);

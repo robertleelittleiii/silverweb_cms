@@ -175,9 +175,10 @@ function usereditClickBinding() {
                 editUserDialog.dialog({
                     close: function (event, ui) {
                         userTableAjax.draw();
-
+                        
                         editUserDialog.dialog("destroy");
-
+                        editUserDialog.html("");
+                        editUserDialog.remove();
                     }
                 });
                 require("users/update_roles.js");
