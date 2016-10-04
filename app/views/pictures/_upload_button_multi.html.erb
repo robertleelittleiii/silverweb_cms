@@ -1,5 +1,5 @@
 
-<%=form_tag({:action=> params[:action_name].blank? ? "add_image" :params[:action_name], :id=>params[:id]}, :class=>"upload-form", :multipart => true, :target=>'upload_frame', :remote => true ) do%>
+<%=form_tag({:action=> params[:action_name].blank? ? "add_image" :params[:action_name], :id=>params[:id], :type=>params[:type]}, :class=>"upload-form", :multipart => true, :target=>'upload_frame', :remote => true ) do%>
    <span class="btn btn-success fileinput-button">
  <i class="glyphicon glyphicon-plus"></i>
   <span><%=image_tag("interface/browse.png", :id=>"file-button") %> </span>
