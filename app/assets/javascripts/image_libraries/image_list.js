@@ -173,6 +173,8 @@ function render_pictures(picture_id) {
             activate_buttons();
             bind_download_to_files();
             bindDeleteImage();
+            $("img").unveil();
+
         }
     });
 
