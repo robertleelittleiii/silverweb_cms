@@ -19,6 +19,8 @@ $(document).ready(function () {
     initialize_insert_image_button();
     activate_buttons();
     bindDeleteImage();
+    require("jquery.unveil.js");
+    $("img").unveil();
 });
 
 //$(document).on('focusin', function(e) {

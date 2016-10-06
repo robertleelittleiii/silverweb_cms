@@ -27,8 +27,8 @@
               </div>
           </div>
           <div class="picture-item">
-              <div class="picture-float-center">
-                  <%= picture.file_type==".pdf" ? (image_tag(picture.image_url(:pdf_preview).to_s)) : (image_tag(picture.image_url(:preview).to_s)) rescue ""%>
+              <div class="picture-float-center"> 
+                  <%= picture.file_type==".pdf" ? (image_tag("interface/image_loading.gif", :width=>"150px","data-src"=> picture.image_url(:pdf_preview).to_s)) : (image_tag("interface/image_loading.gif",:width=>"150px","data-src"=>picture.image_url(:preview).to_s)) rescue ""%>
               </div>
           </div>
       </div>
