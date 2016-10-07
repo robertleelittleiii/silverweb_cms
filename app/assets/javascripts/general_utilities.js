@@ -292,6 +292,17 @@ function setupCheckboxes(inputElement) {
 function createAppDialog(theContent, dialog_id, call_backs, buttons_to_show_in) {
 // completion_callback, save_callback, cancel_callback, submit_callback
 
+// callbacks example:
+//
+//    { completion: function completionCallback() {
+//    
+//        },
+//      save: function saveCallback() {
+//      
+//      }
+//      
+//
+//    
     if (typeof call_backs === 'undefined')
         var call_backs = {};
     if (typeof buttons_to_show_in === 'undefined')
@@ -327,9 +338,12 @@ function createAppDialog(theContent, dialog_id, call_backs, buttons_to_show_in) 
                 call_backs.completion();
             }
 
-            // $('#' + dialog_id).html("");
-            //  $('#' + dialog_id).dialog("destroy");
-            //   alert('closed');
+            $('#' + dialog_id).html("");
+            $('#' + dialog_id).dialog("destroy");
+            $('#' + dialog_id).remove();
+            
+       
+           //    alert('closed');
         },
         open: function (event, ui)
         {
@@ -587,7 +601,7 @@ function createAppDialogUtil(theContent, dialog_id, completion_callback, complet
 
             $('#' + dialog_id).html("");
             $('#' + dialog_id).dialog("destroy");
-            $('#' + dialog_id).html("");
+            $('#' + dialog_id).remove();
 
 
             try {
