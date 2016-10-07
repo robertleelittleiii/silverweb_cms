@@ -21,6 +21,16 @@ class SiteController < ApplicationController
     end
   end
   
+  def reset
+        @user = User.find_by_password_reset_code(params[:reset_code]) unless params[:reset_code].empty?
+
+    
+    respond_to do |format|
+      format.html # new.html.erb
+      format.json  { head :ok }
+    end
+  end
+  
   #ajax login code
   def login_ajax
     session[:user_id] = nil

@@ -29,6 +29,7 @@ Rails.application.routes.draw do
       get "custom"
       get "link_list"
       get "template_list"
+      get "reset"
     end 
   end
   
@@ -67,6 +68,8 @@ Rails.application.routes.draw do
       post "forgot"
       get "reset"
       post "reset"
+      get "reset_ajax"
+      post "reset_ajax"
       get "password_is_reset"
       get "registration"
       get "lostwithemail"
@@ -170,7 +173,6 @@ Rails.application.routes.draw do
   
   match  '/forgot', :controller => 'registration', :action => 'forgot', via: [:get]
   match  '/lost',                            :controller => 'registration',     :action => 'lost',  via: [:get]
-  match '/reset/:reset_code',                  :controller => 'registration',     :action => 'reset', via: [:get]
   match '/activate/:activation_code',          :controller => 'registration',     :action => 'activate', via: [:get]
   
   

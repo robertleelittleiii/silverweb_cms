@@ -1008,7 +1008,7 @@ function bindRegisterClick() {
             login_sucessfull();
         } else
         {
-                $('div.login-form').toggleClass('flipped-register');
+            $('div.login-form').toggleClass('flipped-register');
             $("input[name='name']").val("");
         }
         // console.log(status);
@@ -1153,4 +1153,190 @@ function update_content() {
         }
     });
 
+}
+
+
+// reset box creation
+
+function toggle_reset_box(display_now) {
+
+    if (window.matchMedia("only screen and (max-width: 524px)").matches) {
+        if (display_now) {
+            $("#login-backdrop").hide();
+            $("div.reset-enclosure").css("display", "block");
+            $("#login-backdrop").fadeIn(500);
+            $("form#reset-form").css("top", "0px");
+            $("input#password").focus();
+
+        } else
+        {
+            $("form#reset-form").css("top", "-350px");
+            $(".reset-enclosure").css("opacity", "0");
+            $(".reset-enclosure").css("display", "none");
+
+            //$(".login-enclosure").fadeOut(500);
+            //$("form#login-form").css("top","-350px");
+            // $(".login-enclosure").slideUp(500);
+
+        }
+    } else {
+        if (display_now) {
+            $(".reset-enclosure").fadeIn(500);
+            $("input#password").focus();
+        } else
+        {
+            $("#login-backdrop").hide();
+            $(".reset-enclosure").fadeOut(500);
+
+        }
+    }
+}
+
+
+function bindSubmitClick() {
+    $('#reset-form').bind('ajax:beforeSend', function (evt, xhr, settings) {
+        // alert("ajax:before");  
+        // console.log('ajax:before');
+        // console.log(evt);
+        // console.log(xhr);
+        // console.log(settings);
+
+
+    }).bind('ajax:success', function (evt, data, status, xhr) {
+        //  alert("ajax:success"); 
+        console.log('ajax:success');
+        console.log(evt);
+        console.log(data);
+
+        switch (data.sucessfull) {
+            case 1: // true, and successfull.
+            {
+                setUpPurrNotifier("Notice", data.message);
+                toggle_reset_box(false);
+                login_sucessfull();
+                break;
+            }
+            case 0: // false and not able to continue 
+            {
+                setUpPurrNotifier("Notice", data.message);
+                toggle_reset_box(false);
+                break;
+            }
+            case -1: // false, but user can try again.
+            {
+                setUpPurrNotifier("Notice", data.message);
+                break;
+            }
+            default:
+            {
+                // do nothing
+            }
+        }
+
+        // console.log(status);
+        // console.log(xhr);
+
+    }
+    ).bind('ajax:error', function (evt, xhr, status, error) {
+        // alert("ajax:failure"); 
+        // console.log('ajax:error');
+        // console.log(evt);
+        // console.log(xhr);
+        // console.log(status);
+        // console.log(error);
+
+    }).bind('ajax:complete', function (evt, xhr, status) {
+        //    alert("ajax:complete");  
+        // console.log('ajax:complete');
+        // console.log(evt);
+        // console.log(xhr);
+        // // console.log(status);
+
+
+    });
+
+}
+
+function loadResetBox(reset_code) {
+
+    $.ajax({
+        url: "/site/reset",
+        type: "GET",
+        dataType: "html",
+        data: {"reset_code": reset_code},
+        success: function (data)
+        {
+            resetContainer = "<div id='reset-enclosure-container'></div>";
+
+            if ($("#reset-enclosure-container").length == 0)
+            {
+                $("body").append($(resetContainer));
+            }
+
+            $("#reset-enclosure-container").html(data);
+            $(".reset-enclosure").hide();
+            $(".reset-enclosure").css("opacity", 1);
+            $("form#reset-form").css("top", "0px");
+            $("input#password").focus();
+
+            toggle_reset_box(true);
+            bindSubmitClick();
+            bindResetCancelClick();
+            $("input.button-link").button();
+            $("a.button-link").button();
+
+
+        }
+    });
+
+
+
+}
+
+
+function bindResetCancelClick() {
+    $("a#cancel-reset-button").click(function (e) {
+
+        if (window.matchMedia("only screen and (max-width: 524px)").matches) {
+
+            $("#login-backdrop").fadeOut(500);
+            $("form#reset-form").css("top", "-350px");
+            $(".reset-enclosure").fadeOut(500, function () {
+                $("#reset-enclosure-container").html("");
+                $("#reset-enclosure-container").remove();
+            });
+
+            //$(".login-enclosure").fadeOut(500);
+            //$("form#login-form").css("top","-350px");
+            // $(".login-enclosure").slideUp(500);
+
+        } else {
+            $("#login-backdrop").fadeOut(500);
+            $(".reset-enclosure").fadeOut(500, function () {
+                $("#reset-enclosure-container").html("");
+                $("#reset-enclosure-container").remove();
+            });
+        }
+
+    });
+}
+function process_admin_actions() {
+    if ($("adminaction").size() > 0) {
+        $("div#notice").text("");
+        var action = $("adminaction").attr("action");
+        var param = $("adminaction").attr("param");
+        switch (action) {
+            case "reset":
+            {
+                loadResetBox(param);
+                console.log("found admin action!");
+                break;
+            }
+            default:
+            {
+                // do nothing
+            }
+        }
+
+    }
 }

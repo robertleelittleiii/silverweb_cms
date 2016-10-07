@@ -37,12 +37,15 @@
 //
 
 $(document).ready(function () {
+    
+    process_admin_actions();
     popUpAlertifExists();
     updateSearchFormBindings();
     disableSelectOptionsSeperators();
     bindLoginButton();
     bindLogoutClick();
     bindMyAccount();
+    
     $(".best_in_place").best_in_place();
 
     $(".datepicker").datepicker();
@@ -68,6 +71,8 @@ $(document).ready(function () {
 //        e.stopImmediatePropagation();
 //    }
 //});
+
+
 });
 
 $(document).off('focusin').on('focusin', function(e) {

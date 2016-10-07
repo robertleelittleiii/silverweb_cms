@@ -34,7 +34,17 @@
     z-index: 32;
 }
 
-div.loginArea table {
+.reset-enclosure {
+    height: 250px;
+    margin-left: auto;
+    margin-right: auto;
+    opacity: 0;
+    position: relative;
+    width: 500px;
+    z-index: 32;
+}
+
+div.loginArea table , div.resetArea table {
 
     padding-left: 30px;
 }
@@ -44,7 +54,7 @@ div.L11G {
     padding-left:10px;
 
 }
-.login-form {
+.login-form , .reset-form{
     height: 235px;
     margin-top: 150px;
     margin-left: auto;
@@ -56,6 +66,11 @@ div.L11G {
     border: double 1px #009238;
     */
 }
+
+.reset-form{
+    width:500px;
+}
+
 
 /*  CSS 3d stuff */
 
@@ -96,11 +111,19 @@ div.login-form form{
     -webkit-animation: pulse 2s infinite;
 }
 
-#login-form{
+#login-form, #reset-form{
     z-index:100;
     background-color: white;
     border: double 10px gray;
     border-radius: 20px;
+}
+
+#reset-form{ 
+    width: 350px;
+}
+
+input#update-button {
+    margin: 20px;
 }
 
 #recover-form{
@@ -166,30 +189,30 @@ div.login-form.flipped-register #registration-form{
 }
 
 .grid_tabnav {
-  margin: 0px;
-  width: 700px;
+    margin: 0px;
+    width: 700px;
 }
 
 .grid_tabnav li {
-  margin: 15px 15px 15px 15px;
-  float: left;
-  text-align: center;
-  font-family: "Helvetica Neue",sans-serif;
-  line-height: 17px;
-  color: #686f74;
-  overflow: hidden;
-  border: 1px black solid;
-  border-radius: 20px;
-  box-shadow: 1px 1px 25px #888888;
-  /* background: rgba(54, 25, 25, .3); */
-  background: rgba(194, 194, 194, 0.6);
-  list-style: none;
-  
-  -webkit-transition: all 1000ms ease;
-  -moz-transition: all 1000ms ease;
-  -ms-transition: all 1000ms ease;
-  -o-transition: all 1000ms ease;
-  transition: all 1000ms ease;
+    margin: 15px 15px 15px 15px;
+    float: left;
+    text-align: center;
+    font-family: "Helvetica Neue",sans-serif;
+    line-height: 17px;
+    color: #686f74;
+    overflow: hidden;
+    border: 1px black solid;
+    border-radius: 20px;
+    box-shadow: 1px 1px 25px #888888;
+    /* background: rgba(54, 25, 25, .3); */
+    background: rgba(194, 194, 194, 0.6);
+    list-style: none;
+
+    -webkit-transition: all 1000ms ease;
+    -moz-transition: all 1000ms ease;
+    -ms-transition: all 1000ms ease;
+    -o-transition: all 1000ms ease;
+    transition: all 1000ms ease;
 }
 
 
@@ -219,50 +242,50 @@ div.login-form.flipped-register #registration-form{
 
 
 #grid-nav {
-  position: relative;
-  z-index: 200;
-  background: rgba(255, 255, 255, 0.6);
-  padding: 20px;
-  border-radius: 0px 0px 10px 10px;
-  display: table;
-  margin-left: auto;
-  margin-right: auto;
+    position: relative;
+    z-index: 200;
+    background: rgba(255, 255, 255, 0.6);
+    padding: 20px;
+    border-radius: 0px 0px 10px 10px;
+    display: table;
+    margin-left: auto;
+    margin-right: auto;
 }
 #grid-bar {
-  position: relative;
-  z-index: 200;
-  background: rgba(255, 255, 255, 1);
-  padding: 5px 20px 5px 20px;
-  border-radius: 10px 10px 0px 0px;
-  display: table;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 100px;
+    position: relative;
+    z-index: 200;
+    background: rgba(255, 255, 255, 1);
+    padding: 5px 20px 5px 20px;
+    border-radius: 10px 10px 0px 0px;
+    display: table;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 100px;
 }
 
 div#grid-action-bar {
-  width: 700px;
+    width: 700px;
 }
 
 div#grid-action-bar a.button-close {
-  padding: 0px;
-  margin: 5px;
-  float:right;
+    padding: 0px;
+    margin: 5px;
+    float:right;
 }
 div.grid-title {
-  display: inline-block;
-  float: left;
-  font-size: 25px;
-  font-weight: bolder;
+    display: inline-block;
+    float: left;
+    font-size: 25px;
+    font-weight: bolder;
 }
 
 
 div#nav-grid-links {
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.6);
-  position: fixed;
-  z-index: 105;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    position: fixed;
+    z-index: 105;
 }
 
 a.icon-button {
@@ -299,7 +322,7 @@ div.ui-dialog.hidden {
 }
 */
 
-#login-enclosure-container {
+#login-enclosure-container , #reset-enclosure-container{
     position: absolute;
     top: 5px;
     width: 100%;
@@ -374,10 +397,10 @@ form#registration-form table {
 
 form#recover-form table tr td.center {
     text-align:center;
-    
+
 }
 form#login-form table tr td.center {
-        text-align: center;
+    text-align: center;
 
 }
 
@@ -457,15 +480,15 @@ div#grid-nav {
     div#grid-nav {
         top:-500px;
     }
-    
-   .hide-grid {
-    display: inline-block !important;
-    background: rgba(255, 255, 255, 0.7);
-    position: absolute;
-    height: 20px;
-    bottom: -22px;
-    margin-left: 35%;
-    margin-right: 35%;
-    width: 22%;
-}
+
+    .hide-grid {
+        display: inline-block !important;
+        background: rgba(255, 255, 255, 0.7);
+        position: absolute;
+        height: 20px;
+        bottom: -22px;
+        margin-left: 35%;
+        margin-right: 35%;
+        width: 22%;
+    }
 }

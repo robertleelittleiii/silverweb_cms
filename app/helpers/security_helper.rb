@@ -14,7 +14,22 @@ module SecurityHelper
       out << "<div id='sign-in-button' class='sites-system-link'>sign in</div>"
     end
     out << "</div>"   if not contents
+    
+    out << user_admin_action if !params[:admin_action].nil?
+    
     return out.html_safe
     
   end
+  
+  
+
+   
+    def user_admin_action
+      out = ""
+      out << "<adminaction action='#{params[:admin_action][:action]}' param='#{params[:admin_action][:param]}'>"
+      out << "</action>"
+      out.html_safe
+      
+    end
+  
 end
