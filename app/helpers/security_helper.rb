@@ -25,11 +25,12 @@ module SecurityHelper
 
    
     def user_admin_action
+      if !params[:admin_action].nil? then
       out = ""
       out << "<adminaction action='#{params[:admin_action][:action]}' param='#{params[:admin_action][:param]}'>"
       out << "</action>"
       out.html_safe
-      
+      end
     end
   
 end

@@ -44,11 +44,14 @@
     z-index: 32;
 }
 
-div.loginArea table , div.resetArea table {
-
+div.loginArea table{
     padding-left: 30px;
 }
 
+ div.resetArea table {
+     padding:20px;
+ }
+ 
 div.L11G {
 
     padding-left:10px;
@@ -123,7 +126,7 @@ div.login-form form{
 }
 
 input#update-button {
-    margin: 20px;
+  /*   margin: 20px; */
 }
 
 #recover-form{

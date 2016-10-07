@@ -181,40 +181,41 @@ function checkLoginStatus()
 
 function loadLoginBox(url_to_goto) {
 
-    $.ajax({
-        url: "/site/login",
-        type: "GET",
-        dataType: "html",
-        success: function (data)
-        {
-            loginContainer = "<div id='login-enclosure-container'></div>";
-
-            if ($("#login-enclosure-container").length == 0)
+    if ($("adminaction").size() == 0) {
+        $.ajax({
+            url: "/site/login",
+            type: "GET",
+            dataType: "html",
+            success: function (data)
             {
-                $("body").append($(loginContainer));
+                loginContainer = "<div id='login-enclosure-container'></div>";
+
+                if ($("#login-enclosure-container").length == 0)
+                {
+                    $("body").append($(loginContainer));
+                }
+
+                $("#login-enclosure-container").html(data);
+                $(".login-enclosure").hide();
+                $(".login-enclosure").css("opacity", 1);
+                $("form#login-form").css("top", "0px");
+                $("input#name").focus();
+
+                toggle_login_box(true);
+                bindLoginClick(url_to_goto);
+                bindLoginForgotLink();
+                bindLoginRegisterLink();
+                bindResetClick();
+                bindRegisterClick();
+                bindCancelClick();
+                $("input.button-link").button();
+                $("a.button-link").button();
+
+
             }
+        });
 
-            $("#login-enclosure-container").html(data);
-            $(".login-enclosure").hide();
-            $(".login-enclosure").css("opacity", 1);
-            $("form#login-form").css("top", "0px");
-            $("input#name").focus();
-
-            toggle_login_box(true);
-            bindLoginClick(url_to_goto);
-            bindLoginForgotLink();
-            bindLoginRegisterLink();
-            bindResetClick();
-            bindRegisterClick();
-            bindCancelClick();
-            $("input.button-link").button();
-            $("a.button-link").button();
-
-
-        }
-    });
-
-
+    }
 
 }
 
@@ -1214,12 +1215,14 @@ function bindSubmitClick() {
                 setUpPurrNotifier("Notice", data.message);
                 toggle_reset_box(false);
                 login_sucessfull();
+                location = "/";
                 break;
             }
             case 0: // false and not able to continue 
             {
                 setUpPurrNotifier("Notice", data.message);
                 toggle_reset_box(false);
+                location = "/";
                 break;
             }
             case -1: // false, but user can try again.
@@ -1264,27 +1267,38 @@ function loadResetBox(reset_code) {
         type: "GET",
         dataType: "html",
         data: {"reset_code": reset_code},
-        success: function (data)
+        success: function (data, status, jqXHR)
         {
-            resetContainer = "<div id='reset-enclosure-container'></div>";
-
-            if ($("#reset-enclosure-container").length == 0)
+            console.log(data);
+            console.log(status);
+            console.log(jqXHR);
+            if (jqXHR.status == 203)
             {
-                $("body").append($(resetContainer));
+                setUpPurrNotifier("Notice", data);
+                
+                setTimeout(function(){ location = "/";; }, 5000);
+                
+            } else
+            {
+                resetContainer = "<div id='reset-enclosure-container'></div>";
+
+                if ($("#reset-enclosure-container").length == 0)
+                {
+                    $("body").append($(resetContainer));
+                }
+
+                $("#reset-enclosure-container").html(data);
+                $(".reset-enclosure").hide();
+                $(".reset-enclosure").css("opacity", 1);
+                $("form#reset-form").css("top", "0px");
+                $("input#password").focus();
+
+                toggle_reset_box(true);
+                bindSubmitClick();
+                bindResetCancelClick();
+                $("input.button-link").button();
+                $("a.button-link").button();
             }
-
-            $("#reset-enclosure-container").html(data);
-            $(".reset-enclosure").hide();
-            $(".reset-enclosure").css("opacity", 1);
-            $("form#reset-form").css("top", "0px");
-            $("input#password").focus();
-
-            toggle_reset_box(true);
-            bindSubmitClick();
-            bindResetCancelClick();
-            $("input.button-link").button();
-            $("a.button-link").button();
-
 
         }
     });
@@ -1317,17 +1331,24 @@ function bindResetCancelClick() {
                 $("#reset-enclosure-container").remove();
             });
         }
+        location = "/";
 
     });
 }
 function process_admin_actions() {
+
+
     if ($("adminaction").size() > 0) {
+
         $("div#notice").text("");
         var action = $("adminaction").attr("action");
         var param = $("adminaction").attr("param");
         switch (action) {
             case "reset":
             {
+                // hide login box if visible
+
+                toggle_login_box();
                 loadResetBox(param);
                 console.log("found admin action!");
                 break;
