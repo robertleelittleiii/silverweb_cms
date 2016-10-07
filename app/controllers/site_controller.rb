@@ -25,7 +25,6 @@ class SiteController < ApplicationController
     @user = User.find_by_password_reset_code(params[:reset_code]) unless params[:reset_code].empty?
     if @user.nil?
       flash.now[:notice] = "Password has already been reset!"
-      flash[:notice]= "Password has already been reset!"
     end
     respond_to do |format|
       if !@user.nil?
