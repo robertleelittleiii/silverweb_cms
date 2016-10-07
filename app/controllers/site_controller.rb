@@ -24,14 +24,14 @@ class SiteController < ApplicationController
   def reset
     @user = User.find_by_password_reset_code(params[:reset_code]) unless params[:reset_code].empty?
     if @user.nil?
-      flash[:notice] = "Password has already been reset!"
+      flash.now[:notice] = "Password has already been reset!"
     end
     respond_to do |format|
       if !@user.nil?
         format.html # new.html.erb
         format.json  { head :ok }
       else
-        format.html { render :text=>flash[:notice], status: :non_authoritative_information, content_type: "application/json" }
+        format.html { render :text=>flash.now[:notice], status: :non_authoritative_information, content_type: "application/json" }
         format.json  { render :json => @menu.errors, :status => :unprocessable_entity }
       end
     
@@ -94,14 +94,14 @@ class SiteController < ApplicationController
         @user.create_reset_code
         UserNotifier.reset_notification(@user, $hostfull).deliver
         #         UserNotifier.reset_notification2(@user, @hostfull)
-        flash[:notice] = "Reset code sent to #{@user.name}"
+        message = "Reset code sent to #{@user.name}"
       else
-        flash[:notice] = "#{params[:name]} does not exist in system"
+        message = "#{params[:name]} does not exist in system"
       end
       respond_to do |format|
         #   format.js {head :ok}   
         #   format.json {head :ok}
-        format.json  {render :json=>{:message=>flash[:notice]}}
+        format.json  {render :json=>{:message=>message}}
         format.html {redirect_to(uri || { :action => "index" })}
       end 
     end

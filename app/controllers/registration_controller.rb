@@ -98,7 +98,7 @@ class RegistrationController < ApplicationController
       flash[:notice] ="You already reset your password."
     else
       if (params[:password] != params[:password_confirmation] or params[:password].blank? )
-           flash[:notice] ="Paswords can't be blank and must match, please try again."
+           message ="Paswords can't be blank and must match, please try again."
            reset_status = -1
       elsif @user.update_attributes(:password => params[:password], :password_confirmation => params[:password_confirmation])
         @user.delete_reset_code
@@ -109,16 +109,16 @@ class RegistrationController < ApplicationController
         session[:ip_address]= request.remote_ip rescue "n/a"
         session[:user_id] = @user.id
         
-        flash[:notice] = "Password reset successfully for #{@user.name}"
+        message = "Password reset successfully for #{@user.name}"
         reset_status = 1
       else
-        flash[:notice] ="Password reset has failed, please try again."
+        message ="Password reset has failed, please try again."
       end
     
     end
     
     respond_to do |format|
-      format.json  {render :json=>{:message=>flash[:notice],:sucessfull=>reset_status}}
+      format.json  {render :json=>{:message=>message,:sucessfull=>reset_status}}
       format.html {redirect_to(uri || { :action => "index" })}
     end 
    
