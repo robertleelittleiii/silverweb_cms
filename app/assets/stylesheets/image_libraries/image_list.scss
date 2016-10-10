@@ -15,74 +15,74 @@ and open the template in the editor.
 */
 
 .picture-float-center {
-   
-    
+
+
 }
 
 div.picture-float-center img {
-display: block;
-margin-left: auto;
-margin-right: auto;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 div.file-list-item {
-display: inline-block;
-position: relative;
-top: -10px\0;
-/* background-color: #ccc; */
+    display: inline-block;
+    position: relative;
+    top: -10px\0;
+    /* background-color: #ccc; */
 
 
-/*background-image:
-      -moz-linear-gradient(45deg, #ccc 25%, transparent 25%), 
-      -moz-linear-gradient(-45deg, #ccc 25%, transparent 25%),
-      -moz-linear-gradient(45deg, transparent 75%, #ccc 75%),
-      -moz-linear-gradient(-45deg, transparent 75%, #ccc 75%);
-    background-image:
-      -webkit-gradient(linear, 0 100%, 100% 0, color-stop(.25, #ccc), color-stop(.25, transparent)), 
-      -webkit-gradient(linear, 0 0, 100% 100%, color-stop(.25, #ccc), color-stop(.25, transparent)),
-      -webkit-gradient(linear, 0 100%, 100% 0, color-stop(.75, transparent), color-stop(.75, #ccc)),
-      -webkit-gradient(linear, 0 0, 100% 100%, color-stop(.75, transparent), color-stop(.75, #ccc));
-
-    -moz-background-size:20px 20px;
-    background-size:20px 20px;
-    -webkit-background-size:20px 21px;  override value for shitty webkit 
+    /*background-image:
+          -moz-linear-gradient(45deg, #ccc 25%, transparent 25%), 
+          -moz-linear-gradient(-45deg, #ccc 25%, transparent 25%),
+          -moz-linear-gradient(45deg, transparent 75%, #ccc 75%),
+          -moz-linear-gradient(-45deg, transparent 75%, #ccc 75%);
+        background-image:
+          -webkit-gradient(linear, 0 100%, 100% 0, color-stop(.25, #ccc), color-stop(.25, transparent)), 
+          -webkit-gradient(linear, 0 0, 100% 100%, color-stop(.25, #ccc), color-stop(.25, transparent)),
+          -webkit-gradient(linear, 0 100%, 100% 0, color-stop(.75, transparent), color-stop(.75, #ccc)),
+          -webkit-gradient(linear, 0 0, 100% 100%, color-stop(.75, transparent), color-stop(.75, #ccc));
     
-    background-position:0 0, 10px 0, 10px -10px, 0px 10px;*/
-    
-/* height: 150px;*/
-vertical-align: middle;
-border: 5px solid white;
-/* border-radius: 20px; */
-/* border-radius: 20px; */
-/* border-bottom-left-radius: 20px; */
-/* border-bottom-right-radius: 20px; */
+        -moz-background-size:20px 20px;
+        background-size:20px 20px;
+        -webkit-background-size:20px 21px;  override value for shitty webkit 
+        
+        background-position:0 0, 10px 0, 10px -10px, 0px 10px;*/
+
+    /* height: 150px;*/
+    vertical-align: middle;
+    border: 5px solid white;
+    /* border-radius: 20px; */
+    /* border-radius: 20px; */
+    /* border-bottom-left-radius: 20px; */
+    /* border-bottom-right-radius: 20px; */
 }
 
 div.picture-float-center img {
-display: block;
-margin-left: auto;
-margin-right: auto;
-padding-top: 20px;
-padding-left: 20px;
-padding-right: 20px;
-padding-bottom: 20px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 20px;
 }
 
 .file-block {
-border-bottom-left-radius: 10px;
-border-bottom-right-radius: 10px;
-background-color: #ccc;
-min-height: 150px;
-text-align:center;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    background-color: #ccc;
+    min-height: 150px;
+    text-align:center;
 }
 
 .hover-block {
-display:none;
-background-color: rgba(255, 255, 255, 0.5);
-position: absolute;
-top: 0px;
-width: 100%;
-height: 100%;
+    display:none;
+    background-color: rgba(255, 255, 255, 0.5);
+    position: absolute;
+    top: 0px;
+    width: 100%;
+    height: 100%;
 }
 
 /*.file-block:hover + .hover-block{
@@ -90,107 +90,240 @@ height: 100%;
 }*/
 
 .file-item {
-margin-left: 0px;
-padding: 0PX;
-border-radius: 0PX;
-padding-right: 0PX;
-vertical-align: middle;
-display: inline-block;
-position: relative;
+    margin-left: 0px;
+    padding: 0PX;
+    border-radius: 0PX;
+    padding-right: 0PX;
+    vertical-align: middle;
+    display: inline-block;
+    position: relative;
 }
 
 .file-title {
-display: inline-block;
-position: relative;
-top: -6px;
-top: 20px\0;
-padding-right: 5px;
-background: inherit;
-border-radius: 20PX;
-padding-left: 5px;
-border: inherit;
-border-bottom-left-radius: 0px;
-border-top-left-radius: 0px;
-vertical-align: baseline;
-font-size: 13px;
-min-width: 100px;
+    display: inline-block;
+    position: relative;
+    top: -6px;
+    top: 20px\0;
+    padding-right: 5px;
+    background: inherit;
+    border-radius: 20PX;
+    padding-left: 5px;
+    border: inherit;
+    border-bottom-left-radius: 0px;
+    border-top-left-radius: 0px;
+    vertical-align: baseline;
+    font-size: 13px;
+    min-width: 100px;
 }
 
 .file-delete-icon {
-width: 16px;
-height: 16px;
-display: inline-block;
-position: absolute;
-right: 0px;
-top: 2px;
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+    position: absolute;
+    right: 0px;
+    top: 2px;
 }
 
 .file-item {
-margin-left: 0px;
-padding: 0PX;
-border-radius: 0PX;
-padding-right: 0PX;
-vertical-align: middle;
-display: block;
-position: relative;
-background-color: darkgray;
-border-top-left-radius: 5px;
-border-top-right-radius: 5px;
+    margin-left: 0px;
+    padding: 0PX;
+    border-radius: 0PX;
+    padding-right: 0PX;
+    vertical-align: middle;
+    display: block;
+    position: relative;
+    background-color: darkgray;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
 }
 
 .file-delete-icon {
-width: 16px;
-height: 16px;
-display: inline-block;
-position: absolute;
-right: 0px;
-top: 2px;
-z-index: 10;
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+    position: absolute;
+    right: 0px;
+    top: 2px;
+    z-index: 10;
 }
 .upload {
-display: inline-block;
-padding: 20px;
-font-size:10px;
+    display: inline-block;
+    padding: 20px;
+    font-size:10px;
 }
 
 div.hover-block div.ui-button {
-display: block;
-position: relative;
-margin-top: 12px;
-width: 100px;
-margin-left: auto;
-margin-right: auto;
+    display: block;
+    position: relative;
+    margin-top: 12px;
+    width: 100px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 div.hover-block div.ui-button {
-  margin-left: auto;
-  margin-right: auto;
-  display: block;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
 }
 
 div#insert-picture.ui-dialog-content {
-  padding: 0px !important;
-  margin: 0px !important;
+    padding: 0px !important;
+    margin: 0px !important;
 }
 
 div#picture-list {
-  background: white;
-  height: 100%;
-  display: inline-block;
-  padding: 20px;
+    background: white;
+    height: 100%;
+    display: inline-block;
+    padding: 20px;
 }
 
+
+/*div#picture-list {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    overflow: visible;
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    padding: 0px;
+}*/
+
 div.mce-window-head {
-  background-color: lightgray;
-  border-radius: 5px;
-  margin: 5px;
-  background: #cccccc/*{bgColorHeader}*/ image_url("/jquery-ui/ui-bg_highlight-soft_75_cccccc_1x100.png")/*{bgImgUrlHeader}*/ 50%/*{bgHeaderXPos}*/ 50%/*{bgHeaderYPos}*/ repeat-x/*{bgHeaderRepeat}*/;
+    background-color: lightgray;
+    border-radius: 5px;
+    margin: 5px;
+    background: #cccccc/*{bgColorHeader}*/ image_url("/jquery-ui/ui-bg_highlight-soft_75_cccccc_1x100.png")/*{bgImgUrlHeader}*/ 50%/*{bgHeaderXPos}*/ 50%/*{bgHeaderYPos}*/ repeat-x/*{bgHeaderRepeat}*/;
 }
 
 button.mce-close {
-  background: white;
-  padding: 0px 5px 5px 6px;
-  margin: 0px;
-  border-radius: 5px;
-  margin-top: -3px;
+    background: white;
+    padding: 0px 5px 5px 6px;
+    margin: 0px;
+    border-radius: 5px;
+    margin-top: -3px;
+}
+
+
+/*----- Start Light Background-----*/
+#search{
+    position: relative;
+}
+#search {
+}
+
+#search input[type="text"] {
+    background: image-url("interface/search-dark.png") no-repeat 10px 6px #fcfcfc;
+    border: 1px solid #d1d1d1;
+    font: bold 12px Arial,Helvetica,Sans-serif;
+    color:#777;
+    width: 107px;
+    padding: 6px 15px 6px 35px;
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    border-radius: 20px;
+    text-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+    -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15) inset;
+    -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15) inset;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15) inset;
+    -webkit-transition: all 0.7s ease 0s;
+    -moz-transition: all 0.7s ease 0s;
+    -o-transition: all 0.7s ease 0s;
+    transition: all 0.7s ease 0s;
+    float: right;
+    margin-right: 20px;
+}
+
+#search input[type="text"]:focus {
+    width: 150px;
+}
+/*----- End Light Background-----*/
+
+
+div#docs-container {
+    position: relative;
+    display: inline;
+}
+
+div#search-bar {
+    height: 35px;
+    background: #eae9ea;
+    background: -moz-linear-gradient(top, #eae9ea 0%, #d3d2d3 100%);
+    background: -webkit-linear-gradient(top, #eae9ea 0%,#d3d2d3 100%);
+    background: linear-gradient(to bottom, #eae9ea 0%,#d3d2d3 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eae9ea', endColorstr='#d3d2d3',GradientType=0 );
+    border: 1px solid #989898;
+    margin-bottom: 10px;
+    padding-top: 10px;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    z-index: 15;
+}
+
+div#docs-tab {
+    width: 100%;
+    padding: 0px;
+    position: relative;
+}
+
+form#new_document {
+    position: absolute;
+    top: -40px;
+    left: 20px;
+}
+
+div.close-button {
+    position: absolute;
+    right: 29px;
+    top: 7px;
+    background-image: url(http://download.jqueryui.com/themeroller/images/ui-icons_7f807f_256x240.png) !important;
+    display: none;
+    cursor:pointer;
+}
+
+
+#search input::-webkit-input-placeholder { color: #ccc; opacity: 1 !important; }
+#search input:-moz-placeholder { color: #ccc;}
+#search input::-moz-placeholder {color: #ccc;}
+#search input:-ms-input-placeholder {color: #ccc;}
+
+
+body {
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+    right: 0px;
+    left: 0px;
+    min-width: 100%;
+    min-height: 100%;
+    background-color:white;
+    background-image:none;
+
+}
+
+div#pictures {
+    /* overflow: auto;
+     display: inline-block;
+     position: absolute;
+     top: 49px;
+     bottom: 0px;*/
+}
+
+div#pictures {
+    padding-top: 40px;
+    width: 100%;
+}
+
+form#new_picture {
+    position: fixed;
+    top: 15px;
+    left: 20px;
+    z-index:15;
 }

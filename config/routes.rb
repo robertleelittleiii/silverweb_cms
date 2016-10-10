@@ -40,6 +40,7 @@ Rails.application.routes.draw do
       get "render_picture"
       get "insert_image"
       get "render_pictures"
+      get "search"
     end
   end
   
