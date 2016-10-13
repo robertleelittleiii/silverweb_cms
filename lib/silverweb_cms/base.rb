@@ -72,6 +72,49 @@ module SilverwebCms
       @ACTION_TYPES << menu_action
     end
   
+    
+    # USER DATA FIELD PARTIAILS TO ALLOW LATER GEMS TO ADD TO USER INFO WIDGET.
+    
+    @USER_PANES = []
+    
+   
+    def self.USER_PANES
+      @USER_PANES 
+    end
+    
+    def self.add_user_pref_pane(pref_pane)
+      @USER_PANES << pref_pane
+    end
+    
+    
+        # USER ALLOW EDIT ATTR TO ALLOW LATER GEMS TO ADD TO USER FILEDS FOR EDIT.
+
+    @USER_PERMITED_FIELDS = []
+    
+     def self.USER_PERMITTED_FIELDS
+      @USER_PERMITED_FIELDS 
+    end
+    
+    def self.add_user_permitted_fields(fields_to_add)
+      @USER_PERMITED_FIELDS << fields_to_add
+    end
+    
+    
+    
+        # USER ATTRIBUTE ALLOW EDIT ATTR TO ALLOW LATER GEMS TO ADD TO USER FILEDS FOR EDIT.
+
+    @USER_ATTRIBUTE_PERMITTED_FIELDS = []
+    
+     def self.USER_ATTRIBUTE_PERMITTED_FIELDS
+      @USER_ATTRIBUTE_PERMITTED_FIELDS 
+    end
+    
+    def self.add_user_attribute_permitted_fields(fields_to_add)
+      @USER_ATTRIBUTE_PERMITTED_FIELDS << fields_to_add
+    end
+    
+    
+    
     # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
     #     R O U T E S  T O  A D D  F O R  D I R E C T  U R L  L I N K
     # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *

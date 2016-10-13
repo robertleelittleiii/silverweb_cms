@@ -84,7 +84,10 @@ class UserAttributesController < ApplicationController
   
   
   def user_attribute_params
+    
     params[:user_attribute].permit("first_name", "last_name", "handle", "birthdate", "user_id")
+    params[:user_attribute].permit(SilverwebCms::Config.USER_ATTRIBUTE_PERMITTED_FIELDS)
+
   end
   
 end

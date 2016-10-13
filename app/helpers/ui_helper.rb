@@ -717,4 +717,18 @@ module UiHelper
       ).html_safe
 
     end
+    
+    
+    def build_pane_additions()
+     out = ""
+     panes_to_load = SilverwebCms::Config.USER_PANES()
+     if panes_to_load.size > 0 then
+       panes_to_load.each do |pane|
+          out <<  (render :partial => ("silverweb_cms/" + pane + ".html"))
+       end 
+     end
+     return out.html_safe
+    end
+    
+    
   end
