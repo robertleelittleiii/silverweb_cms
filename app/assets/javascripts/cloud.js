@@ -1377,6 +1377,7 @@ function process_admin_actions() {
                         console.log("activate popup.");
                         // $("div.dataTables_filter input").css("width", "400px");
                         $(search_field_name).autoGrowInput({minWidth: 135, maxWidth: 400, comfortZone: 50});
+                        $(search_field_name).css("min-width", "200px");
                         $.ajax({
                             url: "/" + model_name + "/search_fields.json",
                             dataType: "json",
