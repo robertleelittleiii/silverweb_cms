@@ -1362,66 +1362,65 @@ function process_admin_actions() {
             }
         }
 
+    }
+}
+
 //
 // function to allow field specific searching within datatables.
 //
 //
-        function bindDatatableSearchField(search_field_name, model_name) {
-            $(search_field_name).attr("title", "Use ':' to search specific fields. Seperate search terms by ','.")
+function bindDatatableSearchField(search_field_name, model_name) {
+    $(search_field_name).attr("title", "Use ':' to search specific fields. Seperate search terms by ','.")
 
-            $(search_field_name).autocomplete({
-                //     source: "/contacts/contact_search.json",
-                source: function (request, response) {
-                    var field_value = request.term;
-                    if ((field_value == ":") | (field_value.slice(-2) == ",:") | (field_value.slice(-3) == ", :")) {
-                        console.log("activate popup.");
-                        // $("div.dataTables_filter input").css("width", "400px");
-                        $(search_field_name).autoGrowInput({minWidth: 135, maxWidth: 400, comfortZone: 50});
-                        $(search_field_name).css("min-width", "200px");
-                        $.ajax({
-                            url: "/" + model_name + "/search_fields.json",
-                            dataType: "json",
-                            data: {
-                                q: request.term,
-                            },
-                            success: function (data) {
+    $(search_field_name).autocomplete({
+        //     source: "/contacts/contact_search.json",
+        source: function (request, response) {
+            var field_value = request.term;
+            if ((field_value == ":") | (field_value.slice(-2) == ",:") | (field_value.slice(-3) == ", :")) {
+                console.log("activate popup.");
+                // $("div.dataTables_filter input").css("width", "400px");
+                $(search_field_name).autoGrowInput({minWidth: 135, maxWidth: 400, comfortZone: 50});
+                $(search_field_name).css("min-width", "200px");
+                $.ajax({
+                    url: "/" + model_name + "/search_fields.json",
+                    dataType: "json",
+                    data: {
+                        q: request.term,
+                    },
+                    success: function (data) {
 
-                                // Handle 'no match' indicated by [ "" ] response
-                                response(data.length === 1 && data[ 0 ].length === 0 ? [] : data);
-                            }
-
-                        });
-                    }
-                }
-                ,
-                minLength: 0,
-                response: function (event, ui) {
-                }
-                , select: function (event, ui) {
-
-
-                    var current_value = $(this).val();
-                    var field_value = "";
-
-                    if (current_value == ":") // first search term.
-                    {
-                        field_value = ui.item.value + ":";
-
-                    } else
-                    {
-                        field_value = (current_value.slice(-2) == ",:" ? current_value.slice(0, -2) : (current_value.slice(-3) == ", :" ? current_value.slice(0, -3) : current_value));
-                        field_value = field_value + ", " + ui.item.value + ":";
+                        // Handle 'no match' indicated by [ "" ] response
+                        response(data.length === 1 && data[ 0 ].length === 0 ? [] : data);
                     }
 
-                    $(this).val(field_value);
-                    $(this).caretToEnd().autoGrowInput();
-                    return false;
-                }
+                });
             }
-            );
-
         }
+        ,
+        minLength: 0,
+        response: function (event, ui) {
+        }
+        , select: function (event, ui) {
 
 
+            var current_value = $(this).val();
+            var field_value = "";
+
+            if (current_value == ":") // first search term.
+            {
+                field_value = ui.item.value + ":";
+
+            } else
+            {
+                field_value = (current_value.slice(-2) == ",:" ? current_value.slice(0, -2) : (current_value.slice(-3) == ", :" ? current_value.slice(0, -3) : current_value));
+                field_value = field_value + ", " + ui.item.value + ":";
+            }
+
+            $(this).val(field_value);
+            $(this).caretToEnd().autoGrowInput();
+            return false;
+        }
     }
+    );
+
 }

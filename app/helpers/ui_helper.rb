@@ -261,6 +261,12 @@ module UiHelper
       out << ">#{sanitize(value.to_s, :tags => nil, :attributes => nil)}"
     end
     
+# TODO: give users the ability to so simple formating on fields.
+# 
+#    if opts[:simple_format] == "true" then
+#     value = simple_format(value.to_s)
+#    end
+#    
     out << "</div>"
     
     if !opts[:validation_message].blank? then
