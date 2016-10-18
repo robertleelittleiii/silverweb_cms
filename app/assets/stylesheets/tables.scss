@@ -46,6 +46,9 @@
 
 // @import "datatables.css";
 
+ /*= require tables */
+
+
 
 .dataTables_wrapper {
     position: relative;
@@ -696,4 +699,14 @@ div.dataTables_paginate a {
     font-weight: normal;
     color: #555555;
 
+}
+
+
+div.dataTables_filter input {
+    -webkit-transition: width 0.7s ease 0s;
+    -moz-transition: width 0.7s ease 0s;
+    -o-transition: width 0.7s ease 0s;
+    transition: width 0.7s ease 0s;
+    width: initial;
+    font: 15px Verdana;
 }
