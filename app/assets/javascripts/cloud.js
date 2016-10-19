@@ -1370,7 +1370,7 @@ function process_admin_actions() {
 //
 //
 function bindDatatableSearchField(search_field_name, model_name) {
-    $(search_field_name).attr("title", "Use ':' to search specific fields. Seperate search terms by ','.")
+    $(search_field_name).attr("title", "Use ':' to search specific fields. Seperate search terms by ','..  Use a '!' to search for empty fields. Use a '%' as first character in search to find string anywhere in field (vs. start of field).")
 
     $(search_field_name).autocomplete({
         //     source: "/contacts/contact_search.json",
