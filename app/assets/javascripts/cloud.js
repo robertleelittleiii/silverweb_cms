@@ -612,8 +612,11 @@ function updateAppDiv() {
                 {
 
                     if ($("#nav-grid-links").length === 0) {
-                        var gridContainer = "<div style='display:none' id='nav-grid-links'></div>";
+                        var gridContainer = "<div style='display:none;' id='nav-grid-links'></div>";
                         $("body").prepend($(gridContainer));
+                        var gridOverlay = "<div style='display:none;' id='nav-grid-overlay'></div>";
+                        $("body").prepend($(gridOverlay));
+
                     }
 
                     $("#nav-grid-links").html(data);
@@ -622,10 +625,14 @@ function updateAppDiv() {
                     if (window.matchMedia("only screen and (max-width: 524px)").matches)
                     {
                         $("#nav-grid-links").fadeIn();
+                        $("#nav-grid-overlay").fadeIn();
+
                         $("#grid-nav").css("top", "0px");
                     } else
                     {
                         $("#nav-grid-links").fadeIn();
+                        $("#nav-grid-overlay").fadeIn();
+
                         $("#grid-nav").css("top", "0px");
 
                     }
@@ -650,6 +657,8 @@ function bindCloseGrid() {
         text: false
     }).click(function () {
         $("#nav-grid-links").fadeOut();
+        $("#nav-grid-overlay").fadeOut();
+
     });
 
 }
@@ -672,6 +681,8 @@ function bindCloseIframe() {
 
     $("#hide-iframe").off("click").on("click", function () {
         $("#nav-grid-links").fadeIn();
+        $("#nav-grid-overlay").fadeIn();
+
         $("#application-space").addClass("hidden");
         $($currentApplicationId).removeClass("blowup");
         $(".grid_tabnav ul li").removeClass("hidden");
@@ -751,6 +762,7 @@ function bindAppClick() {
         $(this).parent().addClass("blowup");
         $(".grid_tabnav ul li").addClass("hidden");
         $("div#nav-grid-links").fadeOut();
+        $("#nav-grid-overlay").fadeOut();
 
         //$("#grid-nav").fadeOut();
 
@@ -783,6 +795,8 @@ function bindAppClick() {
                 var thisDialog = createAppDialog(data, "app-dialog", {
                     completion: function completionCallback() {
                         $("div#nav-grid-links").fadeIn();
+                        $("#nav-grid-overlay").fadeIn();
+
                         $($currentApplicationId).removeClass("blowup");
                         $(".grid_tabnav ul li").removeClass("hidden");
 
