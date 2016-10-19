@@ -1410,11 +1410,12 @@ function bindDatatableSearchField(search_field_name, model_name) {
                 });
             }
         }
-        ,
-        minLength: 0,
-        response: function (event, ui) {
+        ,minLength: 0
+        ,focus: function( event, ui ) {
+          
+            return false;
         }
-        , select: function (event, ui) {
+        ,select: function (event, ui) {
 
 
             var current_value = $(this).val();
