@@ -523,7 +523,7 @@ function bindMyAccountClick()
 {
     $("#my-account-link").click(function () {
 
-        $("#grid-nav").fadeIn();
+       $("#grid-nav").fadeIn();
         $($currentApplicationId).removeClass("blowup");
         $(".grid_tabnav ul li").removeClass("hidden");
 
@@ -636,6 +636,7 @@ function updateAppDiv() {
                         $("#grid-nav").css("top", "0px");
 
                     }
+                    $("html, body").animate({ scrollTop: 0 }, "slow");
 
                     bindAppClick();
                     bindCloseGrid();
@@ -1109,6 +1110,16 @@ function call_login_callbacks() {
 
     }
 
+}
+
+function update_backoffice_elements() {
+    
+    $("div.back-office-refresh-element").each(function( index )  {
+       var function_to_call = $(this).attr("data-update");
+        if (typeof eval(function_to_call) == "function") {
+            eval(function_to_call + "()");
+        }
+    });
 }
 
 function update_content() {
