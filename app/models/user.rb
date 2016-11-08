@@ -2,6 +2,7 @@
 # require 'RFC822'
 require 'gravtastic'
  #include Gravtastic
+require 'csv'
 
 
 class User < ActiveRecord::Base
