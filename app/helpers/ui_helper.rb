@@ -506,7 +506,7 @@ module UiHelper
       puts(" - - - - - - - - - -  - - - - - - - - - - -  -  - - - ")
       puts(field_name, field_object, field_pointer.class, value_list.inspect)
       puts("Settings.send(field_name): '#{Settings.send(field_name)}'")
-      puts("field_pointer[field_name]: '#{field_pointer[field_name]}'")
+      # puts("field_pointer[field_name]: '#{field_pointer[field_name]}'")
       if (field_object == "settings") then
         found_item = value_list.index{|a| a[1]== Settings.send(field_name) }
         puts("found_item: '#{found_item}'")

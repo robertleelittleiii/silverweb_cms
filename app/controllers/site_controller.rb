@@ -313,6 +313,7 @@ class SiteController < ApplicationController
         respond_to do |format|
           format.html { render :action=>@page_template} # show.html.erb
           format.xml  { render :xml => @page }
+          format.any  {render :json=>"An error has occured."}
         end
       end
     end
