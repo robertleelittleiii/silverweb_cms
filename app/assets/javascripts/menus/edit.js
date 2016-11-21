@@ -12,8 +12,7 @@ $(document).ready(function () {
         if ($("#as_window").text() == "true")
         {
             //  alert("it is a window");
-        }
-        else
+        } else
         {
             menus_edit_callDocumentReady();
         }
@@ -30,6 +29,9 @@ function menus_edit_callDocumentReady() {
     bindDeleteImage();
     $(".best_in_place").best_in_place();
     requireCss("image_libraries/image_list.css");
+    require("jquery.unveil.js");
+    $("img").unveil();
+
 }
 ;
 
@@ -52,8 +54,7 @@ function bindMenuRawhtml() {
                 if (data === undefined || data === null || data === "")
                 {
                     //display warning
-                }
-                else
+                } else
                 {
                     $("#action-step").html(data);
                     $(".best_in_place").best_in_place();
@@ -82,8 +83,7 @@ function bindMenuMType() {
                 if (data === undefined || data === null || data === "")
                 {
                     //display warning
-                }
-                else
+                } else
                 {
                     $("#menu-options").html(data);
                     $(".best_in_place").best_in_place();
@@ -133,8 +133,7 @@ function bind_file_upload_to_upload_form()
                         if (typeof (jqXHR.responseText) == "undefined") {
                             setUpPurrNotifier("info.png", "Notice", jqXHR.responseJSON["attachment"][0]);
                             data.context.remove();
-                        }
-                        else
+                        } else
                         {
                             render_pictures(result.id);
 
@@ -152,8 +151,7 @@ function bind_file_upload_to_upload_form()
                         if (jqXHR.status == "200")
                         {
                             render_pictures(result.id);
-                        }
-                        else
+                        } else
                         {
                             var obj = jQuery.parseJSON(jqXHR.responseText);
                             // console.log(typeof obj["attachment"][0])
@@ -231,6 +229,7 @@ function render_pictures(picture_id) {
             }
             bindDeleteImage();
             bind_file_upload_to_upload_form();
+            $("img").unveil();
 
 
         }
