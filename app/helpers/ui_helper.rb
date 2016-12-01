@@ -554,8 +554,10 @@ module UiHelper
         additional_params = item[:additional_params] ||{}
 
         window_type = item[:window_type] || ""
-      
-        out << tab_link(navigation_icon(item[:name],item[:icon]),{:controller=>item[:controller], :action=>item[:action], :request_type=>"window", :window_type=>window_type, :role=>item[:role]}.merge!(additional_args), {:tooltip=> item[:tooltip], :name=>item[:name].gsub(/ /, '-')  ,:class=>grid_li_class, :remote=>true}.merge!(additional_params))
+        
+        format_args = item[:format].blank? ? {} : {:format=>item[:format]}
+        
+        out << tab_link(navigation_icon(item[:name],item[:icon]),{:controller=>item[:controller], :action=>item[:action], :request_type=>"window", :window_type=>window_type, :role=>item[:role]}.merge!(additional_args).merge!(format_args), {:tooltip=> item[:tooltip], :name=>item[:name].gsub(/ /, '-')  ,:class=>grid_li_class, :remote=>true}.merge!(additional_params))
       end
     
       out << "</ul>"
