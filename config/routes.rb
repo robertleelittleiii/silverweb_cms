@@ -138,6 +138,7 @@ Rails.application.routes.draw do
       get "create_empty_record"
       get "delete_ajax"
       patch "update_password"
+      post "set_time_zone"
     end
   end
   

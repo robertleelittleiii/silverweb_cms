@@ -32,6 +32,7 @@
 //= require jquery.ui.touch-punch.min
 //= require superfish
 //= require jquery.history
+//= require jstz
 //# require turbolinks
 
 //
@@ -45,7 +46,8 @@ $(document).ready(function () {
     bindLoginButton();
     bindLogoutClick();
     bindMyAccount();
-    
+    set_my_timezone();
+
     $(".best_in_place").best_in_place();
 
     $(".datepicker").datepicker();

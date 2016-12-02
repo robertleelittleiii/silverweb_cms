@@ -166,8 +166,8 @@ class SiteController < ApplicationController
   #
   
   def index
-    session[:mainnav_status] = false
-    @alert = params[:alert] || flash[:notice] || ""
+      session[:mainnav_status] = false
+    @alert = params[:alert] || ""
     #   @page = Page.find(params[:id]) rescue ""
     #    puts("via ID : #{@page}")
     # @page = Page.find_by_title(params[:page_name]) if @page.blank? 
@@ -186,7 +186,7 @@ class SiteController < ApplicationController
 
     if (@page.secure_page and @user.blank?)
       puts("*********** authenticate ************* #{@user.inspect}")
-      #   ApplicationController.instance_method(:authenticate).bind(self).call
+      #  ApplicationController.instance_method(:authenticate).bind(self).call
     else    
     
       @page_template = (not @page.template_name.blank?) ? "show_page-" + @page.template_name : "show_page" rescue "show_page" 
@@ -197,6 +197,8 @@ class SiteController < ApplicationController
     
       @menu = @page.menu rescue nil
     
+      @page.revert_to(params[:version].to_i) if params[:version]
+
     
       #puts("@page:  Status #{@page.inspect}") 
       #puts("@alert:  Status #{@alert.inspect}") 
@@ -219,6 +221,7 @@ class SiteController < ApplicationController
         respond_to do |format|
           format.html { render :action=>@page_template} # show.html.erb
           format.xml  { render :xml => @page }
+          format.any  {render :json=>"An error has occured."}
         end
       end
     end

@@ -309,6 +309,7 @@ function bindLoginClick(url_to_goto) {
         // console.log(data);
         if (data.sucessfull) {
             login_sucessfull(url_to_goto);
+            
         } else
         {
             $(".login-enclosure").effect("shake", {
@@ -416,6 +417,19 @@ function check_login_status() {
 
 }
 
+
+function set_my_timezone() {
+    var tz = jstz.determine();
+    $.ajax({
+        method: "post",
+        dataType: "json",
+        url: '/users/set_time_zone?time_zone=' + tz.name(),
+        cache: false,
+        success: function(data)
+        {
+        }
+    });
+}
 function login_sucessfull(url_to_goto) {
 
     //   toggle_login_box(false);
@@ -465,6 +479,8 @@ function login_sucessfull(url_to_goto) {
     updateSecurityDiv();
     update_content();
     call_login_callbacks();
+    set_my_timezone();
+    
     // show_page();
     // if updateSiteDivs is defined for site then...
 

@@ -31,7 +31,6 @@ function menus_edit_callDocumentReady() {
     requireCss("image_libraries/image_list.css");
     require("jquery.unveil.js");
     $("img").unveil();
-
 }
 ;
 
