@@ -93,7 +93,7 @@ module SilverwebCms
                 ((right.action == action_name)|(right.action == "*")|(right.action.include? action_name)) && right.controller == self.class.controller_path
               }
             }
-            flash[:notice] = "You are not authorized to view the page you requested"
+            flash[:notice] = "You are not authorized to view the page you requested (Action: #{action_name}, Controller: #{self.class.controller_path})"
             request.env["HTTP_REFERER" ] ? (redirect_to :back) : (redirect_to "")
             return false
           end

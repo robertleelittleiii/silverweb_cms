@@ -188,10 +188,14 @@ function popUpAlertifExists()
     var message = $("#alert").text().trim();
 
     setUpPurrNotifier("Alert", message);
+    
+    $("#alert").text("");
 
     var message = $("#notice").text().trim();
 
     setUpPurrNotifier("Alert", message);
+
+    $("#notice").text("");
 
 }
 
