@@ -253,6 +253,7 @@ div.login-form.flipped-register #registration-form{
     display: table;
     margin-left: auto;
     margin-right: auto;
+    padding-bottom:40px;
 }
 #grid-bar {
     position: relative;
@@ -505,4 +506,37 @@ div#grid-nav {
         margin-right: 35%;
         width: 22%;
     }
+}
+
+
+div#grid-outer-border {
+    display: table;
+    position: relative;
+    margin: auto;
+}
+
+div#vendor-info {
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+    z-index: 201;
+    padding-right: 10px;
+    padding-bottom: 5px;
+    color: black;
+}
+
+div#vendor-info:hover div.version-info {
+    display: block;
+}
+div#vendor-info div.version-info {
+    display: none;
+    position: absolute;
+    padding: 10px;
+    background: #fffece;
+    border-radius: 5px;
+    border: solid black 1px;
+    width: 275px;
+    top: 0px;
+    left: 115px;
+    font-size: 13px;
 }

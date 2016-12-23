@@ -1,12 +1,19 @@
 
  <%#=hidden_div_if((not session[:user_id]), :id=>"mainnav") %>
-<div id="grid-bar"> 
+<div id="grid-outer-border">
+    <div id="grid-bar"> 
     <div id="grid-action-bar">
-        <div class="grid-title"> Silverweb Systems (back office)</div>
+        <div class="grid-title"><span>Silverweb Systems (back office)</span></div>
       <%= link_to("X","#", :class=>"button-close") %>
     </div>
 </div>
- <%="<div id='grid-nav'>".html_safe%>
+
+<div id="vendor-info">
+    <span>Built on Silverweb CMS</span> 
+    <div class="version-info"><b>Gem versions:</b> <br><%=simple_format(`gem list | grep silverweb`)%></div>
+</div>
+
+<%="<div id='grid-nav'>".html_safe%>
 
    <%=generate_grid_tabnav({:grid_div_class=>"grid_tabnav", :grid_div_id=>"grid_tabnav",:grid_ul_class=>"",:grid_ul_id=>"",:grid_li_class=>"icon-button"},
          SilverwebCms::Config.GRID_NAV)%>
@@ -15,4 +22,6 @@
 
 
 
+
+</div>
   
