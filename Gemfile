@@ -13,7 +13,7 @@ gemspec
 # To use a debugger
 # gem 'byebug', group: [:development, :test]
 
-gem 'rubocop' # --only HashSyntax --auto-correct
-gem 'vestal_versions', :github => 'altagem/vestal_versions', branch: 'rails-4_1'
-gem 'tinymce-rails'
-gem 'activerecord-session_store'
+#gem 'rubocop' # --only HashSyntax --auto-correct
+#gem 'vestal_versions', :github => 'altagem/vestal_versions', branch: 'rails-4_1'
+#gem 'tinymce-rails'
+#gem 'activerecord-session_store'

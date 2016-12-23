@@ -1,6 +1,8 @@
 class UsersController < ApplicationController
   # GET /users
   # GET /users.xml
+  
+  protect_from_forgery :except => [:set_time_zone]
  
   def record
 		@user = User.find(params[:id])
