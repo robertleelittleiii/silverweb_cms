@@ -43,7 +43,9 @@ function pageeditClickBinding(selector) {
                         pageeditClickBinding("div#edit-pages");
 
                         //tinyMCE.editors[0].destroy();
-                        top.tinymce.activeEditor.destroy();
+                        if (typeof top.tinymce.activeEditor != "undefined") {
+                            top.tinymce.activeEditor.destroy();
+                        }
                         $('#edit-page').html("");
                         $('#edit-page').dialog("destroy");
 
