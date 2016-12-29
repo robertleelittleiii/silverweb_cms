@@ -35,6 +35,8 @@ function pageeditClickBinding(selector) {
                             if (page_id === current_page_id)
                             {
                                 update_content();
+                                enablePageEdit();
+                                enableSliderEdit();
                                 //show_page(page_id);
                             }
                         }
