@@ -1,7 +1,8 @@
 <%#= render :file=>"/public/stylesheets/global-reset.css" %>
 <%#= render :file=>Rails.application.assets['fonts.css'].pathname.to_s%>
 
-<%=render(:file=>ActionController::Base.helpers.compute_asset_path("fonts.css"))%>
+<%# =render(:file=>ActionController::Base.helpers.compute_asset_path("fonts.css"))%>
+<%= get_asset_content("fonts.css") %>
 
 // tiny mce body override
 html body#tinymce{
@@ -33,10 +34,17 @@ html body#tinymce p.selector:after {
     content:"SELECTOR";
 }
 
-<%=render(:file => ActionController::Base.helpers.compute_asset_path('website.css'))%>
-<%=(@page.template_name.blank? ? "" : render(:file => ActionController::Base.helpers.compute_asset_path("site/show_page-#{@page.template_name}.css"))) rescue ""%>
-<%=render(:file=>ActionController::Base.helpers.compute_asset_path("editor-custom.css")) %>
-<%=render(:file=>ActionController::Base.helpers.compute_asset_path("#{@page.page_style}"))  rescue ""%>
+<%#=render(:file => ActionController::Base.helpers.compute_asset_path('website.css'))%>
+<%=get_asset_content("website.css") %>
+
+<%#=(@page.template_name.blank? ? "" : render(:file => ActionController::Base.helpers.compute_asset_path("site/show_page-#{@page.template_name}.css"))) rescue ""%>
+<%=(@page.template_name.blank? ? "" : get_asset_content("site/show_page-#{@page.template_name}.css")) rescue ""%>
+
+<%#=render(:file=>ActionController::Base.helpers.compute_asset_path("editor-custom.css")) %>
+<%=get_asset_content("editor-custom.css") %>
+
+<%#=render(:file=>ActionController::Base.helpers.compute_asset_path("#{@page.page_style}"))  rescue ""%>
+<%=get_asset_content("#{@page.page_style}") %>
 
 
 // tiny mce body override
