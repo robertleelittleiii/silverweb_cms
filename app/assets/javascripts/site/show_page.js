@@ -62,6 +62,9 @@ function call_document_ready_on_show_page() {
 
     }
 
+    enablePageEdit();
+    enableSliderEdit();
+
 }
 
 function start_flex_sliders() {
@@ -216,74 +219,74 @@ function activate_slides() {
 }
 
 function showPagePopup(page_to_open) {
-    
-        var  page_name =  "popup-page";
 
-        $.ajax({
-            url: page_to_open, 
-            success: function(data) 
-            {
-                pageViewDialog = createAppDialog(page_name,data);
-                $("div.ui-dialog-titlebar").hide();
-                $("div.ui-dialog .ui-dialog-buttonpane").css("border-width","0px");
-                $(".ui-dialog .ui-dialog-buttonpane button span").html("X");
-                
-                dialogHeight = $(".ui-dialog").height();
-                dialogWidth = $(".ui-dialog").width();
-                $(".ui-dialog").css("background", "none");
-                 $(".ui-dialog").css("border", "none");
-                
-                $(".ui-dialog .ui-dialog-buttonpane").css("background", "none");
+    var page_name = "popup-page";
 
-                $(".ui-dialog .ui-dialog-buttonpane button").css("position", "absolute");
-                $(".ui-dialog .ui-dialog-buttonpane button").css("top", "40px");
-                $(".ui-dialog .ui-dialog-buttonpane button").css("right", "40px");
-                $(".ui-dialog .ui-resizable-se").css("display", "none");
+    $.ajax({
+        url: page_to_open,
+        success: function (data)
+        {
+            pageViewDialog = createAppDialog(page_name, data);
+            $("div.ui-dialog-titlebar").hide();
+            $("div.ui-dialog .ui-dialog-buttonpane").css("border-width", "0px");
+            $(".ui-dialog .ui-dialog-buttonpane button span").html("X");
 
-                pageViewDialog.dialog('open');
-                pageViewDialog.dialog({
-                    close: function( event, ui ) {
-                        $('#app-dialog').html("");
-                        $('#app-dialog').dialog( "destroy" );
-                    }
-                });
+            dialogHeight = $(".ui-dialog").height();
+            dialogWidth = $(".ui-dialog").width();
+            $(".ui-dialog").css("background", "none");
+            $(".ui-dialog").css("border", "none");
+
+            $(".ui-dialog .ui-dialog-buttonpane").css("background", "none");
+
+            $(".ui-dialog .ui-dialog-buttonpane button").css("position", "absolute");
+            $(".ui-dialog .ui-dialog-buttonpane button").css("top", "40px");
+            $(".ui-dialog .ui-dialog-buttonpane button").css("right", "40px");
+            $(".ui-dialog .ui-resizable-se").css("display", "none");
+
+            pageViewDialog.dialog('open');
+            pageViewDialog.dialog({
+                close: function (event, ui) {
+                    $('#app-dialog').html("");
+                    $('#app-dialog').dialog("destroy");
+                }
+            });
             // require("roles/update_rights.js");
             // update_rights_callDocumentReady();
 
 
             // setupRolesSelection();
-            }
-        });
-    
+        }
+    });
+
 }
 
 function setupPagePopup() {
-    $.each($('.page-popup-link'),function(){
-        var  page_to_open = $(this).attr('href');
-        $(this).attr('href','#');
-        $(this).attr('onClick','return(0);');
-        $(this).attr("page-to-open",page_to_open);
-    // console.log(this);
+    $.each($('.page-popup-link'), function () {
+        var page_to_open = $(this).attr('href');
+        $(this).attr('href', '#');
+        $(this).attr('onClick', 'return(0);');
+        $(this).attr("page-to-open", page_to_open);
+        // console.log(this);
     });
-      
-    $('.page-popup-link').click( function(){
-        var  page_to_open = $(this).attr('page-to-open');
-        var  page_name = $(this).attr('title') || "popup-page";
+
+    $('.page-popup-link').click(function () {
+        var page_to_open = $(this).attr('page-to-open');
+        var page_name = $(this).attr('title') || "popup-page";
 
         $.ajax({
-            url: page_to_open, 
-            success: function(data) 
+            url: page_to_open,
+            success: function (data)
             {
-                pageViewDialog = createAppDialog(page_name,data);
+                pageViewDialog = createAppDialog(page_name, data);
                 $("div.ui-dialog-titlebar").hide();
-                $("div.ui-dialog .ui-dialog-buttonpane").css("border-width","0px");
+                $("div.ui-dialog .ui-dialog-buttonpane").css("border-width", "0px");
                 $(".ui-dialog .ui-dialog-buttonpane button span").html("X");
-                
+
                 dialogHeight = $(".ui-dialog").height();
                 dialogWidth = $(".ui-dialog").width();
                 $(".ui-dialog").css("background", "none");
-                 $(".ui-dialog").css("border", "none");
-                
+                $(".ui-dialog").css("border", "none");
+
                 $(".ui-dialog .ui-dialog-buttonpane").css("background", "none");
 
                 $(".ui-dialog .ui-dialog-buttonpane button").css("position", "absolute");
@@ -293,16 +296,16 @@ function setupPagePopup() {
 
                 pageViewDialog.dialog('open');
                 pageViewDialog.dialog({
-                    close: function( event, ui ) {
+                    close: function (event, ui) {
                         $('#app-dialog').html("");
-                        $('#app-dialog').dialog( "destroy" );
+                        $('#app-dialog').dialog("destroy");
                     }
                 });
-            // require("roles/update_rights.js");
-            // update_rights_callDocumentReady();
+                // require("roles/update_rights.js");
+                // update_rights_callDocumentReady();
 
 
-            // setupRolesSelection();
+                // setupRolesSelection();
             }
         });
     });

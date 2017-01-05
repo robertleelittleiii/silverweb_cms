@@ -33,9 +33,14 @@ function slidereditClickBinding(selector) {
                 slider_edit_dialog.dialog({
                     close: function (event, ui) {
                         current_page_id = $("div#page div#attr-pages div#page-id").text();
-                        show_page(current_page_id);
+                        // show_page(current_page_id);
+                        update_content();
+                       // tinyMCE.editors[0].destroy();
+                        
+                        if (typeof top.tinymce.activeEditor != "undefined") {
+                            top.tinymce.activeEditor.destroy();
+                        }
 
-                        tinyMCE.editors[0].destroy();
                         $('#edit-slider-dialog').html("");
                         $('#edit-slider-dialog').dialog("destroy");
 

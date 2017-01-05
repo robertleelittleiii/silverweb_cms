@@ -28,26 +28,31 @@ function pageeditClickBinding(selector) {
                     close: function (event, ui) {
                         if ($("table#page-table").length > 0)
                             pageTableAjax.draw();
-                        
+
                         if ($("div#edit-page").length > 0)
                         {
-                         current_page_id = $("div#page div#attr-pages div#page-id").text();
+                            current_page_id = $("div#page div#attr-pages div#page-id").text();
                             if (page_id === current_page_id)
                             {
-                                show_page(page_id);
+                                update_content();
+                                enablePageEdit();
+                                enableSliderEdit();
+                                //show_page(page_id);
                             }
                         }
                         pageeditClickBinding("div#edit-pages");
 
                         //tinyMCE.editors[0].destroy();
-                        top.tinymce.activeEditor.destroy();
+                        if (typeof top.tinymce.activeEditor != "undefined") {
+                            top.tinymce.activeEditor.destroy();
+                        }
                         $('#edit-page').html("");
                         $('#edit-page').dialog("destroy");
-                        
+
 
                     }
                 });
-                
+
                 require("pages/edit.js");
                 requireCss("pages/edit.css");
                 requireCss("pages.css");
