@@ -287,7 +287,7 @@ module SiteHelper
   
   def get_asset_content(asset)
     if Rails.application.config.assets.compile == false then
-       render(:file=> (Rails.root.to_s + "/public" + ActionController::Base.helpers.compute_asset_path("fonts.css")))
+       render(:file=> (Rails.root.to_s + "/public" + ActionController::Base.helpers.compute_asset_path(asset)))
     else
        render(:text=>Rails.application.assets[asset].to_s.html_safe)
     end
