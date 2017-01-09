@@ -44,7 +44,7 @@ html body#tinymce p.selector:after {
 <%=get_asset_content("editor-custom.css") %>
 
 <%#=render(:file=>ActionController::Base.helpers.compute_asset_path("#{@page.page_style}"))  rescue ""%>
-<%=get_asset_content("#{@page.page_style}") %>
+<%=get_asset_content("#{@page.page_style}") rescue ""%>
 
 
 // tiny mce body override
