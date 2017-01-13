@@ -344,7 +344,7 @@ module  MenusHelper
     @menu_id= params[:menu_id]
     @selected_class = params[:selected_class] || ""
     
-    @page_name = params[:current_page] || ""
+    @page_name = params[:current_page] || @page_name
     # @page_name = (params[:current_page] || "") if @page_name.blank?
 
     if not @page_name.blank? then
