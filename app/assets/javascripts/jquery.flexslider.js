@@ -1081,6 +1081,19 @@
       // FlexSlider: removed() Callback
       slider.vars.removed(slider);
     };
+    
+    slider.destroy = function() {
+		var classNamespace = '.' + slider.vars.namespace; // Namespaced class selector
+		if (slider.vars.controlNav) slider.controlNav.closest(classNamespace + 'control-nav').remove(); // Remove control elements if present
+		if (slider.vars.directionNav) slider.directionNav.closest(classNamespace + 'direction-nav').remove(); // Remove direction-nav elements if present
+		if (slider.vars.pausePlay) slider.pausePlay.closest(classNamespace + 'pauseplay').remove(); // Remove pauseplay elements if present
+		slider.find('.clone').remove(); // Remove any flexslider clones
+                slider.unbind(slider.vars.eventNamespace); // Remove events on slider
+		if ( slider.vars.animation != "fade" ) slider.container.unwrap(); // Remove the .flex-viewport div
+		slider.container.removeAttr('style') // Remove generated CSS (could collide with 3rd parties)
+		slider.container.unbind(slider.vars.eventNamespace); // Remove events on slider
+		slider.slides.removeAttr('style'); // Remove generated CSS (could collide with 3rd parties)
+    }
 
     //FlexSlider: Initialize
     methods.init();

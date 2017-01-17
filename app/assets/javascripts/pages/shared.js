@@ -7,7 +7,7 @@
 page_edit_dialog = "";
 
 function pageeditClickBinding(selector) {
-    // selectors .edit-page-item, tr.page-row 
+// selectors .edit-page-item, tr.page-row 
 
     $(selector).unbind("click").one("click", function (event) {
         event.stopPropagation();
@@ -16,7 +16,6 @@ function pageeditClickBinding(selector) {
         var is_iframe = $("application-space").length > 0
 
         var url = '/pages/' + page_id + '/edit?request_type=window&window_type=iframe&as_window=true';
-
         // $(this).effect("highlight", {color: "#669966"}, 1000);
 
         $.ajax({
@@ -28,7 +27,6 @@ function pageeditClickBinding(selector) {
                     close: function (event, ui) {
                         if ($("table#page-table").length > 0)
                             pageTableAjax.draw();
-
                         if ($("div#edit-page").length > 0)
                         {
                             current_page_id = $("div#page div#attr-pages div#page-id").text();
@@ -41,32 +39,28 @@ function pageeditClickBinding(selector) {
                             }
                         }
                         pageeditClickBinding("div#edit-pages");
-
                         //tinyMCE.editors[0].destroy();
-                        if (typeof top.tinymce.activeEditor != "undefined") {
-                            top.tinymce.activeEditor.destroy();
+
+                        try {
+                            if (typeof top.tinymce.activeEditor != "undefined") {
+                                top.tinymce.activeEditor.destroy();
+                            }
+                        } catch (err)
+                        {
+
                         }
+
                         $('#edit-page').html("");
                         $('#edit-page').dialog("destroy");
-
-
                     }
                 });
-
                 require("pages/edit.js");
                 requireCss("pages/edit.css");
                 requireCss("pages.css");
-
                 pages_edit_callDocumentReady();
                 page_edit_dialog.dialog('open');
-
-
             }
         });
-
-
-
-
 //        if (is_iframe) {
 //                        $('iframe#pages-app-id',window.parent.document).attr("src",url);
 //                        pageeditClickBinding(this);

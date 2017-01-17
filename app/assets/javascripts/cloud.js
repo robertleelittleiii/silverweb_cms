@@ -1158,6 +1158,23 @@ function update_content() {
         success: function (data)
         {
             $("div#content").html(data);
+            
+             try {
+                if (typeof eval(data_additional) == "function") {
+                    eval(data_additional + "()")
+                }
+            } catch (err)
+            {
+
+            }
+            try {
+                if (typeof eval(data_additional + "_callDocumentReady") == "function") {
+                    eval(data_additional + "_callDocumentReady()")
+                }
+            } catch (err)
+            {
+            }
+            
             try {
                 if (typeof eval(data_content_update_call) == "function") {
                     eval(data_content_update_call + "()")
@@ -1177,21 +1194,6 @@ function update_content() {
 
             }
 
-            try {
-                if (typeof eval(data_additional) == "function") {
-                    eval(data_additional + "()")
-                }
-            } catch (err)
-            {
-
-            }
-            try {
-                if (typeof eval(data_additional + "_callDocumentReady") == "function") {
-                    eval(data_additional + "_callDocumentReady()")
-                }
-            } catch (err)
-            {
-            }
         }
     });
 
