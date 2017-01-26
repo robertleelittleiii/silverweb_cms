@@ -27,7 +27,7 @@
                 <%=form_tag({:controller=>"site", :action => 'login_ajax'},{:id=>"login-form", :remote=>true}) do %>
                   </br>
                   <DIV CLASS="L11G" STYLE="margin-bottom:10px">If you already have a login on this site, please login. <br>
-                  if not click to <%= link_to "register", "#", :class=>"register-link"%>  
+                  if not <%= link_to "click here to register", "#", :class=>"register-link"%>  
 </DIV>
                   <BR>
                   <table border="0" cellspacing=0 class="ds_login">
