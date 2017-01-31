@@ -423,7 +423,7 @@ function set_my_timezone() {
     $.ajax({
         method: "post",
         dataType: "json",
-        url: '/users/set_time_zone?time_zone=' + tz.name(),
+        url: '/site/set_time_zone?time_zone=' + tz.name(),
         cache: false,
         success: function(data)
         {

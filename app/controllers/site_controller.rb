@@ -8,8 +8,8 @@ class SiteController < ApplicationController
 
   cms_skip_authorize
   
-  protect_from_forgery except: :session_active
-   
+  protect_from_forgery :except => [:set_time_zone, :session_active]
+
   # uses_tiny_mce(:options => AppConfig.default_mce_options, :only => [:new, :edit])
 
   # login code
@@ -1082,6 +1082,15 @@ class SiteController < ApplicationController
     return return_list
   end
 
+  
+  def set_time_zone 
+    session[:time_zone] = params["time_zone"]
+     
+    respond_to do |format|
+      format.html if params[:value].blank?
+      format.json { head :ok }
+    end
+  end
   
   protected
   

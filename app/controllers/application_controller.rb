@@ -31,7 +31,7 @@ class ApplicationController < ActionController::Base
     else
       unless User.find_by_id(session[:user_id])
         session[:original_uri] = request.request_uri
-        flash[:notice] = "Please log in"
+        flash.now[:notice] = "Please log in"
         puts("redirected to admin/login.")
         redirect_to(:controller => "registration" , :action => "login" )
       end

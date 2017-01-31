@@ -263,14 +263,14 @@ class UsersController < ApplicationController
   end
   
   
-  def set_time_zone 
-    session[:time_zone] = params["time_zone"]
-     
-    respond_to do |format|
-      format.html if params[:value].blank?
-      format.json { head :ok }
-    end
-  end
+#  def set_time_zone 
+#    session[:time_zone] = params["time_zone"]
+#     
+#    respond_to do |format|
+#      format.html if params[:value].blank?
+#      format.json { head :ok }
+#    end
+#  end
   
   private
 
