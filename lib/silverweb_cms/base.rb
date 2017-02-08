@@ -114,6 +114,19 @@ module SilverwebCms
     end
     
     
+    # SITE DATA FIELD PARTIAILS TO ALLOW LATER GEMS TO ADD TO USER INFO WIDGET.
+    
+    @SITE_PANES = []
+    
+   
+    def self.SITE_PANES
+      @SITE_PANES 
+    end
+    
+    def self.add_site_pref_pane(pref_pane)
+      @SITE_PANES << pref_pane
+    end
+    
     
     # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
     #     R O U T E S  T O  A D D  F O R  D I R E C T  U R L  L I N K
