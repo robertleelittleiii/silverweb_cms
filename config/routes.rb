@@ -30,6 +30,7 @@ Rails.application.routes.draw do
       get "link_list"
       get "template_list"
       get "reset"
+      post "set_time_zone"
     end 
   end
   
