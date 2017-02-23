@@ -29,9 +29,9 @@
     margin-left: auto;
     margin-right: auto;
     opacity: 0;
-    position: relative;
-    width: 350px;
-    z-index: 32;
+    position: fixed;
+    width: 100%;
+    /* z-index: 32;*/
 }
 
 .reset-enclosure {
@@ -478,7 +478,7 @@ div.validation-error-message-div:hover + div.validation-error-message {
     background-color: black;
     width: 100%;
     height:100%;
-    z-index: 20;
+    z-index: -1;
     position: fixed;
     opacity: 0.5;
 }
