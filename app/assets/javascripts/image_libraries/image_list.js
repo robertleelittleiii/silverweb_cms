@@ -38,7 +38,7 @@ function activateImages() {
 
 function activate_buttons() {
 
-    $("div.ui-button a").button();
+    $("div.ui-button-block a").button();
 }
 //function bind_paste_body_zone() {
 //

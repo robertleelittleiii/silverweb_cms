@@ -190,7 +190,8 @@ BestInPlaceEditor.prototype = {
         if (this.formType in {
             "input": 1,
             "textarea": 1,
-            "date": 1
+            "date": 1,
+            "datetime":1,
         } && this.getValue() == this.oldValue)
                 //       } && this.getValue() == this.oldValue && !this.dirty == "true")
                 { // Avoid request if no change is made
@@ -509,6 +510,60 @@ BestInPlaceEditor.forms = {
                         }
                     })
                     .datepicker('show');
+        },
+        getValue: function () {
+            return this.sanitizeValue(this.element.find("input").val());
+        },
+        submitHandler: function (event) {
+            event.data.editor.update();
+        },
+        keyupHandler: function (event) {
+            if (event.keyCode == 27) {
+                event.data.editor.abort();
+            }
+        }
+    },
+    "datetime": {
+        activateForm: function () {
+            var that = this,
+                    output = jQuery(document.createElement('form'))
+                    .addClass('form_in_place')
+                    .attr('action', 'javascript:void(0);')
+                    .attr('style', 'display:inline'),
+                    input_elt = jQuery(document.createElement('input'))
+                    .attr('type', 'text')
+                    .attr('class', 'best_in_place_adj')
+                    .attr('name', this.attributeName)
+                    .attr('value', this.sanitizeValue(this.oldValue));
+            if (this.inner_class !== null) {
+                input_elt.addClass(this.inner_class);
+            }
+            output.append(input_elt)
+
+            this.element.html(output);
+            BestInPlaceCallBackBind(this);
+            // console.log("-------------------------------------------");
+            // console.log("Testing callBackBind:");
+            // console.log(this);
+            // console.log(typeof this.callBackBind);
+
+            if (typeof (this.callBackBind) == "function")
+            {
+                this.callBackBind(this);
+            }
+
+            this.setHtmlAttributes();
+            this.element.find('input')[0].select();
+            this.element.find("form").bind('submit', {editor: this}, BestInPlaceEditor.forms.input.submitHandler);
+            this.element.find("input").bind('keyup', {editor: this}, BestInPlaceEditor.forms.input.keyupHandler);
+            this.element.find('input')
+                    .datetimepicker({
+                        timeFormat: "hh:mm:ss tt",
+                        onClose: function () {
+                            that.update();
+                        }
+                    })
+                    .datetimepicker('show');
         },
         getValue: function () {
             return this.sanitizeValue(this.element.find("input").val());

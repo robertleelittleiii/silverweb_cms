@@ -121,8 +121,9 @@ div.picture-float-center img {
     height: 16px;
     display: inline-block;
     position: absolute;
-    right: 0px;
-    top: 2px;
+    right: 5px;
+    top: 7px;
+    z-index:1;
 }
 
 .file-item {
@@ -138,22 +139,13 @@ div.picture-float-center img {
     border-top-right-radius: 5px;
 }
 
-.file-delete-icon {
-    width: 16px;
-    height: 16px;
-    display: inline-block;
-    position: absolute;
-    right: 0px;
-    top: 2px;
-    z-index: 10;
-}
 .upload {
     display: inline-block;
     padding: 20px;
     font-size:10px;
 }
 
-div.hover-block div.ui-button {
+div.hover-block div.ui-button-block {
     display: block;
     position: relative;
     margin-top: 12px;
@@ -162,7 +154,7 @@ div.hover-block div.ui-button {
     margin-right: auto;
 }
 
-div.hover-block div.ui-button {
+div.hover-block div.ui-button-block {
     margin-left: auto;
     margin-right: auto;
     display: block;

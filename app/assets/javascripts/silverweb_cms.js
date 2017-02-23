@@ -29,6 +29,8 @@
 //= require cloud
 //= require jquery.slides
 //= require jquery-ui-combobox
+//= require jquery-ui-sliderAccess
+//= require jquery-ui-timepicker-addon
 //= require jquery.ui.touch-punch.min
 //= require superfish
 //= require jquery.history

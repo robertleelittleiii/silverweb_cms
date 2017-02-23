@@ -241,12 +241,15 @@ module UiHelper
     #           Will simply use the rails number_to_currency on the value to format.
     #
     
+    puts()
     if not opts[:format_type].blank?  then
       case opts[:format_type] 
       when "time"
         value =  Time.parse(value.to_s).strftime(opts[:format_string]) if not value.blank?
       when "date"
         value =  Date.parse(value.to_s).strftime(opts[:format_string]) if not value.blank?
+      when "datetime"
+        value =  DateTime.parse(value.to_s).strftime(opts[:format_string]) if not value.blank?
       when "currency"
         value =  number_to_currency(value) if not value.blank?
       else
@@ -316,6 +319,24 @@ module UiHelper
     
     ("<div id='field_#{field_name.to_s}' class='#{divClass}'>" +
         best_in_place(field_pointer, field_name,opts.merge( :type => :date, :nil => empty_message)).html_safe +
+        '</div>').html_safe
+     
+  end
+  
+  def editabledatetimefieldcreate(field_name,field_pointer, empty_message="Click me to add content!", opts = {})
+
+    if field_pointer.blank? then
+      flash[:notice] = field_name + " not found !!"
+      return "ERROR"
+    end
+    if opts[:divclass].nil? then
+      divClass='cms-contentitem'
+    else
+      divClass=opts[:divclass]
+    end rescue divClass='cms-contentitem'
+    
+    ("<div id='field_#{field_name.to_s}' class='#{divClass}'>" +
+        best_in_place(field_pointer, field_name,opts.merge( :type => :datetime, :nil => empty_message)).html_safe +
         '</div>').html_safe
      
   end
