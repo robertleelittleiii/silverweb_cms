@@ -114,33 +114,30 @@ function require(script) {
 
     // $("script[src='/javascripts/ie_fixes.js?1361329086']")
 
-    if (!$("script[src^='" + theUrl + "']").length) {
-        // alert("loaded");
-        $.ajax({
-            url: "/site/load_asset",
-            data: {path: script},
-            dataType: "text",
-            async: false, // <-- this is the key
-            success: function (data) {
+    //  if (!$("script[src^='" + theUrl + "']").length) {
+    // alert("loaded");
+    $.ajax({
+        url: "/site/load_asset",
+        data: {path: script},
+        dataType: "text",
+        async: false, // <-- this is the key
+        success: function (data) {
 
-                if (data != "") {
-                    var javascriptLink = $("<script>").attr({
-                        type: "text/javascript",
-                        src: data
-                    });
+            if (data != "") {
+                var javascriptLink = $("<script>").attr({
+                    type: "text/javascript",
+                    src: data
+                });
+                if (!$('script[src="' + data + '"]').length) {
                     $("head").append(javascriptLink);
                 }
-                // all good...
-            },
-            fail: function () {
-                console.warn("Could not load script " + script);
             }
-        });
-    } else
-    {
-        //      alert("Not Loaded");
-
-    }
+            // all good...
+        },
+        fail: function () {
+            console.warn("Could not load script " + script);
+        }
+    });
 }
 
 //
@@ -152,31 +149,30 @@ function requireCss(cssFile) {
     // var theTimeStamp = getRailsTimeStamp();
     // if (cssFile.charAt(0) == "/") {
     var href = "/assets/" + cssFile
-    if (!$("link[href^='" + href + "']").length) {
-        //alert("loaded");
-        $.ajax({
-            url: "/site/load_asset",
-            data: {path: cssFile},
-            dataType: 'text',
-            success: function (data) {
-                if (data != "") {
-                    var cssLink = $("<link>").attr({
-                        rel: "stylesheet",
-                        type: "text/css",
-                        href: data
-                    });
+    //alert("loaded");
+    $.ajax({
+        url: "/site/load_asset",
+        data: {path: cssFile},
+        dataType: 'text',
+        success: function (data) {
+            if (data != "") {
+                var cssLink = $("<link>").attr({
+                    rel: "stylesheet",
+                    type: "text/css",
+                    href: data
+                });
+                // $('link[href$="'+ data +'"]').length
+                if (!$('link[href$="' + data + '"]').length) {
                     $("head").append(cssLink);
                 }
-                //your callback
-            },
-            fail: function () {
-                console.warn("Could not load script " + script);
             }
-        });
-    } else
-    {
-        //  alert("Not Loaded");
-    }
+            //your callback
+        },
+        fail: function () {
+            console.warn("Could not load script " + script);
+        }
+    });
+
 }
 //
 //
@@ -188,7 +184,7 @@ function popUpAlertifExists()
     var message = $("#alert").text().trim();
 
     setUpPurrNotifier("Alert", message);
-    
+
     $("#alert").text("");
 
     var message = $("#notice").text().trim();
@@ -345,9 +341,9 @@ function createAppDialog(theContent, dialog_id, call_backs, buttons_to_show_in) 
             $('#' + dialog_id).html("");
             $('#' + dialog_id).dialog("destroy");
             $('#' + dialog_id).remove();
-            
-       
-           //    alert('closed');
+
+
+            //    alert('closed');
         },
         open: function (event, ui)
         {
