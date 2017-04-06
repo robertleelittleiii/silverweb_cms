@@ -116,6 +116,8 @@ function require(script) {
 
     //  if (!$("script[src^='" + theUrl + "']").length) {
     // alert("loaded");
+    //
+    
     $.ajax({
         url: "/site/load_asset",
         data: {path: script},
