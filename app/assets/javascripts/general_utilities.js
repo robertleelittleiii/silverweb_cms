@@ -171,7 +171,7 @@ function requireCss(cssFile) {
                 // $('link[href$="'+ data +'"]').length
                 if ($('iframe.iframe-application').length) {
                     if (!$('iframe.iframe-application').contents().find('head link[href$="' + data + '"]').length) {
-                        $("head").append(javascriptLink);
+                        $("head").append(cssLink);
                     }
                 } else if (!$('link[href$="' + data + '"]').length) {
                     $("head").append(cssLink);
