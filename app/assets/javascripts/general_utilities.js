@@ -155,7 +155,7 @@ function requireCss(cssFile) {
     // var theTimeStamp = getRailsTimeStamp();
     // var theTimeStamp = getRailsTimeStamp();
     // if (cssFile.charAt(0) == "/") {
-    var href = "/assets/" + cssFile
+    var href = "/assets/" + cssFile;
     //alert("loaded");
     $.ajax({
         url: "/site/load_asset",
