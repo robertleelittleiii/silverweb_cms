@@ -128,7 +128,12 @@ function require(script) {
                     type: "text/javascript",
                     src: data
                 });
-                if (!$('script[src="' + data + '"]').length) {
+               
+                // handle frame based cloud system
+                
+                if(!$('iframe.iframe-application').contents().find('head script[src$="' + data + '"]').length) {
+                  $("head").append(javascriptLink);
+                } else if (!$('script[src="' + data + '"]').length) {
                     $("head").append(javascriptLink);
                 }
             }
@@ -162,7 +167,9 @@ function requireCss(cssFile) {
                     href: data
                 });
                 // $('link[href$="'+ data +'"]').length
-                if (!$('link[href$="' + data + '"]').length) {
+                if(!$('iframe.iframe-application').contents().find('head link[href$="' + data + '"]').length) {
+                  $("head").append(javascriptLink);
+                } else if (!$('link[href$="' + data + '"]').length) {
                     $("head").append(cssLink);
                 }
             }
