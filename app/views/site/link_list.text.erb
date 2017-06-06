@@ -1,5 +1,4 @@
  [
-    // Name, URL
         <% @pages.each do |page| %>
         {"title":"<%= page.title %>", "value": "./<%= page.title %>"} <%= ((page == @last_page) and not (@pdfs.length > 0)) ? "" : ", " %>
         <% end %>
