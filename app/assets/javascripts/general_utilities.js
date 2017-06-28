@@ -468,11 +468,12 @@ function ui_ajax_checkbox() {
 }
 
 
-function ui_ajax_settings_select() {
+function ui_ajax_settings_select(success_callback) {
 
     $("select.ui-ajax-settings-select").bind("change", function () {
         selected_item = $(this).val();
         controller = this.getAttribute("data-path")
+        that = this
 
         //alert(this.getAttribute("data-id"));
 
@@ -482,8 +483,17 @@ function ui_ajax_settings_select() {
             dataType: "json",
             type: "PUT",
             data: "id=" + this.getAttribute("data-id") + "&settings[" + this.getAttribute("name") + "=" + selected_item,
-            success: function (data)
+            success: function (data, textStatus, jqXHR)
             {
+                //  console.log(data);
+                //  console.log(textStatus);
+                //  console.log(jqXHR);
+                //  console.log(that);
+
+                if (typeof success_callback == "function")
+                {
+                    success_callback(that, data);
+                }
                 // alert(data);
                 if (data === undefined || data === null || data === "")
                 {
@@ -492,6 +502,9 @@ function ui_ajax_settings_select() {
                 {
 
                 }
+            },
+            fail: function (jqXHR, textStatus, errorThrown) {
+                setUpNotifier("error.png", "Warning", textStatus);
             }
         });
     });
