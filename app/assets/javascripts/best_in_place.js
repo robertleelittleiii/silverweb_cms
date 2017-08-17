@@ -123,10 +123,10 @@ function BestInPlaceEditor(e) {
 }
 
 function BestInPlaceEditorObject(e) {
-    if (jQuery(e).length==0) 
+    if (jQuery(e).length == 0)
     {
         return ([]);
-        
+
     }
     if (typeof jQuery(this).data('bestInPlaceEditor') == "undefined") {
         jQuery(e).best_in_place();
@@ -141,7 +141,7 @@ jQuery.fn.best_in_place_callback = function (hook_name, function_code) {
     this.each(function () {
         if (typeof jQuery(this).data('bestInPlaceEditor') == "undefined") {
             jQuery(e).best_in_place();
-        }        
+        }
         jQuery(this).data('bestInPlaceEditor')[hook_name] = function_code;
     });
     return this;
@@ -173,7 +173,7 @@ BestInPlaceEditor.prototype = {
         this.activateForm();
     },
     abort: function () {
-       if (this.isNil)
+        if (this.isNil)
             this.element.html("<div class='data-nil'>" + this.nil + "</div>");
         else
             this.element.html(this.oldValue);
@@ -191,7 +191,7 @@ BestInPlaceEditor.prototype = {
             "input": 1,
             "textarea": 1,
             "date": 1,
-            "datetime":1,
+            "datetime": 1,
         } && this.getValue() == this.oldValue)
                 //       } && this.getValue() == this.oldValue && !this.dirty == "true")
                 { // Avoid request if no change is made
@@ -237,7 +237,7 @@ BestInPlaceEditor.prototype = {
 
                 current_editor.isNil = (current_editor.element.html() == "");
                 current_editor.oldValue = (current_editor.element.html());
-                
+
                 if (typeof (current_editor.callBackSuccess) == "function")
                 {
                     current_editor.callBackSuccess(current_editor);
@@ -328,9 +328,9 @@ BestInPlaceEditor.prototype = {
         {
             self.values = jQuery.parseJSON(self.collection);
         }
-       
-       self.initNil();
-        
+
+        self.initNil();
+
     },
     bindForm: function () {
         this.activateForm = BestInPlaceEditor.forms[this.formType].activateForm;
@@ -341,9 +341,8 @@ BestInPlaceEditor.prototype = {
         {
             this.isNil = true
             this.element.html("<div class='data-nil'>" + this.nil + "</div>")
-        }
-        else
-            this.isNil= false
+        } else
+            this.isNil = false
     },
     getValue: function () {
         alert("The form was not properly initialized. getValue is unbound");
@@ -410,21 +409,20 @@ BestInPlaceEditor.prototype = {
         }, this.clickHandler);
     },
     loadErrorCallback: function (request, error) {
- //       console.log("------>" );
- //       console.log(this.oldValue);
-        if (this.oldValue != "" ) {
-                    this.element.html(this.oldValue);
-        }
-        else {
+        //       console.log("------>" );
+        //       console.log(this.oldValue);
+        if (this.oldValue != "") {
+            this.element.html(this.oldValue);
+        } else {
             this.element.html("<div class='data-nil'>" + this.nil + "</div>");
         }
-        
-        console.log("------>" );
-        console.log(request);
-        console.log(error );
 
-        
-        
+        console.log("------>");
+        console.log(request);
+        console.log(error);
+
+
+
         // Display all error messages from server side validation
         jQuery.each(jQuery.parseJSON(request.responseText), function (index, value) {
             var container = jQuery("<span class='flash-error'></span>").html(value);
@@ -454,22 +452,22 @@ BestInPlaceEditor.prototype = {
     // simple setters to set callbacks.
     setSuccessCallback: function (successCallbackFunction) {
         this.callBackSuccess = successCallbackFunction;
-      //  this.callBackSuccess =  this.length > 0 ? successCallbackFunction : "";
+        //  this.callBackSuccess =  this.length > 0 ? successCallbackFunction : "";
     },
     setInitCallback: function (initCallbackFunction) {
         this.callBackInit = initCallbackFunction;
-      //  this.callBackInit =   this.length > 0 ? initCallbackFunction : "";
+        //  this.callBackInit =   this.length > 0 ? initCallbackFunction : "";
     },
     setBindCallback: function (bindCallbackFunction) {
         this.callBackBind = bindCallbackFunction;
-       // this.callBackBind =  this.length > 0 ? bindCallbackFunction : "";
+        // this.callBackBind =  this.length > 0 ? bindCallbackFunction : "";
     },
     setNoChangeCallback: function (noChangeCallbackFunction) {
         this.callBackNoChange = noChangeCallbackFunction;
 //        this.callBackNoChange = this.length > 0 ? noChangeCallbackFunction : "";
     }
 };
-BestInPlaceEditor.forms = { 
+BestInPlaceEditor.forms = {
     "date": {
         activateForm: function () {
             var that = this,
@@ -684,11 +682,24 @@ BestInPlaceEditor.forms = {
         keydownHandler: function (event) {
             if (event.keyCode == 9) {
                 event.preventDefault();
+                list = jQuery(".best_in_place");
+                thisID = jQuery.inArray(jQuery(this).parent().parent()[0], list);
+                if (thisID == -1) // something didn't work, so we will try to find it a different way.  (form was removed)
+                {
+                    thisID = jQuery.inArray(jQuery(jQuery(this).parent().parent()).find(".best_in_place")[0], list);
+                }
+//                console.log("in keydown handler");
+//                console.log(jQuery(this));
+//                console.log(jQuery(this).parent());
+//                console.log(jQuery(this).parent().parent());
+//                console.log(list);
+//                console.log(thisID);
+
                 // window.alert("keydown: " + event.keyCode);
                 //  jQuery(this).parent().next().next().find(".best_in_place").trigger('click');
                 //    jQuery(this).parent().parent().parent().next().next().find(".best_in_place").trigger('click');
-                list = jQuery(".best_in_place");
-                thisID = jQuery.inArray(jQuery(this).parent().parent()[0], list);
+
+
                 if (event.shiftKey)
                 {
                     // eval("jQuery(this).parent().parent().parent().prev().prev().prev().find('.best_in_place').trigger('click')")
