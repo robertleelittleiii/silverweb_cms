@@ -232,6 +232,7 @@ module UiHelper
     out << " data-max-length='#{opts[:max_length].to_s}'" unless opts[:max_length].blank?
     out << " data-format='#{opts[:format_string].to_s}'" unless opts[:format_string].blank?
     out << " data-format-type'#{opts[:format_type].to_s}'" unless opts[:format_type].blank?
+    out << " title='#{opts[:nil].to_s}'" unless opts[:nil].blank?
 
     # formating options if set
     #  :format_type 
@@ -247,7 +248,7 @@ module UiHelper
       when "date"
         value =  Date.parse(value.to_s).in_time_zone(opts[:time_zone]) if not value.blank?
       when "datetime"
-         value =  DateTime.parse(value.to_s).in_time_zone(opts[:time_zone]) if not value.blank?
+        value =  DateTime.parse(value.to_s).in_time_zone(opts[:time_zone]) if not value.blank?
       end
     else
       # do nothing
@@ -355,7 +356,7 @@ module UiHelper
   def editablecheckboxeditmulti (field_name, field_pointer ,field_title, opts={})
 
     db_field_name= field_name.split("-").first
-    is_selected = field_pointer[db_field_name].split(",").include?(field_title) rescue false  
+    is_selected = field_pointer.send(db_field_name).split(",").include?(field_title) rescue false  
     divClass = (opts[:divclass].blank? ? "cms-contentitem ajax-check-multi" : opts[:divclass])
     
     
@@ -369,8 +370,8 @@ module UiHelper
             id: field_pointer.id,
             selected: is_selected,
             action: :update,
-            "#{field_pointer.class.name.downcase}" => {"#{field_name}"=> field_title}   ) 
-        }, 
+            "#{field_pointer.class.name.underscore.downcase}" => {"#{field_name}"=> field_title}   ) 
+        },  
         :class => "ajax-check-multi",
         checkbox_value: field_title
       )+field_title + "</div>").html_safe
