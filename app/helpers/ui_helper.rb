@@ -215,7 +215,7 @@ module UiHelper
            
     
     if object_class_name == "settings" then
-      opts[:path] = request.original_url
+      opts[:path] = opts[:path].blank? ? request.original_url : opts[:path]
     end rescue ""
     
     puts("object-class-name in bestinplace: #{object_class_name}")
