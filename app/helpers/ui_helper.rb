@@ -169,8 +169,14 @@ module UiHelper
     puts("bestinplace->>> Object is: #{object.inspect}")
     
     field_items = field.split(".")
-    
-    if field.include?("[") and field.include?("]") then
+    if field.include?("[\'") and field.include?("\']") then # this is an object reference.
+      array_index = field.scan(/\[([^\)]+)\]/).first.first.gsub(/'/, '')
+      field_name = field.split("[").first
+      value = object.send(field_name)[array_index] rescue ""
+      puts("*" * 40)
+      puts("array_index: #{array_index} , field_name: #{field_name}")
+
+    elsif field.include?("[") and field.include?("]") then
       array_index = field.scan(/\[(.*?)\]/).flatten.first.to_i
       field_name = field.split("[").first
       value = object.send(field_name)[array_index] rescue ""
