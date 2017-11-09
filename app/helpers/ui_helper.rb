@@ -206,7 +206,7 @@ module UiHelper
       if object_class_name == "settings" then
         fieldValue = Settings.send(field) == "true" ? true : false
       else
-        fieldValue = !!object.send(field)
+        fieldValue = object.send(field).class==String ? object.send(field).downcase == "true" : !!object.send(field)
       end
       if opts[:collection].blank? || opts[:collection].size != 2
         opts[:collection] = ["No", "Yes"]
