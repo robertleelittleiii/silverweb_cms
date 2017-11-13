@@ -169,6 +169,7 @@ module UiHelper
     puts("bestinplace->>> Object is: #{object.inspect}")
     
     field_items = field.split(".")
+    
     if field.include?("[\'") and field.include?("\']") then # this is an object reference.
       array_index = field.scan(/\[([^\)]+)\]/).first.first.gsub(/'/, '')
       field_name = field.split("[").first
@@ -201,12 +202,18 @@ module UiHelper
     object_class_name = object.class.to_s.gsub("::", "_").underscore
     object_class_name = (object_class_name == "settings_active_record_relation" ? "settings" : object_class_name)
 
-    
+
     if opts[:type] == :checkbox
+      puts("bestinplace->>> Object is checkbox")
       if object_class_name == "settings" then
-        fieldValue = Settings.send(field) == "true" ? true : false
+        fieldValue = Settings.send(field) == "true" ? true : false 
       else
-        fieldValue = object.send(field).class==String ? object.send(field).downcase == "true" : !!object.send(field)
+        if field.include?(".") then # has sub fields
+          fieldList = field.split(".")
+          fieldValue = object.send(fieldList[0]).send(fieldList[1]).class==String ? object.send(fieldList[0]).send(fieldList[1]).downcase == "true" : !!object.send(fieldList[0]).send(fieldList[1]) 
+        else
+          fieldValue = object.send(field).class==String ? object.send(field).downcase == "true" : !!object.send(field) 
+        end
       end
       if opts[:collection].blank? || opts[:collection].size != 2
         opts[:collection] = ["No", "Yes"]
@@ -288,6 +295,7 @@ module UiHelper
     #     value = simple_format(value.to_s)
     #    end
     #    
+   
     out << "</div>"
     
     if !opts[:validation_message].blank? then
@@ -295,7 +303,8 @@ module UiHelper
       out << opts[:validation_message]
       out << "</lable>"
     end
-    
+    puts("bestinplace->>> out: #{out}")
+
     return out
   end
   
