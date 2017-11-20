@@ -47,7 +47,7 @@ function call_document_ready_on_show_page() {
     }
 
     activate_slides();
-    start_flex_sliders();
+        start_flex_sliders();
 
     require("pages/shared.js");
     pageeditClickBinding("div#edit-pages");
@@ -119,12 +119,12 @@ function activate_slides() {
 
     if ($("div#slides3 > div").length > 1)
     {
-        slideshow_width = parseInt($("#slider-width").text());
-        slideshow_height = parseInt($("#slider-height").text());
-        slideshow_nav_pagination = $("#slider-nav").text();
-        slideshow_effect = $("#slider-effect").text();
-        slideshow_auto = $("#slider-auto").text() || "true"
-        slideshow_speed = $("#slider-speed").text() || "5000"
+        slideshow_width = parseInt($("#slides3-slider-width").text());
+        slideshow_height = parseInt($("#slides3-slider-height").text());
+        slideshow_nav_pagination = $("#slides3-slider-nav").text();
+        slideshow_effect = $("#slides3-slider-effect").text();
+        slideshow_auto = $("#slides3-slider-auto").text() || "true"
+        slideshow_speed = $("#slides3-slider-speed").text() || "5000"
 
 
 
@@ -144,9 +144,9 @@ function activate_slides() {
                 // You cannot use your own buttons. Sorry.
                 effect: slideshow_effect,
                 // [string] Can be either "slide" or "fade".
-                interval: 5000,
+                interval: slideshow_speed,
                 // [number] Time spent on each slide in milliseconds.
-                auto: false,
+                auto: slideshow_auto,
                 // [boolean] Start playing the slideshow on load.
                 //swap: true,
                 // [boolean] show/hide stop and play buttons
@@ -178,12 +178,12 @@ function activate_slides() {
             }
             ;
 
-            $("div#slides3 .slidesjs-container").width($("#slider-width").text());
-            $("div#slides3 .slidesjs-container").height($("#slider-height").text());
-            $("div#slides3 .slidesjs-container div.slides_control").width($("#slider-width").text());
-            $("div#slides3 .slidesjs-container div.slides_control").height($("#slider-height").text());
-            $("div#slides3 .slidesjs-container div.slider-content").width($("#slider-width").text());
-            $("div#slides3 .slidesjs-container div.slider-content").height($("#slider-height").text());
+            $("div#slides3 .slidesjs-container").width(slideshow_width);
+            $("div#slides3 .slidesjs-container").height(slideshow_height);
+            $("div#slides3 .slidesjs-container div.slides_control").width(slideshow_width);
+            $("div#slides3 .slidesjs-container div.slides_control").height(slideshow_height);
+            $("div#slides3 .slidesjs-container div.slider-content").width(slideshow_width);
+            $("div#slides3 .slidesjs-container div.slider-content").height(slideshow_height );
 
             //  slideshow_width = $("#slides").width();
             //  slideshow_height =$("#slides").height();
