@@ -140,7 +140,7 @@ module SiteHelper
       returnval =  returnval + "<div id='slider-effect'>#{effect}</div> \n"
       returnval =  returnval + "</div> \n"
       
-      returnval = returnval + "<div id=\"slides3\"> \n"
+      returnval = returnval + "<div id=\"slides3\" class=\"slides3\"> \n"
       page.sliders.active.each_with_index do |slider, slide_count| 
         puts("slide count #{slide_count}")
         if slide_count == 0 then
