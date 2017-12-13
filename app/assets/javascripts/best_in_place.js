@@ -157,23 +157,37 @@ BestInPlaceEditor.prototype = {
     activate: function () {
         // this.isNil = (this.element.html() == "");
         this.initNil();
-        var elem = ((this.isNil) | (this.element.html() == '<div class="data-nil">' + this.nil + '</div>')) ? "" : this.element.html();
-//        console.log("----------------------------------------------------------");
-//        console.log("'" + elem + "'");
-//        console.log("'" + this.getValue() + "'");
-//        console.log("'" + "<div class='data-nil'>" + this.nil + "</div>" + "'");
-//        console.log(elem == "<div class='data-nil'>" + this.nil + "</div>");
-//        console.log(this);
-//        console.log(this.element);  
-//        console.log(this.element.html());  
-//        console.log(this.isNil);
-//        console.log("----------------------------------------------------------");
+        var null_elem = this.nil;
+        var null_elem_html = $('<div />').text(null_elem).html();
+        var elem = ((this.isNil) | (this.element.html() == '<div class="data-nil">' + null_elem_html + '</div>')) ? "" : this.element.html();
+        console.log("----------------------------------------------------------");
+        console.log("'" + elem + "'");
+        console.log("'" + this.getValue() + "'");
+        console.log("'" + null_elem + "'");
+        console.log("'" + null_elem_html + "'");
+        console.log("'" + this.element.html() + "'");
+        console.log("'" + '<div class="data-nil">' + null_elem_html + '</div>' + "'");
+        console.log(this.element.html() == null_elem_html);
+        console.log(this);
+        console.log(this.element);
+        console.log(this.element.html());
+        console.log("----------------------------------------------------------");
         this.oldValue = elem;
         jQuery(this.activator).unbind("click", this.clickHandler);
         this.activateForm();
     },
     abort: function () {
-        if (this.isNil)
+        console.log("----------------------------------------------------------");
+        console.log("'" + this.isNil + "'");
+        console.log("'" + this.oldValue + "'");
+        console.log("'" + this.getValue() + "'");
+        console.log(this);
+        console.log(this.element);
+        console.log(this.element.html());
+        console.log("----------------------------------------------------------");
+        this.isNil = (this.getValue() == "");
+
+        if ((this.isNil))
             this.element.html("<div class='data-nil'>" + this.nil + "</div>");
         else
             this.element.html(this.oldValue);
@@ -349,16 +363,23 @@ BestInPlaceEditor.prototype = {
     },
     // Trim and Strips HTML from text
     sanitizeValue: function (s) {
-        if (this.sanitize)
-        {
-            var tmp = document.createElement("DIV");
-            tmp.innerHTML = s;
-            s = jQuery.trim(tmp.textContent || tmp.innerText).replace(/"/g, '&quot;').replace(/'/g, '&#39;');
-        } else
-        {
-            s = s.replace(/</g, '&lt;').replace(/>/g, '&gt;')
+        if (typeof s != "undefined") {
+            if ((this.sanitize))
+            {
+                var tmp = document.createElement("DIV");
+                tmp.innerHTML = s;
+                s = jQuery.trim(tmp.textContent || tmp.innerText).replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+            } else
+            {
+                s = s.replace(/</g, '&lt;').replace(/>/g, '&gt;')
+            }
+
+            return jQuery.trim(s);
         }
-        return jQuery.trim(s);
+        else
+        {
+            return(s)
+        }
     },
     /* Generate the data sent in the POST request */
     requestData: function () {
