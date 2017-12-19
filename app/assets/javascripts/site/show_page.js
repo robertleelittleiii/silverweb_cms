@@ -74,6 +74,7 @@ function start_flex_sliders() {
     slideshow_speed = $("#play-speed").text() || "5000"
 
     slideshow_itemswidth = $("#slider-width").text() || "210"
+    carousel_itemswidth = $("#carousel-items-width").text() || "210"
 
 
 
@@ -84,7 +85,7 @@ function start_flex_sliders() {
         $('.flexslider.carousel').flexslider({
             animation: "slide",
             animationLoop: false,
-            itemWidth: Number(slideshow_itemswidth),
+            itemWidth: Number(carousel_itemswidth),
             itemMargin: 10
         });
 
