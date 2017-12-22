@@ -26,7 +26,7 @@ class UserNotifier < ActionMailer::Base
     @admin_email = Settings.admin_email || self.default_params[:from]
     @site_name = ("The " + Settings.company_name + " Team </br>" + link_to(Settings.company_url, "http://" + Settings.company_url )).html_safe
     @cc_emai_address = Settings.cc_email_address || ""
-    mail(:from=>@admin_email, :cc=>@cc_emai_address, :to => "#{user.user_attribute.first_name} #{user.user_attribute.last_name}<#{user.name}>", :subject => "Welcome to #{Settings.company_name || "our store"}")
+    mail(:from=>@admin_email, :cc=>@cc_emai_address, :to => "#{user.user_attribute.first_name} #{user.user_attribute.last_name}<#{user.name}>", :subject => "Welcome to #{Settings.company_name || "our store"}", 'Importance' => 'high', 'X-Priority' => '1')
   end
  
   
@@ -38,7 +38,7 @@ class UserNotifier < ActionMailer::Base
     @hostfull=host
     @site_name = Settings.company_url
     @admin_email = Settings.admin_email || self.default_params[:from]
-    mail(:from=>@admin_email,:to => "#{user.user_attribute.first_name} #{user.user_attribute.last_name}<#{user.name}>", :subject => "Reset your password")
+    mail(:from=>@admin_email,:to => "#{user.user_attribute.first_name} #{user.user_attribute.last_name}<#{user.name}>", :subject => "Reset your password", 'Importance' => 'high', 'X-Priority' => '1')
   end
  
   
@@ -79,7 +79,7 @@ class UserNotifier < ActionMailer::Base
     @site_name = Settings.company_url
     @admin_email = Settings.admin_email || self.default_params[:from]
 
-    mail(:from=>@admin_email,:to => "#{user.user_attribute.first_name} #{user.user_attribute.last_name}<#{user.name}>", :subject => "Activation for #{Settings.company_name || "our store." }")
+    mail(:from=>@admin_email,:to => "#{user.user_attribute.first_name} #{user.user_attribute.last_name}<#{user.name}>", :subject => "Activation for #{Settings.company_name || "our store." }", 'Importance' => 'high', 'X-Priority' => '1')
   end
   
   
