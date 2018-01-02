@@ -272,7 +272,7 @@ module UiHelper
       when "time"
         value =  Time.parse(value.to_s).strftime(opts[:format_string]) if not value.blank?
       when "date"
-        value =  Date.parse(value.to_s).strftime(opts[:format_string]) if not value.blank?
+        value =  Date.parse(value.to_s).strftime(opts[:format_string]) rescue "01/01/2001" if not value.blank?
       when "datetime"
         value =  DateTime.parse(value.to_s).strftime(opts[:format_string]) if not value.blank?
       when "currency"
