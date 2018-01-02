@@ -270,11 +270,11 @@ module UiHelper
     if not opts[:format_type].blank?  then
       case opts[:format_type] 
       when "time"
-        value =  Time.parse(value.to_s).strftime(opts[:format_string]) if not value.blank?
+        value =  Time.parse(value.to_s).strftime(opts[:format_string]) rescue "" if not value.blank?
       when "date"
         value =  Date.parse(value.to_s).strftime(opts[:format_string]) rescue "01/01/2001" if not value.blank?
       when "datetime"
-        value =  DateTime.parse(value.to_s).strftime(opts[:format_string]) if not value.blank?
+        value =  DateTime.parse(value.to_s).strftime(opts[:format_string]) rescue "" if not value.blank?
       when "currency"
         value =  number_to_currency(value) if not value.blank?
       else
