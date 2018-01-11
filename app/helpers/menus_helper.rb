@@ -575,7 +575,7 @@ module  MenusHelper
             html_link_class = params[:selected_class]
           end
 
-          if menu.menus.count>0 then
+          if menu.menus.where(:menu_active=>true).count>0 then
             subMenus=self.buildsubmenussuperfish(menu.menus,0,params)
             if subMenus.include?(params[:selected_class]) then
               html_link_class = params[:selected_class]
