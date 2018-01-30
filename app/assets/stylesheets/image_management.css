@@ -1,0 +1,65 @@
+/* 
+    Document   : image_management.css
+    Created on : Jan 29, 2012, 11:58:29 PM
+    Author     : rlittle
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+
+
+.album {
+    position:relative;
+
+}
+
+.imageSingle {
+background-color:#E1BF48;
+position:relative;
+margin:20px;
+text-align:center;
+display:inline-block;
+    border-right-color: #E1BF48;
+    border-left-color: #E1BF48;
+    border-bottom-color: #E1BF48;
+    border-top-color: #E1BF48;
+    border-right-style: solid;
+    border-left-style: solid;
+    border-bottom-style: solid;
+    border-top-style: solid;
+    border-right-width: 2px;
+    border-left-width: 2px;
+    border-bottom-width: 2px;
+    border-top-width: 10px;
+     zoom:1;
+     float:left;
+ } 
+.imagesection {
+    
+}
+#imagebutton{
+    display:inline-block;
+    margin:20px;
+text-align:center;
+}
+#images{
+    display:inline-block;
+}
+.imageThumb{
+background:#E1BF48 none repeat scroll 0 0;
+}
+
+.imageDelete{
+    margin-left:50px;
+    margin-top:-25px;
+
+}
+
+.image-delete-list{
+margin-right:5px;
+margin-top: -25px;
+}

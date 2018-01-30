@@ -1,12 +1,14 @@
-require 'digest/sha1'
+    require 'digest/sha1'
 # require 'RFC822'
 require 'gravtastic'
  #include Gravtastic
+require 'csv'
 
 
 class User < ActiveRecord::Base
-  #  include RFC822
-  RFC822_valid = begin
+  include RailsSettings::Extend
+  
+    RFC822_valid = begin
     qtext = '[^\\x0d\\x22\\x5c\\x80-\\xff]'
     dtext = '[^\\x0d\\x5b-\\x5d\\x80-\\xff]'
     atom = '[^\\x00-\\x20\\x22\\x28\\x29\\x2c\\x2e\\x3a-' +
@@ -24,8 +26,8 @@ class User < ActiveRecord::Base
   end
   
   has_and_belongs_to_many :roles
-  
   has_one :user_attribute
+  has_one :user_live_edit, :autosave => true
 
   # has_many :orders
 include Gravtastic
@@ -70,7 +72,47 @@ include Gravtastic
       end
     end
   end
+  
+  def initials
+    #user_attributes=UserAttribute.where(:user_id => self.id)
+    if self.user_attribute.nil? then
+      return(self.name.first.capitalize)
+    else if self.user_attribute.first_name.nil? or self.user_attribute.last_name.nil? then
+        return(self.name.first.capitalize)
+      else
+        return(self.user_attribute.first_name.first.capitalize  + self.user_attribute.last_name.first.capitalize)
+      end
+    end
+  end
 
+  
+  def is_admin? 
+    self.roles.where(:name=>"Admin").size > 0
+  end
+  
+  # Based on Admin Role or Manager role.  Application Specific
+  def is_manager? 
+    self.roles.where(:name=>"Admin").size > 0 or self.roles.where(:name=>"Manager").size > 0
+  end
+  
+  def has_role?(role)
+    self.roles.where(:name=>"Admin").size > 0 or self.roles.where(:name=>role).size > 0
+  end
+  
+  def has_permission (the_action_name,the_controller_name)
+
+    if self.roles.detect{|role|
+        role.rights.detect{|right|
+          ((right.action == the_action_name)|(right.action == "*")|(right.action.include? the_action_name)) && right.controller == the_controller_name
+        }
+      }
+      return true
+    else
+      return false
+    end
+  end
+  
+  
   def create_reset_code
     @reset = true
     self.attributes = {password_reset_code: Digest::SHA1.hexdigest( Time.now.to_s.split(//).sort_by {rand}.join )}
@@ -173,6 +215,16 @@ def self.to_csv
     end
     
   
+  end
+
+def self.get_active
+    @user_list = []
+    @session_list = ActiveRecord::SessionStore::Session.all
+    @session_list.each do |a_session| 
+      @user = (a_session.data["user_id"].nil? ? nil : User.find(a_session.data["user_id"])) rescue nil
+      @user_list << {:user=> @user, :session=>a_session.data} if not @user.nil?
+    end 
+    return @user_list
   end
 
 #  def name

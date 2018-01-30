@@ -86,6 +86,44 @@ class RegistrationController < ApplicationController
     end
   end
 
+  def reset_ajax
+    @user = User.find_by_password_reset_code(params[:reset_code]) unless params[:reset_code].nil?
+    reset_status = 0
+
+    #clear out current user while reseting password.
+    session[:user_id] = nil
+    session[:active] = false
+  
+    if @user.nil? then
+      flash[:notice] ="You already reset your password."
+    else
+      if (params[:password] != params[:password_confirmation] or params[:password].blank? )
+           message ="Paswords can't be blank and must match, please try again."
+           reset_status = -1
+      elsif @user.update_attributes(:password => params[:password], :password_confirmation => params[:password_confirmation])
+        @user.delete_reset_code
+        
+        # also log the user in.
+        session[:active]=true
+        session[:last_seen]=Time.now
+        session[:ip_address]= request.remote_ip rescue "n/a"
+        session[:user_id] = @user.id
+        
+        message = "Password reset successfully for #{@user.name}"
+        reset_status = 1
+      else
+        message ="Password reset has failed, please try again."
+      end
+    
+    end
+    
+    respond_to do |format|
+      format.json  {render :json=>{:message=>message,:sucessfull=>reset_status}}
+      format.html {redirect_to(uri || { :action => "index" })}
+    end 
+   
+  end
+  
   def reset
     @user = User.find_by_password_reset_code(params[:reset_code]) unless params[:reset_code].empty?
     #    @user = User.find_by_password_reset_code(params[:reset_code])

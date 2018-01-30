@@ -7,8 +7,9 @@ tinymce.PluginManager.add('image_library', function(editor, url) {
         tooltip: 'Insert/add image from library',
         onclick: function() {
             // Open window
+            
             editor.windowManager.open({
-                title: 'Image Libary',
+                title: 'Image Library',
                 url: '/image_library/image_list?as_window=true',
                 width: 875,
                 height: 600,
@@ -23,13 +24,13 @@ tinymce.PluginManager.add('image_library', function(editor, url) {
     
 
     // Adds a menu item to the tools menu
-    editor.addMenuItem('Image libary', {
-        text: 'Image Libary',
+    editor.addMenuItem('Image library', {
+        text: 'Image Library',
         context: 'tools',
         onclick: function() {
             // Open window with a specific url
             editor.windowManager.open({
-                title: 'Image Libary',
+                title: 'Image Library',
                 url: '/image_library/image_list?as_window=true',
                 width: 875,
                 height: 600,

@@ -17,7 +17,7 @@ Gem::Specification.new do |s|
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.rdoc"]
   s.test_files = Dir["test/**/*"]
 
-  s.add_runtime_dependency "tinymce-rails", "4.2.6"
+  s.add_runtime_dependency "tinymce-rails", "4.7.2" # ">=4.3.12" locked in due to bug with gem.
   
   # s.add_runtime_dependency "compass" , "~> 1.0.0"
   # s.add_runtime_dependency "sass-rails" , "5.0.0"
@@ -46,8 +46,10 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'gravtastic'
   s.add_development_dependency "mysql"
   s.add_development_dependency 'gem_reloader'
-  s.add_runtime_dependency 'sitemap_generator'
+  s.add_runtime_dependency 'sitemap_generator', '5.2.0'
   s.add_runtime_dependency 'american_date'
+  s.add_runtime_dependency 'activerecord-session_store'
+
 
   
 end

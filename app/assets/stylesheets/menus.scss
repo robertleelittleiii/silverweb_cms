@@ -1,10 +1,13 @@
-@import "image_management.css";
 /* 
     Document   : index
     Created on : Apr 11, 2011, 6:37:54 PM
     Author     : rlittle
     Description:
         Purpose of the stylesheet follows.
+
+ *= require image_management
+
+old way:  @import "image_management.css";
 */
 
 /* 

@@ -10,6 +10,9 @@
 //
 
 var interval;
+var cloud1id;
+var cloud2id;
+var cloud3id;
 
 function cloud1() {
     body_width = ($("body").width() + 150) + "px";
@@ -18,6 +21,14 @@ function cloud1() {
     }, 10000).animate({
         left: "-150px"
     }, 0)
+
+    // since the login screen doesn't have any watching of the system, we will use the animation timeout to allow 
+    //a function to be called by the application to perform some login screen checks (if necessary).
+
+    if (typeof LoginScreenCallback == "function") {
+        LoginScreenCallback();
+    }
+
     cloud1id = setTimeout("cloud1()", 10000);
 }
 function cloud2() {
@@ -95,9 +106,9 @@ function toggle_login_box(display_now) {
             $(".login-enclosure").css("display", "block");
             $("#login-backdrop").fadeIn(500);
             $("form#login-form").css("top", "0px");
+            $("input#name").focus();
 
-        }
-        else
+        } else
         {
             $("form#login-form").css("top", "-350px");
             $(".login-enclosure").css("opacity", "0");
@@ -108,12 +119,11 @@ function toggle_login_box(display_now) {
             // $(".login-enclosure").slideUp(500);
 
         }
-    }
-    else {
+    } else {
         if (display_now) {
             $(".login-enclosure").fadeIn(500);
-        }
-        else
+            $("input#name").focus();
+        } else
         {
             $(".login-enclosure").fadeOut(500);
 
@@ -141,9 +151,8 @@ function checkLoginStatus()
             if (data == "true") {
 
                 logedIn();
-
-            }
-            else
+                stop_animation();
+            } else
             {
                 setTimeout("initial_animation()", 200);
 
@@ -172,39 +181,41 @@ function checkLoginStatus()
 
 function loadLoginBox(url_to_goto) {
 
-    $.ajax({
-        url: "/site/login",
-        type: "GET",
-        dataType: "html",
-        success: function (data)
-        {
-            loginContainer = "<div id='login-enclosure-container'></div>";
-
-            if ($("#login-enclosure-container").length == 0)
+    if ($("adminaction").size() == 0) {
+        $.ajax({
+            url: "/site/login",
+            type: "GET",
+            dataType: "html",
+            success: function (data)
             {
-                $("body").append($(loginContainer));
+                loginContainer = "<div id='login-enclosure-container'></div>";
+
+                if ($("#login-enclosure-container").length == 0)
+                {
+                    $("body").append($(loginContainer));
+                }
+
+                $("#login-enclosure-container").html(data);
+                $(".login-enclosure").hide();
+                $(".login-enclosure").css("opacity", 1);
+                $("form#login-form").css("top", "0px");
+                $("input#name").focus();
+
+                toggle_login_box(true);
+                bindLoginClick(url_to_goto);
+                bindLoginForgotLink();
+                bindLoginRegisterLink();
+                bindResetClick();
+                bindRegisterClick();
+                bindCancelClick();
+                $("input.button-link").button();
+                $("a.button-link").button();
+
+
             }
+        });
 
-            $("#login-enclosure-container").html(data);
-            $(".login-enclosure").hide();
-            $(".login-enclosure").css("opacity", 1);
-            $("form#login-form").css("top", "0px");
-
-            toggle_login_box(true);
-            bindLoginClick(url_to_goto);
-            bindLoginForgotLink();
-            bindLoginRegisterLink();
-            bindResetClick();
-            bindRegisterClick();
-            bindCancelClick();
-            $("input.button-link").button();
-            $("a.button-link").button();
-
-
-        }
-    });
-
-
+    }
 
 }
 
@@ -224,8 +235,7 @@ function bindCancelClick() {
             //$("form#login-form").css("top","-350px");
             // $(".login-enclosure").slideUp(500);
 
-        }
-        else {
+        } else {
             $("#login-backdrop").fadeOut(500);
             $(".login-enclosure").fadeOut(500, function () {
                 $("#login-enclosure-container").html("");
@@ -239,25 +249,26 @@ function bindCancelClick() {
 function bindLogoutClick() {
     $('a#sign-out-button').bind('ajax:beforeSend', function (evt, xhr, settings) {
         // alert("ajax:before");  
-        console.log('ajax:before');
-        console.log(evt);
-        console.log(xhr);
-        console.log(settings);
+        // console.log('ajax:before');
+        // console.log(evt);
+        // console.log(xhr);
+        // console.log(settings);
 
 
     }).bind('ajax:success', function (evt, data, status, xhr) {
         //  alert("ajax:success"); 
-        console.log('ajax:success');
-        console.log(evt);
-        console.log(data);
-        console.log(data.message)
-        console.log(status);
-        console.log(xhr);
+        // console.log('ajax:success');
+        // console.log(evt);
+        // console.log(data);
+        // console.log(data.message)
+        // console.log(status);
+        // console.log(xhr);
         updateFooterDiv();
         // updateAppDiv();
         updateSecurityDiv();
         // show_page();
         update_content();
+        call_login_callbacks();
 
         if (!(typeof updateSiteDivsLogout == "undefined"))
         {
@@ -266,18 +277,18 @@ function bindLogoutClick() {
 
     }).bind('ajax:error', function (evt, xhr, status, error) {
         // alert("ajax:failure"); 
-        console.log('ajax:error');
-        console.log(evt);
-        console.log(xhr);
-        console.log(status);
-        console.log(error);
+        // console.log('ajax:error');
+        // console.log(evt);
+        // console.log(xhr);
+        // console.log(status);
+        // console.log(error);
 
     }).bind('ajax:complete', function (evt, xhr, status) {
         //    alert("ajax:complete");  
-        console.log('ajax:complete');
-        console.log(evt);
-        console.log(xhr);
-        console.log(status);
+        // console.log('ajax:complete');
+        // console.log(evt);
+        // console.log(xhr);
+        // console.log(status);
 
 
     });
@@ -285,21 +296,21 @@ function bindLogoutClick() {
 function bindLoginClick(url_to_goto) {
     $('#login-form').bind('ajax:beforeSend', function (evt, xhr, settings) {
         // alert("ajax:before");  
-        console.log('ajax:before');
-        console.log(evt);
-        console.log(xhr);
-        console.log(settings);
+        // console.log('ajax:before');
+        // console.log(evt);
+        // console.log(xhr);
+        // console.log(settings);
 
 
     }).bind('ajax:success', function (evt, data, status, xhr) {
         //  alert("ajax:success"); 
-        console.log('ajax:success');
-        console.log(evt);
-        console.log(data);
+        // console.log('ajax:success');
+        // console.log(evt);
+        // console.log(data);
         if (data.sucessfull) {
             login_sucessfull(url_to_goto);
-        }
-        else
+            
+        } else
         {
             $(".login-enclosure").effect("shake", {
                 times: 3
@@ -308,23 +319,23 @@ function bindLoginClick(url_to_goto) {
         }
 
 
-        console.log(status);
-        console.log(xhr);
+        // console.log(status);
+        // console.log(xhr);
 
     }).bind('ajax:error', function (evt, xhr, status, error) {
         // alert("ajax:failure"); 
-        console.log('ajax:error');
-        console.log(evt);
-        console.log(xhr);
-        console.log(status);
-        console.log(error);
+        // console.log('ajax:error');
+        // console.log(evt);
+        // console.log(xhr);
+        // console.log(status);
+        // console.log(error);
 
     }).bind('ajax:complete', function (evt, xhr, status) {
         //    alert("ajax:complete");  
-        console.log('ajax:complete');
-        console.log(evt);
-        console.log(xhr);
-        // console.log(status);
+        // console.log('ajax:complete');
+        // console.log(evt);
+        // console.log(xhr);
+        // // console.log(status);
 
 
     });
@@ -334,38 +345,38 @@ function bindLoginClick(url_to_goto) {
 function bindResetClick() {
     $('#recover-form').bind('ajax:beforeSend', function (evt, xhr, settings) {
         // alert("ajax:before");  
-        console.log('ajax:before');
-        console.log(evt);
-        console.log(xhr);
-        console.log(settings);
+        // console.log('ajax:before');
+        // console.log(evt);
+        // console.log(xhr);
+        // console.log(settings);
 
 
     }).bind('ajax:success', function (evt, data, status, xhr) {
         //  alert("ajax:success"); 
-        console.log('ajax:success');
-        console.log(evt);
-        console.log(data);
+        // console.log('ajax:success');
+        // console.log(evt);
+        // console.log(data);
         setUpPurrNotifier("Notice", data.message);
         $('div.login-form').toggleClass('flipped');
         $("input[name='name']").val("");
 
-        console.log(status);
-        console.log(xhr);
+        // console.log(status);
+        // console.log(xhr);
 
     }).bind('ajax:error', function (evt, xhr, status, error) {
         // alert("ajax:failure"); 
-        console.log('ajax:error');
-        console.log(evt);
-        console.log(xhr);
-        console.log(status);
-        console.log(error);
+        // console.log('ajax:error');
+        // console.log(evt);
+        // console.log(xhr);
+        // console.log(status);
+        // console.log(error);
 
     }).bind('ajax:complete', function (evt, xhr, status) {
         //    alert("ajax:complete");  
-        console.log('ajax:complete');
-        console.log(evt);
-        console.log(xhr);
-        // console.log(status);
+        // console.log('ajax:complete');
+        // console.log(evt);
+        // console.log(xhr);
+        // // console.log(status);
 
 
     });
@@ -381,13 +392,12 @@ function userLoggedIn() {
         {
             if (data == true) {
                 //  alert("do nothing");
-            }
-            else
+            } else
             {
-                window.location = "/"
+                window.location = "/?nocache=" + (new Date()).getTime();
                 // alert("refresh to site");
             }
-            console.log(data);
+            // console.log(data);
 
         }
     });
@@ -395,16 +405,31 @@ function userLoggedIn() {
 }
 
 function check_login_status() {
-    check_login_status = $("#check_login_status").text();
+    check_login_status_time = $("#check_login_status").text();
+
+    check_login_status_time = check_login_status_time == "" ? "10000" : check_login_status_time;
 
     if (typeof interval != "number") {
         interval = setInterval(function () {
             userLoggedIn();
-        }, check_login_status);
+        }, check_login_status_time);
     }
 
 }
 
+
+function set_my_timezone() {
+    var tz = jstz.determine();
+    $.ajax({
+        method: "post",
+        dataType: "json",
+        url: '/site/set_time_zone?time_zone=' + tz.name(),
+        cache: false,
+        success: function(data)
+        {
+        }
+    });
+}
 function login_sucessfull(url_to_goto) {
 
     //   toggle_login_box(false);
@@ -453,6 +478,9 @@ function login_sucessfull(url_to_goto) {
     updateFooterDiv();
     updateSecurityDiv();
     update_content();
+    call_login_callbacks();
+    set_my_timezone();
+    
     // show_page();
     // if updateSiteDivs is defined for site then...
 
@@ -464,8 +492,7 @@ function login_sucessfull(url_to_goto) {
     if (!(typeof url_to_goto == "undefined"))
     {
         window.location = url_to_goto
-    }
-    else
+    } else
     {
         // updateAppDiv();
 
@@ -512,7 +539,7 @@ function bindMyAccountClick()
 {
     $("#my-account-link").click(function () {
 
-        $("#grid-nav").fadeIn();
+       $("#grid-nav").fadeIn();
         $($currentApplicationId).removeClass("blowup");
         $(".grid_tabnav ul li").removeClass("hidden");
 
@@ -533,14 +560,12 @@ function updateSecurityDiv()
             if (data === undefined || data === null || data === "")
             {
                 //display warning
-            }
-            else
+            } else
             {
                 if ($("div#admin-nav.normal").length > 0) {
                     $("div#admin-nav.normal #security-div").html(data);
                     $("div#admin-nav.small #security-div").html(data);
-                }
-                else
+                } else
                 {
                     $("#security-div").html(data);
 
@@ -571,8 +596,7 @@ function updateFooterDiv()
             if (data === undefined || data === null || data === "")
             {
                 //display warning
-            }
-            else
+            } else
             {
                 $("#footer").html(data);
                 bindMyAccountClick();
@@ -585,50 +609,58 @@ function updateFooterDiv()
 ;
 resultData = ""
 function updateAppDiv() {
-
-    $.ajax({
-        url: "/site/render_partial",
-        dataType: "html",
-        cache: false,
-        type: "GET",
-        data: "partial_name=/cms_interface/grid_tab_nav.html",
-        success: function (data)
-        {
-            resultData = data;
-            //alert(data);
-            if (data === undefined || data === null || data === "")
+    // check and make sure that we are not using the CMS_dialog!
+    if ($("div#layout-name").text() != "cms_dialog") {
+        $.ajax({
+            url: "/site/render_partial",
+            dataType: "html",
+            cache: false,
+            type: "GET",
+            data: "partial_name=/cms_interface/grid_tab_nav.html",
+            success: function (data)
             {
-                //display warning
-            }
-            else
-            {
-                if ($("#nav-grid-links").length === 0) {
-                    var gridContainer = "<div style='display:none' id='nav-grid-links'></div>";
-                    $("body").prepend($(gridContainer));
-                }
-
-                $("#nav-grid-links").html(data);
-                $(".grid_tabnav ul li").removeClass("hidden");
-                // $("#grid-nav").fadeIn();
-                if (window.matchMedia("only screen and (max-width: 524px)").matches)
+                resultData = data;
+                //alert(data);
+                if (data === undefined || data === null || data === "")
                 {
-                    $("#nav-grid-links").fadeIn();
-                    $("#grid-nav").css("top", "0px");
-                }
-                else
+                    //display warning
+                } else
                 {
-                    $("#nav-grid-links").fadeIn();
-                    $("#grid-nav").css("top", "0px");
+
+                    if ($("#nav-grid-links").length === 0) {
+                        var gridContainer = "<div style='display:none;' id='nav-grid-links'></div>";
+                        $("body").prepend($(gridContainer));
+                        var gridOverlay = "<div style='display:none;' id='nav-grid-overlay'></div>";
+                        $("body").prepend($(gridOverlay));
+
+                    }
+
+                    $("#nav-grid-links").html(data);
+                    $(".grid_tabnav ul li").removeClass("hidden");
+                    // $("#grid-nav").fadeIn();
+                    if (window.matchMedia("only screen and (max-width: 524px)").matches)
+                    {
+                        $("#nav-grid-links").fadeIn();
+                        $("#nav-grid-overlay").fadeIn();
+
+                        $("#grid-nav").css("top", "0px");
+                    } else
+                    {
+                        $("#nav-grid-links").fadeIn();
+                        $("#nav-grid-overlay").fadeIn();
+
+                        $("#grid-nav").css("top", "0px");
+
+                    }
+                    $("html, body").animate({ scrollTop: 0 }, "slow");
+
+                    bindAppClick();
+                    bindCloseGrid();
 
                 }
-
-                bindAppClick();
-                bindCloseGrid();
-
             }
-        }
-    });
-
+        });
+    }
 }
 
 function bindCloseGrid() {
@@ -642,6 +674,8 @@ function bindCloseGrid() {
         text: false
     }).click(function () {
         $("#nav-grid-links").fadeOut();
+        $("#nav-grid-overlay").fadeOut();
+
     });
 
 }
@@ -662,7 +696,9 @@ function bindHideGrid() {
 
 function bindCloseIframe() {
 
-    $("#hide-iframe").click(function () {
+    $("#hide-iframe").off("click").on("click", function () {
+        $("#nav-grid-links").fadeIn();
+        $("#nav-grid-overlay").fadeIn();
 
         $("#application-space").addClass("hidden");
         $($currentApplicationId).removeClass("blowup");
@@ -693,8 +729,7 @@ function bindMyAccount() {
         $("div#admin-nav #my-account").click(function () {
             updateAppDiv();
         });
-    }
-    else
+    } else
     {
         $("div#admin-nav.normal #my-account").click(function () {
             updateAppDiv();
@@ -710,7 +745,7 @@ function bindIconButtonClick() {
     $('.icon-button').click(function (e) {
         if (window.matchMedia("only screen and (max-width: 524px)").matches) {
             the_url = $(this).attr("href").replace("window", "");
-            console.log(the_url);
+            // console.log(the_url);
             // e.stopPropagation(); 
             window.location = the_url;
 
@@ -724,26 +759,27 @@ function bindAppClick() {
 
     $('.icon-button').bind('ajax:beforeSend', function (evt, xhr, settings) {
         // alert("ajax:before");  
-        console.log('ajax:before');
-        console.log(evt);
-        console.log(xhr);
-        console.log(settings);
-        console.log(this);
+        // console.log('ajax:before');
+        // console.log(evt);
+        // console.log(xhr);
+        // console.log(settings);
+        // console.log(this);
         $(this).find("#ajax-wait img").show();
 
     }).bind('ajax:success', function (evt, data, status, xhr) {
         //  alert("ajax:success"); 
         $(this).find("#ajax-wait img").hide();
 
-        console.log('ajax:success');
-        console.log(evt);
-        console.log(data);
-        console.log(this);
-        console.log(this.href);
+        // console.log('ajax:success');
+        // console.log(evt);
+        // console.log(data);
+        // console.log(this);
+        // console.log(this.href);
         $currentApplicationId = $(this).parent();
         $(this).parent().addClass("blowup");
         $(".grid_tabnav ul li").addClass("hidden");
         $("div#nav-grid-links").fadeOut();
+        $("#nav-grid-overlay").fadeOut();
 
         //$("#grid-nav").fadeOut();
 
@@ -761,8 +797,7 @@ function bindAppClick() {
             var thisApp = createiFrameOverlay(theController, data, this.href);
             $("#cloud-switch").fadeIn();
             updateFooterDiv();
-        }
-        else {
+        } else {
 
             if (windowType == "app")
 
@@ -770,14 +805,15 @@ function bindAppClick() {
                 var thisApp = createAppOverlay(theController, data);
 
                 //   alert("This is an app");
-            }
-            else
+            } else
             {
                 //   alert("this is a dialog!")
                 //var thisDialog = createEditDialog(data);
                 var thisDialog = createAppDialog(data, "app-dialog", {
                     completion: function completionCallback() {
                         $("div#nav-grid-links").fadeIn();
+                        $("#nav-grid-overlay").fadeIn();
+
                         $($currentApplicationId).removeClass("blowup");
                         $(".grid_tabnav ul li").removeClass("hidden");
 
@@ -788,54 +824,57 @@ function bindAppClick() {
                 $(thisDialog).find(".best_in_place").best_in_place();
 
                 thisDialog.scrollTop(0);
+
+                //// console.log(status);
+                //// console.log(xhr);
+
+                //// console.log(this.href);
+
+                requireCss(theController + "/" + (theAction == 'index' ? 'index_' : theAction) + ".css");
+                require(theController + "/" + (theAction == 'index' ? 'index_' : theAction) + ".js");
+
+                //// console.log(theController + "_" + theAction + "_callDocumentReady");
+
+                try
+                {
+                    if ((typeof (theController + "_" + theAction + "_callDocumentReady") == 'function') | (typeof (eval(theController + "_" + theAction + "_callDocumentReady")) == 'function')) {
+                        eval(theController + "_" + theAction + "_callDocumentReady()");
+                    }
+                } catch (e) {
+                    // statements to handle any exceptions
+                    // console.log(e); // pass exception object to error handler
+                }
+
             }
         }
 
-        console.log(status);
-        console.log(xhr);
+        //// console.log(status);
+        //// console.log(xhr);
 
-        console.log(this.href);
+        //// console.log(this.href);
 
-        requireCss(theController + "/" + (theAction == 'index' ? 'index_' : theAction) + ".css");
-        require(theController + "/" + (theAction == 'index' ? 'index_' : theAction) + ".js");
-
-        console.log(theController + "_" + theAction + "_callDocumentReady");
-
-        try
-        {
-            if ((typeof (theController + "_" + theAction + "_callDocumentReady") == 'function') | (typeof (eval(theController + "_" + theAction + "_callDocumentReady")) == 'function')) {
-                eval(theController + "_" + theAction + "_callDocumentReady()");
-            }
-        }
-        catch (e) {
-            // statements to handle any exceptions
-            console.log(e); // pass exception object to error handler
-        }
-
-
-
-
+        //// console.log(theController + "_" + theAction + "_callDocumentReady");
 
 
     }).bind('ajax:error', function (evt, xhr, status, error) {
         // alert("ajax:failure"); 
-        console.log('ajax:error');
-        console.log(evt);
-        console.log(xhr);
-        console.log(status);
-        console.log(error);
+        // console.log('ajax:error');
+        // console.log(evt);
+        // console.log(xhr);
+        // console.log(status);
+        // console.log(error);
 
         $(this).find("#ajax-wait img").hide();
         setUpPurrNotifier("Network Error", "A network error has occured, please click the icon again.")
 
     }).bind('ajax:complete', function (evt, xhr, status) {
         //    alert("ajax:complete");  
-        console.log('ajax:complete');
-        console.log(evt);
-        console.log(xhr);
+        // console.log('ajax:complete');
+        // console.log(evt);
+        // console.log(xhr);
         $('#edit-dialog').scrollTop(0);
 
-        // console.log(status);
+        // // console.log(status);
 
 
     });
@@ -985,43 +1024,42 @@ function bindLoginRegisterLink() {
 function bindRegisterClick() {
     $('#registration-form').bind('ajax:beforeSend', function (evt, xhr, settings) {
         // alert("ajax:before");  
-        console.log('ajax:before');
-        console.log(evt);
-        console.log(xhr);
-        console.log(settings);
+        // console.log('ajax:before');
+        // console.log(evt);
+        // console.log(xhr);
+        // console.log(settings);
 
 
     }).bind('ajax:success', function (evt, data, status, xhr) {
         //  alert("ajax:success"); 
-        console.log('ajax:success');
-        console.log(evt);
-        console.log(data);
+        // console.log('ajax:success');
+        // console.log(evt);
+        // console.log(data);
         setUpPurrNotifier("Notice", data.message);
         if (data.sucessfull) {
             login_sucessfull();
-        }
-        else
+        } else
         {
             $('div.login-form').toggleClass('flipped-register');
             $("input[name='name']").val("");
         }
-        console.log(status);
-        console.log(xhr);
+        // console.log(status);
+        // console.log(xhr);
 
     }).bind('ajax:error', function (evt, xhr, status, error) {
         // alert("ajax:failure"); 
-        console.log('ajax:error');
-        console.log(evt);
-        console.log(xhr);
-        console.log(status);
-        console.log(error);
+        // console.log('ajax:error');
+        // console.log(evt);
+        // console.log(xhr);
+        // console.log(status);
+        // console.log(error);
 
     }).bind('ajax:complete', function (evt, xhr, status) {
         //    alert("ajax:complete");  
-        console.log('ajax:complete');
-        console.log(evt);
-        console.log(xhr);
-        // console.log(status);
+        // console.log('ajax:complete');
+        // console.log(evt);
+        // console.log(xhr);
+        // // console.log(status);
 
 
     });
@@ -1043,8 +1081,7 @@ function call_document_ready(theAction) {
     try
     {
         eval(the_function);
-    }
-    catch (err)
+    } catch (err)
     {
 
     }
@@ -1076,6 +1113,31 @@ function show_page(page_id) {
 
 }
 
+function call_login_callbacks() {
+
+    var data_update_url = $("div#post-login-callback").attr('data-post-login-callback');
+
+    try {
+        if (typeof eval(data_update_url) == "function") {
+            eval(data_update_url + "()")
+        }
+    } catch (err)
+    {
+
+    }
+
+}
+
+function update_backoffice_elements() {
+    
+    $("div.back-office-refresh-element").each(function( index )  {
+       var function_to_call = $(this).attr("data-update");
+        if (typeof eval(function_to_call) == "function") {
+            eval(function_to_call + "()");
+        }
+    });
+}
+
 function update_content() {
 
     var data_update_url = $("div#data-reload").attr('data-page-params');
@@ -1096,6 +1158,23 @@ function update_content() {
         success: function (data)
         {
             $("div#content").html(data);
+            
+             try {
+                if (typeof eval(data_additional) == "function") {
+                    eval(data_additional + "()")
+                }
+            } catch (err)
+            {
+
+            }
+            try {
+                if (typeof eval(data_additional + "_callDocumentReady") == "function") {
+                    eval(data_additional + "_callDocumentReady()")
+                }
+            } catch (err)
+            {
+            }
+            
             try {
                 if (typeof eval(data_content_update_call) == "function") {
                     eval(data_content_update_call + "()")
@@ -1115,23 +1194,277 @@ function update_content() {
 
             }
 
-            try {
-                if (typeof eval(data_additional) == "function") {
-                    eval(data_additional + "()")
-                }
-            } catch (err)
-            {
-
-            }
-            try {
-                if (typeof eval(data_additional + "_callDocumentReady") == "function") {
-                    eval(data_additional + "_callDocumentReady()")
-                }
-            }
-            catch (err)
-            {
-            }
         }
     });
+
+}
+
+
+// reset box creation
+
+function toggle_reset_box(display_now) {
+
+    if (window.matchMedia("only screen and (max-width: 524px)").matches) {
+        if (display_now) {
+            $("#login-backdrop").hide();
+            $("div.reset-enclosure").css("display", "block");
+            $("#login-backdrop").fadeIn(500);
+            $("form#reset-form").css("top", "0px");
+            $("input#password").focus();
+
+        } else
+        {
+            $("form#reset-form").css("top", "-350px");
+            $(".reset-enclosure").css("opacity", "0");
+            $(".reset-enclosure").css("display", "none");
+
+            //$(".login-enclosure").fadeOut(500);
+            //$("form#login-form").css("top","-350px");
+            // $(".login-enclosure").slideUp(500);
+
+        }
+    } else {
+        if (display_now) {
+            $(".reset-enclosure").fadeIn(500);
+            $("input#password").focus();
+        } else
+        {
+            $("#login-backdrop").hide();
+            $(".reset-enclosure").fadeOut(500);
+
+        }
+    }
+}
+
+
+function bindSubmitClick() {
+    $('#reset-form').bind('ajax:beforeSend', function (evt, xhr, settings) {
+        // alert("ajax:before");  
+        // console.log('ajax:before');
+        // console.log(evt);
+        // console.log(xhr);
+        // console.log(settings);
+
+
+    }).bind('ajax:success', function (evt, data, status, xhr) {
+        //  alert("ajax:success"); 
+        console.log('ajax:success');
+        console.log(evt);
+        console.log(data);
+
+        switch (data.sucessfull) {
+            case 1: // true, and successfull.
+            {
+                setUpPurrNotifier("Notice", data.message);
+                toggle_reset_box(false);
+                login_sucessfull();
+                location = "/";
+                break;
+            }
+            case 0: // false and not able to continue 
+            {
+                setUpPurrNotifier("Notice", data.message);
+                toggle_reset_box(false);
+                location = "/";
+                break;
+            }
+            case -1: // false, but user can try again.
+            {
+                setUpPurrNotifier("Notice", data.message);
+                break;
+            }
+            default:
+            {
+                // do nothing
+            }
+        }
+
+        // console.log(status);
+        // console.log(xhr);
+
+    }
+    ).bind('ajax:error', function (evt, xhr, status, error) {
+        // alert("ajax:failure"); 
+        // console.log('ajax:error');
+        // console.log(evt);
+        // console.log(xhr);
+        // console.log(status);
+        // console.log(error);
+
+    }).bind('ajax:complete', function (evt, xhr, status) {
+        //    alert("ajax:complete");  
+        // console.log('ajax:complete');
+        // console.log(evt);
+        // console.log(xhr);
+        // // console.log(status);
+
+
+    });
+
+}
+
+function loadResetBox(reset_code) {
+
+    $.ajax({
+        url: "/site/reset",
+        type: "GET",
+        dataType: "html",
+        data: {"reset_code": reset_code},
+        success: function (data, status, jqXHR)
+        {
+            console.log(data);
+            console.log(status);
+            console.log(jqXHR);
+            if (jqXHR.status == 203)
+            {
+                setUpPurrNotifier("Notice", data);
+
+                setTimeout(function () {
+                    location = "/";
+                    ;
+                }, 5000);
+
+            } else
+            {
+                resetContainer = "<div id='reset-enclosure-container'></div>";
+
+                if ($("#reset-enclosure-container").length == 0)
+                {
+                    $("body").append($(resetContainer));
+                }
+
+                $("#reset-enclosure-container").html(data);
+                $(".reset-enclosure").hide();
+                $(".reset-enclosure").css("opacity", 1);
+                $("form#reset-form").css("top", "0px");
+                $("input#password").focus();
+
+                toggle_reset_box(true);
+                bindSubmitClick();
+                bindResetCancelClick();
+                $("input.button-link").button();
+                $("a.button-link").button();
+            }
+
+        }
+    });
+
+
+
+}
+
+
+function bindResetCancelClick() {
+    $("a#cancel-reset-button").click(function (e) {
+
+        if (window.matchMedia("only screen and (max-width: 524px)").matches) {
+
+            $("#login-backdrop").fadeOut(500);
+            $("form#reset-form").css("top", "-350px");
+            $(".reset-enclosure").fadeOut(500, function () {
+                $("#reset-enclosure-container").html("");
+                $("#reset-enclosure-container").remove();
+            });
+
+            //$(".login-enclosure").fadeOut(500);
+            //$("form#login-form").css("top","-350px");
+            // $(".login-enclosure").slideUp(500);
+
+        } else {
+            $("#login-backdrop").fadeOut(500);
+            $(".reset-enclosure").fadeOut(500, function () {
+                $("#reset-enclosure-container").html("");
+                $("#reset-enclosure-container").remove();
+            });
+        }
+        location = "/";
+
+    });
+}
+function process_admin_actions() {
+
+
+    if ($("adminaction").size() > 0) {
+
+        $("div#notice").text("");
+        var action = $("adminaction").attr("action");
+        var param = $("adminaction").attr("param");
+        switch (action) {
+            case "reset":
+            {
+                // hide login box if visible
+
+                toggle_login_box();
+                loadResetBox(param);
+                console.log("found admin action!");
+                break;
+            }
+            default:
+            {
+                // do nothing
+            }
+        }
+
+    }
+}
+
+//
+// function to allow field specific searching within datatables.
+//
+//
+function bindDatatableSearchField(search_field_name, model_name) {
+    $(search_field_name).attr("title", "Use ':' to search specific fields. Seperate search terms by ','..  Use a '!' to search for empty fields. Use a '%' as first character in search to find string anywhere in field (vs. start of field).")
+
+    $(search_field_name).autocomplete({
+        //     source: "/contacts/contact_search.json",
+        source: function (request, response) {
+            var field_value = request.term;
+            if ((field_value == ":") | (field_value.slice(-2) == ",:") | (field_value.slice(-3) == ", :")) {
+                console.log("activate popup.");
+                // $("div.dataTables_filter input").css("width", "400px");
+                $(search_field_name).autoGrowInput({minWidth: 135, maxWidth: 400, comfortZone: 50});
+                $(search_field_name).css("min-width", "200px");
+                $.ajax({
+                    url: "/" + model_name + "/search_fields.json",
+                    dataType: "json",
+                    data: {
+                        q: request.term,
+                    },
+                    success: function (data) {
+
+                        // Handle 'no match' indicated by [ "" ] response
+                        response(data.length === 1 && data[ 0 ].length === 0 ? [] : data);
+                    }
+
+                });
+            }
+        }
+        ,minLength: 0
+        ,focus: function( event, ui ) {
+          
+            return false;
+        }
+        ,select: function (event, ui) {
+
+
+            var current_value = $(this).val();
+            var field_value = "";
+
+            if (current_value == ":") // first search term.
+            {
+                field_value = ui.item.value + ":";
+
+            } else
+            {
+                field_value = (current_value.slice(-2) == ",:" ? current_value.slice(0, -2) : (current_value.slice(-3) == ", :" ? current_value.slice(0, -3) : current_value));
+                field_value = field_value + ", " + ui.item.value + ":";
+            }
+
+            $(this).val(field_value);
+            $(this).caretToEnd().autoGrowInput();
+            return false;
+        }
+    }
+    );
 
 }

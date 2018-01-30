@@ -1,0 +1,29 @@
+<div align="center" class="depot-form">
+
+<% form_for :user do |f| -%>
+  <%=hidden_field_tag "reset_code", params[:reset_code]%>
+<table id="newedit">
+    <thead>
+        <tr>
+            <th colspan="2" CLASS="registrationheader"  >Pick a new password for <%= @user.name %></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td align="right"><label>Password:</label></td>
+            <td><%= f.password_field :password %></td>
+        </tr>
+
+        <tr>
+            <td align="right"><label>Confirm Password:</label></td>
+            <td><%= f.password_field :password_confirmation %></td>
+        </tr>
+
+        <tr>
+            <td></td>
+            <td><%= image_submit_tag ("Submit_Button.jpg",:alt=>"Reset", :border=>"0" ) %></td>
+        </tr>
+    </tbody>
+</table>
+<%end%>
+</div>

@@ -29,26 +29,34 @@
 //= require cloud
 //= require jquery.slides
 //= require jquery-ui-combobox
+//= require jquery-ui-sliderAccess
+//= require jquery-ui-timepicker-addon
 //= require jquery.ui.touch-punch.min
 //= require superfish
 //= require jquery.history
+//= require jstz
 //# require turbolinks
 
 //
 
 $(document).ready(function () {
+    
+    process_admin_actions();
     popUpAlertifExists();
     updateSearchFormBindings();
     disableSelectOptionsSeperators();
     bindLoginButton();
     bindLogoutClick();
     bindMyAccount();
+    set_my_timezone();
+
     $(".best_in_place").best_in_place();
 
     $(".datepicker").datepicker();
 
     ui_ajax_select();
-
+    ui_ajax_checkbox();
+    
     $("a.button-link").button();
     enablePageEdit();
     enableSliderEdit();
@@ -67,6 +75,8 @@ $(document).ready(function () {
 //        e.stopImmediatePropagation();
 //    }
 //});
+
+
 });
 
 $(document).off('focusin').on('focusin', function(e) {

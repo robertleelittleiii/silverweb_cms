@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html style="    height: initial !important; margin-bottom:20px;">
+<head>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => false %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => false %>
+  <%= csrf_meta_tags %>
+    
+  <%= render "/layouts/silverweb_cms_head.html" %>
+    
+  <%= stylesheet_link_tag "iframe-base.css" %>
+
+</head>
+
+<body>
+    <!--  application_iframe.erb layout used   -->
+    <div class="hidden-item">
+      <%=check_login_status_timing%>
+    </div>
+    <div id="page">
+      <div id="layout" class="hidden-item">normal</div> 
+      <div class="hidden-item">
+        <div id="alert">
+          <%=@alert%>
+        </div>
+      </div>
+      <div id="header">
+      </div>
+      <div id="body">
+
+          <%=  yield %>
+      </div>
+      
+        <div id="scripts" class="hidden-item">     
+          <%= yield :scripts %>       
+        </div>
+      
+      <div id="edit-dialog" class="hidden hidden-item"></div>
+  </div>
+
+</body>
+
+</html>

@@ -9,8 +9,7 @@ $(document).ready(function () {
         if ($("#as_window").text() == "true")
         {
             //  alert("it is a window");
-        }
-        else
+        } else
         {
             page_templates_index_callDocumentReady();
         }
@@ -34,7 +33,7 @@ function page_templates_index_callDocumentReady() {
 
     // reatePageDialog();
     //    $("body").css("cursor", "progress");[
-    //    pageTableOld=$('#page-template-table-old').dataTable({
+    //    pageTableOld=$('#page-template-table-old').DataTable({
     //        "aLengthMenu": [[-1, 10, 25, 50], ["All", 10, 25, 50]]
     //    });
     $("body").css("cursor", "progress");
@@ -55,7 +54,7 @@ function page_templates_index_callDocumentReady() {
     //        theTarget=this.parentNode.parentNode;
     //        var aPos = pagetemplateTableAjax.fnGetPosition( theTarget );
     //        pagetemplateTableAjax.fnDeleteRow(aPos);
-    //        pagetemplateTableAjax.fnDraw();
+    //        pagetemplateTableAjax.draw();
     //        $("body").css("cursor", "default");[]
     //    });
 
@@ -76,32 +75,31 @@ function page_templates_index_callDocumentReady() {
 //
 //    $('a#new-page').bind('ajax:success', function (xhr, data, status) {
 //        $("body").css("cursor", "default");
-//        pagetemplateTableAjax.fnDraw();
+//        pagetemplateTableAjax.draw();
 //        setUpPurrNotifier("Notice", "New Page Created!'");
 //    });
 
 
     // createPasswordDialog();
     // createPageDialog();
-    bindNewPage();
-    
+    bindNewPageTemplate();
+
     $("a.button-link").button();
 
 }
 
 
 
-function deletePage(page_template_id)
+function deletePageTemplate(page_template_id)
 {
     var answer = confirm('Are you sure you want to delete this?')
     if (answer) {
         $.ajax({
-            url: '/page_templates/delete_ajax?id='+ page_template_id,
-            
+            url: '/page_templates/delete_ajax?id=' + page_template_id,
             success: function (data)
             {
                 setUpPurrNotifier("Notice", "Item Successfully Deleted.");
-                pagetemplateTableAjax.fnDraw();
+                pagetemplateTableAjax.draw();
 
             }
         });
@@ -144,18 +142,17 @@ function createPageDialog() {
                         url: '/page_templates/delete_ajax?id=' + page_template_id,
                         success: function (data)
                         {
-                            pagetemplateTableAjax.fnDraw();
+                            pagetemplateTableAjax.draw();
                         }
                     });
-                }
-                else
+                } else
                 {
 
                 }
             },
             "Ok": function () {
                 $(this).dialog("close");
-                pagetemplateTableAjax.fnDraw();
+                pagetemplateTableAjax.draw();
             }
         }
 
@@ -166,50 +163,85 @@ function createPageDialog() {
 
 function createPageTemplateTable() {
     console.log("create table");
-    pagetemplateTableAjax = $('#page-template-table').dataTable({
-        "iDisplayLength": 25,
-        "aLengthMenu": [[25, 50, 100], [25, 50, 100]],
-        "bStateSave": true,
-        "fnStateSave": function (oSettings, oData) {
-            localStorage.setItem('DataTables_page_templates_' + window.location.pathname, JSON.stringify(oData));
+    pagetemplateTableAjax = $('#page-template-table').DataTable({
+        pageLength: 25,
+        lengthMenu: [[25, 50, 100], [25, 50, 100]],
+        stateSave: true,
+        stateSaveCallback: function (settings, data) {
+            localStorage.setItem('DataTables_page_templates_' + window.location.pathname, JSON.stringify(data));
         },
-        "fnStateLoad": function (oSettings) {
+        stateLoadCallback: function (settings) {
             return JSON.parse(localStorage.getItem('DataTables_page_templates_' + window.location.pathname));
         },
-        "bProcessing": true,
-        "bServerSide": true,
-        "aaSorting": [[1, "asc"]],
-        "sAjaxSource": "/page_templates/page_template_table",
-        "fnRowCallback": function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
-            $(nRow).addClass('page-template-row');
-            $(nRow).addClass('gradeA');
-            return nRow;
+        processing: true,
+        order: [[0, "asc"]],
+        serverSide: true,
+        searchDelay: 500,
+        ajax: {
+            url: "/page_templates/page_template_table",
+            type: "post"
         },
-        "fnInitComplete": function () {
+        rowCallback: function (row, data, index) {
+            $(row).addClass('page-template-row');
+            $(row).addClass('gradeA');
+            //return row;
+        },
+        initComplete: function () {
             // $(".best_in_place").best_in_place(); 
 
         },
-        "fnDrawCallback": function () {
+        drawCallback: function (settings) {
             $(".best_in_place").best_in_place();
             //pagetemplateeditClickBinding(".edit-page-item");
             pagetemplateeditClickBinding("tr.page-template-row");
-            bindDeletePage();
+            bindDeletePageTemplate();
+            $("td.dataTables_empty").attr("colspan", "20")
+
         }
+//        
+//        "iDisplayLength": 25,
+//        "aLengthMenu": [[25, 50, 100], [25, 50, 100]],
+//        "bStateSave": true,
+//        "fnStateSave": function (oSettings, oData) {
+//            localStorage.setItem('DataTables_page_templates_' + window.location.pathname, JSON.stringify(oData));
+//        },
+//        "fnStateLoad": function (oSettings) {
+//            return JSON.parse(localStorage.getItem('DataTables_page_templates_' + window.location.pathname));
+//        },
+//        "bProcessing": true,
+//        "bServerSide": true,
+//        "aaSorting": [[1, "asc"]],
+//        "sAjaxSource": "/page_templates/page_template_table",
+//        "fnRowCallback": function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+//            $(nRow).addClass('page-template-row');
+//            $(nRow).addClass('gradeA');
+//            return nRow;
+//        },
+//        "fnInitComplete": function () {
+//            // $(".best_in_place").best_in_place(); 
+//
+//        },
+//        "drawCallback": function () {
+//            $(".best_in_place").best_in_place();
+//            //pagetemplateeditClickBinding(".edit-page-item");
+//            pagetemplateeditClickBinding("tr.page-template-row");
+//            bindDeletePageTemplate();
+//        }
     });
 }
 
-function bindNewPage() {
-    
-   $('a#new-page').unbind().bind('ajax:beforeSend', function (e, xhr, settings) {
+function bindNewPageTemplate() {
+
+    $('a#new-page').unbind().bind('ajax:beforeSend', function (e, xhr, settings) {
         xhr.setRequestHeader('accept', '*/*;q=0.5, text/html, ' + settings.accepts.html);
         $("body").css("cursor", "progress");
     }).bind('ajax:success', function (xhr, data, status) {
         $("body").css("cursor", "default");
-        pagetemplateTableAjax.fnDraw();
+        pagetemplateTableAjax.draw();
         setUpPurrNotifier("Notice", "New Template Created!'");
     }).bind('ajax:error', function (evt, xhr, status, error) {
-                setUpPurrNotifier("Error", "Template Creation Failed!'");
-    }); 
+        setUpPurrNotifier("Error", "Template Creation Failed!'");
+    });
 
 //    $('a#new-page').bind('ajax:beforeSend', function (evt, xhr, settings) {
 //        // alert("ajax:before");  
@@ -259,12 +291,12 @@ function bindNewPage() {
 //    });
 
 }
-function bindDeletePage() {
+function bindDeletePageTemplate() {
     $(".delete-page-item").on("click", function (e) {
 
         // console.log($(this).parent().parent().parent().find('#page-id').text());
         var page_template_id = $(this).parent().parent().parent().find('#page-id').text();
-        deletePage(page_template_id);
+        deletePageTemplate(page_template_id);
         return false;
     });
 }
@@ -371,7 +403,7 @@ function edit_page_dialog(data) {
 
 }
 
-$(document).off('focusin').on('focusin', function(e) {
+$(document).off('focusin').on('focusin', function (e) {
     if ($(event.target).closest(".mce-window").length) {
         e.stopImmediatePropagation();
     }

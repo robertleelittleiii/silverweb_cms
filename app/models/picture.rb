@@ -12,7 +12,10 @@ class Picture < ActiveRecord::Base
 
     scope :visible,-> { where(:active_flag=>true).order('position desc')}
 
-  
+    scope :by_search_term, lambda {|q|
+    where("active_flag is not false and (title LIKE ? or description LIKE ? or image LIKE ?)", "%#{q}%", "%#{q}%","%#{q}%").order("created_at DESC")  
+    }
+    
   # set the active_flag to be true by default for all images.
   #def init
   #  self.active_flag = true if self.active_flag.nil?

@@ -99,6 +99,19 @@ class PicturesController < ApplicationController
   end
   
   
+  def search 
+    @search = params[:searchTerm]
+    
+    @pictures = !params[:id].blank? ? Picture.by_search_term(@search).where(:resource_id=>params[:id], :resource_type=>params[:type]).order(created_at: :desc) : Picture.by_search_term(@search).order(created_at: :desc)
+
+    if @pictures.blank? then
+      render :text=> "Nothing found, please try again!"
+    else
+      render :partial=>"/pictures/picture_list.html"
+    end
+  end
+  
+  
   def render_picture
     class_name =  params[:class_name]
 

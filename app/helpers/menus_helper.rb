@@ -237,8 +237,10 @@ module  MenusHelper
   end
   
   def buildverticlesubmenu(params=nil)
+    puts("-------------------> #{params.inspect}")
+    puts("******************> #{params[:menu_name]}")
+    @menu_id = Menu.where(:name=>params[:menu_name]).first.id rescue session[:parent_menu_id] 
     
-    @menu_id= session[:parent_menu_id] || 0
     puts("in build sub menu with:", session[:parent_menu_id] , @menu_id)
     
     if @menu_id==0 then
@@ -261,8 +263,8 @@ module  MenusHelper
     
       puts(@menus.inspect)
       for @menu in @menus.menus
-        puts(@menu.name)
-        if @menu.name== @article_name
+        puts("@menu.name: #{@menu.name}, @article_name: #{@article_name} ")
+        if @menu.name.downcase == @article_name.downcase
           returnMenu = returnMenu + params[:selected_class] + "<div class='menu-selected'>" + @menu.name + "</div>" + @posthtml
         else
           menuText =  self.buildmenuitem(@menu,html_options,"")
@@ -342,7 +344,7 @@ module  MenusHelper
     @menu_id= params[:menu_id]
     @selected_class = params[:selected_class] || ""
     
-    @page_name = params[:current_page] || ""
+    @page_name = params[:current_page] || @page_name
     # @page_name = (params[:current_page] || "") if @page_name.blank?
 
     if not @page_name.blank? then
@@ -573,7 +575,7 @@ module  MenusHelper
             html_link_class = params[:selected_class]
           end
 
-          if menu.menus.count>0 then
+          if menu.menus.where(:menu_active=>true).count>0 then
             subMenus=self.buildsubmenussuperfish(menu.menus,0,params)
             if subMenus.include?(params[:selected_class]) then
               html_link_class = params[:selected_class]
@@ -606,7 +608,7 @@ module  MenusHelper
     
     inputMenus.each_with_index  do |eachmenu, index | 
       if eachmenu.menu_active then
-        if eachmenu.name == params[:current_page]
+       if eachmenu.name == params[:current_page]
           html_link_class = params[:selected_class]
         else 
           html_link_class = ""

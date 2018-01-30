@@ -1,0 +1,15 @@
+{"draw": <%= params[:draw] || -1 %>,
+ "recordsTotal": <%= @total_objects %>,
+ "recordsFiltered": <%= @total_objects %>,
+ "data":[
+<% @objects.each do |right| %>
+  [
+   "<%= right.id%><div id='right-id' class='hidden-item'><%= right.id%></div>",
+   "<%= editablefieldcreate('name', right,"sample right name  ",{:divclass=>"table-item"}).gsub("\"", "'").html_safe() %>",
+   "<%= ajax_select("controller","right" ,right, @controllers).gsub("\"", "'").gsub("\n", " ").html_safe()%>",
+   "<%= right.action == "*" ? right.action : right.action.to_s.gsub(/\s+/, "").to_s.split(",").join(", ")%>",
+      "<center><%=("<div class='delete-right-item'>" + image_tag('interface/delete.png', :border=>'0').gsub("\"", "'").html_safe() + "</div>").gsub("\"", "'").html_safe() + "     "+
+     link_to(image_tag('interface/edit.png', :border=>'0'),"#",{:onclick=>"return(false)", :class=>'edit-right-item', :title=>"Edit Right"}).gsub("\"", "'").html_safe() %> </center>"] 
+   <% if @objects.last != right then %> , <% end %>
+<% end %>
+]}

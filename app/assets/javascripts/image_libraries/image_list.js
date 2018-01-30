@@ -10,6 +10,13 @@ var global_editor_hold = "";
 
 $(document).ready(function () {
 
+    activateImages();
+    bindSearchField();
+    bindEndSearchButton();
+
+});
+
+function activateImages() {
     // alert("in here");
     // $("#tabs").tabs();
     bind_file_upload_to_upload_form();
@@ -19,7 +26,9 @@ $(document).ready(function () {
     initialize_insert_image_button();
     activate_buttons();
     bindDeleteImage();
-});
+    require("jquery.unveil.js");
+    $("img").unveil();
+}
 
 //$(document).on('focusin', function(e) {
 //    if ($(event.target).closest(".mce-window").length) {
@@ -29,7 +38,7 @@ $(document).ready(function () {
 
 function activate_buttons() {
 
-    $("div.ui-button a").button();
+    $("div.ui-button-block a").button();
 }
 //function bind_paste_body_zone() {
 //
@@ -171,6 +180,8 @@ function render_pictures(picture_id) {
             activate_buttons();
             bind_download_to_files();
             bindDeleteImage();
+            $("img").unveil();
+
         }
     });
 
@@ -217,8 +228,7 @@ function bind_file_upload_to_upload_form()
                         if (typeof (jqXHR.responseText) == "undefined") {
                             setUpPurrNotifier("Notice", jqXHR.responseJSON["attachment"][0]);
                             data.context.remove();
-                        }
-                        else
+                        } else
                         {
                             render_pictures(result.id);
 
@@ -234,8 +244,7 @@ function bind_file_upload_to_upload_form()
                         if (jqXHR.status == "200")
                         {
                             //   render_pictures();
-                        }
-                        else
+                        } else
                         {
                             var obj = jQuery.parseJSON(jqXHR.responseText);
                             // console.log(typeof obj["attachment"][0])
@@ -293,7 +302,7 @@ function initialize_insert_button()
                 // edit_picture_dialog(data);
 
                 insert_content_picture(data);
-                
+
 //                if (top.tinymce.activeEditor != null) {
 //                    top.tinymce.activeEditor.insertContent(data);
 //                } else if (window.frames[0].tinymce.activeEditor != null) {
@@ -506,20 +515,20 @@ function insert_content_picture(data) {
 //    console.log(window.document);
 //    console.log(window.parent.window.document);
 //    console.log(window.parent.window.tinyMCE.activeEditor);
-    
-     
+
+
     if (top.tinymce.activeEditor != null) {
         top.tinymce.activeEditor.insertContent(data);
         return
-   } 
-   
+    }
+
     // When in an iframe...this is how you find the active editor.
-    
-     if (window.parent.window.tinyMCE.activeEditor != null) {
+
+    if (window.parent.window.tinyMCE.activeEditor != null) {
         window.parent.window.tinyMCE.activeEditor.insertContent(data);
         return
     }
-  
+
 //    console.log("----- Exit insert content picture ----");
 
 }
@@ -582,4 +591,75 @@ function bindDeleteImage() {
         //   alert("ajax:complete"); 
     });
 
+}
+
+// live search code
+
+
+function bindEndSearchButton() {
+
+    $("div.close-button").off("click").on("click", function (e) {
+        $("div.close-button").fadeOut();
+        $("div#search input").val("");
+    })
+}
+
+function bindSearchField() {
+
+    $("div#search input").observe_field(1, function () {
+        $("body").css("cursor", "wait");
+        processSearchField("");
+
+    });
+
+    $("div#search input").keypress(function (e) {
+        if (e.which == 13) {
+            return false;
+        }
+    });
+
+}
+
+function processSearchField(search_term) {
+    var form = $("div#search input");
+    var url = "/pictures/search";
+
+    if (search_term == "") {
+        var formValue = form.val().trim();
+
+    } else
+    {
+        var formValue = search_term.trim();
+    }
+
+    // TODO: filter by resource type...
+    // searchParams = job_id == "" ? {searchTerm: formValue} : {searchTerm: formValue, id: job_id, type: "Job"}
+
+    searchParams = {searchTerm: formValue}
+
+    $.ajax({
+        url: url,
+        cache: false,
+        data: searchParams,
+        success: function (data) {
+            $("body").css("cursor", "default");
+            $("div#pictures").html(data);
+
+            activateImages();
+
+            if (!(formValue == "")) {
+
+                $("div.close-button").fadeIn();
+                form.focus();
+                form.caretToEnd();
+
+            }
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log(jqXHR);
+            console.log(textStatus);
+            console.log(errorThrown);
+        }
+
+    })
 }

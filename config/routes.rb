@@ -1,4 +1,4 @@
- Rails.application.routes.draw do
+Rails.application.routes.draw do
   
   resources :admin do
     collection do
@@ -10,6 +10,8 @@
       get "reprocess_page_images"
       get "update_ajax"
       get "update"
+      post "clear_user_locks"
+      post "refresh_user_live_edit"
     end
   end
   resources :site do
@@ -23,7 +25,13 @@
       get "logout_ajax"
       get "render_partial"
       get "load_asset"
-   end 
+      post "session_active"
+      get "custom"
+      get "link_list"
+      get "template_list"
+      get "reset"
+      post "set_time_zone"
+    end 
   end
   
   resource :pictures do
@@ -33,22 +41,23 @@
       get "render_picture"
       get "insert_image"
       get "render_pictures"
+      get "search"
     end
   end
   
   resource :image_library do
     collection do
-    get "image_list"
-    post "image_list"
+      get "image_list"
+      post "image_list"
     end
   end
   
-    resources :page_templates do
+  resources :page_templates do
     collection do
       get "create_empty_record"
       get "template_list"
       get "index"
-      get "page_template_table"
+      post "page_template_table"
       get "insert"
     end
   end
@@ -61,6 +70,8 @@
       post "forgot"
       get "reset"
       post "reset"
+      get "reset_ajax"
+      post "reset_ajax"
       get "password_is_reset"
       get "registration"
       get "lostwithemail"
@@ -103,7 +114,7 @@
 
   resources :roles do
     collection do
-      get "role_table"
+      post "role_table"
       get "change_password" 
       get "update_rights"
       get "create_empty_record"
@@ -111,16 +122,24 @@
     end
   end
 
-  resources :rights
-
-resources :users do
+  resources :rights do
     collection do
-      get "user_table"
+      post "right_table"
+      get "delete_ajax"
+      get "create_empty_record"
+      get "update_actions"
+    end
+  end
+
+  resources :users do
+    collection do
+      post "user_table"
       get "change_password" 
       get "update_roles"
       get "create_empty_record"
       get "delete_ajax"
       patch "update_password"
+      post "set_time_zone"
     end
   end
   
@@ -130,11 +149,11 @@ resources :users do
     collection do
       get "create_empty_record"
       get "get_sliders_list"
-      get "page_table"
+      post "page_table"
       get "delete_ajax"
-      get "custom"
       get "link_list"
       post "update_checkbox_tag"
+      get "custom"
     end
   end
   
@@ -157,11 +176,10 @@ resources :users do
   
   match  '/forgot', :controller => 'registration', :action => 'forgot', via: [:get]
   match  '/lost',                            :controller => 'registration',     :action => 'lost',  via: [:get]
-  match '/reset/:reset_code',                  :controller => 'registration',     :action => 'reset', via: [:get]
   match '/activate/:activation_code',          :controller => 'registration',     :action => 'activate', via: [:get]
   
   
- #  match ':page_name(.:format)', :controller => 'site', :action => 'show_page',  via: [:get]
+  #  match ':page_name(.:format)', :controller => 'site', :action => 'show_page',  via: [:get]
  
   # match ':controller(/:action(/:id(.:format)))'
 

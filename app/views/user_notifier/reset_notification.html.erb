@@ -1,6 +1,6 @@
-          Please click on the link below to reset you password:<br><br>
+          Please click on the link below to reset your password:<br><br>
 
-          <%= link_to 'Reset my Password', (@hostfull+ "/reset/" + @user.password_reset_code   )%><br><br>
+          <%= link_to('Reset my Password',url_for(:host=>@hostfull,:controller=>:site, :admin_action=>{:action=>"reset", :param=> @user.password_reset_code}))%><br><br>
 
           <br><br>
 

@@ -6,9 +6,9 @@
 function getRailsTimeStamp()
 {
     // return $("script").attr("src").split('?')[1]
-    
+
     // return $("script").first().attr("src").split('-')[1].split(".")[0]
-   
+
 }
 // 
 // CSS 3D Utitlities
@@ -67,28 +67,23 @@ function customizeForDevice() {
     if (checker.android) {
         return("mobile:android");
         // $('.android-only').show();
-    }
-    else if (checker.iPad) {
+    } else if (checker.iPad) {
         return("mobile:ipad");
 
         //  $('.idevice-only').show();
-    }
-    else if (checker.iphone) {
+    } else if (checker.iphone) {
         return("mobile:iphone");
 
         //  $('.idevice-only').show();
-    }
-    else if (checker.blackberry) {
+    } else if (checker.blackberry) {
         return("mobile:blackberry");
 
         //  $('.berry-only').show();
-    }
-    else if (checker.palm) {
+    } else if (checker.palm) {
         return("mobile:palm");
 
         //  $('.berry-only').show();
-    }
-    else {
+    } else {
         return(ua);
     }
 //  $('.unknown-device').show();
@@ -115,38 +110,43 @@ function sz(t) {
 //
 function require(script) {
     var theUrl = "/assets/" + script;
-   // var theTimeStamp = getRailsTimeStamp();
+    // var theTimeStamp = getRailsTimeStamp();
 
     // $("script[src='/javascripts/ie_fixes.js?1361329086']")
 
-    if (!$("script[src^='" + theUrl + "']").length) {
-        // alert("loaded");
-        $.ajax({
-            url: "/site/load_asset",
-            data: {path: script},
-            dataType: "text",
-            async: false, // <-- this is the key
-            success: function (data) {
+    //  if (!$("script[src^='" + theUrl + "']").length) {
+    // alert("loaded");
+    //
+    
+    $.ajax({
+        url: "/site/load_asset",
+        data: {path: script},
+        dataType: "text",
+        async: false, // <-- this is the key
+        success: function (data) {
 
-                if (data != "") {
-                    var javascriptLink = $("<script>").attr({
-                        type: "text/javascript",
-                        src: data
-                    });
+            if (data != "") {
+                var javascriptLink = $("<script>").attr({
+                    type: "text/javascript",
+                    src: data
+                });
+
+                // handle frame based cloud system
+                if ($('iframe.iframe-application').length) {
+                    if (!$('iframe.iframe-application').contents().find('head script[src$="' + data + '"]').length) {
+                        $("head").append(javascriptLink);
+                    }
+
+                } else if (!$('script[src="' + data + '"]').length) {
                     $("head").append(javascriptLink);
                 }
-                // all good...
-            },
-            error: function () {
-                console.warn("Could not load script " + script);
             }
-        });
-    }
-    else
-    {
-        //      alert("Not Loaded");
-
-    }
+            // all good...
+        },
+        fail: function () {
+            console.warn("Could not load script " + script);
+        }
+    });
 }
 
 //
@@ -154,35 +154,38 @@ function require(script) {
 //
 //
 function requireCss(cssFile) {
-  // var theTimeStamp = getRailsTimeStamp();
+    // var theTimeStamp = getRailsTimeStamp();
+    // var theTimeStamp = getRailsTimeStamp();
     // if (cssFile.charAt(0) == "/") {
-    var href = "/assets/" + cssFile
-    if (!$("link[href^='" + href + "']").length) {
-        //alert("loaded");
-        $.ajax({
-            url: "/site/load_asset",
-            data: {path: cssFile},
-            dataType: 'text',
-            success: function (data) {
-                if (data != "") {
-                    var cssLink = $("<link>").attr({
-                        rel: "stylesheet",
-                        type: "text/css",
-                        href: data
-                    });
+    var href = "/assets/" + cssFile;
+    //alert("loaded");
+    $.ajax({
+        url: "/site/load_asset",
+        data: {path: cssFile},
+        dataType: 'text',
+        success: function (data) {
+            if (data != "") {
+                var cssLink = $("<link>").attr({
+                    rel: "stylesheet",
+                    type: "text/css",
+                    href: data
+                });
+                // $('link[href$="'+ data +'"]').length
+                if ($('iframe.iframe-application').length) {
+                    if (!$('iframe.iframe-application').contents().find('head link[href$="' + data + '"]').length) {
+                        $("head").append(cssLink);
+                    }
+                } else if (!$('link[href$="' + data + '"]').length) {
                     $("head").append(cssLink);
                 }
-                //your callback
-            },
-            fail: function () {
-                alert("fail");
             }
-        });
-    }
-    else
-    {
-        //  alert("Not Loaded");
-    }
+            //your callback
+        },
+        fail: function () {
+            console.warn("Could not load script " + script);
+        }
+    });
+
 }
 //
 //
@@ -195,9 +198,13 @@ function popUpAlertifExists()
 
     setUpPurrNotifier("Alert", message);
 
+    $("#alert").text("");
+
     var message = $("#notice").text().trim();
 
     setUpPurrNotifier("Alert", message);
+
+    $("#notice").text("");
 
 }
 
@@ -298,6 +305,17 @@ function setupCheckboxes(inputElement) {
 function createAppDialog(theContent, dialog_id, call_backs, buttons_to_show_in) {
 // completion_callback, save_callback, cancel_callback, submit_callback
 
+// callbacks example:
+//
+//    { completion: function completionCallback() {
+//    
+//        },
+//      save: function saveCallback() {
+//      
+//      }
+//      
+//
+//    
     if (typeof call_backs === 'undefined')
         var call_backs = {};
     if (typeof buttons_to_show_in === 'undefined')
@@ -315,8 +333,7 @@ function createAppDialog(theContent, dialog_id, call_backs, buttons_to_show_in) 
     {
         var dialogContainer = "<div id='" + dialog_id + "' class='cms-ui-dialog'></div>";
         $("body").append($(dialogContainer));
-    }
-    else
+    } else
     {
         dialogContainer = $("#" + dialog_id);
     }
@@ -334,9 +351,12 @@ function createAppDialog(theContent, dialog_id, call_backs, buttons_to_show_in) 
                 call_backs.completion();
             }
 
-            // $('#' + dialog_id).html("");
-            //  $('#' + dialog_id).dialog("destroy");
-            //   alert('closed');
+            $('#' + dialog_id).html("");
+            $('#' + dialog_id).dialog("destroy");
+            $('#' + dialog_id).remove();
+
+
+            //    alert('closed');
         },
         open: function (event, ui)
         {
@@ -358,12 +378,12 @@ function createAppDialog(theContent, dialog_id, call_backs, buttons_to_show_in) 
     return(theAppDialog)
 }
 
-function ui_ajax_select() {
+function ui_ajax_select(success_callback) {
 
-    $("select.ui-ajax-select").bind("change", function () {
+    $("select.ui-ajax-select").off("change").on("change", function () {
         selected_item = $(this).val();
         controller = this.getAttribute("data-path")
-
+        that = this
         //alert(this.getAttribute("data-id"));
 
 
@@ -372,14 +392,73 @@ function ui_ajax_select() {
             dataType: "json",
             type: "PUT",
             data: "id=" + this.getAttribute("data-id") + "&" + this.getAttribute("name") + "=" + selected_item,
+            success: function (data, textStatus, jqXHR)
+            {
+                //  console.log(data);
+                //  console.log(textStatus);
+                //  console.log(jqXHR);
+                //  console.log(that);
+
+                if (typeof success_callback == "function")
+                {
+                    success_callback(that, data);
+                }
+                // alert(data);
+                if (data === undefined || data === null || data === "")
+                {
+                    //display warning
+                } else
+                {
+
+                }
+            },
+            fail: function (jqXHR, textStatus, errorThrown) {
+                setUpNotifier("error.png", "Warning", textStatus);
+            }
+
+        });
+    });
+}
+
+
+function ui_ajax_checkbox() {
+
+    $("input.ui-ajax-checkbox").bind("change", function () {
+
+        dataUrl = this.getAttribute("data-url");
+        dataMethod = this.getAttribute("data-method");
+        dataType = this.getAttribute("data-type");
+        isChecked = $(this).is(':checked');
+        dataClass = this.getAttribute("data-class");
+        fieldName = this.getAttribute("name");
+        checkType = this.getAttribute("data-check-type");
+        checkBoxValue = this.getAttribute("checkbox_value");
+
+        var dataObj = {};
+        dataObj[dataClass] = {};
+        if (checkType == "boolean")
+        {
+            dataObj[dataClass][fieldName] = (isChecked ? 1 : 0)
+        } else
+        {
+            dataObj[dataClass][fieldName] = (isChecked ? checkBoxValue : "")
+        }
+
+
+        //alert(this.getAttribute("data-id"));
+
+        $.ajax({
+            url: dataUrl, // controller + "/update",
+            dataType: dataType,
+            type: dataMethod,
+            data: dataObj,
             success: function (data)
             {
                 // alert(data);
                 if (data === undefined || data === null || data === "")
                 {
                     //display warning
-                }
-                else
+                } else
                 {
 
                 }
@@ -388,11 +467,13 @@ function ui_ajax_select() {
     });
 }
 
-function ui_ajax_settings_select() {
+
+function ui_ajax_settings_select(success_callback) {
 
     $("select.ui-ajax-settings-select").bind("change", function () {
         selected_item = $(this).val();
         controller = this.getAttribute("data-path")
+        that = this
 
         //alert(this.getAttribute("data-id"));
 
@@ -402,17 +483,28 @@ function ui_ajax_settings_select() {
             dataType: "json",
             type: "PUT",
             data: "id=" + this.getAttribute("data-id") + "&settings[" + this.getAttribute("name") + "=" + selected_item,
-            success: function (data)
+            success: function (data, textStatus, jqXHR)
             {
+                //  console.log(data);
+                //  console.log(textStatus);
+                //  console.log(jqXHR);
+                //  console.log(that);
+
+                if (typeof success_callback == "function")
+                {
+                    success_callback(that, data);
+                }
                 // alert(data);
                 if (data === undefined || data === null || data === "")
                 {
                     //display warning
-                }
-                else
+                } else
                 {
 
                 }
+            },
+            fail: function (jqXHR, textStatus, errorThrown) {
+                setUpNotifier("error.png", "Warning", textStatus);
             }
         });
     });
@@ -435,15 +527,15 @@ function updateMenu(menu_id)
                 menu.replaceWith(data);
                 if (typeof (application_ready_function) == "function")
                 {
-                application_ready_function();
-            }
+                    application_ready_function();
+                }
                 // console.log(data);
             }
         });
     }
 }
 
-function createButtonList(call_backs,buttons_to_build)
+function createButtonList(call_backs, buttons_to_build)
 {
     button_list = {};
 
@@ -461,29 +553,240 @@ function createButtonList(call_backs,buttons_to_build)
         };
 
     });
-    
+
     return (button_list);
 
 }
 
+function createAppDialogUtil(theContent, dialog_id, completion_callback, completion_button, beforeclose_callback) {
+
+    console.log(typeof (completion_button))
+
+    var completion_button = (typeof (completion_button) == "undefined") ? "Close" : completion_button
+
+    console.log(typeof (completion_button));
+    console.log(completion_button);
+
+
+    if ($("#" + dialog_id).length == 0)
+    {
+        var dialogContainer = "<div id='" + dialog_id + "'></div>";
+        $("body").append($(dialogContainer));
+    } else
+    {
+        dialogContainer = $("#" + dialog_id);
+    }
+    // $('#app-dialog').html(theContent);
+    theContent = '<input type="hidden" autofocus="autofocus" />' + theContent
+
+    $('#' + dialog_id).html(theContent);
+
+    theHeight = $('#' + dialog_id + ' #dialog-height').text() || "500";
+    theWidth = $('#' + dialog_id + ' #dialog-width').text() || "500";
+    theTitle = $('#' + dialog_id + ' #dialog-name').html() || "Edit";
+
+    theAppDialog = $('#' + dialog_id).dialog({
+        autoOpen: false,
+        modal: true,
+        title: theTitle,
+        width: theWidth,
+        height: theHeight,
+        buttons: [
+            {
+                text: completion_button,
+                click: function ()
+                {
+                    // Do what needs to be done to complete 
+
+//                    if (typeof (completion_callback) == "function")
+//                    {
+//                        completion_callback();
+//                    }
+
+                    $(this).dialog("close");
+
+                }
+            }],
+        beforeClose: function (event, ui)
+        {
+            var close_dialog = true;
+
+            if (typeof (beforeclose_callback) == "function")
+            {
+                close_dialog = beforeclose_callback(event, ui);
+
+            }
+            return close_dialog;
+        },
+        close: function (event, ui) {
+
+            if (typeof (completion_callback) == "function")
+            {
+                completion_callback();
+            }
+
+            $('#' + dialog_id).html("");
+            $('#' + dialog_id).dialog("destroy");
+            $('#' + dialog_id).remove();
+
+
+            try {
+                if (typeof (refresh_user_live_edit) == 'function') {
+                    refresh_user_live_edit();
+                }
+            } catch (e) {
+                // statements to handle any exceptions
+                console.log(e); // pass exception object to error handler
+            }
+
+            //   alert('closed');
+        },
+        open: function (event, ui) {
+            popUpAlertifExists();
+            $(this).parent().find("span.ui-dialog-title").html(theTitle)
+        },
+        create: function (event, ui) {
+        }
+
+
+    });
+
+
+//    theAppDialog.dialog({
+//        // title: theTitle,
+//        width: theWidth,
+//        height: theHeight
+//    });
+
+    // $(dialogContainer).parent().find("span.ui-dialog-title").replaceWith(theTitle)
+
+    theAppDialog.dialog("open");
+
+    return(theAppDialog)
+}
+
+
+function createAppDialogCancel(theContent, dialog_id, completion_callback, completion_button) {
+
+    console.log(typeof (completion_button))
+
+    var completion_button = (typeof (completion_button) == "undefined") ? "Close" : completion_button
+
+    console.log(typeof (completion_button));
+    console.log(completion_button);
+
+
+    if ($("#" + dialog_id).length == 0)
+    {
+        var dialogContainer = "<div id='" + dialog_id + "'></div>";
+        $("body").append($(dialogContainer));
+    } else
+    {
+        dialogContainer = $("#" + dialog_id);
+    }
+    // $('#app-dialog').html(theContent);
+    theContent = '<input type="hidden" autofocus="autofocus" />' + theContent
+
+    $('#' + dialog_id).html(theContent);
+
+    theHeight = $('#' + dialog_id + ' #dialog-height').text() || "500";
+    theWidth = $('#' + dialog_id + ' #dialog-width').text() || "500";
+    theTitle = $('#' + dialog_id + ' #dialog-name').html() || "Edit";
+
+    theAppDialog = $('#' + dialog_id).dialog({
+        autoOpen: false,
+        modal: true,
+        title: theTitle,
+        width: theWidth,
+        height: theHeight,
+        buttons: [
+            {
+                text: "Cancel",
+                click: function () {
+                    $(this).dialog("close");
+
+                },
+                id: "cancle-button"
+
+            },
+            {
+                text: completion_button,
+                click: function ()
+                {
+                    // Do what needs to be done to complete 
+
+                    if (typeof (completion_callback) == "function")
+                    {
+                        completion_callback();
+                    }
+
+                    $(this).dialog("close");
+
+                }
+            }
+        ],
+        close: function (event, ui) {
+
+
+
+            $('#' + dialog_id).html("");
+            $('#' + dialog_id).dialog("destroy");
+            $('#' + dialog_id).html("");
+
+            try {
+                if (typeof (refresh_user_live_edit) == 'function') {
+                    refresh_user_live_edit();
+                }
+            } catch (e) {
+                // statements to handle any exceptions
+                console.log(e); // pass exception object to error handler
+            }
+
+            //   alert('closed');
+        },
+        open: function (event, ui) {
+            popUpAlertifExists();
+            $(this).parent().find("span.ui-dialog-title").html(theTitle)
+        },
+        create: function (event, ui) {
+        }
+
+
+    });
+
+
+//    theAppDialog.dialog({
+//        // title: theTitle,
+//        width: theWidth,
+//        height: theHeight
+//    });
+
+    // $(dialogContainer).parent().find("span.ui-dialog-title").replaceWith(theTitle)
+
+    theAppDialog.dialog("open");
+
+    return(theAppDialog)
+}
+
+
 /*
  * 
  *  Sample call of the createAppDialogAdv
-createAppDialogAdv("this is test content","test-dialog",{
-        completion: function completionCallback() {
-        console.log("Complete");
-        },
-        "Save as Draft": function savedClicked() {
-            console.log("Saved")
-        },
-        "Cancel": function cancelClicked() {
-           console.log("Canceled.")
-        },
-        "Submit": function submitClicked() {
-           console.log("Submitted.")
-            }}, "Submit,Save as Draft,Cancel")
-            
-*/
+ createAppDialogAdv("this is test content","test-dialog",{
+ completion: function completionCallback() {
+ console.log("Complete");
+ },
+ "Save as Draft": function savedClicked() {
+ console.log("Saved")
+ },
+ "Cancel": function cancelClicked() {
+ console.log("Canceled.")
+ },
+ "Submit": function submitClicked() {
+ console.log("Submitted.")
+ }}, "Submit,Save as Draft,Cancel")
+ 
+ */
 
 function createAppDialogAdv(theContent, dialog_id, call_backs, buttons_to_show_in) {
 // completion_callback, save_callback, cancel_callback, submit_callback
@@ -493,14 +796,13 @@ function createAppDialogAdv(theContent, dialog_id, call_backs, buttons_to_show_i
     {
         var dialogContainer = "<div id='" + dialog_id + "'></div>";
         $("body").append($(dialogContainer));
-    }
-    else
+    } else
     {
         dialogContainer = $("#" + dialog_id);
     }
 
-    button_list = createButtonList(call_backs,buttons_to_show_in);
-    
+    button_list = createButtonList(call_backs, buttons_to_show_in);
+
     theContent = '<input type="hidden" autofocus="autofocus" />' + theContent
     theAppDialog = $('#' + dialog_id).dialog({
         autoOpen: false,
@@ -543,7 +845,8 @@ function findMyEvents(me) {
         console.log($(me)[0])
         console.log($._data($(me)[0], 'events'))
         $._data($(me)[0], 'events')
-    };
+    }
+    ;
     for (var i = 0; i < $(me).children().length; i++) {
         findMyEvents($(me).children()[i])
     }

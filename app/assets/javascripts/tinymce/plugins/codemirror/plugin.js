@@ -33,7 +33,7 @@ tinymce.PluginManager.add('codemirror', function (editor) {
                 
                 editor.focus();
                 editor.undoManager.transact(function () {
-                    editor.setContent(content);
+                editor.setContent(content);
        //             editor.setContent(e.data.code);
                 });
 

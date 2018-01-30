@@ -1,0 +1,12 @@
+<div class="hidden-item" id="live-edit-json">
+  <%= @object.user_live_edits.where('user_id != ?', session[:user_id]).to_json  %>
+</div>
+<%@object.user_live_edits.where('user_id != ?', session[:user_id]).each_with_index do |item,index|%>
+<div id="user-info-block"><div class="user-initials user-<%=index%>">
+   <%=item.user.initials%>
+ </div>
+   <div class="user-info">
+        <%=item.user.full_name%>
+   </div>
+</div>
+<% end %>

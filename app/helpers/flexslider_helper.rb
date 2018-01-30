@@ -1,6 +1,6 @@
 module FlexsliderHelper
   
-  def show_flexslider_gallary(page, effect="slide", slider_id="flexslider")
+  def show_flexslider_gallary(page, slider_id="flexslider", slider_class="")
     if not page.blank? and page.has_slider then
       
       # info for javascript 
@@ -13,7 +13,7 @@ module FlexsliderHelper
 #      returnval =  returnval + "<div id='slider-effect'>#{effect}</div> \n"
       returnval =  returnval + "</div> \n"
       
-      returnval = returnval + "<div class='flexslider'> \n"
+      returnval = returnval + "<div class='flexslider #{slider_class}'> \n"
       returnval = returnval + "<ul class='slides'> \n"
 
 #     maybe not needed.

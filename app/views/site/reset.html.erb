@@ -1,0 +1,71 @@
+<div id="login-backdrop">
+</div>
+<div class="reset-enclosure">
+    <div align="center" class="reset-form">
+        <!-- START:flash -->
+        <% if flash[:notice] -%>
+          <SPACER TYPE=HORIZONTAL SIZE=50>
+              <div id="notice">
+                  <%= flash[:notice] %>
+              </div>
+            <% end -%>
+            <!-- END:flash -->
+            <div class="resetBlock" style="display:table">
+                <div class="resetSpan" style="display:table-row">
+                    <div class="resetSpan" style="display:table-cell">
+                        <div CLASS="resetheader">
+                            <br>  
+                        </div>
+
+                        <div class="resetArea">
+                            <div id="ds_component">
+                                <%=form_tag({:controller=>"registration", :action => 'reset_ajax'},{:id=>"reset-form", :remote=>true}) do %>
+                                 <%= hidden_field_tag(:reset_code, params[:reset_code]) %> 
+                                <br>
+                                <div CLASS="L11G" STYLE="margin-bottom:10px">
+                                      Please pick a new password for <%= @user.name %>
+                                  </div>
+                                  <BR>
+                                  <table width="100%" border="0" cellspacing=0 class="ds_reset">
+                                      <tr>
+                                          <td align="right" valign="top">
+                                              <b>Password:</b>
+                                          </td>
+                                          <td> <%= password_field_tag :password, params[:password] %><br>
+                                          </td>
+                                      </tr>
+                                      <tr height="20">
+                                          <td></td>
+                                          <td></td>
+                                      </tr>
+                                      <tr>
+                                          <td align="right" valign="top">
+                                              <b>Confirmation:</b>
+                                          </td>
+                                          <td> <%= password_field_tag :password_confirmation, params[:password_confirmation] %><br>
+                                          </td>
+                                      </tr>
+                                      <tr>
+                                          <td height="5">
+
+                                          </td>
+                                          <td></td>
+                                      </tr>
+                                      <tr>
+                                          <td class="center" colspan="2" align="right">
+                                              <%= link_to("Cancel", "#", :id=>"cancel-reset-button", :class=>"button-link")  %>
+
+                                              <%= submit_tag("Update", :class=>"button-link", :id=>"update-button")%> <%= token_tag %> 
+                                          </td>
+                                      </tr>
+                                  </table>
+                                <% end %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+    </div>
+</div>
+

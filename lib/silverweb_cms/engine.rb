@@ -6,6 +6,9 @@ module SilverwebCms
  require 'kaminari'
  require 'jquery-ui-rails'
  require 'non-stupid-digest-assets'
+ # require 'activerecord-session_store'
+ require 'active_record/session_store'
+
   #  require 'gavtastic'
   #  
  # require 'RFC822'
@@ -19,6 +22,10 @@ module SilverwebCms
     require 'rack-mini-profiler'
     require 'non-stupid-digest-assets'
     require 'sitemap_generator'
+    require 'rack-mini-profiler'
+    require 'active_record/session_store'
+
+#     require 'activerecord-session_store'
     
     # isolate_namespace SilverwebCms
    ActiveSupport.on_load(:action_controller) do

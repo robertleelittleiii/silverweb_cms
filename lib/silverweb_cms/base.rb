@@ -29,7 +29,27 @@ module SilverwebCms
       @MENU_TYPES = [["none",3],["page",1] , ["html",2], ["link",4], ["action",5]]
     end
     
+    # MENU FIELDS TO ALLOW LATER GEMS TO ADD TO MENU OBJECT.
+    
+    @MENU_FIELDS = [""]
+    
+    def self.load_menu_fields
+      @MENU_FIELDS = [""]
+    end
+    
+    
+    def self.add_menu_fields(menu_fields)
+         @MENU_FIELDS << menu_fields
+    end
+    
+    def self.MENU_FIELDS
+      @MENU_FIELDS
+    end
+    
+    # MENU TYPES
+    
     @MENU_TYPES = nil
+    
     def self.MENU_TYPES
       @MENU_TYPES 
     end
@@ -52,6 +72,62 @@ module SilverwebCms
       @ACTION_TYPES << menu_action
     end
   
+    
+    # USER DATA FIELD PARTIAILS TO ALLOW LATER GEMS TO ADD TO USER INFO WIDGET.
+    
+    @USER_PANES = []
+    
+   
+    def self.USER_PANES
+      @USER_PANES 
+    end
+    
+    def self.add_user_pref_pane(pref_pane)
+      @USER_PANES << pref_pane
+    end
+    
+    
+        # USER ALLOW EDIT ATTR TO ALLOW LATER GEMS TO ADD TO USER FILEDS FOR EDIT.
+
+    @USER_PERMITED_FIELDS = []
+    
+     def self.USER_PERMITTED_FIELDS
+      @USER_PERMITED_FIELDS 
+    end
+    
+    def self.add_user_permitted_fields(fields_to_add)
+      @USER_PERMITED_FIELDS << fields_to_add
+    end
+    
+    
+    
+        # USER ATTRIBUTE ALLOW EDIT ATTR TO ALLOW LATER GEMS TO ADD TO USER FILEDS FOR EDIT.
+
+    @USER_ATTRIBUTE_PERMITTED_FIELDS = []
+    
+     def self.USER_ATTRIBUTE_PERMITTED_FIELDS
+      @USER_ATTRIBUTE_PERMITTED_FIELDS 
+    end
+    
+    def self.add_user_attribute_permitted_fields(fields_to_add)
+      @USER_ATTRIBUTE_PERMITTED_FIELDS << fields_to_add
+    end
+    
+    
+    # SITE DATA FIELD PARTIAILS TO ALLOW LATER GEMS TO ADD TO USER INFO WIDGET.
+    
+    @SITE_PANES = []
+    
+   
+    def self.SITE_PANES
+      @SITE_PANES 
+    end
+    
+    def self.add_site_pref_pane(pref_pane)
+      @SITE_PANES << pref_pane
+    end
+    
+    
     # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
     #     R O U T E S  T O  A D D  F O R  D I R E C T  U R L  L I N K
     # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -83,5 +159,6 @@ end
 SilverwebCms::Config.load_nav_list
 SilverwebCms::Config.load_menu_types
 SilverwebCms::Config.load_menu_actions
+SilverwebCms::Config.load_menu_fields
 SilverwebCms::Config.load_route_list
 

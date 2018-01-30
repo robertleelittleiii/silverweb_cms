@@ -21,6 +21,7 @@
  *= require best_in_place
  *= require cloud
  *= require superfish
+ *= require jquery-ui-timepicker-addon
  */
 /*
 To change this license header, choose License Headers in Project Properties.
@@ -745,4 +746,23 @@ div#notify-container div.info-icon {
 
 .ui-dialog {
     overflow: visible !important;
+}
+
+
+div.checkbox-title {
+    display: inline-block;
+    font-size: small;
+    font-weight: bolder;
+    padding-left: 12px;
+    baseline-shift: super;
+    vertical-align: 1px;
+        padding-right: 5px;
+
+}
+
+
+// ui elements default CSS
+
+input.ui-ajax-checkbox {
+    vertical-align: middle;
 }

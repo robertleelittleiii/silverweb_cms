@@ -67,15 +67,20 @@
 
       </div>
  </div>
+
+
+<%= build_pane_additions() %>
+
+
 <div class="cms-section">
    <div class="cms-heading">My Account</div>
    <div class="cms-content">
 It's <%= Time.now %>
 
 <br>
-You are an
+Your Roles in the system: 
 <%for role in $roles do %>
-                <%=role.name %>,
+                <%=role.name %><%=$roles.last == role ? "" : ", " %>
 <%  end %>
 <br>
 

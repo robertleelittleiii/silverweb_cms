@@ -1,0 +1,54 @@
+<%#= render :file=>"/public/stylesheets/global-reset.css" %>
+<%#= render :file=>Rails.application.assets['fonts.css'].pathname.to_s%>
+
+<%# =render(:file=>ActionController::Base.helpers.compute_asset_path("fonts.css"))%>
+<%= get_asset_content("fonts.css") %>
+
+// tiny mce body override
+html body#tinymce{
+    background-color: white;
+}
+
+html body#tinymce li.selector {
+    display: inline-block !important;
+    height: 50px;
+    color: white;
+    width: 100%;
+    height: 50px;
+    background: red;
+    font-size: 35px;
+    text-align: center;
+}
+
+html body#tinymce p.selector {
+    display: block !important;
+    height: 59px;
+    text-align: center;
+    width: 100%;
+    background-color: red;
+    color: white;
+    font-size: 40px;
+}
+
+html body#tinymce p.selector:after {
+    content:"SELECTOR";
+}
+
+<%#=render(:file => ActionController::Base.helpers.compute_asset_path('website.css'))%>
+<%=get_asset_content("website.css") %>
+
+<%#=(@page.template_name.blank? ? "" : render(:file => ActionController::Base.helpers.compute_asset_path("site/show_page-#{@page.template_name}.css"))) rescue ""%>
+<%=(@page.template_name.blank? ? "" : get_asset_content("site/show_page-#{@page.template_name}.css")) rescue ""%>
+
+<%#=render(:file=>ActionController::Base.helpers.compute_asset_path("editor-custom.css")) %>
+<%=get_asset_content("editor-custom.css") %>
+
+<%#=render(:file=>ActionController::Base.helpers.compute_asset_path("#{@page.page_style}"))  rescue ""%>
+<%=get_asset_content("#{@page.page_style}") rescue ""%>
+
+
+// tiny mce body override
+
+html body#tinymce{
+    background-color: white;
+}

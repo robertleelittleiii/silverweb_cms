@@ -140,7 +140,7 @@ module SiteHelper
       returnval =  returnval + "<div id='slider-effect'>#{effect}</div> \n"
       returnval =  returnval + "</div> \n"
       
-      returnval = returnval + "<div id=\"slides3\"> \n"
+      returnval = returnval + "<div id=\"slides3\" class=\"slides3\"> \n"
       page.sliders.active.each_with_index do |slider, slide_count| 
         puts("slide count #{slide_count}")
         if slide_count == 0 then
@@ -252,6 +252,7 @@ module SiteHelper
         end
       end
     rescue
+      returnval=""
     end
     return returnval.html_safe
 
@@ -282,5 +283,13 @@ module SiteHelper
       returnval << (page.meta_robot.blank? ? "" : "<meta name='robots' content='#{page.meta_robot}'>")
     end
     return returnval.html_safe
+  end
+  
+  def get_asset_content(asset)
+    if Rails.application.config.assets.compile == false then
+       render(:file=> (Rails.root.to_s + "/public" + ActionController::Base.helpers.compute_asset_path(asset)))
+    else
+       render(:text=>Rails.application.assets[asset].to_s.html_safe)
+    end
   end
 end

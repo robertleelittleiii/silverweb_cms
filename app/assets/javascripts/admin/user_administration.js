@@ -8,8 +8,7 @@ $(document).ready(function () {
         if ($("#as_window").text() == "true")
         {
             //  alert("it is a window");
-        }
-        else
+        } else
         {
             admin_user_administration_callDocumentReady()
         }
@@ -26,7 +25,7 @@ function admin_user_administration_callDocumentReady() {
 
     createUserDialog();
     //    $("#loader_progress").show();
-    //    userTableOld=$('#user-table-old').dataTable({
+    //    userTableOld=$('#user-table-old').DataTable({
     //        "aLengthMenu": [[-1, 10, 25, 50], ["All", 10, 25, 50]]
     //    });
     $("#loader_progress").show();
@@ -47,7 +46,7 @@ function admin_user_administration_callDocumentReady() {
     //        theTarget=this.parentNode.parentNode;
     //        var aPos = userTableAjax.fnGetPosition( theTarget );
     //        userTableAjax.fnDeleteRow(aPos);
-    //        userTableAjax.fnDraw();
+    //        userTableAjax.draw();
     //        $("#loader_progress").hide();
     //    });
 
@@ -68,7 +67,7 @@ function admin_user_administration_callDocumentReady() {
 
     $('#new-user').bind('ajax:success', function (xhr, data, status) {
         $("#loader_progress").hide();
-        userTableAjax.fnDraw();
+        userTableAjax.draw();
         setUpPurrNotifier("Notice", "Default password is 'password'");
     });
 
@@ -91,12 +90,11 @@ function deleteUser(user_id)
     var answer = confirm('Are you sure you want to delete this user?')
     if (answer) {
         $.ajax({
-            url: '/users/delete_ajax?id='+ user_id,
-            
+            url: '/users/delete_ajax?id=' + user_id,
             success: function (data)
             {
                 setUpPurrNotifier("Notice", "User Successfully Deleted.");
-                userTableAjax.fnDraw();
+                userTableAjax.draw();
 
             }
         });
@@ -134,18 +132,17 @@ function createUserDialog() {
                         url: '/users/delete_ajax?id=' + user_id,
                         success: function (data)
                         {
-                            userTableAjax.fnDraw();
+                            userTableAjax.draw();
                         }
                     });
-                }
-                else
+                } else
                 {
 
                 }
             },
             "Ok": function () {
                 $(this).dialog("close");
-                userTableAjax.fnDraw();
+                userTableAjax.draw();
             }
         }
 
@@ -177,10 +174,11 @@ function usereditClickBinding() {
                 editUserDialog.dialog('open');
                 editUserDialog.dialog({
                     close: function (event, ui) {
-                        userTableAjax.fnDraw();
-
+                        userTableAjax.draw();
+                        
                         editUserDialog.dialog("destroy");
-
+                        editUserDialog.html("");
+                        editUserDialog.remove();
                     }
                 });
                 require("users/update_roles.js");
@@ -221,26 +219,62 @@ function passwordClickBinding() {
 }
 
 function createUserTable() {
-    userTableAjax = $('#user-table').dataTable({
-        "bProcessing": true,
-        "bServerSide": true,
-        "sAjaxSource": "/users/user_table",
-        "fnRowCallback": function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
-            $(nRow).addClass('user-row');
-            $(nRow).addClass('gradeA');
-            return nRow;
+    userTableAjax = $('#user-table').DataTable({
+        pageLength: 25,
+        lengthMenu: [[25, 50, 100], [25, 50, 100]],
+        stateSave: true,
+        stateSaveCallback: function (settings, data) {
+            localStorage.setItem('DataTables_user_administration_' + window.location.pathname, JSON.stringify(data));
         },
-        "fnInitComplete": function () {
+        stateLoadCallback: function (settings) {
+            return JSON.parse(localStorage.getItem('DataTables_user_administration_' + window.location.pathname));
+        },
+        processing: true,
+        order: [[0, "asc"]],
+        serverSide: true,
+        searchDelay: 500,
+        ajax: {
+            url: "/users/user_table",
+            type: "post"
+        },
+        rowCallback: function (row, data, index) {
+            $(row).addClass('user-row');
+            $(row).addClass('gradeA');
+            //return row;
+        },
+        initComplete: function () {
             // $(".best_in_place").best_in_place(); 
 
         },
-        "fnDrawCallback": function () {
+        drawCallback: function (settings) {
             $(".best_in_place").best_in_place();
             passwordClickBinding();
             usereditClickBinding();
-           bindDeleteUser();
+            bindDeleteUser();
+            $("td.dataTables_empty").attr("colspan", "20")
 
         }
+//        
+//        
+//        "bProcessing": true,
+//        "bServerSide": true,
+//        "sAjaxSource": "/users/user_table",
+//        "fnRowCallback": function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+//            $(nRow).addClass('user-row');
+//            $(nRow).addClass('gradeA');
+//            return nRow;
+//        },
+//        "fnInitComplete": function () {
+//            // $(".best_in_place").best_in_place(); 
+//
+//        },
+//        "drawCallback": function () {
+//            $(".best_in_place").best_in_place();
+//            passwordClickBinding();
+//            usereditClickBinding();
+//           bindDeleteUser();
+//
+//        }
     });
 }
 
@@ -268,7 +302,7 @@ function createUserTable() {
 //        theTarget = this.parentNode.parentNode;
 //        var aPos = userTableAjax.fnGetPosition(theTarget);
 //        userTableAjax.fnDeleteRow(aPos);
-//        userTableAjax.fnDraw();
+//        userTableAjax.draw();
 //        $("#loader_progress").hide();
 //
 //        if (typeof callbackFunction == 'function')
@@ -332,7 +366,7 @@ function admin_user_administration_callDocumentReady() {
     //        theTarget=this.parentNode.parentNode;
     //        var aPos = userTableAjax.fnGetPosition( theTarget );
     //        userTableAjax.fnDeleteRow(aPos);
-    //        userTableAjax.fnDraw();
+    //        userTableAjax.draw();
     //        $("#loader_progress").hide();
     //    });
 
@@ -353,7 +387,7 @@ function admin_user_administration_callDocumentReady() {
 
     $('#new-user').bind('ajax:success', function (xhr, data, status) {
         $("#loader_progress").hide();
-        userTableAjax.fnDraw();
+        userTableAjax.draw();
         setUpPurrNotifier("Notice", "Default password is 'password'");
     });
 

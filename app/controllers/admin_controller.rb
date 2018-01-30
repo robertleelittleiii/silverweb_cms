@@ -2,6 +2,8 @@ class AdminController < ApplicationController
   # just display the form and wait for user to
   # enter a name and password
 
+    protect_from_forgery except: :clear_user_locks
+
   def login
     session[:user_id] = nil
     if request.post?
@@ -216,11 +218,19 @@ class AdminController < ApplicationController
   end
      
   def toggle_index
+    time_items = Settings.down_time.split(":") 
+    up_time = Time.now.utc + time_items[0].to_i.days + time_items[1].to_i.hours + time_items[2].to_i.minutes 
+    out_time =   up_time.strftime("%m/%d/%Y %I:%M %p UTC")   #=> "6/9/2016 10:25 AM"
+
     begin
       FileUtils.mv 'public/index.html', 'public/index.off'
     rescue
       FileUtils.mv  'public/index.off',  'public/index.html'
-    end
+      File.write('public/splash/waittime.js', "// Auto written by silverweb_cms \n\r \n\r var TargetDate = \"#{out_time}\"; \n")
+  end
+    
+     
+    
     respond_to do |format|
       format.json  { head :ok }
       format.html {redirect_to :action => 'site_settings', :id=>params[:product_id]}
@@ -397,4 +407,19 @@ class AdminController < ApplicationController
     end  
   end
   
+  def clear_user_locks
+        user =  User.find_by_id(session[:user_id])
+
+        session[:current_action] = ""
+        session[:current_controller] = ""
+        session[:current_record_id] = 0
+              
+        user.user_live_edit.current_type = ""
+        user.user_live_edit.current_action = ""
+        user.user_live_edit.current_id = 0
+        user.user_live_edit.save  
+      
+        render :nothing=>true
+
+  end
 end

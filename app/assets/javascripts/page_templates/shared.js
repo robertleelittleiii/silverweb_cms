@@ -26,7 +26,7 @@ function pagetemplateeditClickBinding(selector) {
                 page_edit_dialog.dialog({
                     close: function (event, ui) {
                         if ($("table#page-template-table").length > 0)
-                            pagetemplateTableAjax.fnDraw();
+                            pagetemplateTableAjax.draw();
                         
                         if ($("div#edit-page-template").length > 0)
                         {

@@ -1,13 +1,13 @@
-{"sEcho": <%= params[:sEcho] || -1 %>,
- "iTotalRecords": <%= @total_objects %>,
- "iTotalDisplayRecords": <%= @total_objects %>,
- "aaData":[
+{"draw": <%= params[:draw] || -1 %>,
+ "recordsTotal": <%= @total_objects %>,
+ "recordsFiltered": <%= @total_objects %>,
+ "data":[
 <% @objects.each do |role| %>
   [
    "<%= role.id%><div id='role-id' class='hidden-item'><%= role.id%></div>",
    "<%= editablefieldcreate('name', role,"sample role name  ",{:divclass=>"table-item"}).gsub("\"", "'").html_safe() %>",
    "<%= role.rights.collect {|p| [ p.name] }.join(', ') %>",
-   "<center><%=link_to(image_tag('interface/delete.png', :border=>'0'),{ :action=>:delete_ajax, :id=>role.id},{ :confirm => 'Are you sure?', :class=>'delete-role-item', :remote=>true,:title=>"Delete Role"}).gsub("\"", "'").html_safe() + "     "+
+   "<center><%=("<div class='delete-role-item'>" + image_tag('interface/delete.png', :border=>'0').gsub("\"", "'").html_safe() + "</div>").gsub("\"", "'").html_safe() + "     "+
      link_to(image_tag('interface/edit.png', :border=>'0'),"#",{:onclick=>"return(false)", :class=>'edit-role-item', :title=>"Edit Role"}).gsub("\"", "'").html_safe() %> </center>"] 
    <% if @objects.last != role then %> , <% end %>
 <% end %>

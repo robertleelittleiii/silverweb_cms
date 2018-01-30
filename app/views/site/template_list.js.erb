@@ -1,0 +1,6 @@
+var tinyMCETemplateList = [
+        // Name, URL, Description
+        <% @page_templates.each do |template| %>
+        ["<%= template.title %>", "<%= url_for(template) %>", "<%= template.description %>"] <%= template == @last_page_template ? "" : ", " %>
+        <% end %>
+];  

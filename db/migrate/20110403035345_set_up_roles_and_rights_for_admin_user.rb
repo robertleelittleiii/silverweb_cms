@@ -32,8 +32,14 @@ class SetUpRolesAndRightsForAdminUser < ActiveRecord::Migration
     right = Right.create name: "*Access to all admin actions", controller: "admin", action: "*"
     role_siteowner.rights << right
     role.rights << right
+    
+    right = Right.create name: "*Access to user admin actions", controller: "admin", action: "login,logout,index"
     role_cust.rights << right
-
+    
+   right = Right.create name: "*Access to user password actions", controller: "users", action: "change_password,update_password"
+    role_cust.rights << right
+    
+   
     right = Right.create name: "*Access to all pages actions", controller: "pages", action: "*"
     role.rights << right
     role_siteowner.rights << right
@@ -107,6 +113,12 @@ class SetUpRolesAndRightsForAdminUser < ActiveRecord::Migration
     right.destroy
 
     right = Right.find_by_name( "*Access to all login actions")
+    right.destroy
+    
+     right = Right.find_by_name( "*Access to user admin actions")
+    right.destroy
+    
+     right = Right.find_by_name( "*Access to user password actions")
     right.destroy
   end
 end

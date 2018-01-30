@@ -1,6 +1,8 @@
-class UsersController < ApplicationController
+class UsersController < ApplicationController  
   # GET /users
   # GET /users.xml
+  
+  protect_from_forgery :except => [:set_time_zone]
  
   def record
 		@user = User.find(params[:id])
@@ -64,19 +66,19 @@ class UsersController < ApplicationController
   def selfcreate
     puts "selfcreate"
 
-        @user = User.new(user_params)
+    @user = User.new(user_params)
   end
 
 
   def create
     @user = User.new(user_params)
-       puts "testing"
-      logger.error("controller #{self.class.controller_path}")
-      logger.info("action: #{action_name}")
-      @newAttributes = UserAttribute.new()
+    puts "testing"
+    logger.info("controller #{self.class.controller_path}")
+    logger.info("action: #{action_name}")
+    @newAttributes = UserAttribute.new()
 
-        @user.user_attribute = @newAttributes
-        @newAttributes.save()
+    @user.user_attribute = @newAttributes
+    @newAttributes.save()
         
     respond_to do |format|
       if @user.save
@@ -84,47 +86,55 @@ class UsersController < ApplicationController
         flash[:notice] = "User #{@user.name} was successfully created."
         format.html { redirect_to(:action=>'index') }
         format.xml  { render :xml => @user, :status => :created,
-                             :location => @user }
+          :location => @user }
       else
         format.html { render :action => "new" }
         format.xml  { render :xml => @user.errors,
-                             :status => :unprocessable_entity }
+          :status => :unprocessable_entity }
       end
     end
   end
 
- def view
-        @user = User.find(params[:id], :include => :roles)
-        @roles = Role.all.order(:name)
+  def view
+    @user = User.find(params[:id], :include => :roles)
+    @roles = Role.all.order(:name)
 
-      respond_to do |format|
+    respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @role }
-       end
+    end
   end
 
 
 
 
-# def add_attributes
-#    @user = User.find(params[:id], :include => :user_attribute)
-#    @newAttributes = UserAttribute.create
-#    @user.user_attribute = @newAttributes
-#    #@user.shop = Shop.create(:name => (@user.name +" Store"))
-#    @user.save
-#
-#   redirect_to :action => 'view_attributes', :id => params[:id]
-#
-#
-# end
+  # def add_attributes
+  #    @user = User.find(params[:id], :include => :user_attribute)
+  #    @newAttributes = UserAttribute.create
+  #    @user.user_attribute = @newAttributes
+  #    #@user.shop = Shop.create(:name => (@user.name +" Store"))
+  #    @user.save
+  #
+  #   redirect_to :action => 'view_attributes', :id => params[:id]
+  #
+  #
+  # end
 
   # PUT /users/1
   # PUT /users/1.xml
   def update
     @user = User.find(params[:id])
+    if params[:user].keys.first.include?("settings")
+      settings_params = params["user"].keys.first.split(".")
+      eval("@user." + settings_params[0] + "." + settings_params[1] + "='" + params["user"].values.first + "'" ) rescue ""
+      updated = true 
+    else
+      updated =  @user.update_attributes(user_params)
+    end
 
     respond_to do |format|
-      if @user.update_attributes(user_params)
+      
+      if updated
         flash[:notice] = "User #{@user.name} was successfully updated."
         format.html { redirect_to(:action=>'index') }
         format.json  { head :ok }
@@ -137,41 +147,41 @@ class UsersController < ApplicationController
 
   # DELETE /users/1
   # DELETE /users/1.xml
- def destroy
-  @user = User.find(params[:id])
-  begin
-    @user.destroy
+  def destroy
+    @user = User.find(params[:id])
+    begin
+      @user.destroy
       flash[:notice] = "User #{user.name} deleted"
-  rescue Exception => e
-    flash[:notice] = e.message
-  end
-  respond_to do |format|
-    format.html { redirect_to(users_url) }
-    format.xml { head :ok }
-  end
+    rescue Exception => e
+      flash[:notice] = e.message
+    end
+    respond_to do |format|
+      format.html { redirect_to(users_url) }
+      format.xml { head :ok }
+    end
 
-end
-def view_attributes
-       @user = User.find(params[:id], :include => :user_attribute)
+  end
+  def view_attributes
+    @user = User.find(params[:id], :include => :user_attribute)
 
-      flash[:notice] = "User #{@user.name} has no attributes." if @user.user_attribute.nil?
-      respond_to do |format|
+    flash[:notice] = "User #{@user.name} has no attributes." if @user.user_attribute.nil?
+    respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @role }
-       end
+    end
   end
 
- def add_attributes
+  def add_attributes
     @user = User.find(params[:id], :include => :user_attribute)
     @newAttributes = UserAttribute.create
     @user.user_attribute = @newAttributes
     #@user.shop = Shop.create(:name => (@user.name +" Store"))
     @user.save
 
-   redirect_to :action => 'view_attributes', :id => params[:id]
+    redirect_to :action => 'view_attributes', :id => params[:id]
 
 
- end
+  end
 
   def change_password
     @user = User.find(params[:id])
@@ -185,7 +195,7 @@ def view_attributes
       @user.save
     else
       @alert_message= "Password's did not match!!, Password not updated."
-end
+    end
     
     respond_to do |format|
       format.json { render :json=>{:complete=>"true"}}
@@ -252,15 +262,25 @@ end
     render :layout => false
   end
   
+  
+#  def set_time_zone 
+#    session[:time_zone] = params["time_zone"]
+#     
+#    respond_to do |format|
+#      format.html if params[:value].blank?
+#      format.json { head :ok }
+#    end
+#  end
+  
   private
 
   def current_objects(params={})
-    current_page = (params[:iDisplayStart].to_i/params[:iDisplayLength].to_i rescue 0)+1
-    role_ids = User.select('users.id').joins(:roles).where("roles.name like '%#{params[:sSearch]}%'").collect(&:id)
-    user_attributes_ids = User.select('users.id').joins(:user_attribute).where("user_attributes.last_name like '%#{params[:sSearch]}%' or user_attributes.first_name like '%#{params[:sSearch]}%'").collect(&:id)
-    all_ids = User.select('u.id').from("users u").where(conditions).collect(&:id)
+    current_page = (params[:start].to_i/params[:length].to_i rescue 0)+1
+    #role_ids = User.select('users.id').joins(:roles).where("roles.name like '%#{params[:search][:value]}%'").collect(&:id)
+    #user_attributes_ids = User.select('users.id').joins(:user_attribute).where("user_attributes.last_name like '%#{params[:search][:value]}%' or user_attributes.first_name like '%#{params[:search][:value]}%'").collect(&:id)
+    # all_ids = User.select('u.id').from("users u").where(conditions).collect(&:id)
     
-    @current_objects = User.page(current_page).per( params[:iDisplayLength]).where(:id => (role_ids + all_ids + user_attributes_ids)).includes(:user_attribute).order("#{datatable_columns(params[:iSortCol_0])} #{params[:sSortDir_0] || "DESC"}") 
+    @current_objects = User.eager_load(:user_attribute).eager_load(:roles).page(current_page).per( params[:length]).where(conditions).order("#{datatable_columns(params[:order]["0"][:column])} #{params[:order]["0"][:dir]  || "DESC"}") 
     
   end
 
@@ -284,14 +304,19 @@ end
 
   def conditions
     conditions = []
-    conditions << "(u.name LIKE '%#{params[:sSearch]}%')" if(params[:sSearch])
+    conditions << "(users.name LIKE '%#{params[:search][:value]}%') or 
+                   (user_attributes.first_name LIKE '%#{params[:search][:value]}%') or 
+                   (user_attributes.last_name LIKE '%#{params[:search][:value]}%') or 
+                   (roles.name LIKE '%#{params[:search][:value]}%') 
+    " if(params[:search][:value])
     return conditions.join(" AND ")
   end
 
   private
   
   def user_params
-    params[:user].permit( "name", "hashed_password", "salt", "remember_token", "remember_token_expires_at", "activation_code", "activated_at", "state", "deleted_at", "password_reset_code")
+    params[:user].permit("name", "hashed_password", "salt", "remember_token", "remember_token_expires_at", "activation_code", "activated_at", "state", "deleted_at", "password_reset_code",SilverwebCms::Config.USER_PERMITTED_FIELDS)
   end
 
 end
+  
