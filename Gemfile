@@ -17,3 +17,5 @@ gemspec
 #gem 'vestal_versions', :github => 'altagem/vestal_versions', branch: 'rails-4_1'
 #gem 'tinymce-rails'
 #gem 'activerecord-session_store'
+
+#make branch permanentg.
