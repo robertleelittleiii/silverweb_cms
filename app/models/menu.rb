@@ -3,9 +3,9 @@ class Menu < ActiveRecord::Base
   has_many :menus, -> {order "m_order ASC"}, foreign_key: :parent_id, dependent: :destroy
   has_many :pictures, ->{order(:position)}, dependent: :destroy, as: :resource
 
-  belongs_to :menu,  foreign_key: :parent_id
+  belongs_to :menu,  foreign_key: :parent_id, optional: true
   
-  belongs_to :page
+  belongs_to :page, optional: true
   
   acts_as_taggable_on :menu_names
   
