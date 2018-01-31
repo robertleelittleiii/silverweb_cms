@@ -1,4 +1,4 @@
-class CreateUserLiveEdits < ActiveRecord::Migration
+class CreateUserLiveEdits < ActiveRecord::Migration[5.0]
   def self.up
     if not ActiveRecord::Base.connection.table_exists? 'user_live_edits' then
       create_table :user_live_edits do |t|

@@ -105,7 +105,7 @@ class PicturesController < ApplicationController
     @pictures = !params[:id].blank? ? Picture.by_search_term(@search).where(:resource_id=>params[:id], :resource_type=>params[:type]).order(created_at: :desc) : Picture.by_search_term(@search).order(created_at: :desc)
 
     if @pictures.blank? then
-      render :text=> "Nothing found, please try again!"
+      render plain: "Nothing found, please try again!"
     else
       render :partial=>"/pictures/picture_list.html"
     end

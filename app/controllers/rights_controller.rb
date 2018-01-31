@@ -108,7 +108,7 @@ class RightsController < ApplicationController
   def delete_ajax
     @right = Right.find(params[:id])
     @right.destroy
-    render :nothing=>true
+    render body: nil
   end
     
   

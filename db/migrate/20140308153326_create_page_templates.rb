@@ -1,4 +1,4 @@
-class CreatePageTemplates < ActiveRecord::Migration
+class CreatePageTemplates < ActiveRecord::Migration[5.0]
   def self.up
     if not ActiveRecord::Base.connection.table_exists? 'page_templates' then
       create_table :page_templates do |t|

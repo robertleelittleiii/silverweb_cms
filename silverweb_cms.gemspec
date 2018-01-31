@@ -17,16 +17,16 @@ Gem::Specification.new do |s|
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.rdoc"]
   s.test_files = Dir["test/**/*"]
 
-  s.add_runtime_dependency "tinymce-rails", "4.7.2" # ">=4.3.12" locked in due to bug with gem.
+  s.add_runtime_dependency "tinymce-rails"#, "4.7.2" # ">=4.3.12" locked in due to bug with gem.
   
   # s.add_runtime_dependency "compass" , "~> 1.0.0"
   # s.add_runtime_dependency "sass-rails" , "5.0.0"
   # s.add_runtime_dependency "sprockets" , "3.5.2"
   # s.add_runtime_dependency "compass-rails" , "~> 2.0.4"
   
-  s.add_runtime_dependency "rails", '~> 4.2', '>= 4.2.0'
-  s.add_runtime_dependency 'jquery-rails','~> 4.0', '>= 4.0.3'
-  s.add_runtime_dependency 'rmagick','~> 2.15', '>= 2.15.0'
+  s.add_runtime_dependency "rails", '~> 5.1'
+  s.add_runtime_dependency 'jquery-rails'
+  s.add_runtime_dependency 'rmagick'
 
   s.add_runtime_dependency 'jquery-ui-rails'
   s.add_runtime_dependency 'jquery-fileupload-rails'
@@ -34,8 +34,9 @@ Gem::Specification.new do |s|
   # s.add_runtime_dependency 'jquery-turbolinks','~> 2.1', '>= 2.1.0'
   s.add_runtime_dependency 'railties'
 
-  s.add_runtime_dependency 'vestal_versions', '~> 2.0', '>= 2.0.0' 
-  s.add_runtime_dependency "acts-as-taggable-on", '~> 3.5', '>= 3.5.0'
+  # s.add_runtime_dependency 'vestal_versions'
+  
+  s.add_runtime_dependency "acts-as-taggable-on"
   # s.add_dependency "rails-settings-cached", "0.4.1"
   s.add_runtime_dependency 'rails-settings-cached', '0.4.1' 
   # s.add_runtime_dependency 'robertleelittleiii/vestal_versions'

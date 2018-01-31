@@ -1,4 +1,4 @@
-class CreateTinyMceMedia < ActiveRecord::Migration
+class CreateTinyMceMedia < ActiveRecord::Migration[5.0]
   def self.up
     #stub for khoandco and older apps
   end

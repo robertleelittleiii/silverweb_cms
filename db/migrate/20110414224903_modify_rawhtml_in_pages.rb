@@ -1,4 +1,4 @@
-class ModifyRawhtmlInPages < ActiveRecord::Migration
+class ModifyRawhtmlInPages < ActiveRecord::Migration[5.0]
    def self.up
     change_column :menus, :rawhtml, :text;
   end

@@ -164,7 +164,7 @@ class RolesController < ApplicationController
   def delete_ajax
     @role = Role.find(params[:id])
     @role.destroy
-    render :nothing=>true
+    render body: nil
   end
     
   

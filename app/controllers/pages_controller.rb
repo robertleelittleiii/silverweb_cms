@@ -184,7 +184,7 @@ class PagesController < ApplicationController
       @page = Page.find(params[:id])
     
       @page.destroy
-      render :nothing=>true
+      render body: nil
     end
     
   def custom

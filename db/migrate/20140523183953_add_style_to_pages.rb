@@ -1,4 +1,4 @@
-class AddStyleToPages < ActiveRecord::Migration
+class AddStyleToPages < ActiveRecord::Migration[5.0]
   def self.up
     add_column :pages, :page_style, :string
   end

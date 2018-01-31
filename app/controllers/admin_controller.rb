@@ -2,9 +2,10 @@ class AdminController < ApplicationController
   # just display the form and wait for user to
   # enter a name and password
 
-    protect_from_forgery except: :clear_user_locks
+  protect_from_forgery except: :clear_user_locks
 
   def login
+admin_params
     session[:user_id] = nil
     if request.post?
       user = User.authenticate(params[:name], params[:password])
@@ -56,7 +57,9 @@ class AdminController < ApplicationController
 
   end
   
-  def edit_ajax      
+  def edit_ajax   
+admin_params
+
     if params[:pointer_class]=="UserAttribute" then
       @user = UserAttribute.find(params[:id])
     else
@@ -69,6 +72,8 @@ class AdminController < ApplicationController
   end
 
   def cancel_ajax
+admin_params
+
     if params[:pointer_class]=="UserAttribute" then
       @user = UserAttribute.find(params[:id])
     else
@@ -81,6 +86,8 @@ class AdminController < ApplicationController
   end
 
   def update_ajax
+admin_params
+
     @alert_message=""
     if params[:pointer_class]=="UserAttribute" then
       @user = UserAttribute.find(params[:id])
@@ -110,7 +117,9 @@ class AdminController < ApplicationController
   end
   
   def update
-    eval("Settings." + params["settings"].to_a.first[0] + "='" + params["settings"].to_a.first[1] +"'"   )
+    admin_params
+
+    eval("Settings." + params["settings"].to_unsafe_hash.to_a.first[0] + "='" + params["settings"].to_unsafe_hash.to_a.first[1] +"'"   )
   
     respond_to do |format|
       format.json  { head :ok }
@@ -145,6 +154,8 @@ class AdminController < ApplicationController
   
   def add_image
   
+admin_params
+
     @image_param=params[:image]
     format = params[:format]
     puts(@image_param.inspect)
@@ -177,6 +188,9 @@ class AdminController < ApplicationController
   end
 
   def delete_image
+    
+admin_params
+
     @all_images = SystemImages.all
 
     @image = Picture.find(params[:id])
@@ -191,6 +205,8 @@ class AdminController < ApplicationController
 
 
   def destroy_image
+admin_params
+
     @all_images = SystemImages.all
 
     @image = Picture.find(params[:id])
@@ -202,11 +218,13 @@ class AdminController < ApplicationController
   end
 
   def update_image_order
+admin_params
+
     params[:album].each_with_index do |id, position|
       #   Image.update(id, :position => position)
       Picture.reorder(id,position)
     end
-    render :nothing => true
+    render body: nil
 
   end
     
@@ -218,6 +236,8 @@ class AdminController < ApplicationController
   end
      
   def toggle_index
+    params = admin_params
+
     time_items = Settings.down_time.split(":") 
     up_time = Time.now.utc + time_items[0].to_i.days + time_items[1].to_i.hours + time_items[2].to_i.minutes 
     out_time =   up_time.strftime("%m/%d/%Y %I:%M %p UTC")   #=> "6/9/2016 10:25 AM"
@@ -227,32 +247,22 @@ class AdminController < ApplicationController
     rescue
       FileUtils.mv  'public/index.off',  'public/index.html'
       File.write('public/splash/waittime.js', "// Auto written by silverweb_cms \n\r \n\r var TargetDate = \"#{out_time}\"; \n")
-  end
+    end
     
      
     
     respond_to do |format|
       format.json  { head :ok }
-      format.html {redirect_to :action => 'site_settings', :id=>params[:product_id]}
+      render body: nil
     end  
   end
 
-  def reprocess_product_images
-    @products = Product.all
-    
-    @products.each do |product|
-      product.pictures.each do |picture|
-      
-        picture.image.recreate_versions!     
-      end
-    end
-    respond_to do |format|
-      format.json  { head :ok }
-      format.html {redirect_to :action => 'site_settings', :id=>params[:product_id]}
-    end  
-  end
   
-  def kill_all_workers
+  
+  def kill_all_workers     
+    admin_params
+
+    
     @workers = Resque.workers
     @workers.each do |worker|
       Resque.remove_worker(worker.id)
@@ -260,136 +270,12 @@ class AdminController < ApplicationController
      
     respond_to do |format|
       format.json  { head :ok }
-      format.html {redirect_to :action => 'site_settings', :id=>params[:product_id]}
+      render body: nil
     end  
   end
   
   
-  def clean_product_details 
-    puts("**** Begin Clean of DB: Lost Children")
-    bulk_clean_product_detail_sql = ["
-      Delete
-      FROM product_details
-      WHERE NOT EXISTS (
-            SELECT 1 FROM products
-            WHERE products.id = product_details.product_id
-           );
-      "]
-    
-    bulk_clean_product_detail_2_sql = ["Delete FROM product_details WHERE inventory_key LIKE '%%.0'"]
-    
-    
-    begin
-      sql = ActiveRecord::Base.send(:sanitize_sql_array, bulk_clean_product_detail_2_sql)
-      result = ActiveRecord::Base.connection.execute(sql)
-    rescue
-      puts "something went wrong with the bulk clean sql query 2 #{result.inspect}: #{sql.inspect}"
-    end
-    
-    begin
-      sql = ActiveRecord::Base.send(:sanitize_sql_array, bulk_clean_product_detail_sql)
-      ActiveRecord::Base.connection.execute(sql)
-    rescue
-      "something went wrong with the bulk insert sql query"
-    end
-    
-    puts("**** Begin Clean of DB: BAD UPC Children")
-
-    respond_to do |format|
-      format.json  { head :ok }
-      format.html {redirect_to :action => 'site_settings', :id=>params[:product_id]}
-    end  
-    puts("**** END Clean of DB")
-
-  end
-  
-  
-  def activate_all_products
-    bulk_activate_products_sql = ["
-         Update 
-           products p
-         Join 
-           product_details pd on p.id = pd.product_id
-         SET 
-           p.product_active = 1
-         where
-           pd.units_in_stock > 0
-      "] 
  
-    bulk_activate_details_sql = ["
-        Update 
-           product_details pd
-         SET 
-           pd.sku_active = 1
-         where
-           pd.units_in_stock > 0;
-      "] 
-
-    begin
-      sql = ActiveRecord::Base.send(:sanitize_sql_array, bulk_activate_products_sql)
-      ActiveRecord::Base.connection.execute(sql)
-    rescue
-      "something went wrong with the bulk insert sql query"
-    end
-    
-  
-    begin
-      sql = ActiveRecord::Base.send(:sanitize_sql_array, bulk_activate_details_sql)
-      ActiveRecord::Base.connection.execute(sql)
-    rescue
-      "something went wrong with the bulk insert sql query"
-    end
-    
-    respond_to do |format|
-      format.json  { head :ok }
-      format.html {redirect_to :action => 'site_settings', :id=>params[:product_id]}
-    end  
-  end
-  
-  def clear_product_inventory_and_make_all_inactive 
-    puts("**** Begin Clean of DB: clear active products")
-    bulk_clear_active_product_flag_sql = ["
-      Update 
-         products p
-      SET 
-         p.product_active = 0
-      where 1=1
-      "]
-    
-    bulk_clear_active_product_detail_flag_sql = ["
-      Update 
-         product_details pd
-      SET 
-         pd.sku_active = 0,
-         pd.units_in_stock = 0
-      where 1=1
-      "]
-  
-    
-    begin
-      sql = ActiveRecord::Base.send(:sanitize_sql_array, bulk_clear_active_product_flag_sql)
-      result = ActiveRecord::Base.connection.execute(sql)
-    rescue
-      puts "something went wrong with the bulk clear active products #{result.inspect}: #{sql.inspect}"
-    end
-    
-    begin
-      sql = ActiveRecord::Base.send(:sanitize_sql_array, bulk_clear_active_product_detail_flag_sql)
-      ActiveRecord::Base.connection.execute(sql)
-    rescue
-      "something went wrong with the bulk clear active product details"
-    end
-    
-    puts("**** Begin Clean of DB: BAD UPC Children")
-
-    respond_to do |format|
-      format.json  { head :ok }
-      format.html {redirect_to :action => 'site_settings', :id=>params[:product_id]}
-    end  
-    puts("**** END Clean of DB")
-
-  end
-  
   def reprocess_page_images
     
     
@@ -403,23 +289,27 @@ class AdminController < ApplicationController
     
     respond_to do |format|
       format.json  { head :ok }
-      format.html {redirect_to :action => 'site_settings', :id=>params[:product_id]}
+      render body: nil
     end  
   end
   
   def clear_user_locks
-        user =  User.find_by_id(session[:user_id])
+    user =  User.find_by_id(session[:user_id])
 
-        session[:current_action] = ""
-        session[:current_controller] = ""
-        session[:current_record_id] = 0
+    session[:current_action] = ""
+    session[:current_controller] = ""
+    session[:current_record_id] = 0
               
-        user.user_live_edit.current_type = ""
-        user.user_live_edit.current_action = ""
-        user.user_live_edit.current_id = 0
-        user.user_live_edit.save  
+    user.user_live_edit.current_type = ""
+    user.user_live_edit.current_action = ""
+    user.user_live_edit.current_id = 0
+    user.user_live_edit.save  
       
-        render :nothing=>true
+    render body: nil
 
+  end
+  
+  def admin_params
+    params.permit([:name, :password, :pointer_class, :id, :field_id, :field, :settings,:image, :format,:image_name,:album,:product_id])
   end
 end

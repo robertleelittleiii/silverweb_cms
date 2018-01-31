@@ -1,4 +1,4 @@
-class AddMenuLocaltoPages < ActiveRecord::Migration
+class AddMenuLocaltoPages < ActiveRecord::Migration[5.0]
   def self.up
         add_column :pages, :in_menu, :boolean
         add_column :pages, :menu_local, :string

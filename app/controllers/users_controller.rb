@@ -251,7 +251,7 @@ class UsersController < ApplicationController
       puts("can't delete self.")
     else
       @user.destroy
-      render :nothing=>true
+      render body: nil
     end
     
   end

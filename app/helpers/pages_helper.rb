@@ -12,6 +12,9 @@ module PagesHelper
    #  out << (@page.blank? ? (@page_name.blank? ? "n/a" : @page_name) : @page.name)
 
     end
+    
+    out = out.parameterize if !out.blank?
+    
     puts("out: '#{out}'")
     
     return out

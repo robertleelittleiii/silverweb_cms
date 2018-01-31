@@ -1,4 +1,4 @@
-class UpdatePermissionsForUsers < ActiveRecord::Migration
+class UpdatePermissionsForUsers < ActiveRecord::Migration[5.0]
   def self.up
     
 		#Admin role name should be "Admin" for convenience

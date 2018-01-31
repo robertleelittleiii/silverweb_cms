@@ -1,4 +1,4 @@
-class UpdateSettingsTableForNewSystem < ActiveRecord::Migration
+class UpdateSettingsTableForNewSystem < ActiveRecord::Migration[5.0]
   def self.up
     rename_column :settings, :target_type,  :thing_type
     rename_column :settings, :target_id, :thing_id

@@ -1,8 +1,8 @@
 <%= if @menu.parent_id == 0 then
   create_dialog_settings("Edit Menu Head", "300", "200")
-else
+  else
   create_dialog_settings("Edit Menu", "650", "500")
-end %>
+  end %>
 
 <div class="hidden-item">
     <div id="top-parent"><%=@menu.find_top_level_parent %></div>
@@ -13,40 +13,44 @@ end %>
 <!-- <div class="cms-content"> -->
 
 
-    <p>
-        <b>Name:</b><br>
-        <%=editablefieldcreate("name", @menu)%>
-    </p>
+<p>
+    <b>Name:</b><br>
+    <%=editablefieldcreate("name", @menu)%>
+</p>
 
-    <p>
-        <b> Active: </b><br>
-        <%=editablecheckboxedit("menu_active", @menu, "Menu Active")%>
-    </p>  
-    </br>  
+<p>
+    <b> Active: </b><br>
+    <%=editablecheckboxedit("menu_active", @menu, "Menu Active")%>
+</p>  
+</br>  
 
 
-    <%if @menu.parent_id!=0 then %>
+<%if @menu.parent_id!=0 then %>
 
-      <p>
-          <b>Display:</b><br>
+  <p>
+      <b>Display:</b><br>
 
-          <%=editablecheckboxedit("has_image", @menu, "Uses Image")%>
+      <%=editablecheckboxedit("has_image", @menu, "Uses Image")%>
 
-      <div class="imagesection">
-          <!-- START:hidden_div -->
-          <%= hidden_div_if((@menu.pictures.empty?) , :id=>"images") %>
+  <div class="imagesection">
+      <!-- START:hidden_div -->
+      <div id="images" <%= "style='display:none'" if @menu.pictures.empty? %> >
+
+  <%#= hidden_div_if((@menu.pictures.empty?) , :id=>"images") %>
 
           <%= render(:partial => "/pictures/picture_list", :object => @menu.pictures) %>
-          <%="</div>".html_safe %>
+  <%#="</div>".html_safe %>
+      </div>
 
-
-          <%= hidden_div_if(@menu.pictures.count > 0, :id => "imagebutton") %>
+      <div id="imagebutton" <%="style='display:none'" if @menu.pictures.count > 0%> >
+  <%#= hidden_div_if(@menu.pictures.count > 0, :id => "imagebutton") %>
           <%= render(:partial => "/pictures/upload_button_multi") %>
-          <%#=  render(:partial => "/pictures/upload_button")%>
-          <%="</div>".html_safe %>
+  <%#=  render(:partial => "/pictures/upload_button")%>
+  <%#="</div>".html_safe %>
+      </div>
 
-          <%= render(:partial=>"/pictures/upload_template") %>
-      </div> 
+      <%= render(:partial=>"/pictures/upload_template") %>
+  </div> 
   </p>
   <p>
       <b>Type of Menu:</b>

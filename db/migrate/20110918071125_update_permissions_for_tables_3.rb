@@ -1,4 +1,4 @@
-class UpdatePermissionsForTables3 < ActiveRecord::Migration
+class UpdatePermissionsForTables3 < ActiveRecord::Migration[5.0]
   def self.up
     
     #Create all of the rights for all existing controllers for the admin

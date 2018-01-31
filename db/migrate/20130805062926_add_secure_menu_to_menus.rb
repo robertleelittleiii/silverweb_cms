@@ -1,4 +1,4 @@
-class AddSecureMenuToMenus < ActiveRecord::Migration
+class AddSecureMenuToMenus < ActiveRecord::Migration[5.0]
   def self.up
     add_column :menus, :secure_menu, :boolean
   end

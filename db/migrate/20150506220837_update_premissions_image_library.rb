@@ -1,4 +1,4 @@
-class UpdatePremissionsImageLibrary < ActiveRecord::Migration
+class UpdatePremissionsImageLibrary < ActiveRecord::Migration[5.0]
   def self.up
     
 		#Admin role name should be "Admin" for convenience

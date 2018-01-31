@@ -1,4 +1,4 @@
-class UpdateMetaColumnsForPages < ActiveRecord::Migration
+class UpdateMetaColumnsForPages < ActiveRecord::Migration[5.0]
   def self.up
     change_column :pages, :meta_description, :text
     change_column :pages, :meta_keywords, :text

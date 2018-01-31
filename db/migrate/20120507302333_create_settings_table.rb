@@ -1,4 +1,4 @@
-class CreateSettingsTable < ActiveRecord::Migration
+class CreateSettingsTable < ActiveRecord::Migration[5.0]
   def self.up
     if not ActiveRecord::Base.connection.table_exists? 'settings' then
       create_table :settings, :force => true do |t|

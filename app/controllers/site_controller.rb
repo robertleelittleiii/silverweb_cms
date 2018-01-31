@@ -289,7 +289,7 @@ class SiteController < ApplicationController
       @style_sheet_custom = @page.template_name ? @page_template + ".css" : "" rescue ""
 
       @page_name = @page.title rescue "'Home' not found!!"
-    
+
       @menu = @page.menu rescue nil
     
       @page.revert_to(params[:version].to_i) if params[:version]
@@ -337,7 +337,7 @@ class SiteController < ApplicationController
   end
   
   def  session_active
-    render :text=> session[:active] || "false"
+    render plain: session[:active] || "false"
   end
   
   #  def show_products_with_page
@@ -655,7 +655,7 @@ class SiteController < ApplicationController
   #        format.json { render :json=> @products }
   #      end
   #    end
-  #    #    render :nothing => true
+  #    #    render body: nil
   #  end
   #  
   #
@@ -899,7 +899,7 @@ class SiteController < ApplicationController
   #    @cart.save
   #    respond_to do |format|
   #      format.json  { head :ok }
-  #      format.html {render :nothing=>true}
+  #      format.html {render body: nil}
   #    end
   #  end
   #
@@ -911,7 +911,7 @@ class SiteController < ApplicationController
   #
   #    respond_to do |format|
   #      format.json  { head :ok }
-  #      format.html {render :nothing=>true}
+  #      format.html {render body: nil}
   #    end
   #  end
   #
@@ -992,13 +992,13 @@ class SiteController < ApplicationController
   def load_asset
     path = params[:path]
     # the_asset = Rails.application.assets.find_asset(path).body rescue ""
-    the_asset = ActionController::Base.helpers.compute_asset_path(path)
+    the_asset = ActionController::Base.helpers.compute_asset_path(path) rescue ""
     
     if the_asset == "/"+path then
       the_asset=""
     end
     
-    render :text=>the_asset
+    render plain: the_asset
   end
   
   def set_time_zone 

@@ -1,4 +1,4 @@
-class AddTemplateNameToPages < ActiveRecord::Migration
+class AddTemplateNameToPages < ActiveRecord::Migration[5.0]
   def self.up
     add_column :pages, :template_name, :string
   end

@@ -1,4 +1,4 @@
-class CreateSliders < ActiveRecord::Migration
+class CreateSliders < ActiveRecord::Migration[5.0]
   def self.up
     create_table :sliders do |t|
       t.integer :page_id

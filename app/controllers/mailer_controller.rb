@@ -34,7 +34,7 @@ class MailerController < ApplicationController
     redirect_to @redirect_to, notice: "Your contact request has been sent."
     #
     #   
-    #         render :nothing=>true;
+    #         render body: nil;
   end
   protected
 

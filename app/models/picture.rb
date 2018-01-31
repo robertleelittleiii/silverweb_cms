@@ -1,10 +1,10 @@
 class Picture < ActiveRecord::Base
 
   
-  belongs_to :menues, :polymorphic => true
-  belongs_to :product, :polymorphic => true
-  belongs_to :settings
-  belongs_to :advertisement, :polymorphic => true
+  belongs_to :menues, :polymorphic => true, optional: true
+  belongs_to :product, :polymorphic => true, optional: true
+  belongs_to :settings, optional: true
+  belongs_to :advertisement, :polymorphic => true, optional: true
   
   mount_uploader :image, ImageUploader
 

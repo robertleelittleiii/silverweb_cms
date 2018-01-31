@@ -1,4 +1,4 @@
-class AddHeightandWidthToPages < ActiveRecord::Migration
+class AddHeightandWidthToPages < ActiveRecord::Migration[5.0]
   def self.up
     add_column :pages, :slider_height, :integer
     add_column :pages, :slider_width, :integer

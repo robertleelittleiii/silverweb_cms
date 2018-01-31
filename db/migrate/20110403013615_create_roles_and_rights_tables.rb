@@ -1,4 +1,4 @@
-class CreateRolesAndRightsTables < ActiveRecord::Migration
+class CreateRolesAndRightsTables < ActiveRecord::Migration[5.0]
 def self.up
     create_table :roles_users, id: false do |t|
       t.column "role_id" , :integer

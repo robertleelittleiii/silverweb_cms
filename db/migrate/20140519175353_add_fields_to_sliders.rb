@@ -1,4 +1,4 @@
-class AddFieldsToSliders < ActiveRecord::Migration
+class AddFieldsToSliders < ActiveRecord::Migration[5.0]
   def self.up
     add_column :sliders, :slider_url, :string
     add_column :sliders, :slider_tag_line_one, :string

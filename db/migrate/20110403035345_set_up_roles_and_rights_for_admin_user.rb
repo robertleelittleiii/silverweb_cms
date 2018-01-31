@@ -1,4 +1,4 @@
-class SetUpRolesAndRightsForAdminUser < ActiveRecord::Migration
+class SetUpRolesAndRightsForAdminUser < ActiveRecord::Migration[5.0]
  def self.up
     #Create the Admin user.
 

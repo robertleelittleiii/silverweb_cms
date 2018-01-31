@@ -1,4 +1,4 @@
-class AddSessionsTable < ActiveRecord::Migration
+class AddSessionsTable < ActiveRecord::Migration[5.0]
   
   def change
     if not ActiveRecord::Base.connection.table_exists? 'sessions' then

@@ -1,4 +1,4 @@
-class AddMetaDescriptionKeywordsRobotToPages < ActiveRecord::Migration
+class AddMetaDescriptionKeywordsRobotToPages < ActiveRecord::Migration[5.0]
   def self.up
     add_column :pages, :meta_description, :string
     add_column :pages, :meta_keywords, :string

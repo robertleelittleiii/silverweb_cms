@@ -1,4 +1,4 @@
-class AddMenuActiveToMenus < ActiveRecord::Migration
+class AddMenuActiveToMenus < ActiveRecord::Migration[5.0]
   def self.up
     add_column :menus, :menu_active, :boolean
   end

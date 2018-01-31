@@ -1,4 +1,4 @@
-class UpdatePermissionsOnPageTemplates < ActiveRecord::Migration
+class UpdatePermissionsOnPageTemplates < ActiveRecord::Migration[5.0]
   def self.up
     #assign them to Admin role.
     role_admin =  Role.find_by_name('Admin')

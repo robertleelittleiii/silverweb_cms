@@ -1,4 +1,4 @@
-class AddSecurePageToPages < ActiveRecord::Migration
+class AddSecurePageToPages < ActiveRecord::Migration[5.0]
   def self.up
     add_column :pages, :secure_page, :boolean
   end

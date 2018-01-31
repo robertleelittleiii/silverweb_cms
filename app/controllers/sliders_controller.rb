@@ -119,7 +119,7 @@ class SlidersController < ApplicationController
       slider.save
     end
 
-    render :nothing => true
+    render body: nil
   end
   private
   

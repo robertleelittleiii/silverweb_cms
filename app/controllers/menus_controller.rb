@@ -99,7 +99,7 @@ class MenusController < ApplicationController
     @menu = Menu.find(params[:id])
     @menu.destroy
     @menus = Menu.find_root_menus()
-    render :nothing => true
+    render body: nil
 
     #render :update do |page|
     # page.replace_html "menu-item-list",{ :partial =>'menu_list.html', :collection=>@menus}
@@ -134,7 +134,11 @@ class MenusController < ApplicationController
           format.html {render  :partial =>'menu_list.html', :collection=>@parent_menu.menus}
         end
       end
-          
+    
+    
+    else
+          render body: nil
+
     end
     #    if @menu.save then
     #      @menus = Menu.find_root_menus()
@@ -162,7 +166,7 @@ class MenusController < ApplicationController
     params[paramName].each_with_index do |id, position|
       Menu.update(id, :m_order => position)
     end
-    render :nothing => true
+    render body: nil
 
   end
   
@@ -186,11 +190,11 @@ class MenusController < ApplicationController
     name = params[:partial_type].gsub(" ","_")
     #  render_to_string :partial=>(params[:partial_type] + "_type.html")
     #begin
-      render :partial=>(name.downcase + "_type.html") 
+    render :partial=>(name.downcase + "_type.html") 
     #rescue 
     #  render :text=>""
     # =>  end
-    # render :nothing=>true
+    # render body: nil
 
 
     #  render :update do |page|
@@ -221,35 +225,35 @@ class MenusController < ApplicationController
       end
     end
     
-#    respond_to do |format|
-#      flash[:notice] = 'Picture was successfully added.'
-#      format.js do
-#          render :update do |page|
-#            page.replace_html("images" , :partial => "/images/images" , :object => @menu.pictures)
-#            if @menu.pictures.count > 0
-#              page.hide "imagebutton"
-#            end
-#            page.hide "loader_progress"
-#            page.show "upload-form"
-#            
-#            #           page.call("jQuery('#loader_progress').toggle();")
-#            #           page.call("jQuery('#upload-form').toggle();")
-#            page.visual_effect :highlight, "image_#{@image.id}"
-#            page[:images].show if @menu.pictures.count == 1
-#        end
-#      end
-#
-#      format.html { redirect_to :action => 'show', :id => params[:id] }
-#    end
+    #    respond_to do |format|
+    #      flash[:notice] = 'Picture was successfully added.'
+    #      format.js do
+    #          render :update do |page|
+    #            page.replace_html("images" , :partial => "/images/images" , :object => @menu.pictures)
+    #            if @menu.pictures.count > 0
+    #              page.hide "imagebutton"
+    #            end
+    #            page.hide "loader_progress"
+    #            page.show "upload-form"
+    #            
+    #            #           page.call("jQuery('#loader_progress').toggle();")
+    #            #           page.call("jQuery('#upload-form').toggle();")
+    #            page.visual_effect :highlight, "image_#{@image.id}"
+    #            page[:images].show if @menu.pictures.count == 1
+    #        end
+    #      end
+    #
+    #      format.html { redirect_to :action => 'show', :id => params[:id] }
+    #    end
   end
 
   
   def delete_ajax
-      @menu = Menu.find(params[:id])
+    @menu = Menu.find(params[:id])
     
-      @menu.destroy
-      render :nothing=>true
-    end
+    @menu.destroy
+    render body: nil
+  end
     
   
   def delete_image
@@ -258,8 +262,8 @@ class MenusController < ApplicationController
     @image.destroy
     
     #  respond_to do |format|  
-    #          format.html { render :nothing => true }
-    #          format.js   { render :nothing => true }  
+    #          format.html { render body: nil }
+    #          format.js   { render body: nil }  
     #  end  
 
     
@@ -281,7 +285,7 @@ class MenusController < ApplicationController
       #   Image.update(id, :position => position)
       Picture.reorder(id,position)
     end
-    render :nothing => true
+    render body: nil
 
   end
 

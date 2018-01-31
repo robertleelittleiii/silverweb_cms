@@ -1,4 +1,4 @@
-class AddSliderShowNavToPages < ActiveRecord::Migration
+class AddSliderShowNavToPages < ActiveRecord::Migration[5.0]
   def self.up
     add_column :pages, :slider_show_nav, :boolean
   end

@@ -1,4 +1,4 @@
-class CreateVestalVersions < ActiveRecord::Migration
+class CreateVestalVersions < ActiveRecord::Migration[5.0]
   def self.up
     if not ActiveRecord::Base.connection.table_exists? 'versions' then
       create_table :versions do |t|

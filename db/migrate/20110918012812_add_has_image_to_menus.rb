@@ -1,4 +1,4 @@
-class AddHasImageToMenus < ActiveRecord::Migration
+class AddHasImageToMenus < ActiveRecord::Migration[5.0]
   def self.up
     add_column :menus, :has_image, :boolean
   end

@@ -1,4 +1,4 @@
-class AddTemplateToMenus < ActiveRecord::Migration
+class AddTemplateToMenus < ActiveRecord::Migration[5.0]
   def self.up
     add_column :menus, :template, :string
   end

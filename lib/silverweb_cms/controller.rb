@@ -5,7 +5,7 @@ module SilverwebCms
     module ClassMethods
       # notice: no self.method_name here, because this is being extended because ActiveSupport::Concern was extended
       def layout_sub(layout_sub)
-        before_filter do |c|
+        before_action do |c|
           #c.set_layout_sub_value(layout_sub)
           c.cms_layout(default="application")
         end
@@ -16,7 +16,7 @@ module SilverwebCms
       
       def cms_authorize
         
-        before_filter :authenticate,
+        before_action :authenticate,
           :authorize,
           :except => :login  
         

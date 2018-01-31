@@ -1,4 +1,4 @@
-class CreateUserAttributes < ActiveRecord::Migration
+class CreateUserAttributes < ActiveRecord::Migration[5.0]
   def self.up
     create_table :user_attributes do |t|
       t.string :first_name
