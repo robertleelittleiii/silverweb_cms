@@ -1,4 +1,4 @@
-    require 'digest/sha1'
+require 'digest/sha1'
 # require 'RFC822'
 require 'gravtastic'
  #include Gravtastic

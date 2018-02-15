@@ -32,6 +32,12 @@ module SilverwebCms
       json_hash[:words] = {}
 
       if (spell_check_response != '') 
+# not needed, was able to set the correct encoding at the system level for the spellchecker.
+#        if ! spell_check_response.valid_encoding?
+#          s = spell_check_response.encode("UTF-16be", :invalid=>:replace, :replace=>"?").encode('UTF-8')
+#          s.gsub(/dr/i,'med')
+#        end
+
         spelling_errors = spell_check_response.split(/\n& /).slice(1..-1)
         # puts(spelling_errors.inspect)
         # if (command == 'checkWords')
@@ -62,7 +68,7 @@ module SilverwebCms
           end
         end
       end 
-     #  puts(json_response_values.inspect)
+      #  puts(json_response_values.inspect)
       return json_response_values
     end
 
