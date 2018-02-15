@@ -117,7 +117,7 @@ function require(script) {
     //  if (!$("script[src^='" + theUrl + "']").length) {
     // alert("loaded");
     //
-    
+
     $.ajax({
         url: "/site/load_asset",
         data: {path: script},
@@ -392,31 +392,37 @@ function ui_ajax_select(success_callback) {
             dataType: "json",
             type: "PUT",
             data: "id=" + this.getAttribute("data-id") + "&" + this.getAttribute("name") + "=" + selected_item,
-            success: function (data, textStatus, jqXHR)
+        }).success(function (data, textStatus, jqXHR)
+        {
+            console.log(data);
+            console.log(textStatus);
+            console.log(jqXHR);
+            console.log(that);
+
+            if (typeof success_callback == "function")
             {
-                //  console.log(data);
-                //  console.log(textStatus);
-                //  console.log(jqXHR);
-                //  console.log(that);
-
-                if (typeof success_callback == "function")
-                {
-                    success_callback(that, data);
-                }
-                // alert(data);
-                if (data === undefined || data === null || data === "")
-                {
-                    //display warning
-                } else
-                {
-
-                }
-            },
-            fail: function (jqXHR, textStatus, errorThrown) {
-                setUpNotifier("error.png", "Warning", textStatus);
+                success_callback(that, data);
             }
+            // alert(data);
+            if (data === undefined || data === null || data === "")
+            {
+                //display warning
+            } else
+            {
 
-        });
+            }
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+
+            console.log(jqXHR);
+            console.log(textStatus);
+            console.log(errorThrown);
+
+            console.log(jqXHR.responseJSON.error)
+
+            setUpNotifier("error.png", "Warning", jqXHR.responseJSON.error[0]);
+
+            $(that).val($(that).data('initial-val'));
+        })
     });
 }
 
