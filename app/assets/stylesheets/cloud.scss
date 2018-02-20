@@ -443,7 +443,7 @@ form#registration-form table tr td.center {
 
 .validation-error {
     border: red solid 2px;
-    height:initial;
+    height: initial !important;
 }
 
 div.validation-error-message-div {
