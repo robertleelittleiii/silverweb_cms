@@ -1074,6 +1074,16 @@ function bindLoginButton() {
 
 }
 
+function requestedLoginBox(){
+   var login_requested = $("div#login").text();
+   var url_requested = $("div#url").text();
+   
+   if (login_requested == "true") {
+       loadLoginBox(url_requested);
+   }
+}
+
+
 function call_document_ready(theAction) {
 
     var the_function = theAction + "_callDocumentReady()";

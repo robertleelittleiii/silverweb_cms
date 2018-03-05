@@ -166,7 +166,7 @@ class SiteController < ApplicationController
   #
   
   def index
-      session[:mainnav_status] = false
+    session[:mainnav_status] = false
     @alert = params[:alert] || ""
     #   @page = Page.find(params[:id]) rescue ""
     #    puts("via ID : #{@page}")
@@ -184,10 +184,13 @@ class SiteController < ApplicationController
  
     @user =  User.find_by_id(session[:user_id])
 
-    if (@page.secure_page and @user.blank?)
-      puts("*********** authenticate ************* #{@user.inspect}")
+ #   if (@page.secure_page and @user.blank?)
       #  ApplicationController.instance_method(:authenticate).bind(self).call
-    else    
+ #     puts("*********** authenticate ************* #{@user.inspect}")
+     # authorized =  ApplicationController.instance_method(:authorize).bind(self).call
+     # authenticated =  ApplicationController.instance_method(:authenticate).bind(self).call
+     # puts("authorized: #{authorized} authenticated: #{authenticated}")
+ #   else    
     
       @page_template = (not @page.template_name.blank?) ? "show_page-" + @page.template_name : "show_page" rescue "show_page" 
       @java_script_custom = @page.template_name ? @page_template + ".js" : "" rescue ""
@@ -216,7 +219,7 @@ class SiteController < ApplicationController
       puts("************user roles: #{user_roles.inspect}, page_roles: #{@page.security_group_list.inspect}, VAlid: #{(user_roles & (@page.security_group_list)).blank?}")
    
       if @page.secure_page and ((user_roles) & (@page.security_group_list)).blank? then
-        redirect_to :controller=>:site, :alert=>"You do not have permission to view that page"
+        redirect_to :controller=>:site, :alert=>"You do not have permission to view that page."
       else
         respond_to do |format|
           format.html { render :action=>@page_template} # show.html.erb
@@ -224,7 +227,7 @@ class SiteController < ApplicationController
           format.any  {render :json=>"An error has occured."}
         end
       end
-    end
+ #   end
   end
 
   
@@ -279,10 +282,12 @@ class SiteController < ApplicationController
  
     @user =  User.find_by_id(session[:user_id])
 
-    if (@page.secure_page and @user.blank?)
-      puts("*********** authenticate ************* #{@user.inspect}")
-      #  ApplicationController.instance_method(:authenticate).bind(self).call
-    else    
+ #   if (@page.secure_page and @user.blank?)
+#      puts("*********** authenticate ************* #{@user.inspect}")
+    #  authorized =  ApplicationController.instance_method(:authorize).bind(self).call
+      # authenticated =  ApplicationController.instance_method(:authenticate).bind(self).call
+      # puts("authorized: #{authorized} authenticated: #{}")
+#    else    
     
       @page_template = (not @page.template_name.blank?) ? "show_page-" + @page.template_name : "show_page" rescue "show_page" 
       @java_script_custom = @page.template_name ? @page_template + ".js" : "" rescue ""
@@ -311,7 +316,7 @@ class SiteController < ApplicationController
       puts("************user roles: #{user_roles.inspect}, page_roles: #{@page.security_group_list.inspect}, VAlid: #{(user_roles & (@page.security_group_list)).blank?}")
    
       if @page.secure_page and ((user_roles) & (@page.security_group_list)).blank? then
-        redirect_to :controller=>:site, :alert=>"You do not have permission to view that page"
+        redirect_to :controller=>:site, :alert=>"You do not have permission to view that page, please login.", :login=>true, :url=>request.original_url
       else
         respond_to do |format|
           format.html { render :action=>@page_template} # show.html.erb
@@ -319,7 +324,7 @@ class SiteController < ApplicationController
           format.any  { render :json=>"An error has occured."}
         end
       end
-    end
+ #   end
   end
 
   
@@ -1097,12 +1102,14 @@ class SiteController < ApplicationController
   protected
   
   def authorize
+    puts "in authorize"
     return true
   end
 
   def authenticate
     # always create a session.
     session.delete 'init'
+    puts "in authenticate"
 
     return true
   end

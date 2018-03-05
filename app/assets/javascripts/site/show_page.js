@@ -64,6 +64,7 @@ function call_document_ready_on_show_page() {
 
     enablePageEdit();
     enableSliderEdit();
+    requestedLoginBox();
 
 }
 
