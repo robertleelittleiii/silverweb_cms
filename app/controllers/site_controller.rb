@@ -47,6 +47,8 @@ class SiteController < ApplicationController
     user = User.authenticate(params[:name], params[:password])
     puts("User: #{user.inspect}") 
     if user then
+      reset_session
+
       session[:active]=true
       session[:last_seen]=Time.now
       session[:ip_address]= request.remote_ip rescue "n/a"
@@ -73,6 +75,7 @@ class SiteController < ApplicationController
     session[:user_id] = nil
     session[:active]=false
     flash.now[:notice] = "User logged out."
+    reset_session
 
     respond_to do |format|
       format.json  {render :json=>{:message=>flash[:notice]}}
