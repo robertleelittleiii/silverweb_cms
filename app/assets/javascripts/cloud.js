@@ -13,6 +13,8 @@ var interval;
 var cloud1id;
 var cloud2id;
 var cloud3id;
+var allow_login_check = true;
+var allow_login_check_timer = ""
 
 function cloud1() {
     body_width = ($("body").width() + 150) + "px";
@@ -309,7 +311,7 @@ function bindLoginClick(url_to_goto) {
         // console.log(data);
         if (data.sucessfull) {
             login_sucessfull(url_to_goto);
-            
+
         } else
         {
             $(".login-enclosure").effect("shake", {
@@ -411,7 +413,11 @@ function check_login_status() {
 
     if (typeof interval != "number") {
         interval = setInterval(function () {
-            userLoggedIn();
+            if (allow_login_check) {
+
+                userLoggedIn();
+
+            }
         }, check_login_status_time);
     }
 
@@ -425,12 +431,14 @@ function set_my_timezone() {
         dataType: "json",
         url: '/site/set_time_zone?time_zone=' + tz.name(),
         cache: false,
-        success: function(data)
+        success: function (data)
         {
         }
     });
 }
 function login_sucessfull(url_to_goto) {
+
+    allow_login_check = false;
 
     //   toggle_login_box(false);
 
@@ -480,7 +488,7 @@ function login_sucessfull(url_to_goto) {
     update_content();
     call_login_callbacks();
     set_my_timezone();
-    
+
     // show_page();
     // if updateSiteDivs is defined for site then...
 
@@ -498,6 +506,7 @@ function login_sucessfull(url_to_goto) {
 
     }
 
+    allow_login_check_timer = setTimeout("allow_login_check=true;", 10000);
     // check_login_status();
 
 
@@ -539,7 +548,7 @@ function bindMyAccountClick()
 {
     $("#my-account-link").click(function () {
 
-       $("#grid-nav").fadeIn();
+        $("#grid-nav").fadeIn();
         $($currentApplicationId).removeClass("blowup");
         $(".grid_tabnav ul li").removeClass("hidden");
 
@@ -652,7 +661,7 @@ function updateAppDiv() {
                         $("#grid-nav").css("top", "0px");
 
                     }
-                    $("html, body").animate({ scrollTop: 0 }, "slow");
+                    $("html, body").animate({scrollTop: 0}, "slow");
 
                     bindAppClick();
                     bindCloseGrid();
@@ -1074,13 +1083,13 @@ function bindLoginButton() {
 
 }
 
-function requestedLoginBox(){
-   var login_requested = $("div#login").text();
-   var url_requested = $("div#url").text();
-   
-   if (login_requested == "true") {
-       loadLoginBox(url_requested);
-   }
+function requestedLoginBox() {
+    var login_requested = $("div#login").text();
+    var url_requested = $("div#url").text();
+
+    if (login_requested == "true") {
+        loadLoginBox(url_requested);
+    }
 }
 
 
@@ -1139,9 +1148,9 @@ function call_login_callbacks() {
 }
 
 function update_backoffice_elements() {
-    
-    $("div.back-office-refresh-element").each(function( index )  {
-       var function_to_call = $(this).attr("data-update");
+
+    $("div.back-office-refresh-element").each(function (index) {
+        var function_to_call = $(this).attr("data-update");
         if (typeof eval(function_to_call) == "function") {
             eval(function_to_call + "()");
         }
@@ -1168,8 +1177,8 @@ function update_content() {
         success: function (data)
         {
             $("div#content").html(data);
-            
-             try {
+
+            try {
                 if (typeof eval(data_additional) == "function") {
                     eval(data_additional + "()")
                 }
@@ -1184,7 +1193,7 @@ function update_content() {
             } catch (err)
             {
             }
-            
+
             try {
                 if (typeof eval(data_content_update_call) == "function") {
                     eval(data_content_update_call + "()")
@@ -1449,12 +1458,12 @@ function bindDatatableSearchField(search_field_name, model_name) {
                 });
             }
         }
-        ,minLength: 0
-        ,focus: function( event, ui ) {
-          
+        , minLength: 0
+        , focus: function (event, ui) {
+
             return false;
         }
-        ,select: function (event, ui) {
+        , select: function (event, ui) {
 
 
             var current_value = $(this).val();
