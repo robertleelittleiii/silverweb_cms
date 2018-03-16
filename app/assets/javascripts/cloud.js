@@ -133,7 +133,33 @@ function toggle_login_box(display_now) {
     }
 }
 
+function sessionActive() {
+    console.log("session active?")
+    $.ajax({
+        url: "/site/check_session",
+        type: "POST",
+        dataType: "json",
+        success: function (data)
+        {
+            if (data.exists == true) {
 
+                console.log("session active = true")
+            } else
+            {
+                console.log("session active = false")
+                window.location = "/?nocache=" + (new Date()).getTime();
+            }
+        },
+        done: function (msg) {
+            console.log("done");
+            //$("#log").html( msg );
+        },
+        fail: function (jqXHR, textStatus) {
+            console.log("Request failed: " + textStatus);
+        }
+    });
+
+}
 
 
 //
@@ -395,10 +421,22 @@ function userLoggedIn() {
         success: function (data)
         {
             if (data == true) {
-                //  alert("do nothing");
+                page_login_status = $("div#login-status").text();
+                if (page_login_status == "true") {
+                    // do nothing
+
+                } else
+                {
+                    login_sucessfull();
+                }
             } else
             {
-                window.location = "/?nocache=" + (new Date()).getTime();
+                if (page_login_status == "true") {
+                    window.location = "/?nocache=" + (new Date()).getTime();
+                } else
+                {
+                    // do nothing.
+                }
                 // alert("refresh to site");
             }
             // console.log(data);
@@ -510,7 +548,7 @@ function login_sucessfull(url_to_goto) {
 
     logedIn();
     stop_animation();
-    
+
     allow_login_check_timer = setTimeout("allow_login_check=true;", 10000);
     // check_login_status();
 

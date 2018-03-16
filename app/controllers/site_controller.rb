@@ -110,7 +110,12 @@ class SiteController < ApplicationController
     end
   end
   
-  
+  def check_session
+        
+     respond_to do |format|
+        format.json  {render :json=>{:exists=>(!session.blank? rescue false)}}
+      end 
+  end
   #
   #
   #

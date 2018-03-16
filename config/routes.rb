@@ -31,6 +31,7 @@ Rails.application.routes.draw do
       get "template_list"
       get "reset"
       post "set_time_zone"
+      post "check_session"
     end 
   end
   
