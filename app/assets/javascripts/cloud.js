@@ -144,34 +144,36 @@ function toggle_login_box(display_now) {
 
 function checkLoginStatus()
 {
-    $.ajax({
-        url: "/site/session_active",
-        type: "POST",
-        dataType: "html",
-        success: function (data)
-        {
-            if (data == "true") {
-
-                logedIn();
-                stop_animation();
-            } else
+    if (allow_login_check) {
+        $.ajax({
+            url: "/site/session_active",
+            type: "POST",
+            dataType: "html",
+            success: function (data)
             {
-                setTimeout("initial_animation()", 200);
+                if (data == "true") {
 
-                setTimeout("animation()", 500);
+                    logedIn();
+                    stop_animation();
+                } else
+                {
+                    setTimeout("initial_animation()", 200);
 
-                loadLoginBox();
+                    setTimeout("animation()", 500);
 
+                    loadLoginBox();
+
+                }
+            },
+            done: function (msg) {
+                alert("done");
+                //$("#log").html( msg );
+            },
+            fail: function (jqXHR, textStatus) {
+                alert("Request failed: " + textStatus);
             }
-        },
-        done: function (msg) {
-            alert("done");
-            //$("#log").html( msg );
-        },
-        fail: function (jqXHR, textStatus) {
-            alert("Request failed: " + textStatus);
-        }
-    });
+        });
+    }
 }
 
 //
@@ -506,6 +508,9 @@ function login_sucessfull(url_to_goto) {
 
     }
 
+    logedIn();
+    stop_animation();
+    
     allow_login_check_timer = setTimeout("allow_login_check=true;", 10000);
     // check_login_status();
 
