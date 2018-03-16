@@ -420,8 +420,8 @@ function userLoggedIn() {
         dataType: "json",
         success: function (data)
         {
-            if (data == true) {
                 page_login_status = $("div#login-status").text();
+            if (data == true) {
                 if (page_login_status == "true") {
                     // do nothing
 
