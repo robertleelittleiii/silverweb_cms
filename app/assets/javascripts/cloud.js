@@ -601,116 +601,68 @@ function bindMyAccountClick()
 
 function updateSecurityDiv()
 {
-    $.ajax({
-        url: "/site/render_partial",
-        dataType: "html",
-        type: "GET",
-        data: "partial_name=login_div.html",
-        success: function (data)
-        {
-            //alert(data);
-            if (data === undefined || data === null || data === "")
-            {
-                //display warning
-            } else
-            {
-                if ($("div#admin-nav.normal").length > 0) {
-                    $("div#admin-nav.normal #security-div").html(data);
-                    $("div#admin-nav.small #security-div").html(data);
-                } else
-                {
-                    $("#security-div").html(data);
 
-                }
-                bindMyAccountClick();
-                bindCloseIframe();
-                bindLoginButton();
-                bindLogoutClick();
-                bindMyAccount();
-            }
+    renderPartial("login_div.html", "", function (data) {
+
+        if ($("div#admin-nav.normal").length > 0) {
+            $("div#admin-nav.normal #security-div").html(data);
+            $("div#admin-nav.small #security-div").html(data);
+        } else
+        {
+            $("#security-div").html(data);
+
         }
+        bindMyAccountClick();
+        bindCloseIframe();
+        bindLoginButton();
+        bindLogoutClick();
+        bindMyAccount();
     });
 
 }
 
 function updateFooterDiv()
 {
-
-
-    $.ajax({
-        url: "/site/render_partial",
-        dataType: "html",
-        type: "GET",
-        data: "partial_name=footer.html",
-        success: function (data)
-        {
-            //alert(data);
-            if (data === undefined || data === null || data === "")
-            {
-                //display warning
-            } else
-            {
-                $("#footer").html(data);
-                bindMyAccountClick();
-                bindCloseIframe();
-            }
-        }
+    renderPartial("footer.html", "#footer", function (data) {
+        bindMyAccountClick();
+        bindCloseIframe();
     });
-
 }
 ;
-resultData = ""
+
+resultData = "";
+
 function updateAppDiv() {
-    // check and make sure that we are not using the CMS_dialog!
+// check and make sure that we are not using the CMS_dialog!
     if ($("div#layout-name").text() != "cms_dialog") {
-        $.ajax({
-            url: "/site/render_partial",
-            dataType: "html",
-            cache: false,
-            type: "GET",
-            data: "partial_name=/cms_interface/grid_tab_nav.html",
-            success: function (data)
-            {
-                resultData = data;
-                //alert(data);
-                if (data === undefined || data === null || data === "")
-                {
-                    //display warning
-                } else
-                {
-
-                    if ($("#nav-grid-links").length === 0) {
-                        var gridContainer = "<div style='display:none;' id='nav-grid-links'></div>";
-                        $("body").prepend($(gridContainer));
-                        var gridOverlay = "<div style='display:none;' id='nav-grid-overlay'></div>";
-                        $("body").prepend($(gridOverlay));
-                        $("html, body").animate({scrollTop: 0}, "slow");
-
-                    }
-
-                    $("#nav-grid-links").html(data);
-                    $(".grid_tabnav ul li").removeClass("hidden");
-                    // $("#grid-nav").fadeIn();
-                    if (window.matchMedia("only screen and (max-width: 524px)").matches)
-                    {
-                        $("#nav-grid-links").fadeIn();
-                        $("#nav-grid-overlay").fadeIn();
-
-                        $("#grid-nav").css("top", "0px");
-                    } else
-                    {
-                        $("#nav-grid-links").fadeIn();
-                        $("#nav-grid-overlay").fadeIn();
-
-                        $("#grid-nav").css("top", "0px");
-
-                    }
-
-                    bindAppClick();
-                    bindCloseGrid();
-
-                }
+        renderPartial("cms_interface/grid_tab_nav.html", "#nav-grid-links", function (data) {
+            resultData = data;
+            if ($("#nav-grid-links").length === 0) {
+                var gridContainer = "<div style='display:none;' id='nav-grid-links'></div>";
+                $("body").prepend($(gridContainer));
+                var gridOverlay = "<div style='display:none;' id='nav-grid-overlay'></div>";
+                $("body").prepend($(gridOverlay));
+                $("html, body").animate({scrollTop: 0}, "slow");
             }
+
+            $("#nav-grid-links").html(data);
+            $(".grid_tabnav ul li").removeClass("hidden");
+            // $("#grid-nav").fadeIn();
+            if (window.matchMedia("only screen and (max-width: 524px)").matches)
+            {
+                $("#nav-grid-links").fadeIn();
+                $("#nav-grid-overlay").fadeIn();
+                $("#grid-nav").css("top", "0px");
+            } else
+            {
+                $("#nav-grid-links").fadeIn();
+                $("#nav-grid-overlay").fadeIn();
+                $("#grid-nav").css("top", "0px");
+            }
+
+            bindAppClick();
+            bindCloseGrid();
+
         });
     }
 }
@@ -718,7 +670,6 @@ function updateAppDiv() {
 function bindCloseGrid() {
 
     bindHideGrid();
-
     $("a.button-close").button({
         icons: {
             primary: "ui-icon-close"
@@ -727,9 +678,7 @@ function bindCloseGrid() {
     }).click(function () {
         $("#nav-grid-links").fadeOut();
         $("#nav-grid-overlay").fadeOut();
-
     });
-
 }
 
 function bindHideGrid() {
@@ -742,7 +691,6 @@ function bindHideGrid() {
 
         $("#grid-nav").css("top", "-500px");
         $("#nav-grid-links").fadeOut();
-
     });
 }
 
@@ -751,16 +699,12 @@ function bindCloseIframe() {
     $("#hide-iframe").off("click").on("click", function () {
         $("#nav-grid-links").fadeIn();
         $("#nav-grid-overlay").fadeIn();
-
         $("#application-space").addClass("hidden");
         $($currentApplicationId).removeClass("blowup");
         $(".grid_tabnav ul li").removeClass("hidden");
         $("#cloud-switch").fadeOut();
-
         clear_user_locks();
-
     });
-
 }
 
 function clear_user_locks() {
@@ -800,7 +744,6 @@ function bindIconButtonClick() {
             // console.log(the_url);
             // e.stopPropagation(); 
             window.location = the_url;
-
         }
     })
 }
@@ -808,20 +751,17 @@ function bindIconButtonClick() {
 function bindAppClick() {
 
     bindIconButtonClick();
-
     $('.icon-button').bind('ajax:beforeSend', function (evt, xhr, settings) {
-        // alert("ajax:before");  
-        // console.log('ajax:before');
-        // console.log(evt);
-        // console.log(xhr);
-        // console.log(settings);
-        // console.log(this);
+// alert("ajax:before");  
+// console.log('ajax:before');
+// console.log(evt);
+// console.log(xhr);
+// console.log(settings);
+// console.log(this);
         $(this).find("#ajax-wait img").show();
-
     }).bind('ajax:success', function (evt, data, status, xhr) {
-        //  alert("ajax:success"); 
+//  alert("ajax:success"); 
         $(this).find("#ajax-wait img").hide();
-
         // console.log('ajax:success');
         // console.log(evt);
         // console.log(data);
@@ -832,11 +772,9 @@ function bindAppClick() {
         $(".grid_tabnav ul li").addClass("hidden");
         $("div#nav-grid-links").fadeOut();
         $("#nav-grid-overlay").fadeOut();
-
         //$("#grid-nav").fadeOut();
 
         require("jquery.urlparser.js");
-
         var windowType = $.url(this.href).param("window_type");
         var theController = $.url(this.href).segment(1);
         var theAction = $.url(this.href).segment(2) || "index"
@@ -844,7 +782,7 @@ function bindAppClick() {
 
 
         if (windowType == "iframe") {
-            //   alert("This is an iframe app.");
+//   alert("This is an iframe app.");
 
             var thisApp = createiFrameOverlay(theController, data, this.href);
             $("#cloud-switch").fadeIn();
@@ -855,28 +793,21 @@ function bindAppClick() {
 
             {
                 var thisApp = createAppOverlay(theController, data);
-
                 //   alert("This is an app");
             } else
             {
-                //   alert("this is a dialog!")
-                //var thisDialog = createEditDialog(data);
+//   alert("this is a dialog!")
+//var thisDialog = createEditDialog(data);
                 var thisDialog = createAppDialog(data, "app-dialog", {
                     completion: function completionCallback() {
                         $("div#nav-grid-links").fadeIn();
                         $("#nav-grid-overlay").fadeIn();
-
                         $($currentApplicationId).removeClass("blowup");
                         $(".grid_tabnav ul li").removeClass("hidden");
-
                     }}, "Submit,Save as Draft,Cancel");
-
                 thisDialog.dialog('open');
-
                 $(thisDialog).find(".best_in_place").best_in_place();
-
                 thisDialog.scrollTop(0);
-
                 //// console.log(status);
                 //// console.log(xhr);
 
@@ -884,7 +815,6 @@ function bindAppClick() {
 
                 requireCss(theController + "/" + (theAction == 'index' ? 'index_' : theAction) + ".css");
                 require(theController + "/" + (theAction == 'index' ? 'index_' : theAction) + ".js");
-
                 //// console.log(theController + "_" + theAction + "_callDocumentReady");
 
                 try
@@ -893,44 +823,42 @@ function bindAppClick() {
                         eval(theController + "_" + theAction + "_callDocumentReady()");
                     }
                 } catch (e) {
-                    // statements to handle any exceptions
-                    // console.log(e); // pass exception object to error handler
+// statements to handle any exceptions
+// console.log(e); // pass exception object to error handler
                 }
 
             }
         }
 
-        //// console.log(status);
-        //// console.log(xhr);
+//// console.log(status);
+//// console.log(xhr);
 
-        //// console.log(this.href);
+//// console.log(this.href);
 
-        //// console.log(theController + "_" + theAction + "_callDocumentReady");
+//// console.log(theController + "_" + theAction + "_callDocumentReady");
 
 
     }).bind('ajax:error', function (evt, xhr, status, error) {
-        // alert("ajax:failure"); 
-        // console.log('ajax:error');
-        // console.log(evt);
-        // console.log(xhr);
-        // console.log(status);
-        // console.log(error);
+// alert("ajax:failure"); 
+// console.log('ajax:error');
+// console.log(evt);
+// console.log(xhr);
+// console.log(status);
+// console.log(error);
 
         $(this).find("#ajax-wait img").hide();
         setUpPurrNotifier("Network Error", "A network error has occured, please click the icon again.")
 
     }).bind('ajax:complete', function (evt, xhr, status) {
-        //    alert("ajax:complete");  
-        // console.log('ajax:complete');
-        // console.log(evt);
-        // console.log(xhr);
+//    alert("ajax:complete");  
+// console.log('ajax:complete');
+// console.log(evt);
+// console.log(xhr);
         $('#edit-dialog').scrollTop(0);
-
         // // console.log(status);
 
 
     });
-
 }
 
 // **********************************
@@ -945,20 +873,15 @@ function createiFrameOverlay(appName, theContent, theURL) {
     var theOverlay = '<iframe class="iframe-application" id="' + appName + '-app-id" src="' + theURL + '"> </iframe>'
     $("#application-space").html("");
     $("#application-space").append($(theOverlay));
-
     $('#application-space').hide();
-
     $('#application-space').addClass("hidden");
     $('#application-space').show();
-
     $('#application-space').removeClass("hidden");
-
 // $('#'+appName+'-app-id').html(theContent);
 
 
 }
 ;
-
 // **********************************
 //
 //
@@ -974,11 +897,8 @@ function createAppOverlay(appName, theContent) {
     if ($('#' + appName + '-app-id').length == 0)
     {
         $("#page").append($(theOverlay));
-
     }
     $('#' + appName + '-app-id').html(theContent);
-
-
 }
 ;
 // ************************************    
@@ -1017,19 +937,15 @@ function createEditDialog(theContent) {
 
 
     });
-
     $('#edit-dialog').html(theContent);
-
     theHeight = $('#dialog-height').text() || "500";
     theWidth = $('#dialog-width').text() || "500";
     theTitle = $('#dialog-name').text() || "Edit";
-
     theEditDialog.dialog({
         title: theTitle,
         width: theWidth,
         height: theHeight
     });
-
     return(theEditDialog)
 }
 
@@ -1043,10 +959,8 @@ function bindLoginForgotLink() {
     $('.forgot-link').click(function (e) {
 
         var formContainer = $('div.login-form');
-
         // Flipping the forms
         formContainer.toggleClass('flipped');
-
         // If there is no CSS3 3D support, simply
         // hide the login form (exposing the recover one)
         if (!$.support.css3d) {
@@ -1060,10 +974,8 @@ function bindLoginRegisterLink() {
     $('.register-link').click(function (e) {
 
         var formContainer = $('div.login-form');
-
         // Flipping the forms
         formContainer.toggleClass('flipped-register');
-
         // If there is no CSS3 3D support, simply
         // hide the login form (exposing the recover one)
         if (!$.support.css3d) {
@@ -1075,18 +987,18 @@ function bindLoginRegisterLink() {
 
 function bindRegisterClick() {
     $('#registration-form').bind('ajax:beforeSend', function (evt, xhr, settings) {
-        // alert("ajax:before");  
-        // console.log('ajax:before');
-        // console.log(evt);
-        // console.log(xhr);
-        // console.log(settings);
+// alert("ajax:before");  
+// console.log('ajax:before');
+// console.log(evt);
+// console.log(xhr);
+// console.log(settings);
 
 
     }).bind('ajax:success', function (evt, data, status, xhr) {
-        //  alert("ajax:success"); 
-        // console.log('ajax:success');
-        // console.log(evt);
-        // console.log(data);
+//  alert("ajax:success"); 
+// console.log('ajax:success');
+// console.log(evt);
+// console.log(data);
         setUpPurrNotifier("Notice", data.message);
         if (data.sucessfull) {
             login_sucessfull();
@@ -1095,27 +1007,26 @@ function bindRegisterClick() {
             $('div.login-form').toggleClass('flipped-register');
             $("input[name='name']").val("");
         }
-        // console.log(status);
-        // console.log(xhr);
+// console.log(status);
+// console.log(xhr);
 
     }).bind('ajax:error', function (evt, xhr, status, error) {
-        // alert("ajax:failure"); 
-        // console.log('ajax:error');
-        // console.log(evt);
-        // console.log(xhr);
-        // console.log(status);
-        // console.log(error);
+// alert("ajax:failure"); 
+// console.log('ajax:error');
+// console.log(evt);
+// console.log(xhr);
+// console.log(status);
+// console.log(error);
 
     }).bind('ajax:complete', function (evt, xhr, status) {
-        //    alert("ajax:complete");  
-        // console.log('ajax:complete');
-        // console.log(evt);
-        // console.log(xhr);
-        // // console.log(status);
+//    alert("ajax:complete");  
+// console.log('ajax:complete');
+// console.log(evt);
+// console.log(xhr);
+// // console.log(status);
 
 
     });
-
 }
 
 function bindLoginButton() {
@@ -1123,13 +1034,11 @@ function bindLoginButton() {
     $('div#sign-in-button').click(function (e) {
         loadLoginBox();
     });
-
 }
 
 function requestedLoginBox() {
     var login_requested = $("div#login").text();
     var url_requested = $("div#url").text();
-
     if (login_requested == "true") {
         loadLoginBox(url_requested);
     }
@@ -1139,7 +1048,6 @@ function requestedLoginBox() {
 function call_document_ready(theAction) {
 
     var the_function = theAction + "_callDocumentReady()";
-
     try
     {
         eval(the_function);
@@ -1172,13 +1080,11 @@ function show_page(page_id) {
             enableSliderEdit();
         }
     });
-
 }
 
 function call_login_callbacks() {
 
     var data_update_url = $("div#post-login-callback").attr('data-post-login-callback');
-
     try {
         if (typeof eval(data_update_url) == "function") {
             eval(data_update_url + "()")
@@ -1205,7 +1111,6 @@ function update_content() {
     var data_update_url = $("div#data-reload").attr('data-page-params');
     var data_content_update_call = $("div#data-reload").attr('data-page-update');
     var data_additional = $("div#data-reload").attr('data-additional');
-
     if (typeof data_update_url === 'undefined')
     {
         if ($("div#nav-grid-links").css('display') != "none") {
@@ -1220,7 +1125,6 @@ function update_content() {
         success: function (data)
         {
             $("div#content").html(data);
-
             try {
                 if (typeof eval(data_additional) == "function") {
                     eval(data_additional + "()")
@@ -1258,7 +1162,6 @@ function update_content() {
 
         }
     });
-
 }
 
 
@@ -1273,13 +1176,11 @@ function toggle_reset_box(display_now) {
             $("#login-backdrop").fadeIn(500);
             $("form#reset-form").css("top", "0px");
             $("input#password").focus();
-
         } else
         {
             $("form#reset-form").css("top", "-350px");
             $(".reset-enclosure").css("opacity", "0");
             $(".reset-enclosure").css("display", "none");
-
             //$(".login-enclosure").fadeOut(500);
             //$("form#login-form").css("top","-350px");
             // $(".login-enclosure").slideUp(500);
@@ -1293,7 +1194,6 @@ function toggle_reset_box(display_now) {
         {
             $("#login-backdrop").hide();
             $(".reset-enclosure").fadeOut(500);
-
         }
     }
 }
@@ -1301,19 +1201,18 @@ function toggle_reset_box(display_now) {
 
 function bindSubmitClick() {
     $('#reset-form').bind('ajax:beforeSend', function (evt, xhr, settings) {
-        // alert("ajax:before");  
-        // console.log('ajax:before');
-        // console.log(evt);
-        // console.log(xhr);
-        // console.log(settings);
+// alert("ajax:before");  
+// console.log('ajax:before');
+// console.log(evt);
+// console.log(xhr);
+// console.log(settings);
 
 
     }).bind('ajax:success', function (evt, data, status, xhr) {
-        //  alert("ajax:success"); 
+//  alert("ajax:success"); 
         console.log('ajax:success');
         console.log(evt);
         console.log(data);
-
         switch (data.sucessfull) {
             case 1: // true, and successfull.
             {
@@ -1337,32 +1236,31 @@ function bindSubmitClick() {
             }
             default:
             {
-                // do nothing
+// do nothing
             }
         }
 
-        // console.log(status);
-        // console.log(xhr);
+// console.log(status);
+// console.log(xhr);
 
     }
     ).bind('ajax:error', function (evt, xhr, status, error) {
-        // alert("ajax:failure"); 
-        // console.log('ajax:error');
-        // console.log(evt);
-        // console.log(xhr);
-        // console.log(status);
-        // console.log(error);
+// alert("ajax:failure"); 
+// console.log('ajax:error');
+// console.log(evt);
+// console.log(xhr);
+// console.log(status);
+// console.log(error);
 
     }).bind('ajax:complete', function (evt, xhr, status) {
-        //    alert("ajax:complete");  
-        // console.log('ajax:complete');
-        // console.log(evt);
-        // console.log(xhr);
-        // // console.log(status);
+//    alert("ajax:complete");  
+// console.log('ajax:complete');
+// console.log(evt);
+// console.log(xhr);
+// // console.log(status);
 
 
     });
-
 }
 
 function loadResetBox(reset_code) {
@@ -1380,16 +1278,13 @@ function loadResetBox(reset_code) {
             if (jqXHR.status == 203)
             {
                 setUpPurrNotifier("Notice", data);
-
                 setTimeout(function () {
                     location = "/";
                     ;
                 }, 5000);
-
             } else
             {
                 resetContainer = "<div id='reset-enclosure-container'></div>";
-
                 if ($("#reset-enclosure-container").length == 0)
                 {
                     $("body").append($(resetContainer));
@@ -1400,7 +1295,6 @@ function loadResetBox(reset_code) {
                 $(".reset-enclosure").css("opacity", 1);
                 $("form#reset-form").css("top", "0px");
                 $("input#password").focus();
-
                 toggle_reset_box(true);
                 bindSubmitClick();
                 bindResetCancelClick();
@@ -1410,9 +1304,6 @@ function loadResetBox(reset_code) {
 
         }
     });
-
-
-
 }
 
 
@@ -1427,7 +1318,6 @@ function bindResetCancelClick() {
                 $("#reset-enclosure-container").html("");
                 $("#reset-enclosure-container").remove();
             });
-
             //$(".login-enclosure").fadeOut(500);
             //$("form#login-form").css("top","-350px");
             // $(".login-enclosure").slideUp(500);
@@ -1440,7 +1330,6 @@ function bindResetCancelClick() {
             });
         }
         location = "/";
-
     });
 }
 function process_admin_actions() {
@@ -1454,7 +1343,7 @@ function process_admin_actions() {
         switch (action) {
             case "reset":
             {
-                // hide login box if visible
+// hide login box if visible
 
                 toggle_login_box();
                 loadResetBox(param);
@@ -1463,7 +1352,7 @@ function process_admin_actions() {
             }
             default:
             {
-                // do nothing
+// do nothing
             }
         }
 
@@ -1478,7 +1367,7 @@ function bindDatatableSearchField(search_field_name, model_name) {
     $(search_field_name).attr("title", "Use ':' to search specific fields. Seperate search terms by ','..  Use a '!' to search for empty fields. Use a '%' as first character in search to find string anywhere in field (vs. start of field).")
 
     $(search_field_name).autocomplete({
-        //     source: "/contacts/contact_search.json",
+//     source: "/contacts/contact_search.json",
         source: function (request, response) {
             var field_value = request.term;
             if ((field_value == ":") | (field_value.slice(-2) == ",:") | (field_value.slice(-3) == ", :")) {
@@ -1511,11 +1400,9 @@ function bindDatatableSearchField(search_field_name, model_name) {
 
             var current_value = $(this).val();
             var field_value = "";
-
             if (current_value == ":") // first search term.
             {
                 field_value = ui.item.value + ":";
-
             } else
             {
                 field_value = (current_value.slice(-2) == ",:" ? current_value.slice(0, -2) : (current_value.slice(-3) == ", :" ? current_value.slice(0, -3) : current_value));
@@ -1528,5 +1415,4 @@ function bindDatatableSearchField(search_field_name, model_name) {
         }
     }
     );
-
 }

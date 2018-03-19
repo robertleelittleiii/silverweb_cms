@@ -857,3 +857,50 @@ function findMyEvents(me) {
         findMyEvents($(me).children()[i])
     }
 }
+
+
+
+function renderPartial(partial_name, element_to_update, completion_callback)
+{
+    $.ajax({
+        url: "/site/render_partial",
+        dataType: "html",
+        type: "GET",
+        cache: false,
+        data: {partial_name: partial_name},
+        success: function (data)
+        {
+            try
+            {
+                dataJSON = jQuery.parseJSON(data);
+                session_invalid = true
+            } catch (err)
+            {
+                session_invalid = false;
+            }
+
+
+            if (session_invalid || data === undefined || data === null || data === "")
+            {
+                window.location = "/?nocache=" + (new Date()).getTime();
+                //display warning
+            } else
+            {
+                if (element_to_update != "") {
+                    $(element_to_update).html(data);
+
+                }
+
+                try {
+                    if ((typeof eval("completion_callback") == 'function')) {
+                        eval("completion_callback(data)");
+                    }
+                } catch (e) {
+                    console.log(e); // pass exception object to error handler
+                }
+
+            }
+        }
+    });
+
+}

@@ -112,9 +112,9 @@ class SiteController < ApplicationController
   
   def check_session
         
-     respond_to do |format|
-        format.json  {render :json=>{:exists=>(!session.blank? rescue false)}}
-      end 
+    respond_to do |format|
+      format.json  {render :json=>{:exists=>(!session.blank? rescue false)}}
+    end 
   end
   #
   #
@@ -167,7 +167,13 @@ class SiteController < ApplicationController
   
   def render_partial
     @user =  User.find_by_id(session[:user_id])
-    render :partial => params[:partial_name], :format=>"html"
+    if @user.blank? then
+      render :json => {"error"=>"session_invalid"}, :format=>"json", status => :unprocessable_entity
+
+    else
+      render :partial => params[:partial_name], :format=>"html"
+    end
+    
   end
   #
   #
@@ -192,50 +198,50 @@ class SiteController < ApplicationController
  
     @user =  User.find_by_id(session[:user_id])
 
- #   if (@page.secure_page and @user.blank?)
-      #  ApplicationController.instance_method(:authenticate).bind(self).call
- #     puts("*********** authenticate ************* #{@user.inspect}")
-     # authorized =  ApplicationController.instance_method(:authorize).bind(self).call
-     # authenticated =  ApplicationController.instance_method(:authenticate).bind(self).call
-     # puts("authorized: #{authorized} authenticated: #{authenticated}")
- #   else    
+    #   if (@page.secure_page and @user.blank?)
+    #  ApplicationController.instance_method(:authenticate).bind(self).call
+    #     puts("*********** authenticate ************* #{@user.inspect}")
+    # authorized =  ApplicationController.instance_method(:authorize).bind(self).call
+    # authenticated =  ApplicationController.instance_method(:authenticate).bind(self).call
+    # puts("authorized: #{authorized} authenticated: #{authenticated}")
+    #   else    
     
-      @page_template = (not @page.template_name.blank?) ? "show_page-" + @page.template_name : "show_page" rescue "show_page" 
-      @java_script_custom = @page.template_name ? @page_template + ".js" : "" rescue ""
-      @style_sheet_custom = @page.template_name ? @page_template + ".css" : "" rescue ""
+    @page_template = (not @page.template_name.blank?) ? "show_page-" + @page.template_name : "show_page" rescue "show_page" 
+    @java_script_custom = @page.template_name ? @page_template + ".js" : "" rescue ""
+    @style_sheet_custom = @page.template_name ? @page_template + ".css" : "" rescue ""
 
-      @page_name = @page.title rescue "'Home' not found!!"
+    @page_name = @page.title rescue "'Home' not found!!"
     
-      @menu = @page.menu rescue nil
+    @menu = @page.menu rescue nil
     
-      @page.revert_to(params[:version].to_i) if params[:version]
+    @page.revert_to(params[:version].to_i) if params[:version]
 
     
-      #puts("@page:  Status #{@page.inspect}") 
-      #puts("@alert:  Status #{@alert.inspect}") 
+    #puts("@page:  Status #{@page.inspect}") 
+    #puts("@alert:  Status #{@alert.inspect}") 
     
-      # if params[:top_menu] 
-      session[:parent_menu_id] = @menu.id rescue 0
-      #   end
+    # if params[:top_menu] 
+    session[:parent_menu_id] = @menu.id rescue 0
+    #   end
         
-      puts("parent menu id:", session[:parent_menu_id])
-      if params[:dialog]== true then
+    puts("parent menu id:", session[:parent_menu_id])
+    if params[:dialog]== true then
       
-      end
+    end
     
-      user_roles = @user.roles.map {|i| i.name } rescue  []
-      puts("************user roles: #{user_roles.inspect}, page_roles: #{@page.security_group_list.inspect}, VAlid: #{(user_roles & (@page.security_group_list)).blank?}")
+    user_roles = @user.roles.map {|i| i.name } rescue  []
+    puts("************user roles: #{user_roles.inspect}, page_roles: #{@page.security_group_list.inspect}, VAlid: #{(user_roles & (@page.security_group_list)).blank?}")
    
-      if @page.secure_page and ((user_roles) & (@page.security_group_list)).blank? then
-        redirect_to :controller=>:site, :alert=>"You do not have permission to view that page."
-      else
-        respond_to do |format|
-          format.html { render :action=>@page_template} # show.html.erb
-          format.xml  { render :xml => @page }
-          format.any  {render :json=>"An error has occured."}
-        end
+    if @page.secure_page and ((user_roles) & (@page.security_group_list)).blank? then
+      redirect_to :controller=>:site, :alert=>"You do not have permission to view that page."
+    else
+      respond_to do |format|
+        format.html { render :action=>@page_template} # show.html.erb
+        format.xml  { render :xml => @page }
+        format.any  {render :json=>"An error has occured."}
       end
- #   end
+    end
+    #   end
   end
 
   
@@ -290,49 +296,49 @@ class SiteController < ApplicationController
  
     @user =  User.find_by_id(session[:user_id])
 
- #   if (@page.secure_page and @user.blank?)
-#      puts("*********** authenticate ************* #{@user.inspect}")
+    #   if (@page.secure_page and @user.blank?)
+    #      puts("*********** authenticate ************* #{@user.inspect}")
     #  authorized =  ApplicationController.instance_method(:authorize).bind(self).call
-      # authenticated =  ApplicationController.instance_method(:authenticate).bind(self).call
-      # puts("authorized: #{authorized} authenticated: #{}")
-#    else    
+    # authenticated =  ApplicationController.instance_method(:authenticate).bind(self).call
+    # puts("authorized: #{authorized} authenticated: #{}")
+    #    else    
     
-      @page_template = (not @page.template_name.blank?) ? "show_page-" + @page.template_name : "show_page" rescue "show_page" 
-      @java_script_custom = @page.template_name ? @page_template + ".js" : "" rescue ""
-      @style_sheet_custom = @page.template_name ? @page_template + ".css" : "" rescue ""
+    @page_template = (not @page.template_name.blank?) ? "show_page-" + @page.template_name : "show_page" rescue "show_page" 
+    @java_script_custom = @page.template_name ? @page_template + ".js" : "" rescue ""
+    @style_sheet_custom = @page.template_name ? @page_template + ".css" : "" rescue ""
 
-      @page_name = @page.title rescue "'Home' not found!!"
+    @page_name = @page.title rescue "'Home' not found!!"
     
-      @menu = @page.menu rescue nil
+    @menu = @page.menu rescue nil
     
-      @page.revert_to(params[:version].to_i) if params[:version]
+    @page.revert_to(params[:version].to_i) if params[:version]
 
     
-      #puts("@page:  Status #{@page.inspect}") 
-      #puts("@alert:  Status #{@alert.inspect}") 
+    #puts("@page:  Status #{@page.inspect}") 
+    #puts("@alert:  Status #{@alert.inspect}") 
     
-      # if params[:top_menu] 
-      session[:parent_menu_id] = @menu.id rescue 0
-      #   end
+    # if params[:top_menu] 
+    session[:parent_menu_id] = @menu.id rescue 0
+    #   end
         
-      puts("parent menu id:", session[:parent_menu_id])
-      if params[:dialog]== true then
+    puts("parent menu id:", session[:parent_menu_id])
+    if params[:dialog]== true then
       
-      end
+    end
     
-      user_roles = @user.roles.map {|i| i.name } rescue  []
-      puts("************user roles: #{user_roles.inspect}, page_roles: #{@page.security_group_list.inspect}, VAlid: #{(user_roles & (@page.security_group_list)).blank?}")
+    user_roles = @user.roles.map {|i| i.name } rescue  []
+    puts("************user roles: #{user_roles.inspect}, page_roles: #{@page.security_group_list.inspect}, VAlid: #{(user_roles & (@page.security_group_list)).blank?}")
    
-      if @page.secure_page and ((user_roles) & (@page.security_group_list)).blank? then
-        redirect_to :controller=>:site, :alert=>"You do not have permission to view that page, please login.", :login=>true, :url=>request.original_url
-      else
-        respond_to do |format|
-          format.html { render :action=>@page_template} # show.html.erb
-          format.xml  { render :xml => @page }
-          format.any  { render :json=>"An error has occured."}
-        end
+    if @page.secure_page and ((user_roles) & (@page.security_group_list)).blank? then
+      redirect_to :controller=>:site, :alert=>"You do not have permission to view that page, please login.", :login=>true, :url=>request.original_url
+    else
+      respond_to do |format|
+        format.html { render :action=>@page_template} # show.html.erb
+        format.xml  { render :xml => @page }
+        format.any  { render :json=>"An error has occured."}
       end
- #   end
+    end
+    #   end
   end
 
   
