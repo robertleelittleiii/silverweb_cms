@@ -420,7 +420,7 @@ function userLoggedIn() {
         dataType: "json",
         success: function (data)
         {
-                page_login_status = $("div#login-status").text();
+            var page_login_status = $("div#login-status").text();
             if (data == true) {
                 if (page_login_status == "true") {
                     // do nothing
@@ -684,6 +684,7 @@ function updateAppDiv() {
                         $("body").prepend($(gridContainer));
                         var gridOverlay = "<div style='display:none;' id='nav-grid-overlay'></div>";
                         $("body").prepend($(gridOverlay));
+                        $("html, body").animate({scrollTop: 0}, "slow");
 
                     }
 
@@ -704,7 +705,6 @@ function updateAppDiv() {
                         $("#grid-nav").css("top", "0px");
 
                     }
-                    $("html, body").animate({scrollTop: 0}, "slow");
 
                     bindAppClick();
                     bindCloseGrid();
