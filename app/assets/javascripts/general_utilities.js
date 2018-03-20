@@ -858,6 +858,24 @@ function findMyEvents(me) {
     }
 }
 
+function updateCsrfToken() {
+    $.ajax({
+        url: "/site/get_csrf_meta_tags",
+        dataType: "json",
+        type: "GET",
+        cache: false,
+        success: function (data)
+        {
+            var old_token = $('[name="csrf-token"]').attr("content")
+            console.log("token-updated")
+            console.log("from: " + old_token)
+            console.log("  to: " + data.authenticity_token)
+
+            $('[name="csrf-token"]').attr("content", data.authenticity_token)
+
+        }
+    })
+}
 
 
 function renderPartial(partial_name, element_to_update, completion_callback)

@@ -175,6 +175,12 @@ class SiteController < ApplicationController
     end
     
   end
+  
+  def get_csrf_meta_tags
+    
+    render json: {:request_token => request_forgery_protection_token, :authenticity_token => form_authenticity_token } 
+  end
+  
   #
   #
   #

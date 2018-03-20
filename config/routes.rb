@@ -32,6 +32,7 @@ Rails.application.routes.draw do
       get "reset"
       post "set_time_zone"
       post "check_session"
+      get "get_csrf_meta_tags"
     end 
   end
   

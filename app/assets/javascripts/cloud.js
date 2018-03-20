@@ -422,6 +422,7 @@ function userLoggedIn() {
         {
             var page_login_status = $("div#login-status").text();
             if (data == true) {
+                updateCsrfToken();
                 if (page_login_status == "true") {
                     // do nothing
 
@@ -430,12 +431,12 @@ function userLoggedIn() {
                     login_sucessfull();
                 }
             } else
-            {
+            {   // we were logged in but the server loged us off either by the cron job or by the user loging out on another window so refresh the page.
                 if (page_login_status == "true") {
                     window.location = "/?nocache=" + (new Date()).getTime();
                 } else
-                {
-                    // do nothing.
+                { // we are at the login screen, update the CSR to make sure when we login, the CSR is valid (it may have expired)
+                 updateCsrfToken();
                 }
                 // alert("refresh to site");
             }
@@ -454,9 +455,7 @@ function check_login_status() {
     if (typeof interval != "number") {
         interval = setInterval(function () {
             if (allow_login_check) {
-
                 userLoggedIn();
-
             }
         }, check_login_status_time);
     }
@@ -522,7 +521,7 @@ function login_sucessfull(url_to_goto) {
 
 
 
-
+    updateCsrfToken();
     updateFooterDiv();
     updateSecurityDiv();
     update_content();
