@@ -249,7 +249,7 @@ function reload_best_in_place_item(the_item, completion_callback) {
     console.log("---------   start reload_best_in_place_item  ----------------");
     console.log(the_item);
 
-    the_id = the_item.attr("id")
+    var the_id = the_item.attr("id")
     var object_class_id = $(the_item).attr("data-object");
     var object_format = $(the_item).attr("data-format");
 
