@@ -13,7 +13,7 @@ module FlexsliderHelper
 #      returnval =  returnval + "<div id='slider-effect'>#{effect}</div> \n"
       returnval =  returnval + "</div> \n"
       
-      returnval = returnval + "<div class='flexslider #{slider_class}'> \n"
+      returnval = returnval + "<div class='flexslider flex-page-slider #{slider_class}'> \n"
       returnval = returnval + "<ul class='slides'> \n"
 
 #     maybe not needed.
