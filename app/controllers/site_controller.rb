@@ -47,7 +47,7 @@ class SiteController < ApplicationController
     user = User.authenticate(params[:name], params[:password])
     puts("User: #{user.inspect}") 
     if user then
-      reset_session
+      # reset_session
 
       session[:active]=true
       session[:last_seen]=Time.now
