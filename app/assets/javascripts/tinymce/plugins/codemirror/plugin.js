@@ -81,7 +81,7 @@ tinymce.PluginManager.add('codemirror', function (editor) {
         // make sure there aren't any extra skin.min.css files loaded on page
         // cause by a bug in the loader for tinymce.
 
-        var skin_links = $('link[href$="http://localhost:3000/assets/tinymce/skins/lightgray/skin.min.css"]')
+        var skin_links = $('link[href*="tinymce/skins/lightgray/skin.min.css"]')
         var number_of_skins_loaded = skin_links.size();
         if (number_of_skins_loaded > 1) { // remove any extras since they mess up the codemirror tool.
             for (i = 1; i < number_of_skins_loaded; i++) {
