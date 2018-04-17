@@ -5,16 +5,16 @@
 
 var global_slider_editor_hold = "";
 var sliders_edit_callDocumentReady_called = false;
+var tinyMCE_editor_slider = "";
 
-$(document).ready(function() {
+$(document).ready(function () {
     if (!sliders_edit_callDocumentReady_called)
     {
         sliders_edit_callDocumentReady_called = true;
         if ($("#as_window").text() == "true")
         {
             //  alert("it is a window");
-        }
-        else
+        } else
         {
             sliders_edit_callDocumentReady();
         }
@@ -27,14 +27,15 @@ function sliders_edit_callDocumentReady() {
     ui_ajax_select();
     $("a.button-link").button();
     tinyMCE.init(tinymce_config);
+    tinyMCE_editor_slider = tinyMCE.activeEditor;
 
     // alert("im here");
     // setTimeout(function(){bind_file_paste_to_upload_form();},2000); 
-    
+    setFocusForTinyMCE();
 }
 
 function tinyMcePostInit(inst) {
-sliders_bind_file_paste_to_upload_form();
+    sliders_bind_file_paste_to_upload_form();
 }
 
 function mysave() {
@@ -51,7 +52,7 @@ function sliders_bind_file_paste_to_upload_form()
 {
     $("form#picture-paste-slider").fileupload({
         dataType: "json",
-        pasteZone:  $("iframe#slider_slider_content_ifr").contents().find("body"),
+        pasteZone: $("iframe#slider_slider_content_ifr").contents().find("body"),
         add: function (e, data) {
             file = data.files[0];
             data.context = $(tmpl("template-upload", file));
@@ -69,18 +70,17 @@ function sliders_bind_file_paste_to_upload_form()
 //
 //                       console.log(typeof (jqXHR.responseText));
 //                        
-                        
+
 // specifically for IE8. 
                         if (typeof (jqXHR.responseText) == "undefined") {
-                           top.tinymce.activeEditor.undoManager.undo();
-                           setUpPurrNotifier("Notice", jqXHR.responseJSON["attachment"][0]);
+                            top.tinymce.activeEditor.undoManager.undo();
+                            setUpPurrNotifier("Notice", jqXHR.responseJSON["attachment"][0]);
                             data.context.remove();
-                        }
-                        else
+                        } else
                         {
                             top.tinymce.activeEditor.undoManager.undo();
-                          //  console.log(result.image.url)
-                            image_tag = "<img src='"+ result.image.url + "'/>"
+                            //  console.log(result.image.url)
+                            image_tag = "<img src='" + result.image.url + "'/>"
                             top.tinymce.activeEditor.insertContent(image_tag);
                             console.log("success");
                             //  render_pictures();
@@ -96,8 +96,7 @@ function sliders_bind_file_paste_to_upload_form()
                         if (jqXHR.status == "200")
                         {
                             //render_pictures();
-                        }
-                        else
+                        } else
                         {
                             //var obj = jQuery.parseJSON(jqXHR.responseText);
                             // console.log(typeof obj["attachment"][0])
@@ -125,7 +124,7 @@ function sliders_bind_file_paste_to_upload_form()
         progress: function (e, data) {
             if (data.context)
             {
-               // progress = parseInt(data.loaded / data.total * 100, 10);
+                // progress = parseInt(data.loaded / data.total * 100, 10);
                 //data.context.find('.bar').css('width', progress + '%');
             }
         },
@@ -137,7 +136,7 @@ function sliders_bind_file_paste_to_upload_form()
     }).bind('fileuploaddone', function (e, data) {
         console.log(e);
         console.log(data);
-       // data.context.remove();
+        // data.context.remove();
         //data.context.text('');
     }).bind('fileuploadpaste', function (e, data) {
         /* ... */
@@ -148,17 +147,21 @@ function sliders_bind_file_paste_to_upload_form()
 
         // assets/interface/ajax-loader.gif
         console.log("paste event.")
-        
-        
+
+
     })
 }
 function initTinyMCESlider() {
-      tinyMCE.init(tinymce_config)
-  }
-  
-  $(document).off('focusin').on('focusin', function (e) {
-    if ($(event.target).closest(".mce-window").length) {
-        e.stopImmediatePropagation();
-        console.log("worked!");
-    }
-});
+    tinyMCE.init(tinymce_config)
+}
+
+function setFocusForTinyMCE() {
+
+    $(document).off('focusin').on('focusin', function (e) {
+        if ($(event.target).closest(".mce-window").length) {
+            e.stopImmediatePropagation();
+            console.log("worked!");
+        }
+    });
+
+}

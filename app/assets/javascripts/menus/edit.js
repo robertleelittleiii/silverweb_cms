@@ -31,6 +31,7 @@ function menus_edit_callDocumentReady() {
     requireCss("image_libraries/image_list.css");
     require("jquery.unveil.js");
     $("img").unveil();
+    setFocusForTinyMCE();
 }
 ;
 
@@ -251,9 +252,15 @@ function bindDeleteImage() {
     });
 
 }
+
+
+function setFocusForTinyMCE() {
+    
 $(document).off('focusin').on('focusin', function (e) {
     if ($(event.target).closest(".mce-window").length) {
         e.stopImmediatePropagation();
         console.log("worked!");
     }
 });
+
+}

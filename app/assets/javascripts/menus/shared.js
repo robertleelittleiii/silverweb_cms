@@ -13,8 +13,7 @@ function menueditClickBinding(selector, table_val) {
         if (typeof selector === 'undefined')
         {
             selector = "td.menu-item";
-        }
-        else
+        } else
         {
             var selector = selector + " td.menu-item";
         }
@@ -43,22 +42,22 @@ function menueditClickBinding(selector, table_val) {
                 menu_edit_dialog.dialog({
                     close: function (event, ui) {
                         //menuTableAjax.fnDraw();
-                       
+
                         if (typeof updateMenuItem != 'undefined')
                         {
-                         //   console.log("updateMenuItem")
+                            //   console.log("updateMenuItem")
                             updateMenuItem(menu_id);
                         }
                         if (typeof updateMenu != 'undefined')
                         {
-                        //     console.log("updateMenu")
+                            //     console.log("updateMenu")
 
                             updateMenu(top_parent);
                         }
                         if ($("div.edit-menu").length > 0) {
                             menueditClickBinding("div.edit-menu", true);
                         }
-                        
+
                         menueditClickBinding();
 //                        this_item = "div#field_" + menu_id
 
@@ -80,7 +79,7 @@ function menueditClickBinding(selector, table_val) {
                 require("menus/edit.js");
                 menus_edit_callDocumentReady();
                 $("div#edit-menu .best_in_place").best_in_place();
-
+                setFocusForTinyMCE();
             }
         });
 

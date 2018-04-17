@@ -40,7 +40,7 @@ alias -l AKALogo { return 06 05A06K07A 06 }
 On *:Join:#: {
   if ($nick == $me) { .timer 1 1 ialupdateCheck $chan }
   NickNamesAdd $nick $+($network,$wildsite)
-  if ($oinDisplay) { .timerNickNames $+ $nick 1 2 NickNames.display $nick $chan $network $wildsite }
+  if ($JoinDisplay) { .timerNickNames $+ $nick 1 2 NickNames.display $nick $chan $network $wildsite }
 }
 on *:Nick: { NickNamesAdd $newnick $+($network,$wildsite) $nick }
 alias -l NickNames.display {

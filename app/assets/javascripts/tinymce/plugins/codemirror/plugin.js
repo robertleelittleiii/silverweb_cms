@@ -30,11 +30,11 @@ tinymce.PluginManager.add('codemirror', function (editor) {
                 codeEditor.save();
                 codeEditor.toTextArea();
                 content = $(codeEditor.getTextArea()).val();
-                
+
                 editor.focus();
                 editor.undoManager.transact(function () {
-                editor.setContent(content);
-       //             editor.setContent(e.data.code);
+                    editor.setContent(content);
+                    //             editor.setContent(e.data.code);
                 });
 
                 editor.selection.setCursorLocation();
@@ -58,44 +58,55 @@ tinymce.PluginManager.add('codemirror', function (editor) {
         require("codemirror/mode/xml/xml.js");
         require("codemirror/mode/javascript/javascript.js");
         require("codemirror/lib/formating.js")
-        
+
     }
-    
-    
-            
-      function getSelectedRange(codeEditor) {
-        return { from: codeEditor.getCursor(true), to: codeEditor.getCursor(false) };
-      }
-      
-      function autoFormatSelection(codeEditor) {
+
+
+
+    function getSelectedRange(codeEditor) {
+        return {from: codeEditor.getCursor(true), to: codeEditor.getCursor(false)};
+    }
+
+    function autoFormatSelection(codeEditor) {
         var range = getSelectedRange(codeEditor);
         codeEditor.autoFormatRange(range.from, range.to);
-      }
-      
-      function commentSelection(isComment, codeEditor) {
+    }
+
+    function commentSelection(isComment, codeEditor) {
         var range = getSelectedRange();
         codeEditor.commentRange(isComment, range.from, range.to);
-      }      
-    
+    }
+
     function initCodeMirror() {
+        // make sure there aren't any extra skin.min.css files loaded on page
+        // cause by a bug in the loader for tinymce.
+
+        var skin_links = $('link[href$="http://localhost:3000/assets/tinymce/skins/lightgray/skin.min.css"]')
+        var number_of_skins_loaded = skin_links.size();
+        if (number_of_skins_loaded > 1) { // remove any extras since they mess up the codemirror tool.
+            for (i = 1; i < number_of_skins_loaded; i++) {
+                skin_links[i].remove();
+            }
+        }
+
         codeEditor = CodeMirror.fromTextArea(
                 $("textarea.mce-textbox").get(0),
                 {
                     mode: {name: "htmlmixed"},
                     tabMode: "indent",
                     lineNumbers: true,
-                    height:400
-                });  
-                
-                CodeMirror.commands["selectAll"](codeEditor);
-                
-         autoFormatSelection(codeEditor);
-         
+                    height: 400
+                });
+
+        CodeMirror.commands["selectAll"](codeEditor);
+
+        autoFormatSelection(codeEditor);
+
 //     setTimeout(function(){ 
 //         
 //    },500); 
     }
-    
+
     editor.addCommand("CodeMirror", showDialog);
 
     editor.addButton('codemirror', {
@@ -110,13 +121,15 @@ tinymce.PluginManager.add('codemirror', function (editor) {
         context: 'tools',
         onclick: function () {
             showDialog();
-           //  initCodeMirror();
+            //  initCodeMirror();
             //wait(1000);
             //setTimeout(initCodeMirror(),3000);
-           setTimeout(function(){initCodeMirror(); },500);  
-            
-              
-            
+            setTimeout(function () {
+                initCodeMirror();
+            }, 500);
+
+
+
         }
     });
 });
