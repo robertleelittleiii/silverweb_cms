@@ -325,9 +325,9 @@ function createAppDialog(theContent, dialog_id, call_backs, buttons_to_show_in) 
 
 
     buttons_to_show = buttons_to_show_in || "all"
- //   console.log(buttons_to_show);
- //   console.log(buttons_to_show_in);
- //   console.log(buttons_to_show.indexOf("Cancel"));
+    //   console.log(buttons_to_show);
+    //   console.log(buttons_to_show_in);
+    //   console.log(buttons_to_show.indexOf("Cancel"));
 
     if ($("#" + dialog_id).length == 0)
     {
@@ -413,11 +413,11 @@ function ui_ajax_select(success_callback) {
             }
         }).fail(function (jqXHR, textStatus, errorThrown) {
 
-     //       console.log(jqXHR);
-      //      console.log(textStatus);
-     //       console.log(errorThrown);
+            //       console.log(jqXHR);
+            //      console.log(textStatus);
+            //       console.log(errorThrown);
 
-     //       console.log(jqXHR.responseJSON.error)
+            //       console.log(jqXHR.responseJSON.error)
 
             setUpNotifier("error.png", "Warning", jqXHR.responseJSON.error[0]);
 
@@ -566,12 +566,12 @@ function createButtonList(call_backs, buttons_to_build)
 
 function createAppDialogUtil(theContent, dialog_id, completion_callback, completion_button, beforeclose_callback) {
 
-  //  console.log(typeof (completion_button))
+    //  console.log(typeof (completion_button))
 
     var completion_button = (typeof (completion_button) == "undefined") ? "Close" : completion_button
 
-  //  console.log(typeof (completion_button));
-  //  console.log(completion_button);
+    //  console.log(typeof (completion_button));
+    //  console.log(completion_button);
 
 
     if ($("#" + dialog_id).length == 0)
@@ -674,12 +674,12 @@ function createAppDialogUtil(theContent, dialog_id, completion_callback, complet
 
 function createAppDialogCancel(theContent, dialog_id, completion_callback, completion_button) {
 
-   // console.log(typeof (completion_button))
+    // console.log(typeof (completion_button))
 
     var completion_button = (typeof (completion_button) == "undefined") ? "Close" : completion_button
 
-  //  console.log(typeof (completion_button));
-  //  console.log(completion_button);
+    //  console.log(typeof (completion_button));
+    //  console.log(completion_button);
 
 
     if ($("#" + dialog_id).length == 0)
@@ -867,9 +867,9 @@ function updateCsrfToken() {
         success: function (data)
         {
             var old_token = $('[name="csrf-token"]').attr("content")
-          //  console.log("token-updated")
-          //  console.log("from: " + old_token)
-           // console.log("  to: " + data.authenticity_token)
+            //  console.log("token-updated")
+            //  console.log("from: " + old_token)
+            // console.log("  to: " + data.authenticity_token)
 
             $('[name="csrf-token"]').attr("content", data.authenticity_token)
 
