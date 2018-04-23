@@ -259,6 +259,7 @@ function reload_best_in_place_item(the_item, completion_callback) {
     var object_class = object_class_id + "s";
     var object_field = $(the_item).attr("data-attribute");
     var object_id = $($("div.object-info").last()).find("div#object-id").text()
+    var best_in_place_update_item = "div#" + object_class_id + " #" + the_id
 
     $.ajax({
         url: "/" + object_class + "/get_field",
@@ -267,15 +268,23 @@ function reload_best_in_place_item(the_item, completion_callback) {
         data: {field_name: object_field, id: object_id, format_string: object_format},
         success: function (data)
         {
-            $("div#" + object_class_id + " #" + the_id).text(data);
-            $("div#" + object_class_id + " #" + the_id).best_in_place();
-            BestInPlaceEditorObject("div#" + object_class_id + " #" + the_id).initNil();
-            
+            console.log("the_id: " + the_id);   
+            console.log("object_class_id: " + object_class_id);
+            console.log("object_format: " + object_format);
+            console.log("object_class: " + object_class);
+            console.log("object_field: " + object_field);
+            console.log("object_id: " + object_id);
+            console.log("best_in_place_update_item: " + best_in_place_update_item);
+
+            $(best_in_place_update_item).text(data);
+            $(best_in_place_update_item).best_in_place();
+            BestInPlaceEditorObject(best_in_place_update_item).initNil();
+
             if (typeof completion_callback == "function") {
                 completion_callback(the_item)
             }
- 
-            console.log("div#" + object_class_id + " #" + the_id);
+
+            console.log(best_in_place_update_item);
             console.log(data);
             console.log("---------   end reload_best_in_place_item  ----------------");
 
