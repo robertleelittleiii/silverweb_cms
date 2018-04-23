@@ -134,7 +134,7 @@ function toggle_login_box(display_now) {
 }
 
 function sessionActive() {
- //   console.log("session active?")
+    //   console.log("session active?")
     $.ajax({
         url: "/site/check_session",
         type: "POST",
@@ -143,7 +143,7 @@ function sessionActive() {
         {
             if (data.exists == true) {
 
-       //         console.log("session active = true")
+                //         console.log("session active = true")
             } else
             {
                 console.log("session active = false")
@@ -151,11 +151,11 @@ function sessionActive() {
             }
         },
         done: function (msg) {
-    //        console.log("done");
+            //        console.log("done");
             //$("#log").html( msg );
         },
         fail: function (jqXHR, textStatus) {
-    //       console.log("Request failed: " + textStatus);
+            //       console.log("Request failed: " + textStatus);
         }
     });
 
@@ -436,7 +436,7 @@ function userLoggedIn() {
                     window.location = "/?nocache=" + (new Date()).getTime();
                 } else
                 { // we are at the login screen, update the CSR to make sure when we login, the CSR is valid (it may have expired)
-                 updateCsrfToken();
+                    updateCsrfToken();
                 }
                 // alert("refresh to site");
             }
@@ -622,10 +622,12 @@ function updateSecurityDiv()
 
 function updateFooterDiv()
 {
-    renderPartial("footer.html", "#footer", function (data) {
-        bindMyAccountClick();
-        bindCloseIframe();
-    });
+    if ($("#footer").length > 0) {
+        renderPartial("footer.html", "#footer", function (data) {
+            bindMyAccountClick();
+            bindCloseIframe();
+        });
+    }
 }
 ;
 
@@ -1271,9 +1273,9 @@ function loadResetBox(reset_code) {
         data: {"reset_code": reset_code},
         success: function (data, status, jqXHR)
         {
-   //         console.log(data);
-   //         console.log(status);
-   //         console.log(jqXHR);
+            //         console.log(data);
+            //         console.log(status);
+            //         console.log(jqXHR);
             if (jqXHR.status == 203)
             {
                 setUpPurrNotifier("Notice", data);
@@ -1346,7 +1348,7 @@ function process_admin_actions() {
 
                 toggle_login_box();
                 loadResetBox(param);
-       ///         console.log("found admin action!");
+                ///         console.log("found admin action!");
                 break;
             }
             default:
@@ -1370,7 +1372,7 @@ function bindDatatableSearchField(search_field_name, model_name) {
         source: function (request, response) {
             var field_value = request.term;
             if ((field_value == ":") | (field_value.slice(-2) == ",:") | (field_value.slice(-3) == ", :")) {
-     //           console.log("activate popup.");
+                //           console.log("activate popup.");
                 // $("div.dataTables_filter input").css("width", "400px");
                 $(search_field_name).autoGrowInput({minWidth: 135, maxWidth: 400, comfortZone: 50});
                 $(search_field_name).css("min-width", "200px");
