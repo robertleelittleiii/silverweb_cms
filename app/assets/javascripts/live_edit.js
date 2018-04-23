@@ -268,16 +268,16 @@ function reload_best_in_place_item(the_item, completion_callback) {
         data: {field_name: object_field, id: object_id, format_string: object_format},
         success: function (data)
         {
-            console.log("------------  START reload_best_in_place_item  -------------");
-
-            console.log(this);
-            console.log("the_id: " + the_id);
-            console.log("object_class_id: " + object_class_id);
-            console.log("object_format: " + object_format);
-            console.log("object_class: " + object_class);
-            console.log("object_field: " + object_field);
-            console.log("object_id: " + object_id);
-            console.log("best_in_place_update_item: " + best_in_place_update_item);
+//            console.log("------------  START reload_best_in_place_item  -------------");
+//
+//            console.log(this);
+//            console.log("the_id: " + the_id);
+//            console.log("object_class_id: " + object_class_id);
+//            console.log("object_format: " + object_format);
+//            console.log("object_class: " + object_class);
+//            console.log("object_field: " + object_field);
+//            console.log("object_id: " + object_id);
+//            console.log("best_in_place_update_item: " + best_in_place_update_item);
 
             $(best_in_place_update_item).text(data);
             $(best_in_place_update_item).best_in_place();
@@ -287,9 +287,9 @@ function reload_best_in_place_item(the_item, completion_callback) {
                 completion_callback(the_item)
             }
 
-            console.log(best_in_place_update_item);
-            console.log(data);
-            console.log("------------   end reload_best_in_place_item  -------------");
+//            console.log(best_in_place_update_item);
+//            console.log(data);
+//            console.log("------------   end reload_best_in_place_item  -------------");
 
         }
     });
