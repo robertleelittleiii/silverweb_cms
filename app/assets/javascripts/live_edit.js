@@ -268,7 +268,10 @@ function reload_best_in_place_item(the_item, completion_callback) {
         data: {field_name: object_field, id: object_id, format_string: object_format},
         success: function (data)
         {
-            console.log("the_id: " + the_id);   
+            console.log("------------  START reload_best_in_place_item  -------------");
+
+            console.log(this);
+            console.log("the_id: " + the_id);
             console.log("object_class_id: " + object_class_id);
             console.log("object_format: " + object_format);
             console.log("object_class: " + object_class);
@@ -286,7 +289,7 @@ function reload_best_in_place_item(the_item, completion_callback) {
 
             console.log(best_in_place_update_item);
             console.log(data);
-            console.log("---------   end reload_best_in_place_item  ----------------");
+            console.log("------------   end reload_best_in_place_item  -------------");
 
         }
     });
