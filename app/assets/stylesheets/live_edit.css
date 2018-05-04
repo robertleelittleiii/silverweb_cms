@@ -145,178 +145,179 @@
 
 
 .locked {
-  padding: 2px;
-  background-color: initial;
-  border-radius: 0px;
-    
+    padding: 2px;
+    background-color: initial;
+    border-radius: 0px;
+    border-width: 2px !important;
+
 }
 
 .locked.user-0 {
-border: 2px solid red;
+    border: 2px solid red !important;
 
 }
 
-.locked.user-1{border: 2px solid #EFDECD; }
-.locked.user-2{border: 2px solid #CD9575; }
-.locked.user-3{border: 2px solid #FDD9B5; }
-.locked.user-4{border: 2px solid #78DBE2; }
-.locked.user-5{border: 2px solid #87A96B; }
-.locked.user-6{border: 2px solid #FFA474; }
-.locked.user-7{border: 2px solid #FAE7B5; }
-.locked.user-8{border: 2px solid #9F8170; }
-.locked.user-9{border: 2px solid #FD7C6E; }
-.locked.user-10{border: 2px solid #000000; }
-.locked.user-11{border: 2px solid #ACE5EE; }
-.locked.user-12{border: 2px solid #1F75FE; }
-.locked.user-13{border: 2px solid #A2A2D0; }
-.locked.user-14{border: 2px solid #6699CC; }
-.locked.user-15{border: 2px solid #0D98BA; }
-.locked.user-16{border: 2px solid #7366BD; }
-.locked.user-17{border: 2px solid #DE5D83; }
-.locked.user-18{border: 2px solid #CB4154; }
-.locked.user-19{border: 2px solid #B4674D; }
-.locked.user-20{border: 2px solid #FF7F49; }
-.locked.user-21{border: 2px solid #EA7E5D; }
-.locked.user-22{border: 2px solid #B0B7C6; }
-.locked.user-23{border: 2px solid #FFFF99; }
-.locked.user-24{border: 2px solid #00CC99; }
-.locked.user-25{border: 2px solid #FFAACC; }
-.locked.user-26{border: 2px solid #DD4492; }
-.locked.user-27{border: 2px solid #1DACD6; }
-.locked.user-28{border: 2px solid #BC5D58; }
-.locked.user-29{border: 2px solid #DD9475; }
-.locked.user-30{border: 2px solid #9ACEEB; }
-.locked.user-31{border: 2px solid #FFBCD9; }
-.locked.user-32{border: 2px solid #FDDB6D; }
-.locked.user-33{border: 2px solid #2B6CC4; }
-.locked.user-34{border: 2px solid #EFCDB8; }
-.locked.user-35{border: 2px solid #6E5160; }
-.locked.user-36{border: 2px solid #CEFF1D; }
-.locked.user-37{border: 2px solid #71BC78; }
-.locked.user-38{border: 2px solid #6DAE81; }
-.locked.user-39{border: 2px solid #C364C5; }
-.locked.user-40{border: 2px solid #CC6666; }
-.locked.user-41{border: 2px solid #E7C697; }
-.locked.user-42{border: 2px solid #FCD975; }
-.locked.user-43{border: 2px solid #A8E4A0; }
-.locked.user-44{border: 2px solid #95918C; }
-.locked.user-45{border: 2px solid #1CAC78; }
-.locked.user-46{border: 2px solid #1164B4; }
-.locked.user-47{border: 2px solid #F0E891; }
-.locked.user-48{border: 2px solid #FF1DCE; }
-.locked.user-49{border: 2px solid #B2EC5D; }
-.locked.user-50{border: 2px solid #5D76CB; }
-.locked.user-51{border: 2px solid #CA3767; }
-.locked.user-52{border: 2px solid #3BB08F; }
-.locked.user-53{border: 2px solid #FEFE22; }
-.locked.user-54{border: 2px solid #FCB4D5; }
-.locked.user-55{border: 2px solid #FFF44F; }
-.locked.user-56{border: 2px solid #FFBD88; }
-.locked.user-57{border: 2px solid #F664AF; }
-.locked.user-58{border: 2px solid #AAF0D1; }
-.locked.user-59{border: 2px solid #CD4A4C; }
-.locked.user-60{border: 2px solid #EDD19C; }
-.locked.user-61{border: 2px solid #979AAA; }
-.locked.user-62{border: 2px solid #FF8243; }
-.locked.user-63{border: 2px solid #C8385A; }
-.locked.user-64{border: 2px solid #EF98AA; }
-.locked.user-65{border: 2px solid #FDBCB4; }
-.locked.user-66{border: 2px solid #1A4876; }
-.locked.user-67{border: 2px solid #30BA8F; }
-.locked.user-68{border: 2px solid #C54B8C; }
-.locked.user-69{border: 2px solid #1974D2; }
-.locked.user-70{border: 2px solid #FFA343; }
-.locked.user-71{border: 2px solid #BAB86C; }
-.locked.user-72{border: 2px solid #FF7538; }
-.locked.user-73{border: 2px solid #FF2B2B; }
-.locked.user-74{border: 2px solid #F8D568; }
-.locked.user-75{border: 2px solid #E6A8D7; }
-.locked.user-76{border: 2px solid #414A4C; }
-.locked.user-77{border: 2px solid #FF6E4A; }
-.locked.user-78{border: 2px solid #1CA9C9; }
-.locked.user-79{border: 2px solid #FFCFAB; }
-.locked.user-80{border: 2px solid #C5D0E6; }
-.locked.user-81{border: 2px solid #FDDDE6; }
-.locked.user-82{border: 2px solid #158078; }
-.locked.user-83{border: 2px solid #FC74FD; }
-.locked.user-84{border: 2px solid #F78FA7; }
-.locked.user-85{border: 2px solid #8E4585; }
-.locked.user-86{border: 2px solid #7442C8; }
-.locked.user-87{border: 2px solid #9D81BA; }
-.locked.user-88{border: 2px solid #FE4EDA; }
-.locked.user-89{border: 2px solid #FF496C; }
-.locked.user-90{border: 2px solid #D68A59; }
-.locked.user-91{border: 2px solid #714B23; }
-.locked.user-92{border: 2px solid #FF48D0; }
-.locked.user-93{border: 2px solid #E3256B; }
-.locked.user-94{border: 2px solid #EE204D; }
-.locked.user-95{border: 2px solid #FF5349; }
-.locked.user-96{border: 2px solid #C0448F; }
-.locked.user-97{border: 2px solid #1FCECB; }
-.locked.user-98{border: 2px solid #7851A9; }
-.locked.user-99{border: 2px solid #FF9BAA; }
-.locked.user-100{border: 2px solid #FC2847; }
-.locked.user-101{border: 2px solid #76FF7A; }
-.locked.user-102{border: 2px solid #93DFB8; }
-.locked.user-103{border: 2px solid #A5694F; }
-.locked.user-104{border: 2px solid #8A795D; }
-.locked.user-105{border: 2px solid #45CEA2; }
-.locked.user-106{border: 2px solid #FB7EFD; }
-.locked.user-107{border: 2px solid #CDC5C2; }
-.locked.user-108{border: 2px solid #80DAEB; }
-.locked.user-109{border: 2px solid #ECEABE; }
-.locked.user-110{border: 2px solid #FFCF48; }
-.locked.user-111{border: 2px solid #FD5E53; }
-.locked.user-112{border: 2px solid #FAA76C; }
-.locked.user-113{border: 2px solid #18A7B5; }
-.locked.user-114{border: 2px solid #EBC7DF; }
-.locked.user-115{border: 2px solid #FC89AC; }
-.locked.user-116{border: 2px solid #DBD7D2; }
-.locked.user-117{border: 2px solid #17806D; }
-.locked.user-118{border: 2px solid #DEAA88; }
-.locked.user-119{border: 2px solid #77DDE7; }
-.locked.user-120{border: 2px solid #FFFF66; }
-.locked.user-121{border: 2px solid #926EAE; }
-.locked.user-122{border: 2px solid #324AB2; }
-.locked.user-123{border: 2px solid #F75394; }
-.locked.user-124{border: 2px solid #FFA089; }
-.locked.user-125{border: 2px solid #8F509D; }
-.locked.user-126{border: 2px solid #FFFFFF; }
-.locked.user-127{border: 2px solid #A2ADD0; }
-.locked.user-128{border: 2px solid #FF43A4; }
-.locked.user-129{border: 2px solid #FC6C85; }
-.locked.user-130{border: 2px solid #CDA4DE; }
-.locked.user-131{border: 2px solid #FCE883; }
-.locked.user-132{border: 2px solid #C5E384; }
-.locked.user-133{border: 2px solid #FFAE42; }
+.locked.user-1{border: 2px solid #EFDECD !important; }
+.locked.user-2{border: 2px solid #CD9575 !important; }
+.locked.user-3{border: 2px solid #FDD9B5 !important; }
+.locked.user-4{border: 2px solid #78DBE2 !important; }
+.locked.user-5{border: 2px solid #87A96B !important; }
+.locked.user-6{border: 2px solid #FFA474 !important; }
+.locked.user-7{border: 2px solid #FAE7B5 !important; }
+.locked.user-8{border: 2px solid #9F8170 !important; }
+.locked.user-9{border: 2px solid #FD7C6E !important; }
+.locked.user-10{border: 2px solid #000000 !important; }
+.locked.user-11{border: 2px solid #ACE5EE !important; }
+.locked.user-12{border: 2px solid #1F75FE !important; }
+.locked.user-13{border: 2px solid #A2A2D0 !important; }
+.locked.user-14{border: 2px solid #6699CC !important; }
+.locked.user-15{border: 2px solid #0D98BA !important; }
+.locked.user-16{border: 2px solid #7366BD !important; }
+.locked.user-17{border: 2px solid #DE5D83 !important; }
+.locked.user-18{border: 2px solid #CB4154 !important; }
+.locked.user-19{border: 2px solid #B4674D !important; }
+.locked.user-20{border: 2px solid #FF7F49 !important; }
+.locked.user-21{border: 2px solid #EA7E5D !important; }
+.locked.user-22{border: 2px solid #B0B7C6 !important; }
+.locked.user-23{border: 2px solid #FFFF99 !important; }
+.locked.user-24{border: 2px solid #00CC99 !important; }
+.locked.user-25{border: 2px solid #FFAACC !important; }
+.locked.user-26{border: 2px solid #DD4492 !important; }
+.locked.user-27{border: 2px solid #1DACD6 !important; }
+.locked.user-28{border: 2px solid #BC5D58 !important; }
+.locked.user-29{border: 2px solid #DD9475 !important; }
+.locked.user-30{border: 2px solid #9ACEEB !important; }
+.locked.user-31{border: 2px solid #FFBCD9 !important; }
+.locked.user-32{border: 2px solid #FDDB6D !important; }
+.locked.user-33{border: 2px solid #2B6CC4 !important; }
+.locked.user-34{border: 2px solid #EFCDB8 !important; }
+.locked.user-35{border: 2px solid #6E5160 !important; }
+.locked.user-36{border: 2px solid #CEFF1D !important; }
+.locked.user-37{border: 2px solid #71BC78 !important; }
+.locked.user-38{border: 2px solid #6DAE81 !important; }
+.locked.user-39{border: 2px solid #C364C5 !important; }
+.locked.user-40{border: 2px solid #CC6666 !important; }
+.locked.user-41{border: 2px solid #E7C697 !important; }
+.locked.user-42{border: 2px solid #FCD975 !important; }
+.locked.user-43{border: 2px solid #A8E4A0 !important; }
+.locked.user-44{border: 2px solid #95918C !important; }
+.locked.user-45{border: 2px solid #1CAC78 !important; }
+.locked.user-46{border: 2px solid #1164B4 !important; }
+.locked.user-47{border: 2px solid #F0E891 !important; }
+.locked.user-48{border: 2px solid #FF1DCE !important; }
+.locked.user-49{border: 2px solid #B2EC5D !important; }
+.locked.user-50{border: 2px solid #5D76CB !important; }
+.locked.user-51{border: 2px solid #CA3767 !important; }
+.locked.user-52{border: 2px solid #3BB08F !important; }
+.locked.user-53{border: 2px solid #FEFE22 !important; }
+.locked.user-54{border: 2px solid #FCB4D5 !important; }
+.locked.user-55{border: 2px solid #FFF44F !important; }
+.locked.user-56{border: 2px solid #FFBD88 !important; }
+.locked.user-57{border: 2px solid #F664AF !important; }
+.locked.user-58{border: 2px solid #AAF0D1 !important; }
+.locked.user-59{border: 2px solid #CD4A4C !important; }
+.locked.user-60{border: 2px solid #EDD19C !important; }
+.locked.user-61{border: 2px solid #979AAA !important; }
+.locked.user-62{border: 2px solid #FF8243 !important; }
+.locked.user-63{border: 2px solid #C8385A !important; }
+.locked.user-64{border: 2px solid #EF98AA !important; }
+.locked.user-65{border: 2px solid #FDBCB4 !important; }
+.locked.user-66{border: 2px solid #1A4876 !important; }
+.locked.user-67{border: 2px solid #30BA8F !important; }
+.locked.user-68{border: 2px solid #C54B8C !important; }
+.locked.user-69{border: 2px solid #1974D2 !important; }
+.locked.user-70{border: 2px solid #FFA343 !important; }
+.locked.user-71{border: 2px solid #BAB86C !important; }
+.locked.user-72{border: 2px solid #FF7538 !important; }
+.locked.user-73{border: 2px solid #FF2B2B !important; }
+.locked.user-74{border: 2px solid #F8D568 !important; }
+.locked.user-75{border: 2px solid #E6A8D7 !important; }
+.locked.user-76{border: 2px solid #414A4C !important; }
+.locked.user-77{border: 2px solid #FF6E4A !important; }
+.locked.user-78{border: 2px solid #1CA9C9 !important; }
+.locked.user-79{border: 2px solid #FFCFAB !important; }
+.locked.user-80{border: 2px solid #C5D0E6 !important; }
+.locked.user-81{border: 2px solid #FDDDE6 !important; }
+.locked.user-82{border: 2px solid #158078 !important; }
+.locked.user-83{border: 2px solid #FC74FD !important; }
+.locked.user-84{border: 2px solid #F78FA7 !important; }
+.locked.user-85{border: 2px solid #8E4585 !important; }
+.locked.user-86{border: 2px solid #7442C8 !important; }
+.locked.user-87{border: 2px solid #9D81BA !important; }
+.locked.user-88{border: 2px solid #FE4EDA !important; }
+.locked.user-89{border: 2px solid #FF496C !important; }
+.locked.user-90{border: 2px solid #D68A59 !important; }
+.locked.user-91{border: 2px solid #714B23 !important; }
+.locked.user-92{border: 2px solid #FF48D0 !important; }
+.locked.user-93{border: 2px solid #E3256B !important; }
+.locked.user-94{border: 2px solid #EE204D !important; }
+.locked.user-95{border: 2px solid #FF5349 !important; }
+.locked.user-96{border: 2px solid #C0448F !important; }
+.locked.user-97{border: 2px solid #1FCECB !important; }
+.locked.user-98{border: 2px solid #7851A9 !important; }
+.locked.user-99{border: 2px solid #FF9BAA !important; }
+.locked.user-100{border: 2px solid #FC2847 !important; }
+.locked.user-101{border: 2px solid #76FF7A !important; }
+.locked.user-102{border: 2px solid #93DFB8 !important; }
+.locked.user-103{border: 2px solid #A5694F !important; }
+.locked.user-104{border: 2px solid #8A795D !important; }
+.locked.user-105{border: 2px solid #45CEA2 !important; }
+.locked.user-106{border: 2px solid #FB7EFD !important; }
+.locked.user-107{border: 2px solid #CDC5C2 !important; }
+.locked.user-108{border: 2px solid #80DAEB !important; }
+.locked.user-109{border: 2px solid #ECEABE !important; }
+.locked.user-110{border: 2px solid #FFCF48 !important; }
+.locked.user-111{border: 2px solid #FD5E53 !important; }
+.locked.user-112{border: 2px solid #FAA76C !important; }
+.locked.user-113{border: 2px solid #18A7B5 !important; }
+.locked.user-114{border: 2px solid #EBC7DF !important; }
+.locked.user-115{border: 2px solid #FC89AC !important; }
+.locked.user-116{border: 2px solid #DBD7D2 !important; }
+.locked.user-117{border: 2px solid #17806D !important; }
+.locked.user-118{border: 2px solid #DEAA88 !important; }
+.locked.user-119{border: 2px solid #77DDE7 !important; }
+.locked.user-120{border: 2px solid #FFFF66 !important; }
+.locked.user-121{border: 2px solid #926EAE !important; }
+.locked.user-122{border: 2px solid #324AB2 !important; }
+.locked.user-123{border: 2px solid #F75394 !important; }
+.locked.user-124{border: 2px solid #FFA089 !important; }
+.locked.user-125{border: 2px solid #8F509D !important; }
+.locked.user-126{border: 2px solid #FFFFFF !important; }
+.locked.user-127{border: 2px solid #A2ADD0 !important; }
+.locked.user-128{border: 2px solid #FF43A4 !important; }
+.locked.user-129{border: 2px solid #FC6C85 !important; }
+.locked.user-130{border: 2px solid #CDA4DE !important; }
+.locked.user-131{border: 2px solid #FCE883 !important; }
+.locked.user-132{border: 2px solid #C5E384 !important; }
+.locked.user-133{border: 2px solid #FFAE42 !important; }
 
 
 div#active-user-list {
-display: inline-block;
-float: right;
-margin-right: 20px;
+    display: inline-block;
+    float: right;
+    margin-right: 20px;
 }
 
 div.user-initials {
-display: inline-block;
-float: right;
-font-size: 16px;
-font-weight: bold;
-padding: 5px;
-border-radius: 20px;
-margin-right: 10px;
-color: white;
-text-shadow: grey 2px 2px 2px;
-box-shadow: gray 2px 2px 2px;
+    display: inline-block;
+    float: right;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 5px;
+    border-radius: 20px;
+    margin-right: 10px;
+    color: white;
+    text-shadow: grey 2px 2px 2px;
+    box-shadow: gray 2px 2px 2px;
 }
 
 div.user-info {
-display: none;
-position: absolute;
-padding: 5px;
-background-color: rgba(255, 255, 255, 0.52);
-font-size: 12px;
-top: 20px;
+    display: none;
+    position: absolute;
+    padding: 5px;
+    background-color: rgba(255, 255, 255, 0.52);
+    font-size: 12px;
+    top: 20px;
 }
 
 div.user-initials:hover {
@@ -328,19 +329,19 @@ div.user-initials:hover~div.user-info {
 }
 
 div.user-info {
-display: none;
-position: absolute;
-padding: 5px;
-background-color: rgba(255, 255, 255, 0.75);
-font-size: 12px;
-top: 30px;
-left: 10px;
-z-index: 2;
+    display: none;
+    position: absolute;
+    padding: 5px;
+    background-color: rgba(255, 255, 255, 0.75);
+    font-size: 12px;
+    top: 30px;
+    left: 10px;
+    z-index: 2;
 }
 
 div#user-info-block {
-display: inline-block;
-position: relative;
+    display: inline-block;
+    position: relative;
 }
 
 div.user-initials {
