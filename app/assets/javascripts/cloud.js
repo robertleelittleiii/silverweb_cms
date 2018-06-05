@@ -209,7 +209,7 @@ function checkLoginStatus()
 //
 
 
-function loadLoginBox(url_to_goto) {
+function loadLoginBox(url_to_goto, show_main_menu) {
 
     if ($("adminaction").size() == 0) {
         $.ajax({
@@ -232,7 +232,7 @@ function loadLoginBox(url_to_goto) {
                 $("input#name").focus();
 
                 toggle_login_box(true);
-                bindLoginClick(url_to_goto);
+                bindLoginClick(url_to_goto, show_main_menu);
                 bindLoginForgotLink();
                 bindLoginRegisterLink();
                 bindResetClick();
@@ -323,7 +323,7 @@ function bindLogoutClick() {
 
     });
 }
-function bindLoginClick(url_to_goto) {
+function bindLoginClick(url_to_goto, show_main_menu) {
     $('#login-form').bind('ajax:beforeSend', function (evt, xhr, settings) {
         // alert("ajax:before");  
         // console.log('ajax:before');
@@ -338,7 +338,7 @@ function bindLoginClick(url_to_goto) {
         // console.log(evt);
         // console.log(data);
         if (data.sucessfull) {
-            login_sucessfull(url_to_goto);
+            login_sucessfull(url_to_goto, show_main_menu);
 
         } else
         {
@@ -475,8 +475,10 @@ function set_my_timezone() {
         }
     });
 }
-function login_sucessfull(url_to_goto) {
+function login_sucessfull(url_to_goto, show_main_menu) {
 
+    show_main_menu = typeof(show_main_menu) == "undefined" ? true : show_main_menu
+ 
     allow_login_check = false;
 
     //   toggle_login_box(false);
@@ -550,7 +552,10 @@ function login_sucessfull(url_to_goto) {
 
     allow_login_check_timer = setTimeout("allow_login_check=true;", 10000);
     // check_login_status();
-    updateAppDiv();
+    
+    if (show_main_menu) {
+        updateAppDiv();
+    }
 
 }
 function logedIn() {
