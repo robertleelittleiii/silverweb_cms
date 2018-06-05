@@ -581,7 +581,7 @@ function logedIn() {
 
     updateFooterDiv();
     
-    if (!allow_login_check) {
+    if (allow_login_check) {
         updateAppDiv();
 
         check_login_status();
