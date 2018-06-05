@@ -580,8 +580,12 @@ function logedIn() {
     });
 
     updateFooterDiv();
-    updateAppDiv();
-    check_login_status();
+    
+    if (!allow_login_check) {
+        updateAppDiv();
+
+        check_login_status();
+    }
 }
 
 
