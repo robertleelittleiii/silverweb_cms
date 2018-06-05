@@ -550,7 +550,7 @@ function login_sucessfull(url_to_goto) {
 
     allow_login_check_timer = setTimeout("allow_login_check=true;", 10000);
     // check_login_status();
-
+    updateAppDiv();
 
 }
 function logedIn() {
@@ -580,7 +580,7 @@ function logedIn() {
     });
 
     updateFooterDiv();
-    
+
     if (allow_login_check) {
         updateAppDiv();
 
