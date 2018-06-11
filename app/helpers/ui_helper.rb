@@ -379,7 +379,7 @@ module UiHelper
 
   
     if object_class_name == "settings" then
-      is_selected = Settings.send(field_name).split(",").include?(field_title) 
+      is_selected = Settings.send(field_name).split(",").include?(field_title) rescue false
       field_pointer_id = "settings"
       field_class_pointer = object_class_name
     else
