@@ -371,9 +371,22 @@ module UiHelper
   def editablecheckboxeditmulti (field_name, field_pointer ,field_title, opts={})
 
     db_field_name= field_name.split("-").first
-    is_selected = field_pointer.send(db_field_name).split(",").include?(field_title) rescue false  
     divClass = (opts[:divclass].blank? ? "cms-contentitem ajax-check-multi" : opts[:divclass])
     
+    #fix for rails settings gem
+    object_class_name = field_pointer.class.to_s.gsub("::", "_").underscore
+    object_class_name = (object_class_name == "settings_active_record_relation" ? "settings" : object_class_name)
+
+  
+    if object_class_name == "settings" then
+      is_selected = Settings.send(field_name).split(",").include?(field_title) 
+      field_pointer_id = "settings"
+      field_class_pointer = object_class_name
+    else
+      is_selected = field_pointer.send(db_field_name).split(",").include?(field_title) rescue false  
+      field_pointer_id = field_pointer.id
+      field_class_pointer = field_pointer.class.name.underscore.downcase
+    end
     
     ( "<div class='#{divClass}' >"  + check_box_tag("#{field_name}", field_title, is_selected, 
         data:{
@@ -382,10 +395,10 @@ module UiHelper
           type: "JSON",
           url:
             url_for(
-            id: field_pointer.id,
+            id: field_pointer_id,
             selected: is_selected,
             action: :update,
-            "#{field_pointer.class.name.underscore.downcase}" => {"#{field_name}"=> field_title}   ) 
+            "#{field_class_pointer}" => {"#{field_name}"=> field_title}   ) 
         },  
         :class => "ajax-check-multi",
         checkbox_value: field_title
