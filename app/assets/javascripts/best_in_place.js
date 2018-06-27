@@ -140,7 +140,7 @@ function BestInPlaceEditorObject(e) {
 jQuery.fn.best_in_place_callback = function (hook_name, function_code) {
     this.each(function () {
         if (typeof jQuery(this).data('bestInPlaceEditor') == "undefined") {
-            jQuery(e).best_in_place();
+            jQuery(this).best_in_place();
         }
         jQuery(this).data('bestInPlaceEditor')[hook_name] = function_code;
     });

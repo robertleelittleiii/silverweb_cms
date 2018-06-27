@@ -156,6 +156,7 @@ module UiHelper
   end
   
   def best_in_place(object, field, opts = {})
+    logger.info("*"*10 + " START " + "*"*10)
     logger.info("best_in_place")
     logger.info(opts[:class])
     puts("object: #{object}, field: #{field}, opts: #{opts.inspect}")
@@ -166,21 +167,45 @@ module UiHelper
 
     field = field.to_s
     puts("bestinplace->>> field is: #{field}")
-    puts("bestinplace->>> Object is: #{object.inspect}")
+    # puts("bestinplace->>> Object is: #{object.inspect}")
     
     field_items = field.split(".")
     
     if field.include?("[\'") and field.include?("\']") then # this is an object reference.
-      array_index = field.scan(/\[([^\)]+)\]/).first.first.gsub(/'/, '')
+      array_index = field.scan(/\[([^\)]+)\]/).first.first
       field_name = field.split("[").first
-      value = object.send(field_name)[array_index] rescue ""
+      hash_value = object.send(field_name)
+      value = eval("hash_value[#{array_index}]")
+      # value = object.send(field_name)[array_index] rescue ""
       puts("*" * 40)
-      puts("array_index: #{array_index} , field_name: #{field_name}")
+      puts("array_index: #{array_index} , field_name: #{field_name}, hash value: #{hash_value}, value: #{value}")
 
     elsif field.include?("[") and field.include?("]") then
       array_index = field.scan(/\[(.*?)\]/).flatten.first.to_i
       field_name = field.split("[").first
       value = object.send(field_name)[array_index] rescue ""
+      
+      # if value is empty, lets try to treat it as a hash
+      if value.blank? or value.nil? then
+        array_index = CGI.unescapeHTML(field).scan(/\[(.*?)\]/).flatten.join("\"][\"")
+        hash_value = object.send(field_name)
+        value = (eval("hash_value[\"#{array_index}\"]") || "") rescue ""
+      end
+      
+      # if value is still empty, lets try to treat it as a hash with a trailing array element
+      if value.blank? or value.nil? then
+        array_index = field.scan(/\[(.*?)\]/).flatten
+        hash_value = object.send(field_name)
+        if array_index.last.scan(/\D/).empty? then # contains digets, try to access as array.
+          value = (eval("hash_value['#{array_index[0..-2].join("']['")}'] [#{array_index.last.to_i}]") || "") rescue ""
+        else
+          value = nil
+        end
+      end
+  
+      puts("*" * 40)
+      puts("array_index: #{array_index} , field_name: #{field_name}, hash value: #{hash_value}, value: #{value}")
+
     else
       value = (field_items.length > 1 ? object.send(field_items[0]).send(field_items[1]) : object.send(field) ) rescue object[field]
     end
@@ -201,31 +226,44 @@ module UiHelper
     #fix for rails settings gem
     object_class_name = object.class.to_s.gsub("::", "_").underscore
     object_class_name = (object_class_name == "settings_active_record_relation" ? "settings" : object_class_name)
-
+    
+    fieldValue = ""
 
     if opts[:type] == :checkbox
       puts("bestinplace->>> Object is checkbox")
+      puts("field: #{field}")
+      value = value=="true" ? true : false if value.class.to_s == "String"
+
       if object_class_name == "settings" then
         fieldValue = Settings.send(field) == "true" ? true : false 
       else
+          fieldValue = object.send(field).class==String ? object.send(field).downcase == "true" : !!object.send(field)  rescue ""
+
         if field.include?(".") then # has sub fields
           fieldList = field.split(".")
-          fieldValue = object.send(fieldList[0]).send(fieldList[1]).class==String ? object.send(fieldList[0]).send(fieldList[1]).downcase == "true" : !!object.send(fieldList[0]).send(fieldList[1]) 
-        else
-          fieldValue = object.send(field).class==String ? object.send(field).downcase == "true" : !!object.send(field) 
+          fieldValue = object.send(fieldList[0]).send(fieldList[1]).class==String ? object.send(fieldList[0]).send(fieldList[1]).downcase == "true" : !!object.send(fieldList[0]).send(fieldList[1])  rescue fieldValue
         end
       end
+
+      puts("fieldValue '#{fieldValue}' , value: #{value}")
+
+      fieldValue = value if fieldValue.blank? 
+
       if opts[:collection].blank? || opts[:collection].size != 2
         opts[:collection] = ["No", "Yes"]
       end
       value = fieldValue ? opts[:collection][1] : opts[:collection][0]
       collection = opts[:collection].to_json
+      
+      puts("fieldValue '#{fieldValue}' , value: #{value}")
+
     end
     extraclass = "'"
     if !opts[:class].blank? 
       extraclass = opts[:class] + "'"
     end
-           
+    
+    field =  field.sub("+","%2B") if field.include?("+")
     
     if object_class_name == "settings" then
       opts[:path] = opts[:path].blank? ? request.original_url : opts[:path]
@@ -462,6 +500,7 @@ module UiHelper
       flash[:notice] = field_name + " not found !!"
       return "ERROR"
     end
+    
     if opts[:divclass].nil? then
       divClass='class="cms-contentitem"'
     else
