@@ -72,7 +72,7 @@ module SilverwebCms
           session[:last_seen]=Time.now
           session[:ip_address]= request.remote_ip rescue "n/a"
            
-          if !user.nil? and user.roles.where(:name=>"Admin").length>0 then
+          if !user.nil? and user.roles.where(:name=>"Admin").length>0 and Settings.activate_rack_mini_profiler.to_s=="true" then
             Rack::MiniProfiler.authorize_request
           end
           
