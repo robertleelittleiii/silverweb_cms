@@ -546,20 +546,21 @@ function createButtonList(call_backs, buttons_to_build)
     button_list = {};
 
     $.each(buttons_to_build.split(","), function (index, value) {
-        button_list[value] = {
-            text: value,
-            id: "dialog-" + value + "-button",
+        fixed_value = value.trim().replace(/ /g,"_");
+        button_list[value.trim()] = {
+            text: value.trim(),
+            id: "dialog-" +fixed_value + "-button",
             click: function () {
 // Do what needs to be done to complete 
-                if (typeof (call_backs[value]) == "function")
+                if (typeof (call_backs[value.trim()]) == "function")
                 {
-                    call_backs[value]();
+                    call_backs[value.trim()]();
                 }
             }
         };
 
     });
-
+    console.log(button_list);
     return (button_list);
 
 }
