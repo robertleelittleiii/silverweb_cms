@@ -126,7 +126,7 @@ module SilverwebCms
       end
   
       def get_field
-        the_value =  self.class.controller_path.classify.constantize.find(params[:id]).send(params[:field_name])
+        the_value =  self.class.controller_path.classify.constantize.find(params[:id]).send(params[:field_name]) rescue ""
     
         case the_value.class.to_s
         when "Date"
