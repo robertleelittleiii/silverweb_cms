@@ -22,4 +22,9 @@ class Page < ActiveRecord::Base
     
     
   end
+  
+  def public_title
+    slug.blank? ?  title.downcase.gsub(" ","-") : slug 
+  end
+  
 end

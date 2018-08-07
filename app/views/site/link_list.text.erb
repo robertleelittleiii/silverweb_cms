@@ -1,6 +1,6 @@
  [
         <% @pages.each do |page| %>
-        {"title":"<%= page.title %>", "value": "./<%= page.title %>"} <%= ((page == @last_page) and not (@pdfs.length > 0)) ? "" : ", " %>
+        {"title":"<%= page.title %>", "value": "./<%= page.public_title %>"} <%= ((page == @last_page) and not (@pdfs.length > 0)) ? "" : ", " %>
         <% end %>
         <%=@pdfs.length > 0 ? '{"title": " - - - PDF List Below - - - ", "value": "./"},'.html_safe : "" %>
          <% @pdfs.each do |pdf| %>
