@@ -26,6 +26,9 @@ class User < ActiveRecord::Base
   end
   
   has_and_belongs_to_many :roles
+  has_many :rights, through: :roles
+  
+  
   has_one :user_attribute
   has_one :user_live_edit, :autosave => true
 
