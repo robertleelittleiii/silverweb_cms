@@ -224,6 +224,116 @@ def best_in_place(object, field, opts = {})
     value = fieldValue ? opts[:collection][1] : opts[:collection][0]
     collection = opts[:collection].to_json
   end
+  
+  def best_in_place(object, field, opts = {})
+    logger.info("*"*10 + " START " + "*"*10)
+    logger.info("best_in_place")
+    logger.info(opts[:class])
+    puts("object: #{object}, field: #{field}, opts: #{opts.inspect}")
+    puts("object: #{object}, field: #{field}, opts: #{opts.inspect}")
+  
+    opts[:type] ||= :input
+    opts[:collection] ||= []
+
+    field = field.to_s
+    puts("bestinplace->>> field is: #{field}")
+    # puts("bestinplace->>> Object is: #{object.inspect}")
+    
+    field_items = field.split(".")
+    
+    if field.include?("[\'") and field.include?("\']") then # this is an object reference.
+      array_index = field.scan(/\[([^\)]+)\]/).first.first
+      field_name = field.split("[").first
+      hash_value = object.send(field_name)
+      value = eval("hash_value[#{array_index}]")
+      # value = object.send(field_name)[array_index] rescue ""
+      puts("*" * 40)
+      puts("array_index: #{array_index} , field_name: #{field_name}, hash value: #{hash_value}, value: #{value}")
+
+    elsif field.include?("[") and field.include?("]") then
+      array_index = field.scan(/\[(.*?)\]/).flatten.first.to_i
+      field_name = field.split("[").first
+      value = object.send(field_name)[array_index] rescue ""
+      
+      # if value is empty, lets try to treat it as a hash
+      if value.blank? or value.nil? then
+        array_index = CGI.unescapeHTML(field).scan(/\[(.*?)\]/).flatten.join("\"][\"")
+        hash_value = object.send(field_name)
+        value = (eval("hash_value[\"#{array_index}\"]") || "") rescue ""
+      end
+      
+      # if value is still empty, lets try to treat it as a hash with a trailing array element
+      if value.blank? or value.nil? then
+        array_index = field.scan(/\[(.*?)\]/).flatten
+        hash_value = object.send(field_name)
+        if array_index.last.scan(/\D/).empty? then # contains digets, try to access as array.
+          value = (eval("hash_value['#{array_index[0..-2].join("']['")}'] [#{array_index.last.to_i}]") || "") rescue ""
+        else
+          value = nil
+        end
+      end
+  
+      puts("*" * 40)
+      puts("array_index: #{array_index} , field_name: #{field_name}, hash value: #{hash_value}, value: #{value}")
+
+    else
+      value = (field_items.length > 1 ? object.send(field_items[0]).send(field_items[1]) : object.send(field) ) rescue object[field]
+    end
+    
+    value = value.blank? ? "" : value
+    
+    puts("bestinplace->>> Value is: #{value}")
+
+    collection = nil
+    if opts[:type] == :select && !opts[:collection].blank?
+      v = object.send(field)
+      logger.info(v)
+      logger.info(opts[:collection])
+      value = Hash[opts[:collection]][!!(v =~ /^[0-9]+$/) ? v.to_i : v] || "Please Select..."
+      collection = opts[:collection].to_json
+    end
+    
+    #fix for rails settings gem
+    object_class_name = object.class.to_s.gsub("::", "_").underscore
+    object_class_name = (object_class_name == "settings_active_record_relation" ? "settings" : object_class_name)
+    
+    fieldValue = ""
+
+    if opts[:type] == :checkbox
+      puts("bestinplace->>> Object is checkbox")
+      puts("field: #{field}")
+      value = value=="true" ? true : false if value.class.to_s == "String"
+
+      if object_class_name == "settings" then
+        fieldValue = Settings.send(field) == "true" ? true : false 
+      else
+          fieldValue = object.send(field).class==String ? object.send(field).downcase == "true" : !!object.send(field)  rescue ""
+
+        if field.include?(".") then # has sub fields
+          fieldList = field.split(".")
+          fieldValue = object.send(fieldList[0]).send(fieldList[1]).class==String ? object.send(fieldList[0]).send(fieldList[1]).downcase == "true" : !!object.send(fieldList[0]).send(fieldList[1])  rescue fieldValue
+        end
+      end
+
+      puts("fieldValue '#{fieldValue}' , value: #{value}")
+
+      fieldValue = value if fieldValue.blank? 
+
+      if opts[:collection].blank? || opts[:collection].size != 2
+        opts[:collection] = ["No", "Yes"]
+      end
+      value = fieldValue ? opts[:collection][1] : opts[:collection][0]
+      collection = opts[:collection].to_json
+      
+      puts("fieldValue '#{fieldValue}' , value: #{value}")
+
+    end
+    extraclass = "'"
+    if !opts[:class].blank? 
+      extraclass = opts[:class] + "'"
+    end
+    
+    field =  field.sub("+","%2B") if field.include?("+")
   extraclass = "'"
   if !opts[:class].blank? 
     extraclass = opts[:class] + "'"
@@ -411,6 +521,47 @@ def editablecheckboxeditmulti (field_name, field_pointer ,field_title, opts={})
 
 end
   
+  def editablecheckboxeditmulti (field_name, field_pointer ,field_title, opts={})
+
+    db_field_name= field_name.split("-").first
+    divClass = (opts[:divclass].blank? ? "cms-contentitem ajax-check-multi" : opts[:divclass])
+    
+    #fix for rails settings gem
+    object_class_name = field_pointer.class.to_s.gsub("::", "_").underscore
+    object_class_name = (object_class_name == "settings_active_record_relation" ? "settings" : object_class_name)
+
+  
+    if object_class_name == "settings" then
+      is_selected = Settings.send(field_name).split(",").include?(field_title) rescue false
+      field_pointer_id = "settings"
+      field_class_pointer = object_class_name
+    else
+      is_selected = field_pointer.send(db_field_name).split(",").include?(field_title) rescue false  
+      field_pointer_id = field_pointer.id
+      field_class_pointer = field_pointer.class.name.underscore.downcase
+    end
+    
+    ( "<div class='#{divClass}' >"  + check_box_tag("#{field_name}", field_title, is_selected, 
+        data:{
+          remote: true,
+          method: "PUT",
+          type: "JSON",
+          url:
+            url_for(
+            id: field_pointer_id,
+            selected: is_selected,
+            action: :update,
+            "#{field_class_pointer}" => {"#{field_name}"=> field_title}   ) 
+        },  
+        :class => "ajax-check-multi",
+        checkbox_value: field_title
+      )+field_title + "</div>").html_safe
+      
+    # check_box_tag( "#{field_name}",field_title, is_selected , html_options.merge!({
+    #       :onchange => "#{remote_function(:url  => {:action => "update_checkbox_multi", :id=>field_pointer.id, :field=>db_field_name ,:pointer_class=>field_pointer.class, :checkbox_value=>field_title},
+    #       :with => "'current_status='+checked")}"}))+field_title
+
+  end
   
 #                 <b> Sample: editablecheckboxtag </b></br>
 #                <p>
@@ -459,15 +610,16 @@ end
 
 def editablecheckboxedit (field_name, field_pointer,field_title, opts = {})
   
-  if field_pointer.blank? then
-    flash[:notice] = field_name + " not found !!"
-    return "ERROR"
-  end
-  if opts[:divclass].nil? then
-    divClass='class="cms-contentitem"'
-  else
-    divClass=opts[:divclass]
-  end rescue divClass='class="cms-contentitem"'
+    if field_pointer.blank? then
+      flash[:notice] = field_name + " not found !!"
+      return "ERROR"
+    end
+    
+    if opts[:divclass].nil? then
+      divClass='class="cms-contentitem"'
+    else
+      divClass=opts[:divclass]
+    end rescue divClass='class="cms-contentitem"'
     
   ('<div id="field_'+field_name.to_s + '"' + divClass + '> ' + (!field_title.blank? ?   '<div class="checkbox-title">' + field_title + ": </div>" : "") +
       best_in_place(field_pointer, field_name, opts.merge(:type => :checkbox)).html_safe +
@@ -812,3 +964,61 @@ def build_site_pane_additions()
   return out.html_safe
 end
 end
+  
+  def editablecheckboxtag2  (field_name, field_pointer,field_title, tag_list_name,html_options={}, include_id=false )
+    tag_name="#{tag_list_name.singularize}_list"
+    tag_array1= field_pointer.send(tag_name)
+    tag_id = field_title[1].to_s || ""
+    tag_array= tag_array1.collect { |item| item.downcase.strip  }
+    field_name_d = field_name.downcase.strip
+    is_checked = tag_array.include?(field_name_d)
+    
+    checked_option={field_name=>is_checked}
+    
+    #  the_object_class = field_pointer.class.name.downcase
+    the_object_class = "checked_option"
+    
+    puts("tag_list_name:#{tag_list_name}, tag_name: #{tag_name}, tag_array1: #{tag_array1.inspect}, tag_array: #{tag_array}")
+    
+    if include_id then
+    else
+      return_value =(
+        form_tag({:action => "update_checkbox_tag", :id=>field_pointer.id, :field=>field_name,:tag_id=>tag_id, :tag_name=>tag_name} , :remote => true) do
+          check_box_tag("#{field_name}]", field_pointer.id, is_checked,html_options)+ field_name
+          #check_box(the_object_class, field_name,html_options,"1","0")+ field_name
+          #t.check_box(field_pointer.class)
+        end)   
+      #check_box_tag("#{field_name}]", field_pointer.id, is_checked, html_options.merge({
+      #      :onchange => "#{remote_function(:url  => {:action => "update_checkbox_tag", :id=>field_pointer.id, :field=>field_name,:tag_id=>tag_id, :tag_name=>tag_name},
+      #     :with => "'current_status='+checked")}"}))+field_name
+    end
+    return return_value.html_safe
+  end
+  
+  def ajax_select(field_name, field_object, field_pointer, value_list, prompt='Please Select...', html_options={})
+    puts(" - - - - - - - - - -  - - - - - - - - - - -  -  - - - ")
+    puts(field_name, field_object, field_pointer.class, value_list.inspect)
+    puts("Settings.send(field_name): '#{Settings.send(field_name)}'")
+    # puts("field_pointer[field_name]: '#{field_pointer[field_name]}'")
+    if (field_object == "settings") then
+      found_item = value_list.index{|a| a[1]== Settings.send(field_name) }
+      puts("found_item: '#{found_item}'")
+      # html_options==nil ? html_options={:class=>"ui-ajax-settings-select", "data-path"=>url_for(request.original_url).to_s } : ""
+      html_options = html_options.merge({:class=>"ui-ajax-settings-select", "data-path"=>url_for(request.original_url).to_s ,"data-attribute"=>field_name, "data-object"=>field_object, "data-initial-val"=>Settings.send(field_name)}   )
+      select_tag(field_name, options_for_select(value_list, Settings.send(field_name)), html_options)
+    elsif (field_object == "cart") then
+      found_item = value_list.index{|a| a[1]== @cart.send(field_name) }
+      puts("@CART = #{@cart.inspect}")
+      puts("found_item: '#{found_item}'")
+      # html_options==nil ? html_options={:class=>"ui-ajax-cart-select", "data-path"=>url_for(field_pointer).to_s } : ""
+      html_options = html_options.merge({:class=>"ui-ajax-cart-select", "data-path"=>url_for(field_pointer).to_s ,"data-attribute"=>field_name, "data-object"=>field_object, "data-initial-val"=>@cart.send(field_name)})
+      select_tag(field_name, options_for_select(value_list, @cart.send(field_name)), html_options)
+    else
+      
+      html_options = html_options.merge({"data-path"=>url_for(field_pointer).to_s ,"data-id"=>field_pointer.id ,"data-attribute"=>field_name, "data-object"=>field_object, "data-initial-val"=>field_pointer[field_name]}) rescue {}
+      html_options[:class] = html_options[:class] + " ui-ajax-select" rescue "ui-ajax-select"
+      
+      # html_options==nil ? html_options={:class=>"ui-ajax-select", "data-path"=>url_for(field_pointer).to_s ,"data-id"=>field_pointer.id} : ""
+       
+      select(field_object,"#{field_name}",  options_for_select(value_list, field_pointer[field_name]),{ :prompt => prompt}, html_options )
+    end

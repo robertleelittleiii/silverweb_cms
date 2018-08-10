@@ -243,6 +243,6 @@ class PagesController < ApplicationController
   
 
 def page_params
-  params[:page].permit( "title", "body", "in_menu", "menu_local", "full_screen", "has_slider", "slider_height", "slider_width", "meta_description", "meta_keywords", "meta_robot", "template_name", "secure_page", "dialog_width", "dialog_height", "slider_show_nav", "page_style","page_table")
+  params[:page].permit( "title", "body", "in_menu", "menu_local", "full_screen", "has_slider", "slider_height", "slider_width", "meta_description", "meta_keywords", "meta_robot", "template_name", "secure_page", "dialog_width", "dialog_height", "slider_show_nav", "page_style","page_table", "slug")
 end
 end

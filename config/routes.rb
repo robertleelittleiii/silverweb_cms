@@ -31,6 +31,8 @@ Rails.application.routes.draw do
       get "template_list"
       get "reset"
       post "set_time_zone"
+      post "check_session"
+      get "get_csrf_meta_tags"
     end 
   end
   
@@ -178,6 +180,8 @@ Rails.application.routes.draw do
   match  '/lost',                            :controller => 'registration',     :action => 'lost',  via: [:get]
   match '/activate/:activation_code',          :controller => 'registration',     :action => 'activate', via: [:get]
   
+  # match '/:slug' => "site#show_page", :slug => :slug, via: [:get, :post]
+
   
   #  match ':page_name(.:format)', :controller => 'site', :action => 'show_page',  via: [:get]
  

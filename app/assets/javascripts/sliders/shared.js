@@ -35,10 +35,10 @@ function slidereditClickBinding(selector) {
                         current_page_id = $("div#page div#attr-pages div#page-id").text();
                         // show_page(current_page_id);
                         update_content();
-                       // tinyMCE.editors[0].destroy();
-                        
+                        // tinyMCE.editors[0].destroy();
+
                         if (typeof top.tinymce.activeEditor != "undefined") {
-                            top.tinymce.activeEditor.destroy();
+                            tinyMCE_editor_slider.destroy();
                         }
 
                         $('#edit-slider-dialog').html("");
@@ -50,7 +50,7 @@ function slidereditClickBinding(selector) {
                 require("sliders/edit.js");
                 sliders_edit_callDocumentReady();
                 slider_edit_dialog.dialog('open');
-
+                setFocusForTinyMCE();
 
             }
         });

@@ -9,6 +9,7 @@ var pages_edit_callDocumentReady_called = false;
 var slider_edit_dialog = "";
 var result_test = "";
 
+
 $(document).ready(function () {
     if (!pages_edit_callDocumentReady_called)
     {
@@ -51,7 +52,9 @@ function pages_edit_callDocumentReady() {
         return true;
     });
     sliderEditClickBinding("ul#sliders li");
-    tinyMCE_editor_page = tinyMCE.init(tinymce_config);
+     tinyMCE.init(tinymce_config);
+     tinyMCE_editor_page = tinyMCE.activeEditor;
+
     //tinyMCE.get("page_body").editor.on('ExecCommand', function(e) {
     //        console.log('ExecCommand event', e);
     //   })
@@ -60,6 +63,8 @@ function pages_edit_callDocumentReady() {
     bind_versions_links();
     set_up_save_callback();
 // do a quick frame reload to make it work.
+
+    setFocusForTinyMCE();
 }
 
 
@@ -392,9 +397,14 @@ function set_up_save_callback() {
             });
 }
 
+function setFocusForTinyMCE() {
+    
 $(document).off('focusin').on('focusin', function (e) {
     if ($(event.target).closest(".mce-window").length) {
         e.stopImmediatePropagation();
         console.log("worked!");
     }
 });
+
+}
+

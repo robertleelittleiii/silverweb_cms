@@ -25,13 +25,39 @@ class MailerController < ApplicationController
     puts(body_field.inspect)
     puts("Body field",body_field.to_yaml.to_s)
     
-    @message_body = body_field.to_yaml.split("\n")[1..-1].join("\n")
+    response_code = body_field["g-recaptcha-response"]
+    body_field.delete("g-recaptcha-response")
 
-    puts("here", @messsage_body, @from, @to, @subject)
-    @mail_item = ContactUs.send_mail(@message_body, @from, @to, @subject)
-    @mail_item.deliver
+    requester_ip_address = request.remote_ip
+    secret_server_code = Settings.google_recaptcha_private_key
     
-    redirect_to @redirect_to, notice: "Your contact request has been sent."
+    url = URI.parse('https://www.google.com/recaptcha/api/siteverify')
+    req = Net::HTTP::Post.new(url.path)
+    req.form_data = datablock  = {
+      :secret=>secret_server_code, 
+      :response=>response_code, 
+      :remoteip=>requester_ip_address}
+    
+    con = Net::HTTP.new(url.host, url.port)
+    con.use_ssl = true
+    response = con.start {|http| http.request(req)}  
+    response_parsed  = JSON.parse(response.read_body).with_indifferent_access
+
+    if response_parsed[:success] or response_code.blank? then
+      @message_body = body_field.to_yaml.split("\n")[1..-1].join("\n")
+
+      puts("here", @messsage_body, @from, @to, @subject)
+      @mail_item = ContactUs.send_mail(@message_body, @from, @to, @subject)
+      @mail_item.deliver
+    
+      notice_response = "Your contact request has been sent."
+
+    else
+      notice_response = "Sorry, your request could not be sent, please try again."
+      @redirect_to = request.original_url
+    end
+    redirect_to @redirect_to, notice: notice_response
+  
     #
     #   
     #         render body: nil;

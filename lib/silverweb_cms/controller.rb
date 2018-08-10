@@ -72,7 +72,7 @@ module SilverwebCms
           session[:last_seen]=Time.now
           session[:ip_address]= request.remote_ip rescue "n/a"
            
-          if user.roles.where(:name=>"Admin").length>0 then
+          if !user.nil? and user.roles.where(:name=>"Admin").length>0 and Settings.activate_rack_mini_profiler.to_s=="true" then
             Rack::MiniProfiler.authorize_request
           end
           
@@ -88,7 +88,7 @@ module SilverwebCms
             user.user_live_edit.current_id = params[:id]
             user.user_live_edit.save      
           end
-          unless user.roles.detect{|role|
+          unless !user.nil? and user.roles.detect{|role|
               role.rights.detect{|right|
                 ((right.action == action_name)|(right.action == "*")|(right.action.include? action_name)) && right.controller == self.class.controller_path
               }
@@ -126,7 +126,7 @@ module SilverwebCms
       end
   
       def get_field
-        the_value =  self.class.controller_path.classify.constantize.find(params[:id]).send(params[:field_name])
+        the_value =  self.class.controller_path.classify.constantize.find(params[:id]).send(params[:field_name]) rescue ""
     
         case the_value.class.to_s
         when "Date"

@@ -43,7 +43,7 @@ class ApplicationController < ActionController::Base
     if(self.class.controller_path == "users" && action_name=="create")
     else
       user =  User.find_by_id(session[:user_id])
-      unless user.roles.detect{|role|
+      unless !user.nil? and user.roles.detect{|role|
           role.rights.detect{|right|
             ((right.action == action_name)|(right.action == "*")|(right.action.include? action_name)) && right.controller == self.class.controller_path
           }

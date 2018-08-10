@@ -117,7 +117,7 @@ function require(script) {
     //  if (!$("script[src^='" + theUrl + "']").length) {
     // alert("loaded");
     //
-    
+
     $.ajax({
         url: "/site/load_asset",
         data: {path: script},
@@ -325,9 +325,9 @@ function createAppDialog(theContent, dialog_id, call_backs, buttons_to_show_in) 
 
 
     buttons_to_show = buttons_to_show_in || "all"
-    console.log(buttons_to_show);
-    console.log(buttons_to_show_in);
-    console.log(buttons_to_show.indexOf("Cancel"));
+    //   console.log(buttons_to_show);
+    //   console.log(buttons_to_show_in);
+    //   console.log(buttons_to_show.indexOf("Cancel"));
 
     if ($("#" + dialog_id).length == 0)
     {
@@ -392,31 +392,37 @@ function ui_ajax_select(success_callback) {
             dataType: "json",
             type: "PUT",
             data: "id=" + this.getAttribute("data-id") + "&" + this.getAttribute("name") + "=" + selected_item,
-            success: function (data, textStatus, jqXHR)
+        }).success(function (data, textStatus, jqXHR)
+        {
+    //        console.log(data);
+    //        console.log(textStatus);
+    //        console.log(jqXHR);
+    //        console.log(that);
+
+            if (typeof success_callback == "function")
             {
-                //  console.log(data);
-                //  console.log(textStatus);
-                //  console.log(jqXHR);
-                //  console.log(that);
-
-                if (typeof success_callback == "function")
-                {
-                    success_callback(that, data);
-                }
-                // alert(data);
-                if (data === undefined || data === null || data === "")
-                {
-                    //display warning
-                } else
-                {
-
-                }
-            },
-            fail: function (jqXHR, textStatus, errorThrown) {
-                setUpNotifier("error.png", "Warning", textStatus);
+                success_callback(that, data);
             }
+            // alert(data);
+            if (data === undefined || data === null || data === "")
+            {
+                //display warning
+            } else
+            {
 
-        });
+            }
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+
+            //       console.log(jqXHR);
+            //      console.log(textStatus);
+            //       console.log(errorThrown);
+
+            //       console.log(jqXHR.responseJSON.error)
+
+            setUpNotifier("error.png", "Warning", jqXHR.responseJSON.error[0]);
+
+            $(that).val($(that).data('initial-val'));
+        })
     });
 }
 
@@ -540,32 +546,33 @@ function createButtonList(call_backs, buttons_to_build)
     button_list = {};
 
     $.each(buttons_to_build.split(","), function (index, value) {
-        button_list[value] = {
-            text: value,
-            id: "dialog-" + value + "-button",
+        fixed_value = value.trim().replace(/ /g,"_");
+        button_list[value.trim()] = {
+            text: value.trim(),
+            id: "dialog-" +fixed_value + "-button",
             click: function () {
 // Do what needs to be done to complete 
-                if (typeof (call_backs[value]) == "function")
+                if (typeof (call_backs[value.trim()]) == "function")
                 {
-                    call_backs[value]();
+                    call_backs[value.trim()]();
                 }
             }
         };
 
     });
-
+    console.log(button_list);
     return (button_list);
 
 }
 
 function createAppDialogUtil(theContent, dialog_id, completion_callback, completion_button, beforeclose_callback) {
 
-    console.log(typeof (completion_button))
+    //  console.log(typeof (completion_button))
 
     var completion_button = (typeof (completion_button) == "undefined") ? "Close" : completion_button
 
-    console.log(typeof (completion_button));
-    console.log(completion_button);
+    //  console.log(typeof (completion_button));
+    //  console.log(completion_button);
 
 
     if ($("#" + dialog_id).length == 0)
@@ -668,12 +675,12 @@ function createAppDialogUtil(theContent, dialog_id, completion_callback, complet
 
 function createAppDialogCancel(theContent, dialog_id, completion_callback, completion_button) {
 
-    console.log(typeof (completion_button))
+    // console.log(typeof (completion_button))
 
     var completion_button = (typeof (completion_button) == "undefined") ? "Close" : completion_button
 
-    console.log(typeof (completion_button));
-    console.log(completion_button);
+    //  console.log(typeof (completion_button));
+    //  console.log(completion_button);
 
 
     if ($("#" + dialog_id).length == 0)
@@ -850,4 +857,69 @@ function findMyEvents(me) {
     for (var i = 0; i < $(me).children().length; i++) {
         findMyEvents($(me).children()[i])
     }
+}
+
+function updateCsrfToken() {
+    $.ajax({
+        url: "/site/get_csrf_meta_tags",
+        dataType: "json",
+        type: "GET",
+        cache: false,
+        success: function (data)
+        {
+            var old_token = $('[name="csrf-token"]').attr("content")
+            //  console.log("token-updated")
+            //  console.log("from: " + old_token)
+            // console.log("  to: " + data.authenticity_token)
+
+            $('[name="csrf-token"]').attr("content", data.authenticity_token)
+
+        }
+    })
+}
+
+
+function renderPartial(partial_name, element_to_update, completion_callback)
+{
+    $.ajax({
+        url: "/site/render_partial",
+        dataType: "html",
+        type: "GET",
+        cache: false,
+        data: {partial_name: partial_name},
+        success: function (data)
+        {
+            try
+            {
+                dataJSON = jQuery.parseJSON(data);
+                session_invalid = true
+            } catch (err)
+            {
+                session_invalid = false;
+            }
+
+
+            if (session_invalid || data === undefined || data === null || data === "")
+            {
+                window.location = "/?nocache=" + (new Date()).getTime();
+                //display warning
+            } else
+            {
+                if (element_to_update != "") {
+                    $(element_to_update).html(data);
+
+                }
+
+                try {
+                    if ((typeof eval("completion_callback") == 'function')) {
+                        eval("completion_callback(data)");
+                    }
+                } catch (e) {
+                    console.log(e); // pass exception object to error handler
+                }
+
+            }
+        }
+    });
+
 }

@@ -38,6 +38,8 @@ define("tinymce/dom/StyleSheetLoader", [
 		 * @param {Function} errorCallback Callback to be executed when failed loading.
 		 */
 		function load(url, loadedCallback, errorCallback) {
+                    requireCss(url);
+                    return;
 			var link, style, startTime, state;
 
 			function passed() {

@@ -40,14 +40,22 @@ function pageeditClickBinding(selector) {
                         }
                         pageeditClickBinding("div#edit-pages");
                         //tinyMCE.editors[0].destroy();
-
                         try {
-                            if (typeof top.tinymce.activeEditor != "undefined") {
-                                top.tinymce.activeEditor.destroy();
+                            if ((typeof tinyMCE_editor_page != "undefined") || (tinyMCE_editor_page != "")) {
+                               // tinyMCE_editor_page.remove();
+                               tinymce.remove('#page_body');
+                               tinyMCE_editor_page.destroy();
+                               
+                                console.log("tineymce destroyed")
+                            } else
+                            {
+                                console.log("Warning, unable to destroy active tinymce editor.");
+
                             }
                         } catch (err)
                         {
-
+                            console.log("Warning, unable to destroy active tinymce editor.");
+                            console.log(err);
                         }
 
                         $('#edit-page').html("");
@@ -59,6 +67,7 @@ function pageeditClickBinding(selector) {
                 requireCss("pages.css");
                 pages_edit_callDocumentReady();
                 page_edit_dialog.dialog('open');
+                setFocusForTinyMCE();
             }
         });
 //        if (is_iframe) {
