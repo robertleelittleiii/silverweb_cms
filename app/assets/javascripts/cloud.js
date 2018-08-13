@@ -414,37 +414,38 @@ function bindResetClick() {
 }
 
 function userLoggedIn() {
-    $.ajax({
-        url: "/site/session_active",
-        type: "POST",
-        dataType: "json",
-        success: function (data)
-        {
-            var page_login_status = $("div#login-status").text();
-            if (data == true) {
-                updateCsrfToken();
-                if (page_login_status == "true") {
-                    // do nothing
-
-                } else
-                {
-                    login_sucessfull();
-                }
-            } else
-            {   // we were logged in but the server loged us off either by the cron job or by the user loging out on another window so refresh the page.
-                if (page_login_status == "true") {
-                    window.location = "/?nocache=" + (new Date()).getTime();
-                } else
-                { // we are at the login screen, update the CSR to make sure when we login, the CSR is valid (it may have expired)
+    if ($("div#login-status").length > 0) {
+        $.ajax({
+            url: "/site/session_active",
+            type: "POST",
+            dataType: "json",
+            success: function (data)
+            {
+                var page_login_status = $("div#login-status").text();
+                if (data == true) {
                     updateCsrfToken();
+                    if (page_login_status == "true") {
+                        // do nothing
+
+                    } else
+                    {
+                        login_sucessfull();
+                    }
+                } else
+                {   // we were logged in but the server loged us off either by the cron job or by the user loging out on another window so refresh the page.
+                    if (page_login_status == "true") {
+                        window.location = "/?nocache=" + (new Date()).getTime();
+                    } else
+                    { // we are at the login screen, update the CSR to make sure when we login, the CSR is valid (it may have expired)
+                        updateCsrfToken();
+                    }
+                    // alert("refresh to site");
                 }
-                // alert("refresh to site");
+                // console.log(data);
+
             }
-            // console.log(data);
-
-        }
-    });
-
+        });
+    }
 }
 
 function check_login_status() {
@@ -477,8 +478,8 @@ function set_my_timezone() {
 }
 function login_sucessfull(url_to_goto, show_main_menu) {
 
-    show_main_menu = typeof(show_main_menu) == "undefined" ? true : show_main_menu
- 
+    show_main_menu = typeof (show_main_menu) == "undefined" ? true : show_main_menu
+
     allow_login_check = false;
 
     //   toggle_login_box(false);
@@ -552,7 +553,7 @@ function login_sucessfull(url_to_goto, show_main_menu) {
 
     allow_login_check_timer = setTimeout("allow_login_check=true;", 10000);
     // check_login_status();
-    
+
     if (show_main_menu) {
         updateAppDiv();
     }
