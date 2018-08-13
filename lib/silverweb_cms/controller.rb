@@ -39,7 +39,7 @@ module SilverwebCms
       
       def redirect_back_or_default(default = root_url, *args)
         if request.env['HTTP_REFERER'].present? && request.env['HTTP_REFERER'] != request.env['REQUEST_URI']
-          redirect_to :back, *args
+          redirect_back(fallback_location: root_path)
         else
           redirect_to default, *args
         end
@@ -94,7 +94,7 @@ module SilverwebCms
               }
             }
             flash[:notice] = "You are not authorized to view the page you requested (Action: #{action_name}, Controller: #{self.class.controller_path})"
-            request.env["HTTP_REFERER" ] ? (redirect_to :back) : (redirect_to "")
+            request.env["HTTP_REFERER" ] ? (redirect_back(fallback_location: root_path)) : (redirect_to "")
             return false
           end
         end
@@ -105,7 +105,7 @@ module SilverwebCms
 
         current_user.user_live_edit.current_field = params[:current_field]
         current_user.user_live_edit.save
-        render :nothing=>true
+        render body: nil
 
       end
   
@@ -121,7 +121,7 @@ module SilverwebCms
         user.user_live_edit.current_id = params[:id]
         user.user_live_edit.save      
         
-        render :nothing=>true
+        render body: nil
 
       end
   

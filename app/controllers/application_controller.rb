@@ -49,7 +49,7 @@ class ApplicationController < ActionController::Base
           }
         }
         flash[:notice] = "You are not authorized to view the page you requested"
-        request.env["HTTP_REFERER" ] ? (redirect_to :back) : (redirect_to "")
+        request.env["HTTP_REFERER" ] ? (redirect_back(fallback_location: root_path)) : (redirect_to "")
         return false
       end
     end
