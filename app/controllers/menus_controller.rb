@@ -192,7 +192,7 @@ class MenusController < ApplicationController
     #begin
     render :partial=>(name.downcase + "_type.html") 
     #rescue 
-    #  render :text=>""
+    #  render :plain=>""
     # =>  end
     # render body: nil
 

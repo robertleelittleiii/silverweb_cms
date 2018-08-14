@@ -101,10 +101,19 @@ module SilverwebCms
       end
       
       def update_user_field
-        current_user =  User.find_by_id(session[:user_id])
+        puts("*"*50)
+        puts(params)
+        parameters = params.permit(params.keys).to_h
 
-        current_user.user_live_edit.current_field = params[:current_field]
+        current_user =  User.find_by_id(session[:user_id])
+        current_user.user_live_edit.current_field = parameters[:current_field]
+        current_user.user_live_edit.current_action = parameters[:action]
+        current_user.user_live_edit.current_id = parameters[:id]
+        
         current_user.user_live_edit.save
+        
+        puts(current_user.user_live_edit.errors)
+        
         render body: nil
 
       end
@@ -127,7 +136,7 @@ module SilverwebCms
   
       def get_field
         the_value =  self.class.controller_path.classify.constantize.find(params[:id]).send(params[:field_name]) rescue ""
-    
+        
         case the_value.class.to_s
         when "Date"
           return_value = Date.parse(the_value.to_s).strftime(params[:format_string])
@@ -137,7 +146,7 @@ module SilverwebCms
           return_value = the_value
         end
     
-        render :text=>return_value
+        render plain: return_value
       end
 
     end

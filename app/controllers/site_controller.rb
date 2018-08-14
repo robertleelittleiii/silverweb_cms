@@ -31,7 +31,7 @@ class SiteController < ApplicationController
         format.html # new.html.erb
         format.json  { head :ok }
       else
-        format.html { render :text=>flash.now[:notice], status: :non_authoritative_information, content_type: "application/json" }
+        format.html { render plain: flash.now[:notice], status: :non_authoritative_information, content_type: "application/json" }
         format.json  { render :json => @menu.errors, :status => :unprocessable_entity }
       end
     
@@ -908,7 +908,7 @@ class SiteController < ApplicationController
   #      
   #    respond_to do |format|
   #      format.json  { head :ok }
-  #      format.html { render :text=>@flash_message }
+  #      format.html { render plain: @flash_message }
   #    end
   #
   #  end
@@ -947,7 +947,7 @@ class SiteController < ApplicationController
   #    session[:cart] = nil
   #    find_cart
   #    
-  #    #    render(:nothing => true)
+  #    #    head :ok
   #
   #    #    redirect_to_index
   #
@@ -1005,7 +1005,7 @@ class SiteController < ApplicationController
   #    @cart.save
   #    
   #    puts(@cart.inspect)
-  #    render :text=>params[:cart][:coupon_code]
+  #    render plain: params[:cart][:coupon_code]
   #  end
   #  
   #  def load_product_style_slider

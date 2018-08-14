@@ -31,7 +31,7 @@ class SiteController < ApplicationController
         format.html # new.html.erb
         format.json  { head :ok }
       else
-        format.html { render :text=>flash.now[:notice], status: :non_authoritative_information, content_type: "application/json" }
+        format.html { render plain: flash.now[:notice], status: :non_authoritative_information, content_type: "application/json" }
         format.json  { render :json => @menu.errors, :status => :unprocessable_entity }
       end
     

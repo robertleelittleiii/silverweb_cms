@@ -169,7 +169,7 @@ class PagesController < ApplicationController
 
     @page.save
 
-    render(:nothing => true)
+    head :ok
 
   end
   

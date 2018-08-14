@@ -49,16 +49,18 @@ function refresh_user_live_edit() {
 function updateUserField(current_field) {
 
     var object_class = $($("div.object-info").last()).find("div#object-class").text().toLowerCase() + "s";
+    var object_id = $($("div.object-info").last()).find("div#object-id").text()
+
 
     if (object_class != "s") { // found a trackable field
         $.ajax({
             url: "/" + object_class + "/update_user_field",
             dataType: "html",
             type: "POST",
-            data: {current_field: current_field},
+            data: {current_field: current_field, id: object_id},
             success: function (data)
             {
-               // console.log(data);
+                // console.log(data);
 
             }
         });
@@ -228,17 +230,17 @@ function tinyMCELiveEditInit() {
     // Loop already initialised editors
     for (id in tinymce.editors) {
         if (id.trim()) {
-        //    console.log("active editor processing.")
-        //    console.log(id);
+            //    console.log("active editor processing.")
+            //    console.log(id);
             elementReady(id);
         }
     }
 
 // Wait for non-initialised editors to initialise
     tinymce.on('AddEditor', function (e) {
-     //   console.log("activate on init editor.")
+        //   console.log("activate on init editor.")
         elementReady(e.editor.id);
-     //   console.log(e.editor.id);
+        //   console.log(e.editor.id);
     });
 
 
@@ -252,8 +254,8 @@ function elementReady(editor_id) {
 
     // bind the following event(s)
     _editor.on("change", function (e) {
-     //   console.log("change in editor")
-      //  console.log(this)
+        //   console.log("change in editor")
+        //  console.log(this)
 
         // execute code
     });
@@ -261,8 +263,8 @@ function elementReady(editor_id) {
     _editor.on("click", function (e) {
 
         // execute code
-     //   console.log("clicked on editor");
-      //  console.log(this.id);
+        //   console.log("clicked on editor");
+        //  console.log(this.id);
 
         var object_field = $("textarea#" + this.id).attr("name").split("[")[1].slice(0, -1);
         //    $("#" + this.contentAreaContainer.id).attr("data-attribute", object_field);
@@ -274,8 +276,8 @@ function elementReady(editor_id) {
     _editor.on("blur", function (e) {
 
         // execute code
-     //   console.log("blured on editor")
-     //   console.log(this.id)
+        //   console.log("blured on editor")
+        //   console.log(this.id)
         updateUserField(null);
         tinyMCE.triggerSave();
         $("textarea#" + this.id).parent().parent().closest("form").trigger("submit");
@@ -289,18 +291,18 @@ function processtTinyMCEFields() {
     var userList = jQuery.parseJSON($("div#" + object_class + " div#live-edit-json").text())
     var live_edit_name = "mce-tinymce"
     $.each(userList, function (index, value) {
-    //    console.log("----- start ----");
-     //   console.log(value);
+        //    console.log("----- start ----");
+        //   console.log(value);
         if (value.current_field != null) {
             field_to_update = "div#" + object_class + " #" + object_class + "_" + value.current_field;
-    //        console.log(field_to_update);
+            //        console.log(field_to_update);
             field_object = $(field_to_update);
             field_object = $(field_to_update).parent().children().first();
 
             if ((field_object.length > 0) && (field_object.attr("class").indexOf(live_edit_name) != -1)) {
-     //           console.log("field_object.attr('class')");
-     //           console.log(field_object);
-    //            console.log(field_object.attr("class"));
+                //           console.log("field_object.attr('class')");
+                //           console.log(field_object);
+                //            console.log(field_object.attr("class"));
 
                 // if (field_object.attr("class").indexOf("locked") == -1) {
                 //      field_object.attr("hold-class", $(field_object).attr("class"));
@@ -318,11 +320,11 @@ function processtTinyMCEFields() {
 //                console.log(field_object)
             }
         }
- //       console.log(field_to_update)
- //       console.log(index + ": " + value);
- //       console.log(value);
- //       console.log(live_edit_name + "_" + object_class + "_" + value.current_field);
- //       console.log("----- end ----");
+        //       console.log(field_to_update)
+        //       console.log(index + ": " + value);
+        //       console.log(value);
+        //       console.log(live_edit_name + "_" + object_class + "_" + value.current_field);
+        //       console.log("----- end ----");
 
     });
 }
@@ -337,31 +339,31 @@ function updated_changed_fields() {
     $.each(fields_being_edited, function (edit_index, edit_value) {
         item_found = false;
         $.each(userList, function (index, value) {
- //           console.log(edit_value);
- //           console.log($(edit_value).attr("data-attribute"));
- //           console.log(value.current_field);
+            //           console.log(edit_value);
+            //           console.log($(edit_value).attr("data-attribute"));
+            //           console.log(value.current_field);
             if ($(edit_value).attr("data-attribute") == value.current_field)
             {
                 item_found = true;
             }
         });
 
- //       console.log("fields_being_edited");
- //       console.log(fields_being_edited.attr("id"));
+        //       console.log("fields_being_edited");
+        //       console.log(fields_being_edited.attr("id"));
 
         if (!item_found) {
             //        console.log("this was not found");
             if ($(edit_value).attr("id").indexOf("best_in_place") != -1) {
                 reload_best_in_place_item($(edit_value));
-  //              console.log("live edit best_in_place updated!");
+                //              console.log("live edit best_in_place updated!");
             }
             if ($(edit_value).is("select")) {
-   //             console.log("live edit select updated!");
+                //             console.log("live edit select updated!");
                 reloadAjaxSelectField($(edit_value));
             }
 
             if ($(edit_value).attr("class").indexOf("mce-tinymce") != -1) {
-    //            console.log("live edit tinyMCE updated!");
+                //            console.log("live edit tinyMCE updated!");
                 var tinyMCE_item = $(edit_value).parent().find("textarea");
                 var user_index = $(edit_value).attr("data-user-index");
 
