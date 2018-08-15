@@ -209,7 +209,7 @@ module UiHelper
       puts("array_index: #{array_index} , field_name: #{field_name}, hash value: #{hash_value}, value: #{value}")
 
     elsif object.class.to_s.include?("Settings") then # settins, treat it a bit differently
-      value = Settings[field]
+      value = Settings[field].to_s
       opts.merge!({:type => :textarea}) if value.length > MAX_LENGTH_TEXT_AREA
 
     else
