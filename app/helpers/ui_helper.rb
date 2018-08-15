@@ -1,5 +1,7 @@
 module UiHelper
         
+  MAX_LENGTH_TEXT_AREA = 85
+  
   #  This will hide or show a div based on the given condition.
   #  deprecated!
   #   def hidden_div_if(condition, attributes = {})
@@ -373,7 +375,7 @@ def editablefieldcreate(field_name,field_pointer, empty_message="Click me to add
   is_a_string = (field_pointer[field_name].class == String) rescue field_pointer.class == "Settings::ActiveRecord_Relation"
 
     
-  if (is_a_string and field_pointer[field_name].length > 85) or opts[:force_textarea] then
+    if (is_a_string and field_pointer[field_name].length > MAX_LENGTH_TEXT_AREA) or opts[:force_textarea] then
     ("<div id='field_#{field_name.to_s}' class='#{divClass}'>" +
         best_in_place(field_pointer, field_name, opts.merge(:type => :textarea, :nil => empty_message)).html_safe +
         '</div>').html_safe
