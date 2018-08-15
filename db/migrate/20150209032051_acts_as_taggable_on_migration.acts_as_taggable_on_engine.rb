@@ -25,7 +25,7 @@ class ActsAsTaggableOnMigration < ActiveRecord::Migration[5.0]
         t.datetime :created_at
       end
 
-      add_index :taggings, :tag_id if !ActiveRecord::Base.connection.index_exists? 'index_taggings_on_tag_id'
+      add_index :taggings, :tag_id if !ActiveRecord::Base.connection.index_exists?(:taggings, :tag_id, name: 'index_taggings_on_tag_id')
       add_index :taggings, [:taggable_id, :taggable_type, :context]
     end
   end
