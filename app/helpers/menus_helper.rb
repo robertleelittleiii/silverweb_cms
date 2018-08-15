@@ -259,7 +259,7 @@ module  MenusHelper
     
       html_options.merge!({:class=>params[:class]}) 
 
-      returnMenu=""
+      returnMenu="".dup
     
       puts(@menus.inspect)
       for @menu in @menus.menus
@@ -299,7 +299,7 @@ module  MenusHelper
     
     html_options.merge!({:class=>params[:class]}) 
     
-    returnMenu=""
+    returnMenu="".dup
 
 
     if @menu.blank? then
@@ -353,7 +353,7 @@ module  MenusHelper
       @parent_name = Menu.find(session[:parent_menu_id]).name rescue  ""  if @parent_name.blank? # menu_id
     end
     
-    returnMenu=""
+    returnMenu="".dup
 
     @top_menu = Menu.find_by_name(@menu_id)
     
@@ -415,7 +415,7 @@ module  MenusHelper
 
   def buildhorizontalmenuprodrop(params=nil)
     @menu_id= params[:menu_id]
-    returnMenu=""
+    returnMenu="".dup
     html_li_class = params[:html_li_class]
     
     @menu = Menu.find_by_name(@menu_id)
@@ -516,7 +516,7 @@ module  MenusHelper
 
     puts(user.name, user.roles.find_by_name("Admin"), menu.parent_id) rescue ""
         
-    returnval=""
+    returnval="".dup
     if user.blank? then
           
     else
@@ -538,7 +538,7 @@ module  MenusHelper
   
   def buildhorizontalmenusuperfish(params=nil)
     @menu_id= params[:menu_id]
-    returnMenu=""
+    returnMenu="".dup
     item_tag = params[:item_tag] || "li"
     @menu = Menu.find_by_name(@menu_id)
 
@@ -646,8 +646,8 @@ module  MenusHelper
   end
   
     
-  def menu_edit_div(menu, div_id="")
-    returnval=""
+  def menu_edit_div(menu, div_id="".dup)
+    returnval="".dup
     if session[:user_id] then
       user=User.find(session[:user_id])
       if user.roles.detect{|role|((role.name=="Admin") | (role.name=="Site Owner"))} then

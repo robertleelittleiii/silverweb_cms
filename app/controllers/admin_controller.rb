@@ -88,7 +88,7 @@ admin_params
   def update_ajax
 admin_params
 
-    @alert_message=""
+    @alert_message="".dup
     if params[:pointer_class]=="UserAttribute" then
       @user = UserAttribute.find(params[:id])
       @user[params[:field]] = params[params[:field]]

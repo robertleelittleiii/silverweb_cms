@@ -995,7 +995,7 @@ class SiteController < ApplicationController
     the_asset = ActionController::Base.helpers.compute_asset_path(path) rescue ""
     
     if the_asset == "/"+path then
-      the_asset=""
+      the_asset="".dup
     end
     
     render plain: the_asset

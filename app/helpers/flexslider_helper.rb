@@ -1,6 +1,6 @@
 module FlexsliderHelper
   
-  def show_flexslider_gallary(page, slider_id="flexslider", slider_class="")
+  def show_flexslider_gallary(page, slider_id="flexslider", slider_class="".dup)
     if not page.blank? and page.has_slider then
       
       # info for javascript 

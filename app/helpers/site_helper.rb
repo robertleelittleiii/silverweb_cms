@@ -164,7 +164,7 @@ module SiteHelper
     end #rescue ""
   end  
   
-  def show_nav_gallary(page,top_lead_text="", bottom_lead_text="", effect="fade")
+  def show_nav_gallary(page,top_lead_text="".dup, bottom_lead_text="".dup, effect="fade")
     if not page.blank? and page.has_slider then
               
       returnval = ""
@@ -215,7 +215,7 @@ module SiteHelper
   end
   
   def slide_edit_div(slide)
-    returnval=""
+    returnval="".dup
     if session[:user_id] then
       user=User.find(session[:user_id])
       if user.roles.detect{|role|((role.name=="Admin") | (role.name=="Site Owner"))} then
@@ -239,8 +239,8 @@ module SiteHelper
   end
   
 
-  def page_edit_div(page, div_id="")
-    returnval=""
+  def page_edit_div(page, div_id="".dup)
+    returnval="".dup
     begin
       if session[:user_id] then
         user=User.find(session[:user_id])
@@ -252,14 +252,14 @@ module SiteHelper
         end
       end
     rescue
-      returnval=""
+      returnval="".dup
     end
     return returnval.html_safe
 
   end
    
   def page_attr_display(page,full_screen="false", has_slider="false")
-    returnval=""
+    returnval="".dup
     returnval << "<div id=\"attr-pages\" class=\"hidden-item\">"
     returnval << "<div id=\"page-id\">"+(page.id.to_s rescue "n/a")+"</div>"
     returnval << "<div id=\"full-screen\">"+(page.full_screen.to_s rescue full_screen)+"</div>"

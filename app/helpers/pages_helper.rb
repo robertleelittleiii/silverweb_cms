@@ -1,7 +1,7 @@
 module PagesHelper
   
   def get_page_name
-    out=""
+    out="".dup
     if not @category_id.blank?
       puts("Category selected for get_page_name")
       out = @category_id
@@ -57,7 +57,7 @@ module PagesHelper
  
   
 #  def page_attr_display(page,full_screen="false")
-#    returnval=""
+#    returnval="".dup
 #    returnval="<div id=\"attr-pages\" class=\"hidden-item\">"
 #    returnval=returnval+"<div id=\"full-screen\">"+(page.full_screen.to_s rescue full_screen)+"</div>"
 #    returnval=returnval+ ((page.pop_up_page_link.blank? ? "" :"<div id=\"pop-up-page-link\">"+(page.pop_up_page_link.to_s ) rescue "" ) +"</div>")
