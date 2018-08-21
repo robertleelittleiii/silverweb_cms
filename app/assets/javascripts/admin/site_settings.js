@@ -63,8 +63,7 @@ function bindSiteToggleLinkClick()
 
             $("#site-button").html("Turn Site OFF");
             $("#site-status").html("Site is UP");
-        }
-        else {
+        } else {
             $("div#site-status").removeClass("site-up");
             $("div#site-status").addClass("site-down");
 
@@ -105,4 +104,5 @@ $(document).ready(function () {
     bindImageChage();
     bindSiteToggleLinkClick();
     bindCraigsListCheckClick();
+    ui_ajax_settings_select();
 });

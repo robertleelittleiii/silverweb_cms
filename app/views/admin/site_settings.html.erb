@@ -48,7 +48,11 @@
         <b>Email Carbon Copy Address:</b><br>
         <%=editablefieldcreate("cc_email_address", @settings)%>
       </p>
-      <p>
+       <p>
+        <b>Site Entry Page (home page):</b><br>
+          <%=ajax_select("home_page_name","settings",@settings, @page_list)%>
+        </p>
+        <p>
       </p>
     </div>
   </div>

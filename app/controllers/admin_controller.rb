@@ -134,6 +134,7 @@ class AdminController < ApplicationController
     @image_class = "none"
     # end
     @workers = Resque.workers rescue ["Redis not available[#{$!.message}]"]
+    @page_list= [["N O N E (select to clear)",""]]+  Page.all.collect {|e| [e.title, e.slug || e.title]}
 
     #    respond_to do |format|
     #      format.html 
