@@ -222,7 +222,7 @@ function setUpNotifier(icon, headline, message)
             + '<p>#{text}</p>'
             + '</div>'
             + '</div>';
-    if (message.length > 1)
+    if (typeof(message) != "undefined" && message.length > 1)
     {
         if ($("#notify-container").length == 0)
         {
