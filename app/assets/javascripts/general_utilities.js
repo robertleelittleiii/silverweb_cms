@@ -222,7 +222,7 @@ function setUpNotifier(icon, headline, message)
             + '<p>#{text}</p>'
             + '</div>'
             + '</div>';
-    if (message.length > 1)
+    if (typeof (message) != "undefined" && message.length > 1)
     {
         if ($("#notify-container").length == 0)
         {
@@ -394,10 +394,10 @@ function ui_ajax_select(success_callback) {
             data: "id=" + this.getAttribute("data-id") + "&" + this.getAttribute("name") + "=" + selected_item,
         }).success(function (data, textStatus, jqXHR)
         {
-    //        console.log(data);
-    //        console.log(textStatus);
-    //        console.log(jqXHR);
-    //        console.log(that);
+            //        console.log(data);
+            //        console.log(textStatus);
+            //        console.log(jqXHR);
+            //        console.log(that);
 
             if (typeof success_callback == "function")
             {
@@ -427,9 +427,14 @@ function ui_ajax_select(success_callback) {
 }
 
 
-function ui_ajax_checkbox() {
+function ui_ajax_checkbox(success_callback) {
 
-    $("input.ui-ajax-checkbox").bind("change", function () {
+    $("input.ui-ajax-checkbox").bind("click", function (event) {
+
+        event.stopPropagation(); // prevent click from propagation to other actions.
+
+    }).bind("change", function (event) {
+
 
         dataUrl = this.getAttribute("data-url");
         dataMethod = this.getAttribute("data-method");
@@ -457,18 +462,47 @@ function ui_ajax_checkbox() {
             url: dataUrl, // controller + "/update",
             dataType: dataType,
             type: dataMethod,
-            data: dataObj,
-            success: function (data)
-            {
-                // alert(data);
-                if (data === undefined || data === null || data === "")
-                {
-                    //display warning
-                } else
-                {
+            data: dataObj
+        }).success(function (data, textStatus, jqXHR)
+        {
+            var that = this;
+          //  console.log(data);
+          //  console.log(textStatus);
+          //  console.log(jqXHR);
+          //  console.log(that);
 
-                }
+            if (typeof success_callback == "function")
+            {
+                success_callback(that, data);
             }
+
+           if (data === undefined || data === null || data === "")
+            {
+                //display warning
+            } else
+            {
+
+            }
+
+            // alert(data);
+            if (data === undefined || data === null || data === "")
+            {
+                //display warning
+            } else
+            {
+
+            }
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+
+            console.log(jqXHR);
+            console.log(textStatus);
+            console.log(errorThrown);
+
+            console.log(jqXHR.responseJSON.error)
+
+            setUpNotifier("error.png", "Warning", jqXHR.responseJSON.error[0]);
+
+            $(that).val($(that).data('initial-val'));
         });
     });
 }
@@ -546,10 +580,10 @@ function createButtonList(call_backs, buttons_to_build)
     button_list = {};
 
     $.each(buttons_to_build.split(","), function (index, value) {
-        fixed_value = value.trim().replace(/ /g,"_");
+        fixed_value = value.trim().replace(/ /g, "_");
         button_list[value.trim()] = {
             text: value.trim(),
-            id: "dialog-" +fixed_value + "-button",
+            id: "dialog-" + fixed_value + "-button",
             click: function () {
 // Do what needs to be done to complete 
                 if (typeof (call_backs[value.trim()]) == "function")
