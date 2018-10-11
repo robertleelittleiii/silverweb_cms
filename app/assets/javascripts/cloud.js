@@ -17,7 +17,7 @@ var allow_login_check = true;
 var allow_login_check_timer = ""
 
 function cloud1() {
-    body_width = ($("body").width() + 150) + "px";
+    var body_width = ($("body").width() + 150) + "px";
     $("#cloud1").animate({
         left: "+=" + body_width
     }, 10000).animate({
@@ -30,27 +30,33 @@ function cloud1() {
     if (typeof LoginScreenCallback == "function") {
         LoginScreenCallback();
     }
+    cloud1id = undefined;
 
     cloud1id = setTimeout("cloud1()", 10000);
 }
+
 function cloud2() {
-    body_width = ($("body").width() + 250) + "px";
+    var body_width = ($("body").width() + 250) + "px";
 
     $("#cloud2").animate({
         left: "+=" + body_width
     }, 9000).animate({
         left: "-250px"
     }, 0)
+    cloud2id = undefined;
+    
     cloud2id = setTimeout("cloud2()", 9000);
 }
 function cloud3() {
-    body_width = ($("body").width() + 100) + "px";
+    var body_width = ($("body").width() + 100) + "px";
 
     $("#cloud3").animate({
         left: "+=" + body_width
     }, 6000).animate({
         left: "-100px"
     }, 0)
+    
+    cloud3id = undefined;
 
     cloud3id = setTimeout("cloud3()", 6000);
 }
@@ -64,6 +70,9 @@ function stop_animation() {
     clearTimeout(cloud1id);
     clearTimeout(cloud2id);
     clearTimeout(cloud3id);
+    cloud1id = undefined;
+    cloud2id = undefined;
+    cloud3id = undefined;
 }
 
 function initial_animation() {

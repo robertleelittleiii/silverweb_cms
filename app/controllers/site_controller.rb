@@ -282,7 +282,7 @@ class SiteController < ApplicationController
     @page = ((Page.find_by_id(params[:id]) || Page.find_by_title(params[:page_name]) || (params[:page_name].blank? ? nil : Page.where('lower(title) = ?', params[:page_name].gsub("_"," ").gsub("-"," ").downcase).first) || Page.find_by_slug(params[:page_name])) || Page.find_by_slug(Settings.home_page_name) || Page.find_by_title(Settings.home_page_name) || Page.find_by_title("Home")) || Page.new(:title=>"'Home' not found.", :body=>"'Home' not found.")   
   
   end
-  
+    
   
   def show_page
     session[:mainnav_status] = false
