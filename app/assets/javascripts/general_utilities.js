@@ -425,6 +425,87 @@ function ui_ajax_select(success_callback) {
         })
     });
 }
+// JQyuery version of ui_ajax_checkbox.
+
+jQuery.fn.extend({
+    ui_ajax_checkbox: function (success_callback) {
+        return this.each(function (success_callback) {
+            this.bind("click", function (event) {
+
+                event.stopPropagation(); // prevent click from propagation to other actions.
+
+            }).bind("change", function (event) {
+
+
+                dataUrl = this.getAttribute("data-url");
+                dataMethod = this.getAttribute("data-method");
+                dataType = this.getAttribute("data-type");
+                isChecked = $(this).is(':checked');
+                dataClass = this.getAttribute("data-class");
+                fieldName = this.getAttribute("name");
+                checkType = this.getAttribute("data-check-type");
+                checkBoxValue = this.getAttribute("checkbox_value");
+                var dataObj = {};
+                dataObj[dataClass] = {};
+                if (checkType == "boolean")
+                {
+                    dataObj[dataClass][fieldName] = (isChecked ? 1 : 0)
+                } else
+                {
+                    dataObj[dataClass][fieldName] = (isChecked ? checkBoxValue : "")
+                }
+
+
+//alert(this.getAttribute("data-id"));
+
+                $.ajax({
+                    url: dataUrl, // controller + "/update",
+                    dataType: dataType,
+                    type: dataMethod,
+                    data: dataObj
+                }).success(function (data, textStatus, jqXHR)
+                {
+                    var that = this;
+                    //  console.log(data);
+                    //  console.log(textStatus);
+                    //  console.log(jqXHR);
+                    //  console.log(that);
+
+                    if (typeof success_callback == "function")
+                    {
+                        success_callback(that, data);
+                    }
+
+                    if (data === undefined || data === null || data === "")
+                    {
+//display warning
+                    } else
+                    {
+
+                    }
+
+// alert(data);
+                    if (data === undefined || data === null || data === "")
+                    {
+//display warning
+                    } else
+                    {
+
+                    }
+                }).fail(function (jqXHR, textStatus, errorThrown) {
+
+                    console.log(jqXHR);
+                    console.log(textStatus);
+                    console.log(errorThrown);
+                    console.log(jqXHR.responseJSON.error)
+
+                    setUpNotifier("error.png", "Warning", jqXHR.responseJSON.error[0]);
+                    $(that).val($(that).data('initial-val'));
+                });
+            });
+        });
+    }
+});
 
 
 function ui_ajax_checkbox(success_callback) {
@@ -444,7 +525,6 @@ function ui_ajax_checkbox(success_callback) {
         fieldName = this.getAttribute("name");
         checkType = this.getAttribute("data-check-type");
         checkBoxValue = this.getAttribute("checkbox_value");
-
         var dataObj = {};
         dataObj[dataClass] = {};
         if (checkType == "boolean")
@@ -466,17 +546,17 @@ function ui_ajax_checkbox(success_callback) {
         }).success(function (data, textStatus, jqXHR)
         {
             var that = this;
-          //  console.log(data);
-          //  console.log(textStatus);
-          //  console.log(jqXHR);
-          //  console.log(that);
+            //  console.log(data);
+            //  console.log(textStatus);
+            //  console.log(jqXHR);
+            //  console.log(that);
 
             if (typeof success_callback == "function")
             {
                 success_callback(that, data);
             }
 
-           if (data === undefined || data === null || data === "")
+            if (data === undefined || data === null || data === "")
             {
                 //display warning
             } else
@@ -497,11 +577,9 @@ function ui_ajax_checkbox(success_callback) {
             console.log(jqXHR);
             console.log(textStatus);
             console.log(errorThrown);
-
             console.log(jqXHR.responseJSON.error)
 
             setUpNotifier("error.png", "Warning", jqXHR.responseJSON.error[0]);
-
             $(that).val($(that).data('initial-val'));
         });
     });
@@ -578,7 +656,6 @@ function updateMenu(menu_id)
 function createButtonList(call_backs, buttons_to_build)
 {
     button_list = {};
-
     $.each(buttons_to_build.split(","), function (index, value) {
         fixed_value = value.trim().replace(/ /g, "_");
         button_list[value.trim()] = {
@@ -592,16 +669,14 @@ function createButtonList(call_backs, buttons_to_build)
                 }
             }
         };
-
     });
     console.log(button_list);
     return (button_list);
-
 }
 
 function createAppDialogUtil(theContent, dialog_id, completion_callback, completion_button, beforeclose_callback) {
 
-    //  console.log(typeof (completion_button))
+//  console.log(typeof (completion_button))
 
     var completion_button = (typeof (completion_button) == "undefined") ? "Close" : completion_button
 
@@ -617,15 +692,13 @@ function createAppDialogUtil(theContent, dialog_id, completion_callback, complet
     {
         dialogContainer = $("#" + dialog_id);
     }
-    // $('#app-dialog').html(theContent);
+// $('#app-dialog').html(theContent);
     theContent = '<input type="hidden" autofocus="autofocus" />' + theContent
 
     $('#' + dialog_id).html(theContent);
-
     theHeight = $('#' + dialog_id + ' #dialog-height').text() || "500";
     theWidth = $('#' + dialog_id + ' #dialog-width').text() || "500";
     theTitle = $('#' + dialog_id + ' #dialog-name').html() || "Edit";
-
     theAppDialog = $('#' + dialog_id).dialog({
         autoOpen: false,
         modal: true,
@@ -645,17 +718,14 @@ function createAppDialogUtil(theContent, dialog_id, completion_callback, complet
 //                    }
 
                     $(this).dialog("close");
-
                 }
             }],
         beforeClose: function (event, ui)
         {
             var close_dialog = true;
-
             if (typeof (beforeclose_callback) == "function")
             {
                 close_dialog = beforeclose_callback(event, ui);
-
             }
             return close_dialog;
         },
@@ -669,8 +739,6 @@ function createAppDialogUtil(theContent, dialog_id, completion_callback, complet
             $('#' + dialog_id).html("");
             $('#' + dialog_id).dialog("destroy");
             $('#' + dialog_id).remove();
-
-
             try {
                 if (typeof (refresh_user_live_edit) == 'function') {
                     refresh_user_live_edit();
@@ -691,8 +759,6 @@ function createAppDialogUtil(theContent, dialog_id, completion_callback, complet
 
 
     });
-
-
 //    theAppDialog.dialog({
 //        // title: theTitle,
 //        width: theWidth,
@@ -702,14 +768,13 @@ function createAppDialogUtil(theContent, dialog_id, completion_callback, complet
     // $(dialogContainer).parent().find("span.ui-dialog-title").replaceWith(theTitle)
 
     theAppDialog.dialog("open");
-
     return(theAppDialog)
 }
 
 
 function createAppDialogCancel(theContent, dialog_id, completion_callback, completion_button) {
 
-    // console.log(typeof (completion_button))
+// console.log(typeof (completion_button))
 
     var completion_button = (typeof (completion_button) == "undefined") ? "Close" : completion_button
 
@@ -725,15 +790,13 @@ function createAppDialogCancel(theContent, dialog_id, completion_callback, compl
     {
         dialogContainer = $("#" + dialog_id);
     }
-    // $('#app-dialog').html(theContent);
+// $('#app-dialog').html(theContent);
     theContent = '<input type="hidden" autofocus="autofocus" />' + theContent
 
     $('#' + dialog_id).html(theContent);
-
     theHeight = $('#' + dialog_id + ' #dialog-height').text() || "500";
     theWidth = $('#' + dialog_id + ' #dialog-width').text() || "500";
     theTitle = $('#' + dialog_id + ' #dialog-name').html() || "Edit";
-
     theAppDialog = $('#' + dialog_id).dialog({
         autoOpen: false,
         modal: true,
@@ -745,7 +808,6 @@ function createAppDialogCancel(theContent, dialog_id, completion_callback, compl
                 text: "Cancel",
                 click: function () {
                     $(this).dialog("close");
-
                 },
                 id: "cancle-button"
 
@@ -762,7 +824,6 @@ function createAppDialogCancel(theContent, dialog_id, completion_callback, compl
                     }
 
                     $(this).dialog("close");
-
                 }
             }
         ],
@@ -773,7 +834,6 @@ function createAppDialogCancel(theContent, dialog_id, completion_callback, compl
             $('#' + dialog_id).html("");
             $('#' + dialog_id).dialog("destroy");
             $('#' + dialog_id).html("");
-
             try {
                 if (typeof (refresh_user_live_edit) == 'function') {
                     refresh_user_live_edit();
@@ -794,8 +854,6 @@ function createAppDialogCancel(theContent, dialog_id, completion_callback, compl
 
 
     });
-
-
 //    theAppDialog.dialog({
 //        // title: theTitle,
 //        width: theWidth,
@@ -805,7 +863,6 @@ function createAppDialogCancel(theContent, dialog_id, completion_callback, compl
     // $(dialogContainer).parent().find("span.ui-dialog-title").replaceWith(theTitle)
 
     theAppDialog.dialog("open");
-
     return(theAppDialog)
 }
 
@@ -843,7 +900,6 @@ function createAppDialogAdv(theContent, dialog_id, call_backs, buttons_to_show_i
     }
 
     button_list = createButtonList(call_backs, buttons_to_show_in);
-
     theContent = '<input type="hidden" autofocus="autofocus" />' + theContent
     theAppDialog = $('#' + dialog_id).dialog({
         autoOpen: false,
@@ -941,7 +997,6 @@ function renderPartial(partial_name, element_to_update, completion_callback)
             {
                 if (element_to_update != "") {
                     $(element_to_update).html(data);
-
                 }
 
                 try {
@@ -955,5 +1010,4 @@ function renderPartial(partial_name, element_to_update, completion_callback)
             }
         }
     });
-
 }
