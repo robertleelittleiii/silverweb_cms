@@ -425,6 +425,88 @@ function ui_ajax_select(success_callback) {
         })
     });
 }
+// JQyuery version of ui_ajax_checkbox.
+
+jQuery.fn.extend({
+    ui_ajax_checkbox: function (success_callback) {
+        return this.each(function (success_callback) {
+            this.bind("click", function (event) {
+
+                event.stopPropagation(); // prevent click from propagation to other actions.
+
+            }).bind("change", function (event) {
+
+
+                dataUrl = this.getAttribute("data-url");
+                dataMethod = this.getAttribute("data-method");
+                dataType = this.getAttribute("data-type");
+                isChecked = $(this).is(':checked');
+                dataClass = this.getAttribute("data-class");
+                fieldName = this.getAttribute("name");
+                checkType = this.getAttribute("data-check-type");
+                checkBoxValue = this.getAttribute("checkbox_value");
+                var dataObj = {};
+                dataObj[dataClass] = {};
+                if (checkType == "boolean")
+                {
+                    dataObj[dataClass][fieldName] = (isChecked ? 1 : 0)
+                } else
+                {
+                    dataObj[dataClass][fieldName] = (isChecked ? checkBoxValue : "")
+                }
+
+
+//alert(this.getAttribute("data-id"));
+
+                $.ajax({
+                    url: dataUrl, // controller + "/update",
+                    dataType: dataType,
+                    type: dataMethod,
+                    data: dataObj
+                }).success(function (data, textStatus, jqXHR)
+                {
+                    var that = this;
+                    //  console.log(data);
+                    //  console.log(textStatus);
+                    //  console.log(jqXHR);
+                    //  console.log(that);
+
+                    if (typeof success_callback == "function")
+                    {
+                        success_callback(that, data);
+                    }
+
+                    if (data === undefined || data === null || data === "")
+                    {
+//display warning
+                    } else
+                    {
+
+                    }
+
+// alert(data);
+                    if (data === undefined || data === null || data === "")
+                    {
+//display warning
+                    } else
+                    {
+
+                    }
+                }).fail(function (jqXHR, textStatus, errorThrown) {
+
+                    console.log(jqXHR);
+                    console.log(textStatus);
+                    console.log(errorThrown);
+                    console.log(jqXHR.responseJSON.error)
+
+                    setUpNotifier("error.png", "Warning", jqXHR.responseJSON.error[0]);
+                    $(that).val($(that).data('initial-val'));
+                });
+            });
+        });
+    }
+});
+
 
 
 function ui_ajax_checkbox(success_callback) {
