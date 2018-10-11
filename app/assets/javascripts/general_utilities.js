@@ -427,10 +427,12 @@ function ui_ajax_select(success_callback) {
 }
 // JQyuery version of ui_ajax_checkbox.
 
+// JQyuery version of ui_ajax_checkbox.
+
 jQuery.fn.extend({
     ui_ajax_checkbox: function (success_callback) {
-        return this.each(function (success_callback) {
-            this.bind("click", function (event) {
+        return this.each(function () {
+            $(this).bind("click", function (event) {
 
                 event.stopPropagation(); // prevent click from propagation to other actions.
 
@@ -445,6 +447,9 @@ jQuery.fn.extend({
                 fieldName = this.getAttribute("name");
                 checkType = this.getAttribute("data-check-type");
                 checkBoxValue = this.getAttribute("checkbox_value");
+                
+                var that = this;
+                
                 var dataObj = {};
                 dataObj[dataClass] = {};
                 if (checkType == "boolean")
@@ -465,7 +470,7 @@ jQuery.fn.extend({
                     data: dataObj
                 }).success(function (data, textStatus, jqXHR)
                 {
-                    var that = this;
+                    
                     //  console.log(data);
                     //  console.log(textStatus);
                     //  console.log(jqXHR);
@@ -506,6 +511,7 @@ jQuery.fn.extend({
         });
     }
 });
+
 
 
 function ui_ajax_checkbox(success_callback) {
