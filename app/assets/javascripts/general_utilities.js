@@ -296,7 +296,7 @@ function createPasswordDialog() {
 }
 
 function setupCheckboxes(inputElement) {
-    $(inputElement).click(function () {
+    $(inputElement).off("click").on("click",function () {
         $(this).closest('form').trigger('submit');
     });
 
