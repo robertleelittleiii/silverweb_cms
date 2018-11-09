@@ -378,6 +378,60 @@ function createAppDialog(theContent, dialog_id, call_backs, buttons_to_show_in) 
     return(theAppDialog)
 }
 
+jQuery.fn.extend({
+    ui_ajax_select: function (success_callback) {
+        return this.each(function () {
+            $(this).unbind("change").bind("change", function (event) {
+
+                selected_item = $(this).val();
+                controller = this.getAttribute("data-path")
+                that = this
+                //alert(this.getAttribute("data-id"));
+
+
+                $.ajax({
+                    url: controller, // controller + "/update",
+                    dataType: "json",
+                    type: "PUT",
+                    data: "id=" + this.getAttribute("data-id") + "&" + this.getAttribute("name") + "=" + selected_item,
+                }).success(function (data, textStatus, jqXHR)
+                {
+                    //        console.log(data);
+                    //        console.log(textStatus);
+                    //        console.log(jqXHR);
+                    //        console.log(that);
+
+                    if (typeof success_callback == "function")
+                    {
+                        success_callback(that, data);
+                    }
+                    // alert(data);
+                    if (data === undefined || data === null || data === "")
+                    {
+                        //display warning
+                    } else
+                    {
+
+                    }
+                }).fail(function (jqXHR, textStatus, errorThrown) {
+
+                    //       console.log(jqXHR);
+                    //      console.log(textStatus);
+                    //       console.log(errorThrown);
+
+                    //       console.log(jqXHR.responseJSON.error)
+
+                    setUpNotifier("error.png", "Warning", jqXHR.responseJSON.error[0]);
+
+                    $(that).val($(that).data('initial-val'));
+                });
+            });
+        });
+    }
+});
+
+
+
 function ui_ajax_select(success_callback) {
 
     $("select.ui-ajax-select").off("change").on("change", function () {
@@ -445,9 +499,9 @@ jQuery.fn.extend({
                 fieldName = this.getAttribute("name");
                 checkType = this.getAttribute("data-check-type");
                 checkBoxValue = this.getAttribute("checkbox_value");
-                
+
                 var that = this;
-                
+
                 var dataObj = {};
                 dataObj[dataClass] = {};
                 if (checkType == "boolean")
@@ -468,7 +522,7 @@ jQuery.fn.extend({
                     data: dataObj
                 }).success(function (data, textStatus, jqXHR)
                 {
-                    
+
                     //  console.log(data);
                     //  console.log(textStatus);
                     //  console.log(jqXHR);
@@ -551,17 +605,17 @@ function ui_ajax_checkbox(success_callback) {
         }).success(function (data, textStatus, jqXHR)
         {
             var that = this;
-          //  console.log(data);
-          //  console.log(textStatus);
-          //  console.log(jqXHR);
-          //  console.log(that);
+            //  console.log(data);
+            //  console.log(textStatus);
+            //  console.log(jqXHR);
+            //  console.log(that);
 
             if (typeof success_callback == "function")
             {
                 success_callback(that, data);
             }
 
-           if (data === undefined || data === null || data === "")
+            if (data === undefined || data === null || data === "")
             {
                 //display warning
             } else
