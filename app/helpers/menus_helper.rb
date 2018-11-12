@@ -60,10 +60,13 @@ module  MenusHelper
     end
   end
 
-  def   buildmenuitem(menuItem, html_options, span_options, class_options=nil, options=nil)
+  def   buildmenuitem(menuItem, html_options_in, span_options, class_options=nil, options=nil)
     #    html_options = Menu.create_hash_from_string(menuItem.html_options)
     # html_options = {}
     return_link = ""
+    
+    #  added this because the html_options was getting modified and passed along to other menus.
+    html_options = html_options_in.clone
     
     puts("options-> #{options}")
     
@@ -112,6 +115,10 @@ module  MenusHelper
             class_options.merge!({:action => "show_page", :controller =>"site", :id=>menuItem.page_id})
           end
         end
+        if (!menuItem.rawhtml.blank? and menuItem.rawhtml == "true") then
+          html_options.merge!({class: "#{html_options[:class]} popup-window"})
+          html_options.merge!({"page-id"=>"#{menuItem.page.id}"})
+          end
        
         puts("------------ ------------------- -------------------")
         puts("item_link_to: #{item_link_to}")
@@ -205,6 +212,9 @@ module  MenusHelper
           class_options.merge!({:controller=>:site, :action=>:show_artifact_group, :department_id=>top_menu.name, :category_id=>"", :category_children=>false, :get_first_sub=>true})
           return_link =  link_to(item_link_to,class_options , html_options)
        
+        else
+          
+          
         end 
       
       
@@ -608,7 +618,7 @@ module  MenusHelper
     
     inputMenus.each_with_index  do |eachmenu, index | 
       if eachmenu.menu_active then
-       if eachmenu.name == params[:current_page]
+        if eachmenu.name == params[:current_page]
           html_link_class = params[:selected_class]
         else 
           html_link_class = ""

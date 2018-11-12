@@ -40,7 +40,7 @@
 //
 
 $(document).ready(function () {
-    
+
     process_admin_actions();
     popUpAlertifExists();
     updateSearchFormBindings();
@@ -56,30 +56,30 @@ $(document).ready(function () {
 
     ui_ajax_select();
     ui_ajax_checkbox();
-    
+
     $("a.button-link").button();
     enablePageEdit();
     enableSliderEdit();
 
     if ($('ul.sf-menu').length > 0)
     {
-     $('ul.sf-menu').superfish({
-              dropShadows: false                            // enable drop shadows 
-             
-         }); 
-     }
-     
-     //fix for issue with popup dialog and tinymce
+        $('ul.sf-menu').superfish({
+            dropShadows: false                            // enable drop shadows 
+
+        });
+    }
+
+    //fix for issue with popup dialog and tinymce
 //$(document).on('focusin', function(e) {
 //    if ($(e.target).closest(".mce-window").length || $(e.target).closest(".moxman-window").length) {
 //        e.stopImmediatePropagation();
 //    }
 //});
-
+    activate_popup_window_links();
 
 });
 
-$(document).off('focusin').on('focusin', function(e) {
+$(document).off('focusin').on('focusin', function (e) {
     if ($(event.target).closest(".mce-window").length) {
         e.stopImmediatePropagation();
         console.log("worked!");
@@ -131,9 +131,7 @@ function ajaxUpdateSearch(search_term) {
     {
         var formValue = $("#live-search #live-search_search").val().trim();
         console.log("search_term == ''");
-    }
-
-    else
+    } else
     {
         // $("#live-search #live-search_search").val(search_term);
         var formData = "search=" + search_term;
@@ -147,8 +145,7 @@ function ajaxUpdateSearch(search_term) {
     {
         window.location.href = "/site/live_search?search=" + formValue;
         $("#search-image").removeClass("loading"); // hide the spinner
-    }
-    else
+    } else
     {
 
         if (/chrome/.test(navigator.userAgent.toLowerCase()))
@@ -156,8 +153,7 @@ function ajaxUpdateSearch(search_term) {
             window.location.href = "/site/live_search?search=" + formValue;
             $("#search-image").removeClass("loading"); // hide the spinner
 
-        }
-        else {
+        } else {
             $.ajax({
                 url: full_search_url,
                 cache: false,
@@ -219,3 +215,92 @@ function updateSearchFormBindings() {
         }
     });
 }
+
+function activate_popup_window_links() {
+
+    $("a.popup-window").off("click").on("click", function (e) {
+        e.preventDefault();
+        console.log(this);
+        var page_id = $(this).attr("page-id");
+        create_popup_window_and_show(page_id);
+
+
+        return false;
+
+    });
+}
+
+function create_popup_window_and_show(page_id) {
+
+    $("body").append("<div class='popup-window'> <div class='content-center'>this is some content</div> </div>");
+
+    $.ajax({
+        url: "site/show_page_popup",
+        type: 'get',
+        data: {
+            id: page_id
+        },
+        success: function (data)
+        {
+            $("div.popup-window div.content-center").html(data);
+            $("div.popup-window").fadeIn();
+            // call_document_ready_on_show_page_popup();
+            bindClickToHidePopupWindow();
+            // enablePageEdit();
+            //enableSliderEdit();
+        }
+    });
+
+
+}
+
+
+function bindClickToHidePopupWindow() {
+
+    $("body").on("mouseup", function (e)
+    {
+        var container = $("div.popup-window");
+        // if the target of the click isn't the container nor a descendant of the container
+        if (!container.is(e.target) && container.has(e.target).length === 0)
+        {
+            container.fadeOut(1000, function () {
+                $(this).remove();
+            });
+            
+            $("body").off("mouseup");
+        }
+    });
+}
+
+//function show_page(page_id) {
+//
+//    if (typeof page_id === 'undefined')
+//    {
+//        page_id = $("div#page-id").first().text()
+//        if (page_id === "") {
+//            location.reload(true);
+//            return
+//        }
+//    }
+//    $.ajax({
+//        url: "site/show_page_popup",
+//        type: 'get',
+//        data: {
+//            id: page_id
+//        },
+//        success: function (data)
+//        {
+//            $("div#content").html(data);
+//            call_document_ready_on_show_page();
+//            enablePageEdit();
+//            enableSliderEdit();
+//        }
+//    });
+//}
+
+
+//$( "a" ).click(function( event ) {
+//  event.preventDefault();
+//  console.log("default " +event.type + " prevented")
+//
+//})

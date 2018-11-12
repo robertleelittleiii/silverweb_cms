@@ -2,7 +2,11 @@
 # To change this template, choose Tools | Templates
 # and open the template in the editor.
 %>
-        <p>
-        <b>Page to Display:</b><br>
-          <%=ajax_select("page_id","menu",@menu, @page_list)%>
-        </p>
+<p>
+    <b>Page to Display:</b><br>
+    <%=ajax_select("page_id","menu",@menu, @page_list)%>
+</p>
+
+<p>
+    <%=editablecheckboxedit("rawhtml", @menu, "Popup Window")%>
+</p>  
