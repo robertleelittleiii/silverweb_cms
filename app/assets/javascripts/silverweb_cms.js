@@ -243,7 +243,8 @@ function create_popup_window_and_show(page_id) {
         success: function (data)
         {
             $("div.popup-window div.content-center").html(data);
-            $("div.popup-window").fadeIn();
+            
+            $("div.popup-window div.content-center").addClass("show");
             // call_document_ready_on_show_page_popup();
             bindClickToHidePopupWindow();
             // enablePageEdit();
@@ -260,13 +261,22 @@ function bindClickToHidePopupWindow() {
     $("body").on("mouseup", function (e)
     {
         var container = $("div.popup-window");
+        var sub_container = $("div.popup-window div.content-center");
         // if the target of the click isn't the container nor a descendant of the container
         if (!container.is(e.target) && container.has(e.target).length === 0)
         {
-            container.fadeOut(1000, function () {
-                $(this).remove();
-            });
+            sub_container.removeClass("show");
             
+            sub_container.one('transitionend',
+                    function (e) {
+
+                        container.remove();
+
+                    });
+//            container.fadeOut(1000, function () {
+//                $(this).remove();
+//            });
+
             $("body").off("mouseup");
         }
     });
