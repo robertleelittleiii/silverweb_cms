@@ -4,14 +4,18 @@ class MailerController < ApplicationController
 
  
   def simple_form
-    @subject= params["subject"]
-    @from= params["address_from"]
-    @to= params["address_to"]
-    @redirect_to = params["redirect"].blank? ? "/home" : params["redirect"]
-      
-    @cc = params["copy"]== "1" ? @from : ""
+    simple_form_params = mailer_params
     
-    body_field = params.clone
+    @subject= simple_form_params["subject"]
+    @from = simple_form_params["address_from"]
+    @from_name = simple_form_params["FullName"]
+    
+    @to= simple_form_params["address_to"]
+    @redirect_to = simple_form_params["redirect"].blank? ? "/home" : simple_form_params["redirect"]
+      
+    @cc = simple_form_params["copy"]== "1" ? @from : ""
+    
+    body_field = simple_form_params.clone
     body_field.delete("copy")
     body_field.delete("send_message")
     body_field.delete("redirect")
@@ -68,5 +72,10 @@ class MailerController < ApplicationController
   end
 
   def authenticate
+  end
+  
+  
+  def mailer_params
+    params.permit!.to_hash
   end
 end

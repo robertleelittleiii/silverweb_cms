@@ -4,7 +4,7 @@
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
   </head>
   <body>
-      <b>You have a contact request from , <%= @user %></b>
+      <b>You have a contact request from <%= @user %></b>
     <p>
       EmailAddress: <%= @user %> <br/>
       <%= @form_data.gsub(/\n/, '<br><br>').html_safe %>.<br/>
