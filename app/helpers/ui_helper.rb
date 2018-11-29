@@ -582,9 +582,12 @@ module UiHelper
   
   def create_group_checks_live(field_name, field_pointer, value_list, tag_list_name, html_options={})
     return_value = ""
-    
-    value_list.each do |item|
-      return_value =  return_value + "<div class='div-#{tag_list_name}'>"+ editablecheckboxtag2(item, field_pointer,item,tag_list_name,html_options) +"</div>" 
+    if value_list.class == Array then
+      value_list.each do |item|
+        return_value =  return_value + "<div class='div-#{tag_list_name}'>"+ editablecheckboxtag2(item, field_pointer,item,tag_list_name,html_options) +"</div>" 
+      end
+    else 
+      return_value = "n/a"
     end
     return return_value.html_safe
   end
@@ -620,9 +623,9 @@ module UiHelper
   end
   
   def ajax_select(field_name, field_object, field_pointer, value_list, prompt='Please Select...', html_options={})
-   # puts(" - - - - - - - - - -  - - - - - - - - - - -  -  - - - ")
-   # puts(field_name, field_object, field_pointer.class, value_list.inspect)
-   # puts("Settings.send(field_name): '#{Settings.send(field_name)}'")
+    # puts(" - - - - - - - - - -  - - - - - - - - - - -  -  - - - ")
+    # puts(field_name, field_object, field_pointer.class, value_list.inspect)
+    # puts("Settings.send(field_name): '#{Settings.send(field_name)}'")
     # puts("field_pointer[field_name]: '#{field_pointer[field_name]}'")
     if field_name.include?("[\'") and field_name.include?("\']") then # this is an object reference.
       array_index = field_name.scan(/\[([^\)]+)\]/).first.first
@@ -630,9 +633,9 @@ module UiHelper
       hash_value = field_pointer.send(field)
       value = eval("hash_value[#{array_index}]") rescue ""
       # value = object.send(field_name)[array_index] rescue ""
-   #   puts("*" * 40)
-   #   puts("array_index: #{array_index} , field_name: #{field_name},field: #{field} hash value: #{hash_value}, value: #{value}")
-   #   
+      #   puts("*" * 40)
+      #   puts("array_index: #{array_index} , field_name: #{field_name},field: #{field} hash value: #{hash_value}, value: #{value}")
+      #   
       html_options = html_options.merge({"data-path"=>url_for(field_pointer).to_s ,"data-id"=>field_pointer.id ,"data-attribute"=>field_name, "data-object"=>field_object, "data-initial-val"=>field_pointer[field_name]}) rescue {}
       html_options[:class] = html_options[:class] + " ui-ajax-select" rescue "ui-ajax-select"
       
@@ -643,18 +646,18 @@ module UiHelper
       field = field_name.split("[").first
       value = field_pointer.send(field)[array_index] rescue ""
       
-    #  puts("array_index: #{array_index}\n , field_name: #{field_name},\n field: #{field} \n hash value: #{hash_value}, \n value: #{value}")
+      #  puts("array_index: #{array_index}\n , field_name: #{field_name},\n field: #{field} \n hash value: #{hash_value}, \n value: #{value}")
 
-     # puts("if value is empty, lets try to treat it as a hash")
+      # puts("if value is empty, lets try to treat it as a hash")
       # if value is empty, lets try to treat it as a hash
       if value.blank? or value.nil? then
         array_index = CGI.unescapeHTML(field_name).scan(/\[(.*?)\]/).flatten.join("\"][\"")
         hash_value = field_pointer.send(field) rescue {}
         value = (eval("hash_value[\"#{array_index}\"]") || "") rescue ""
       end
-     # puts("array_index: #{array_index}\n , field_name: #{field_name},\n field: #{field} \n hash value: #{hash_value}, \n value: #{value}")
+      # puts("array_index: #{array_index}\n , field_name: #{field_name},\n field: #{field} \n hash value: #{hash_value}, \n value: #{value}")
 
-    #  puts("if value is still empty, lets try to treat it as a hash with a trailing array element")
+      #  puts("if value is still empty, lets try to treat it as a hash with a trailing array element")
       # if value is still empty, lets try to treat it as a hash with a trailing array element
       if value.blank? or value.nil? then
         array_index = field_name.scan(/\[(.*?)\]/).flatten
@@ -666,9 +669,9 @@ module UiHelper
         end
       end
   
-    #  puts("*  " * 40)
-     # puts("array_index: #{array_index}\n , field_name: #{field_name},\n field: #{field} \n hash value: #{hash_value}, \n value: #{value}")
-     # puts("options_for_select(value_list, value): #{options_for_select(value_list, value)}")
+      #  puts("*  " * 40)
+      # puts("array_index: #{array_index}\n , field_name: #{field_name},\n field: #{field} \n hash value: #{hash_value}, \n value: #{value}")
+      # puts("options_for_select(value_list, value): #{options_for_select(value_list, value)}")
       
       html_options = html_options.merge({"data-path"=>url_for(field_pointer).to_s ,"data-id"=>field_pointer.id ,"data-attribute"=>field_name, "data-object"=>field_object, "data-initial-val"=>field_pointer[field_name]}) rescue {}
       html_options[:class] = html_options[:class] + " ui-ajax-select" rescue "ui-ajax-select"
