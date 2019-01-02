@@ -111,6 +111,7 @@ module  MenusHelper
           rescue 
             class_options.merge!({:action => "show_page", :controller =>"site", :id=>menuItem.page_id})
           end
+          html_options.merge!({"page-id"=>menuItem.page.id})
         end
        
         puts("------------ ------------------- -------------------")
