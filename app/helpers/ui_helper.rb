@@ -697,8 +697,10 @@ module UiHelper
       html_options[:class] = html_options[:class] + " ui-ajax-select" rescue "ui-ajax-select"
       
       # html_options==nil ? html_options={:class=>"ui-ajax-select", "data-path"=>url_for(field_pointer).to_s ,"data-id"=>field_pointer.id} : ""
-       
-      select(field_object,"#{field_name}",  options_for_select(value_list, field_pointer[field_name]),{ :prompt => prompt}, html_options )
+      prompt_hash = {}
+      prompt_hash ={ :prompt => prompt} if !prompt.blank? 
+        
+      select(field_object,"#{field_name}",  options_for_select(value_list, field_pointer[field_name]),prompt_hash, html_options )
     end
     
 
