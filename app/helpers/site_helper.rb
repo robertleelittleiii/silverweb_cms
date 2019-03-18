@@ -21,7 +21,7 @@ module SiteHelper
   #</div>
   #        
   def page_data_attr
-        return ("<div id='data-reload' class='hidden-item' data-page-params='site/show_page?id=#{@page.id}' data-page-update='call_document_ready_on_show_page'></div>").html_safe
+    return ("<div id='data-reload' class='hidden-item' data-page-params='site/show_page?id=#{@page.id}' data-page-update='call_document_ready_on_show_page'></div>").html_safe
   end
   
   def display_html(data)
@@ -287,9 +287,18 @@ module SiteHelper
   
   def get_asset_content(asset)
     if Rails.application.config.assets.compile == false then
-       render(:file=> (Rails.root.to_s + "/public" + ActionController::Base.helpers.compute_asset_path(asset)))
+      render(:file=> (Rails.root.to_s + "/public" + ActionController::Base.helpers.compute_asset_path(asset)))
     else
-       render(plain: Rails.application.assets[asset].to_s.html_safe)
+      render(plain: Rails.application.assets[asset].to_s.html_safe)
     end
+  end
+  
+  def user_ordered_navgrid
+    user_navgrid = SilverwebCms::Config.GRID_NAV
+    
+    user = User.find(session[:user_id]) 
+    user_navgrid =  SilverwebCms::Config.reorder_grid_nav(user.settings.menu_order) unless user.settings.menu_order.blank?
+    
+    return user_navgrid
   end
 end

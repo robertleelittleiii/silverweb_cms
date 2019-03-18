@@ -1036,6 +1036,16 @@ class SiteController < ApplicationController
     end
   end
   
+  def update_menu_order
+    @user = User.find(session[:user_id])
+    puts(params)
+    @user.settings.menu_order = params[:menu_order].split(",")
+    
+    respond_to do |format|
+      format.html if params[:data].blank?
+      format.json { head :ok }
+    end
+  end
   private 
   
   

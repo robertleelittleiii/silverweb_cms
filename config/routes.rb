@@ -33,6 +33,7 @@ Rails.application.routes.draw do
       post "set_time_zone"
       post "check_session"
       get "get_csrf_meta_tags"
+      post "update_menu_order"
     end 
   end
   

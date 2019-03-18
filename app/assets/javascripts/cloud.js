@@ -44,7 +44,7 @@ function cloud2() {
         left: "-250px"
     }, 0)
     cloud2id = undefined;
-    
+
     cloud2id = setTimeout("cloud2()", 9000);
 }
 function cloud3() {
@@ -55,7 +55,7 @@ function cloud3() {
     }, 6000).animate({
         left: "-100px"
     }, 0)
-    
+
     cloud3id = undefined;
 
     cloud3id = setTimeout("cloud3()", 6000);
@@ -844,7 +844,7 @@ function bindAppClick() {
                     }
                 } catch (e) {
 // statements to handle any exceptions
-// console.log(e); // pass exception object to error handler
+                    console.log(e); // pass exception object to error handler
                 }
 
             }

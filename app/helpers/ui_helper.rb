@@ -710,7 +710,7 @@ module UiHelper
   def generate_grid_tabnav(*args)
     html_options      = args.first || {}
     icon_list = args.second || {}
-    
+    puts(icon_list)
     grid_div_class = html_options[:grid_div_class].blank? ? "" : ("class='" + html_options[:grid_div_class]+"'")
     grid_div_id = html_options[:grid_div_id].blank? ? "" : ("id='" + html_options[:grid_div_id]+"'")
   
@@ -723,6 +723,8 @@ module UiHelper
     out << "<div #{grid_div_class} #{grid_div_id}>"
     out << "<ul #{grid_ul_class} #{grid_ul_id}>"
     icon_list.each  do |item|
+      puts(item)
+      puts(item.class)
       additional_args = item[:additional_args] ||{}
       additional_params = item[:additional_params] ||{}
 
@@ -730,7 +732,7 @@ module UiHelper
         
       format_args = item[:format].blank? ? {} : {:format=>item[:format]}
         
-      out << tab_link(navigation_icon(item[:name],item[:icon]),{:controller=>item[:controller], :action=>item[:action], :request_type=>"window", :window_type=>window_type, :role=>item[:role]}.merge!(additional_args).merge!(format_args), {:tooltip=> item[:tooltip], :name=>item[:name].gsub(/ /, '-')  ,:class=>grid_li_class, :remote=>true}.merge!(additional_params))
+      out << tab_link(navigation_icon(item[:name],item[:icon]),{:controller=>item[:controller], :action=>item[:action], :request_type=>"window", :window_type=>window_type, :role=>item[:role]}.merge!(additional_args).merge!(format_args), {:tooltip=> item[:tooltip],:id=>item[:id] || "", :name=>item[:name].gsub(/ /, '-')  ,:class=>grid_li_class, :remote=>true}.merge!(additional_params))
     end
     
     out << "</ul>"
@@ -771,8 +773,8 @@ module UiHelper
             }
           } 
           #  puts("html_options[:order]:  #{html_options[:order]}")
-        
-          return("<li id='#{html_options[:name].gsub(/ /,'-')}' class='hidden #{options[:role].to_s.downcase}' title='#{html_options[:tooltip].to_s}'>" + link_to(*args,&block) + "</li>").html_safe
+          item_id = html_options[:id].blank? ? html_options[:name].gsub(/ /,'-') : html_options[:id]
+          return("<li id='#{item_id}' class='hidden #{options[:role].to_s.downcase}' title='#{html_options[:tooltip].to_s}'>" + link_to(*args,&block) + "</li>").html_safe
      
         else 
           return ""

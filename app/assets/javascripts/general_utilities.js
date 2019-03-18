@@ -448,10 +448,10 @@ function ui_ajax_select(success_callback) {
             data: "id=" + this.getAttribute("data-id") + "&" + this.getAttribute("name") + "=" + selected_item,
         }).success(function (data, textStatus, jqXHR)
         {
-            //        console.log(data);
-            //        console.log(textStatus);
-            //        console.log(jqXHR);
-            //        console.log(that);
+                    console.log(data);
+                    console.log(textStatus);
+                    console.log(jqXHR);
+                    console.log(that);
 
             if (typeof success_callback == "function")
             {
@@ -523,10 +523,10 @@ jQuery.fn.extend({
                 }).success(function (data, textStatus, jqXHR)
                 {
 
-                    //  console.log(data);
-                    //  console.log(textStatus);
-                    //  console.log(jqXHR);
-                    //  console.log(that);
+                      console.log(data);
+                      console.log(textStatus);
+                      console.log(jqXHR);
+                      console.log(that);
 
                     if (typeof success_callback == "function")
                     {

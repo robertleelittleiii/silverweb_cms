@@ -25,6 +25,29 @@ module SilverwebCms
       @GRID_NAV_LIST << nav_item
     end
     
+    def self.reorder_grid_nav(new_order)
+      new_array = []
+      current_grid_nav = @GRID_NAV_LIST.dup
+
+      current_grid_nav.each_with_index do |nav_item,index|
+        if nav_item[:id].blank?
+          nav_item[:id] = nav_item[:name].sub(" ","-")
+          current_grid_nav[index] = nav_item
+        end
+      end
+    
+      new_order.each do |order_item|
+        reorderd_item = current_grid_nav.select{|item| item[:id] == order_item} 
+        current_grid_nav = current_grid_nav.reject{|item| item[:id] == order_item} 
+        
+        new_array << reorderd_item[0] if !reorderd_item.blank?
+      end
+      
+      new_array = new_array + current_grid_nav
+      
+      return new_array
+    end
+    
     def self.load_menu_types
       @MENU_TYPES = [["none",3],["page",1] , ["html",2], ["link",4], ["action",5]]
     end
@@ -39,7 +62,7 @@ module SilverwebCms
     
     
     def self.add_menu_fields(menu_fields)
-         @MENU_FIELDS << menu_fields
+      @MENU_FIELDS << menu_fields
     end
     
     def self.MENU_FIELDS
@@ -87,11 +110,11 @@ module SilverwebCms
     end
     
     
-        # USER ALLOW EDIT ATTR TO ALLOW LATER GEMS TO ADD TO USER FILEDS FOR EDIT.
+    # USER ALLOW EDIT ATTR TO ALLOW LATER GEMS TO ADD TO USER FILEDS FOR EDIT.
 
     @USER_PERMITED_FIELDS = []
     
-     def self.USER_PERMITTED_FIELDS
+    def self.USER_PERMITTED_FIELDS
       @USER_PERMITED_FIELDS 
     end
     
@@ -101,11 +124,11 @@ module SilverwebCms
     
     
     
-        # USER ATTRIBUTE ALLOW EDIT ATTR TO ALLOW LATER GEMS TO ADD TO USER FILEDS FOR EDIT.
+    # USER ATTRIBUTE ALLOW EDIT ATTR TO ALLOW LATER GEMS TO ADD TO USER FILEDS FOR EDIT.
 
     @USER_ATTRIBUTE_PERMITTED_FIELDS = []
     
-     def self.USER_ATTRIBUTE_PERMITTED_FIELDS
+    def self.USER_ATTRIBUTE_PERMITTED_FIELDS
       @USER_ATTRIBUTE_PERMITTED_FIELDS 
     end
     
