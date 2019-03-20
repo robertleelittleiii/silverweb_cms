@@ -717,16 +717,19 @@ function bindHideGrid() {
 function bindCloseIframe() {
 
     $("#hide-iframe").off("click").on("click", function () {
-        $("#nav-grid-links").fadeIn();
-        $("#nav-grid-overlay").fadeIn();
-        $("#application-space").addClass("hidden");
-        $($currentApplicationId).removeClass("blowup");
-        $(".grid_tabnav ul li").removeClass("hidden");
-        $("#cloud-switch").fadeOut();
-        clear_user_locks();
+        CloseIframe();
     });
 }
 
+function CloseIframe() {
+    $("#nav-grid-links").fadeIn();
+    $("#nav-grid-overlay").fadeIn();
+    $("#application-space").addClass("hidden");
+    $($currentApplicationId).removeClass("blowup");
+    $(".grid_tabnav ul li").removeClass("hidden");
+    $("#cloud-switch").fadeOut();
+    clear_user_locks();
+}
 function clear_user_locks() {
 
     $.ajax({
