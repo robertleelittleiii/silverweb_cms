@@ -296,17 +296,20 @@ module SiteHelper
   def user_ordered_navgrid
     user_navgrid = SilverwebCms::Config.GRID_NAV
     
-    user = User.find(session[:user_id]) 
-    user_navgrid =  SilverwebCms::Config.reorder_grid_nav(user.settings.menu_order) unless user.settings.menu_order.blank?
-    
+    user = User.find(session[:user_id]) rescue nil
+    if !user.nil? then
+      user_navgrid =  SilverwebCms::Config.reorder_grid_nav(user.settings.menu_order) unless user.settings.menu_order.blank?
+    end
     return user_navgrid
   end
   
-   def user_shortcut_navgrid
+  def user_shortcut_navgrid
     user_navgrid = []
     
-    user = User.find(session[:user_id]) 
-    user_navgrid =  SilverwebCms::Config.shortcut_grid_nav(user.settings.menu_shortcuts) unless user.settings.menu_shortcuts.blank?
+    user = User.find(session[:user_id]) rescue nil
+    if !user.nil? then
+      user_navgrid =  SilverwebCms::Config.shortcut_grid_nav(user.settings.menu_shortcuts) unless user.settings.menu_shortcuts.blank?
+    end
     
     return user_navgrid
   end
