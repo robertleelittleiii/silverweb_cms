@@ -1050,7 +1050,7 @@ class SiteController < ApplicationController
   def update_menu_shortcuts
     @user = User.find(session[:user_id])
     puts(params)
-    current_shortcuts = @user.settings.menu_shortcuts
+    current_shortcuts = @user.settings.menu_shortcuts rescue []
     
     if current_shortcuts.include?(params[:shortcut])
       current_shortcuts.delete(params[:shortcut])
