@@ -888,6 +888,7 @@ module UiHelper
   def navigation_icon( name, icon=''.dup, icon_id="")
     
     icon = icon.blank? ? name : icon
+    icon_included = @user.settings.menu_shortcuts.include?(icon_id) rescue false
     
     out = ""
      
@@ -899,7 +900,7 @@ module UiHelper
     out << "<div class='favorite' style='display:none;'>"
      out << image_tag("interface/star-filled.png", {:id=>"star-filled", :class=>"hidden-item"});
      out << image_tag("interface/star-empty.png", {:id=>"star-empty", :class=>"hidden-item"});
-     out << image_tag("interface/star-#{@user.settings.menu_shortcuts.include?(icon_id) ? "filled" : "empty" }.png", {:class=>"favorite-image"})
+     out << image_tag("interface/star-#{ icon_included ? "filled" : "empty" }.png", {:class=>"favorite-image"})
     out << "</div>"
     out << "<div id='ajax-wait'>"
     out << image_tag("cloud/cloud-ajax-loader.gif", {:class=>"ajax-wait", :style=>"display:none;"})
