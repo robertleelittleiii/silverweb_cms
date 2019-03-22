@@ -1046,6 +1046,26 @@ class SiteController < ApplicationController
       format.json { head :ok }
     end
   end
+  
+  def update_menu_shortcuts
+    @user = User.find(session[:user_id])
+    puts(params)
+    current_shortcuts = @user.settings.menu_shortcuts
+    
+    if current_shortcuts.include?(params[:shortcut])
+      current_shortcuts.delete(params[:shortcut])
+    else
+      current_shortcuts << params[:shortcut]
+    end
+     
+    @user.settings.menu_shortcuts = current_shortcuts
+    
+    respond_to do |format|
+      format.html if params[:data].blank?
+      format.json { head :ok }
+    end
+  end
+  
   private 
   
   

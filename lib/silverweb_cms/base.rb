@@ -25,6 +25,27 @@ module SilverwebCms
       @GRID_NAV_LIST << nav_item
     end
     
+    def self.shortcut_grid_nav(short_cuts)
+       new_array = []
+      current_grid_nav = @GRID_NAV_LIST.dup
+
+      current_grid_nav.each_with_index do |nav_item,index|
+        if nav_item[:id].blank?
+          nav_item[:id] = nav_item[:name].sub(" ","-")
+          current_grid_nav[index] = nav_item
+        end
+      end
+    
+      short_cuts.each do |order_item|
+        reorderd_item = current_grid_nav.select{|item| item[:id] == order_item} 
+        
+        new_array << reorderd_item[0] if !reorderd_item.blank?
+      end
+            
+      return new_array
+      
+    end
+    
     def self.reorder_grid_nav(new_order)
       new_array = []
       current_grid_nav = @GRID_NAV_LIST.dup

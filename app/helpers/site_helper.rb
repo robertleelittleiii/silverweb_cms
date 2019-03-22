@@ -301,4 +301,13 @@ module SiteHelper
     
     return user_navgrid
   end
+  
+   def user_shortcut_navgrid
+    user_navgrid = []
+    
+    user = User.find(session[:user_id]) 
+    user_navgrid =  SilverwebCms::Config.shortcut_grid_nav(user.settings.menu_shortcuts) unless user.settings.menu_shortcuts.blank?
+    
+    return user_navgrid
+  end
 end

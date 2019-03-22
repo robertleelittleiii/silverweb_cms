@@ -706,6 +706,8 @@ module UiHelper
 
   end
   
+  
+   
      
   def generate_grid_tabnav(*args)
     html_options      = args.first || {}
@@ -722,6 +724,42 @@ module UiHelper
     out = "" 
     out << "<div #{grid_div_class} #{grid_div_id}>"
     out << "<ul #{grid_ul_class} #{grid_ul_id}>"
+    icon_list.each  do |item|
+      puts(item)
+      puts(item.class)
+      additional_args = item[:additional_args] ||{}
+      additional_params = item[:additional_params] ||{}
+
+      window_type = item[:window_type] || ""
+        
+      format_args = item[:format].blank? ? {} : {:format=>item[:format]}
+        
+      out << tab_link(navigation_icon(item[:name],item[:icon],item[:id]),{:controller=>item[:controller], :action=>item[:action], :request_type=>"window", :window_type=>window_type, :role=>item[:role]}.merge!(additional_args).merge!(format_args), {:tooltip=> item[:tooltip],:id=>item[:id] || "", :name=>item[:name].gsub(/ /, '-')  ,:class=>grid_li_class, :remote=>true}.merge!(additional_params))
+    end
+    
+    out << "</ul>"
+    out << "</div>"
+    
+    return out.html_safe
+    
+  end
+  
+  def generate_shortcut_tabnav(*args)
+    html_options = args.first || {}
+    icon_list = args.second || {}
+    puts(icon_list)
+    grid_div_class = html_options[:grid_div_class].blank? ? "" : ("class='" + html_options[:grid_div_class]+"'")
+    grid_div_id = html_options[:grid_div_id].blank? ? "" : ("id='" + html_options[:grid_div_id]+"'")
+  
+    grid_ul_class = html_options[:grid_ul_class].blank? ? "" : ("class='" + html_options[:grid_ul_class]+"'")
+    grid_ul_id = html_options[:grid_ul_id].blank? ? "" : ("id='" + html_options[:grid_ul_id]+"'")
+   
+    grid_li_class = html_options[:grid_li_class].blank? ? "" : (html_options[:grid_li_class])
+   
+    out = "" 
+    out << "<div #{grid_div_class} #{grid_div_id}>"
+        out << "<ul #{grid_ul_class} #{grid_ul_id}>"
+
     icon_list.each  do |item|
       puts(item)
       puts(item.class)
@@ -847,7 +885,7 @@ module UiHelper
     end
   end
      
-  def navigation_icon(name, icon=''.dup)
+  def navigation_icon( name, icon=''.dup, icon_id="")
     
     icon = icon.blank? ? name : icon
     
@@ -857,6 +895,11 @@ module UiHelper
     out << image_tag("interface/system_icons/"+icon.downcase+".png", {:class=>"navigation-image"})
     out << "<div class='navigation-icon-name'>"
     out << name
+    out << "</div>"
+    out << "<div class='favorite' style='display:none;'>"
+     out << image_tag("interface/star-filled.png", {:id=>"star-filled", :class=>"hidden-item"});
+     out << image_tag("interface/star-empty.png", {:id=>"star-empty", :class=>"hidden-item"});
+     out << image_tag("interface/star-#{@user.settings.menu_shortcuts.include?(icon_id) ? "filled" : "empty" }.png", {:class=>"favorite-image"})
     out << "</div>"
     out << "<div id='ajax-wait'>"
     out << image_tag("cloud/cloud-ajax-loader.gif", {:class=>"ajax-wait", :style=>"display:none;"})

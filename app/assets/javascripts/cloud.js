@@ -682,7 +682,7 @@ function updateAppDiv() {
 
             bindAppClick();
             bindCloseGrid();
-
+            bindFavoriteClick();
         });
     }
 }
@@ -727,7 +727,10 @@ function CloseIframe() {
     $("#application-space").addClass("hidden");
     $($currentApplicationId).removeClass("blowup");
     $(".grid_tabnav ul li").removeClass("hidden");
-    $("#cloud-switch").fadeOut();
+    $(".grid_tabnav ul li").removeClass("blowup");
+    $("#cloud-switch").fadeOut(1000);
+    $("#cloud-shortcuts").fadeOut(1000);
+
     clear_user_locks();
 }
 function clear_user_locks() {
@@ -760,6 +763,40 @@ function bindMyAccount() {
     }
 
 }
+
+function updateFavorite(shortcut) {
+    $.ajax({
+        url: '/site/update_menu_shortcuts',
+        type: 'post',
+        data: {shortcut: shortcut},
+        dataType: 'json',
+        complete: function (request) {
+            renderPartial("/cms_interface/shortcut_grid_nav.html", "div#cloud-shortcuts", function(evt){
+                bindAppClick();
+            });
+
+        }
+    });
+}
+
+function bindFavoriteClick() {
+    $("div.favorite").off("click").on("click", function (evnt) {
+        evnt.preventDefault();
+        evnt.stopPropagation();
+        if ($(this).find("img.favorite-image")[0].src.includes("filled")) {
+            $(this).find("img.favorite-image")[0].src = $("img#star-empty")[0].src
+        } else
+        {
+            $(this).find("img.favorite-image")[0].src = $("img#star-filled")[0].src
+        }
+        var shortcut = $(this).parent().parent().attr("id");
+
+        updateFavorite(shortcut)
+
+    })
+}
+
+
 function bindIconButtonClick() {
     $('.icon-button').click(function (e) {
         if (window.matchMedia("only screen and (max-width: 524px)").matches) {
@@ -808,7 +845,9 @@ function bindAppClick() {
 //   alert("This is an iframe app.");
 
             var thisApp = createiFrameOverlay(theController, data, this.href);
-            $("#cloud-switch").fadeIn();
+            $("#cloud-switch").fadeIn(1000);
+            $("#cloud-shortcuts").fadeIn(1000);
+
             updateFooterDiv();
         } else {
 

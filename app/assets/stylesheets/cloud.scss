@@ -436,6 +436,10 @@ form#registration-form table tr td.center {
     display: inline-block;
 }
 
+div#ajax-wait img {
+    width: 100%;
+}
+
 .navigation-icon {
     position: relative;
     width: 128px;
@@ -541,3 +545,90 @@ div#vendor-info div.version-info {
     left: 115px;
     font-size: 13px;
 }
+
+
+div.navigation-icon div.favorite img {
+    width: 20px;
+    padding: 5px;
+}
+div.navigation-icon div.favorite {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+}
+
+/* cloud swith defs */
+
+div#cloud-switch img {
+    width: 100%;
+    padding-top: 15%;
+}
+
+#cloud-switch {
+    position: absolute;
+    background: #ddd;
+    top: 10px;
+    left: 10px;
+    padding: 5px;
+    z-index: 1000;
+    box-shadow: 5px 5px 13px #555;
+    border-radius: 10px;
+    width: 40px;
+    height: 40px;
+}
+
+/* shortcut defs */
+
+div#cloud-shortcuts {
+    position: absolute;
+    background: transparent;
+    top: 70px;
+    left: 5px;
+    padding: 5px;
+    z-index: 1000;
+    border-radius: 10px;
+}
+
+div#cloud-shortcuts a.icon-button img.navigation-image {
+    width: 45px;
+}
+
+div#cloud-shortcuts a.icon-button div.navigation-icon-name {
+    font-size: 7px;
+    margin-top: -9px;
+    text-align: center;
+}
+
+div#cloud-shortcuts div.navigation-icon {
+    width: 50px;
+    height: 45px;
+}
+
+div#cloud-shortcuts #ajax-wait {
+    top: 0px;
+    left: 0px;
+}
+
+div#cloud-shortcuts ul li {
+
+    float: left;
+    text-align: center;
+    font-family: "Helvetica Neue",sans-serif;
+    line-height: 9px;
+    color: #686f74;
+    overflow: hidden;
+    border-radius: 10px;
+    box-shadow: 5px 5px 13px #555;
+    background: rgba(194, 194, 194, 0.6);
+    width: 50px;
+    height: 45px;
+    margin-bottom: 10px;
+}
+
+div#grid_shortcut_tabnav ul {
+    margin: 0px;
+    padding: 0px;
+    width: 60px;
+}
+
+
