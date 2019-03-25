@@ -563,6 +563,8 @@ function login_sucessfull(url_to_goto, show_main_menu) {
     allow_login_check_timer = setTimeout("allow_login_check=true;", 10000);
     // check_login_status();
 
+    renderFavoriteDiv();
+
     if (show_main_menu) {
         updateAppDiv();
     }
@@ -764,6 +766,12 @@ function bindMyAccount() {
 
 }
 
+function renderFavoriteDiv() {
+    renderPartial("/cms_interface/shortcut_grid_nav.html", "div#cloud-shortcuts", function (evt) {
+        bindAppClick();
+    });
+}
+
 function updateFavorite(shortcut) {
     $.ajax({
         url: '/site/update_menu_shortcuts',
@@ -771,10 +779,7 @@ function updateFavorite(shortcut) {
         data: {shortcut: shortcut},
         dataType: 'json',
         complete: function (request) {
-            renderPartial("/cms_interface/shortcut_grid_nav.html", "div#cloud-shortcuts", function(evt){
-                bindAppClick();
-            });
-
+            renderFavoriteDiv();
         }
     });
 }
