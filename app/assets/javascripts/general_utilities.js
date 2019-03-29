@@ -583,7 +583,7 @@ function ui_ajax_checkbox(success_callback) {
         fieldName = this.getAttribute("name");
         checkType = this.getAttribute("data-check-type");
         checkBoxValue = this.getAttribute("checkbox_value");
-
+        that = this;
         var dataObj = {};
         dataObj[dataClass] = {};
         if (checkType == "boolean")
@@ -633,14 +633,25 @@ function ui_ajax_checkbox(success_callback) {
             }
         }).fail(function (jqXHR, textStatus, errorThrown) {
 
-            console.log(jqXHR);
-            console.log(textStatus);
-            console.log(errorThrown);
+//            console.log(jqXHR);
+//            console.log(textStatus);
+//            console.log(errorThrown);
+//            console.log(isChecked);
+            
+//            console.log(jqXHR.responseJSON.error)
+            $(that).prop('checked', !isChecked);
+            if (typeof(jqXHR.responseJSON.error) == "undefined")
+            { // must parse object to get message
+                part1 = Object.keys(jqXHR.responseJSON)[0].replace("_"," ")
+                part2 = Object.values(jqXHR.responseJSON)[0][0]
+                setUpNotifier("error.png", "Warning", part1+":"+part2);
 
-            console.log(jqXHR.responseJSON.error)
-
+            }
+            else
+            {
             setUpNotifier("error.png", "Warning", jqXHR.responseJSON.error[0]);
-
+            }
+            
             $(that).val($(that).data('initial-val'));
         });
     });
