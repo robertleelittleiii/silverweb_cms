@@ -431,12 +431,38 @@ module UiHelper
     #fix for rails settings gem
     object_class_name = field_pointer.class.to_s.gsub("::", "_").underscore
     object_class_name = (object_class_name == "settings_active_record_relation" ? "settings" : object_class_name)
-
+    puts("*()*[]"*20)
+    puts(field_pointer)
+    puts(field_name)
   
     if object_class_name == "settings" then
       is_selected = Settings.send(field_name).split(",").include?(field_title) rescue false
       field_pointer_id = "settings"
       field_class_pointer = object_class_name
+    elsif field_name.include?("[") then
+      #   db_field_name =  field_name.include?("[") ? field_name : field_name.split("-").first
+      base_field_name = field_name.split("[").first
+      puts("base_field_name: #{base_field_name}")
+      sub_fields = field_name.split("[")[1..-1].collect{|x| x.sub("]","") }
+      puts("sub_fields: #{sub_fields}")
+      puts("field_pointer.send(base_field_name): #{field_pointer.send(base_field_name)}")
+      case sub_fields.size 
+      when 1
+        is_selected =  field_pointer.send(base_field_name)[sub_fields[0]].include?(field_title) rescue false  
+        puts("one: #{is_selected}, value: #{field_pointer.send(base_field_name)[sub_fields[0]][sub_fields[1]]},  field_title: #{field_title}  ")
+      when 2
+        is_selected =  field_pointer.send(base_field_name)[sub_fields[0]][sub_fields[1]].include?(field_title)  rescue false  
+        puts("two: #{is_selected}, value: #{field_pointer.send(base_field_name)[sub_fields[0]][sub_fields[1]]}, field_title: #{field_title} ")
+      when 3
+        is_selected =  field_pointer.send(base_field_name)[sub_fields[0]][sub_fields[1]][sub_fields[2]].include?(field_title)  rescue false  
+        puts("three: #{is_selected}, value: #{field_pointer.send(base_field_name)[sub_fields[0]][sub_fields[1]]},  field_title: #{field_title}  ")
+      else
+        is_selected =  false
+      end
+      
+     
+      field_pointer_id = field_pointer.id
+      field_class_pointer = field_pointer.class.name.underscore.downcase
     else
       is_selected = field_pointer.send(db_field_name).split(",").include?(field_title) rescue false  
       field_pointer_id = field_pointer.id
@@ -758,7 +784,7 @@ module UiHelper
    
     out = "" 
     out << "<div #{grid_div_class} #{grid_div_id}>"
-        out << "<ul #{grid_ul_class} #{grid_ul_id}>"
+    out << "<ul #{grid_ul_class} #{grid_ul_id}>"
 
     icon_list.each  do |item|
       puts(item)
@@ -898,9 +924,9 @@ module UiHelper
     out << name
     out << "</div>"
     out << "<div class='favorite' style='display:none;'>"
-     out << image_tag("interface/star-filled.png", {:id=>"star-filled", :class=>"hidden-item"});
-     out << image_tag("interface/star-empty.png", {:id=>"star-empty", :class=>"hidden-item"});
-     out << image_tag("interface/star-#{ icon_included ? "filled" : "empty" }.png", {:class=>"favorite-image"})
+    out << image_tag("interface/star-filled.png", {:id=>"star-filled", :class=>"hidden-item"});
+    out << image_tag("interface/star-empty.png", {:id=>"star-empty", :class=>"hidden-item"});
+    out << image_tag("interface/star-#{ icon_included ? "filled" : "empty" }.png", {:class=>"favorite-image"})
     out << "</div>"
     out << "<div id='ajax-wait'>"
     out << image_tag("cloud/cloud-ajax-loader.gif", {:class=>"ajax-wait", :style=>"display:none;"})

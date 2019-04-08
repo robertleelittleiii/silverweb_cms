@@ -296,7 +296,7 @@ function createPasswordDialog() {
 }
 
 function setupCheckboxes(inputElement) {
-    $(inputElement).off("click").on("click",function () {
+    $(inputElement).off("click").on("click", function () {
         $(this).closest('form').trigger('submit');
     });
 
@@ -448,10 +448,10 @@ function ui_ajax_select(success_callback) {
             data: "id=" + this.getAttribute("data-id") + "&" + this.getAttribute("name") + "=" + selected_item,
         }).success(function (data, textStatus, jqXHR)
         {
-                    console.log(data);
-                    console.log(textStatus);
-                    console.log(jqXHR);
-                    console.log(that);
+            console.log(data);
+            console.log(textStatus);
+            console.log(jqXHR);
+            console.log(that);
 
             if (typeof success_callback == "function")
             {
@@ -523,10 +523,10 @@ jQuery.fn.extend({
                 }).success(function (data, textStatus, jqXHR)
                 {
 
-                      console.log(data);
-                      console.log(textStatus);
-                      console.log(jqXHR);
-                      console.log(that);
+                    console.log(data);
+                    console.log(textStatus);
+                    console.log(jqXHR);
+                    console.log(that);
 
                     if (typeof success_callback == "function")
                     {
@@ -551,12 +551,23 @@ jQuery.fn.extend({
                     }
                 }).fail(function (jqXHR, textStatus, errorThrown) {
 
-                    console.log(jqXHR);
-                    console.log(textStatus);
-                    console.log(errorThrown);
-                    console.log(jqXHR.responseJSON.error)
+                    // console.log(jqXHR);
+                    // console.log(textStatus);
+                    // console.log(errorThrown);
+                    //  console.log(jqXHR.responseJSON.error)
+                    $(that).prop('checked', !isChecked);
+                    if (typeof (jqXHR.responseJSON.error) == "undefined")
+                    { // must parse object to get message
+                        part1 = Object.keys(jqXHR.responseJSON)[0].replace("_", " ")
+                        part2 = Object.values(jqXHR.responseJSON)[0][0]
+                        setUpNotifier("error.png", "Warning", part1 + ":" + part2);
 
+                    } else
+                    {
+                        setUpNotifier("error.png", "Warning", jqXHR.responseJSON.error[0]);
+                    }
                     setUpNotifier("error.png", "Warning", jqXHR.responseJSON.error[0]);
+                    
                     $(that).val($(that).data('initial-val'));
                 });
             });
@@ -637,21 +648,20 @@ function ui_ajax_checkbox(success_callback) {
 //            console.log(textStatus);
 //            console.log(errorThrown);
 //            console.log(isChecked);
-            
+
 //            console.log(jqXHR.responseJSON.error)
             $(that).prop('checked', !isChecked);
-            if (typeof(jqXHR.responseJSON.error) == "undefined")
+            if (typeof (jqXHR.responseJSON.error) == "undefined")
             { // must parse object to get message
-                part1 = Object.keys(jqXHR.responseJSON)[0].replace("_"," ")
+                part1 = Object.keys(jqXHR.responseJSON)[0].replace("_", " ")
                 part2 = Object.values(jqXHR.responseJSON)[0][0]
-                setUpNotifier("error.png", "Warning", part1+":"+part2);
+                setUpNotifier("error.png", "Warning", part1 + ":" + part2);
 
-            }
-            else
+            } else
             {
-            setUpNotifier("error.png", "Warning", jqXHR.responseJSON.error[0]);
+                setUpNotifier("error.png", "Warning", jqXHR.responseJSON.error[0]);
             }
-            
+
             $(that).val($(that).data('initial-val'));
         });
     });
