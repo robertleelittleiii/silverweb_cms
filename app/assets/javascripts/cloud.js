@@ -732,6 +732,8 @@ function CloseIframe() {
     $(".grid_tabnav ul li").removeClass("blowup");
     $("#cloud-switch").fadeOut(1000);
     $("#cloud-shortcuts").fadeOut(1000);
+    
+    $("div#application-space").html(""); //clear application space div.
 
     clear_user_locks();
 }
