@@ -566,7 +566,7 @@ jQuery.fn.extend({
                     {
                         setUpNotifier("error.png", "Warning", jqXHR.responseJSON.error[0]);
                     }
-                    setUpNotifier("error.png", "Warning", jqXHR.responseJSON.error[0]);
+                    // setUpNotifier("error.png", "Warning", jqXHR.responseJSON.error[0]);
                     
                     $(that).val($(that).data('initial-val'));
                 });
