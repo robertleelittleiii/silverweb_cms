@@ -381,6 +381,11 @@ function createAppDialog(theContent, dialog_id, call_backs, buttons_to_show_in) 
 jQuery.fn.extend({
     ui_ajax_select: function (success_callback) {
         return this.each(function () {
+            //   console.log("ui_ajax_select - jquery");
+            //     console.trace();
+//
+            //     console.log(this);
+
             $(this).unbind("change").bind("change", function (event) {
 
                 selected_item = $(this).val();
@@ -433,6 +438,8 @@ jQuery.fn.extend({
 
 
 function ui_ajax_select(success_callback) {
+    // console.log("ui_ajax_select - general")
+    // console.trace();
 
     $("select.ui-ajax-select").off("change").on("change", function () {
         selected_item = $(this).val();
@@ -448,10 +455,11 @@ function ui_ajax_select(success_callback) {
             data: "id=" + this.getAttribute("data-id") + "&" + this.getAttribute("name") + "=" + selected_item,
         }).success(function (data, textStatus, jqXHR)
         {
-            console.log(data);
-            console.log(textStatus);
-            console.log(jqXHR);
-            console.log(that);
+            //         console.log(data);
+            //        console.log(textStatus);
+            //        console.log(jqXHR);
+            //         console.log(that);
+            //        console.log(typeof (success_callback));
 
             if (typeof success_callback == "function")
             {
@@ -484,11 +492,11 @@ function ui_ajax_select(success_callback) {
 jQuery.fn.extend({
     ui_ajax_checkbox: function (success_callback) {
         return this.each(function () {
-            $(this).bind("click", function (event) {
+            $(this).bind("change", function (event) {
 
                 event.stopPropagation(); // prevent click from propagation to other actions.
 
-            }).bind("change", function (event) {
+            }).bind("click", function (event) {
 
 
                 dataUrl = this.getAttribute("data-url");
@@ -567,7 +575,7 @@ jQuery.fn.extend({
                         setUpNotifier("error.png", "Warning", jqXHR.responseJSON.error[0]);
                     }
                     // setUpNotifier("error.png", "Warning", jqXHR.responseJSON.error[0]);
-                    
+
                     $(that).val($(that).data('initial-val'));
                 });
             });
@@ -579,11 +587,11 @@ jQuery.fn.extend({
 
 function ui_ajax_checkbox(success_callback) {
 
-    $("input.ui-ajax-checkbox").bind("click", function (event) {
+    $("input.ui-ajax-checkbox").bind("change", function (event) {
 
         event.stopPropagation(); // prevent click from propagation to other actions.
 
-    }).bind("change", function (event) {
+    }).bind("click", function (event) {
 
 
         dataUrl = this.getAttribute("data-url");
