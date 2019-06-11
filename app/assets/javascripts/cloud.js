@@ -723,7 +723,7 @@ function bindCloseIframe() {
     });
 }
 
-function CloseIframe() {
+function CloseIframe(before_clear_callback) {
     $("#nav-grid-links").fadeIn();
     $("#nav-grid-overlay").fadeIn();
     $("#application-space").addClass("hidden");
@@ -732,9 +732,14 @@ function CloseIframe() {
     $(".grid_tabnav ul li").removeClass("blowup");
     $("#cloud-switch").fadeOut(1000);
     $("#cloud-shortcuts").fadeOut(1000);
-    
-    $("div#application-space").html(""); //clear application space div.
 
+    if (typeof (before_clear_callback) == 'function')
+    {
+        before_clear_callback();
+
+    } else {
+        $("div#application-space").html(""); //clear application space div.
+    }
     clear_user_locks();
 }
 function clear_user_locks() {
