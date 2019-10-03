@@ -2,20 +2,21 @@ tinymce.PluginManager.add('image_library', function(editor, url) {
     global_editor_hold = editor;
     
     // Add a button that opens a window
-    editor.addButton('image_library', {
-        icon: 'image-librarys',
+    editor.ui.registry.addToggleButton('image_library', {
+        icon: 'image',
         tooltip: 'Insert/add image from library',
-        onclick: function() {
+        onAction: function() {
             // Open window
             
-            editor.windowManager.open({
+            editor.windowManager.openUrl({
                 title: 'Image Library',
                 url: '/image_library/image_list?as_window=true',
                 width: 875,
                 height: 600,
                 buttons: [{
+                    type: 'cancel',
                     text: 'Close',
-                    onclick: 'close'
+                    name: 'close'
                 }]
             });
         }
@@ -24,19 +25,20 @@ tinymce.PluginManager.add('image_library', function(editor, url) {
     
 
     // Adds a menu item to the tools menu
-    editor.addMenuItem('Image library', {
+    editor.ui.registry.addMenuItem('image_library', {
         text: 'Image Library',
-        context: 'tools',
-        onclick: function() {
+        icon: 'image',
+        onAction: function() {
             // Open window with a specific url
-            editor.windowManager.open({
+            editor.windowManager.openUrl({
                 title: 'Image Library',
                 url: '/image_library/image_list?as_window=true',
                 width: 875,
                 height: 600,
                 buttons: [{
+                    type: 'cancel',
                     text: 'Close',
-                    onclick: 'close'
+                    name: 'close'
                 }]
             });
         }

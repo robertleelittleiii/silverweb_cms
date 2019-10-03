@@ -13,6 +13,9 @@ class SiteController < ApplicationController
   # uses_tiny_mce(:options => AppConfig.default_mce_options, :only => [:new, :edit])
 
   # login code
+  
+   layout "cms_dialog", only: [:code_mirror]
+   
   def login
   
     respond_to do |format|
@@ -1147,7 +1150,11 @@ class SiteController < ApplicationController
     return return_list
   end
 
-  
+  def code_mirror
+    respond_to do |format|
+      format.html { render layout: false} # show.html.erb
+    end
+  end
   
   
   protected

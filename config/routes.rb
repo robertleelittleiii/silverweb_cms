@@ -35,6 +35,7 @@ Rails.application.routes.draw do
       get "get_csrf_meta_tags"
       post "update_menu_order"
       post "update_menu_shortcuts"
+      get "code_mirror"
     end 
   end
   
