@@ -33,7 +33,7 @@
 //= require jquery-ui-timepicker-addon
 //= require jquery.ui.touch-punch.min
 //= require superfish
-//= require jquery.history
+// require jquery.history
 //= require jstz
 //# require turbolinks
 
