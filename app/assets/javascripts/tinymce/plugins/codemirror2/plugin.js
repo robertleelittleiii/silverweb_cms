@@ -62,7 +62,7 @@ tinymce.PluginManager.add('codemirror2', function (editor, url) {
 
         var config = {
             title: 'HTML source code',
-            url: '/site/code_mirror.html',
+            url: '/site/code_mirror.html?as_window=true',
             width: codemirrorWidth,
             height: codemirrorHeight,
             resizable: true,

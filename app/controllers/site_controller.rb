@@ -14,7 +14,7 @@ class SiteController < ApplicationController
 
   # login code
   
-   layout "cms_dialog", only: [:code_mirror]
+  # layout "cms_dialog", only: [:code_mirror]
    
   def login
   
