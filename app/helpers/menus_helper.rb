@@ -395,9 +395,10 @@ module  MenusHelper
         puts("menuText: #{menuText} menu: #{@menu.name} vs page name: #{params[:current_page]}")
         puts("parent_name: #{@parent_name}")
         puts("page_name: #{@page_name}")
+        puts("current_page: #{params[:current_page] }")
         
         if not menuText.blank?  then
-          if @menu.name == params[:current_page] and not menu_selected
+          if @menu.name.to_s.downcase == params[:current_page].to_s.downcase and not menu_selected
             menu_selected=true  
             returnMenu=  returnMenu + breaker + @selected_class + menuText + @posthtml
             puts("Logic: @menu.name == params[:current_page] and not menu_selected")
