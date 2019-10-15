@@ -582,7 +582,7 @@ module  MenusHelper
             end
           end
           puts("current page:#{params[:current_page]}, Menu Name:#{menu.name} ")
-          if menu.name == params[:current_page]
+          if menu.name.strip.downcase == params[:current_page].strip.downcase
             html_link_class = params[:selected_class]
           end
 
@@ -624,7 +624,7 @@ module  MenusHelper
         else 
           html_link_class = ""
         end
-      
+        
         #puts("-------------->>>> params[:colorize_sub_index_count] #{params[:colorize_sub_index_count]}")
       
         if params[:colorize_sub_index_count] then

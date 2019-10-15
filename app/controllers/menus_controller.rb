@@ -313,7 +313,7 @@ class MenusController < ApplicationController
   def render_menu
     @menus = Menu.where(:id=> params[:menu_id]).first
     @menu_helper = params[:menu_helper]
-    @menu_params = JSON.parse(params[:menu_params]).symbolize_keys
+    @menu_params = JSON.parse(params[:menu_params].to_s).symbolize_keys
     
     respond_to do |format|
       format.html  {render :partial=>"/menus/helper_render/" + @menu_helper}
