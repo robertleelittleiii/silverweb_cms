@@ -51,7 +51,7 @@ tinymce.PluginManager.add('image_library', function (editor, url) {
 
 
     if (tinymce.majorVersion < 5) {
-        editor.addMenuItem('image', {
+        editor.addMenuItem('Image library', {
             text: 'Image Library',
             context: 'tools',
             onclick: function () {
@@ -68,10 +68,8 @@ tinymce.PluginManager.add('image_library', function (editor, url) {
                 });
             }
         });
-
     } else
     {
-
         editor.ui.registry.addMenuItem('image_library', {
             text: 'Image Library',
             icon: 'image',
