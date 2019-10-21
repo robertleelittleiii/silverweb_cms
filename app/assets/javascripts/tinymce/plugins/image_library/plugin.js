@@ -51,26 +51,6 @@ tinymce.PluginManager.add('image_library', function (editor, url) {
 
 
     if (tinymce.majorVersion < 5) {
-
-        editor.addMenuItem('image', {
-            text: 'Image Library',
-            onAction: function () {
-                // Open window with a specific url
-                editor.windowManager.open({
-                    title: 'Image Library',
-                    url: '/image_library/image_list?as_window=true',
-                    width: 875,
-                    height: 600,
-                    buttons: [{
-                            text: 'Close',
-                            onclick: 'close'
-                        }]
-                });
-            }
-        });
-    } else
-    {
-
         editor.ui.registry.addMenuItem('image_library', {
             text: 'Image Library',
             icon: 'image',
@@ -85,6 +65,26 @@ tinymce.PluginManager.add('image_library', function (editor, url) {
                             type: 'cancel',
                             text: 'Close',
                             name: 'close'
+                        }]
+                });
+            }
+        });
+
+    } else
+    {
+
+        editor.addMenuItem('image', {
+            text: 'Image Library',
+            onAction: function () {
+                // Open window with a specific url
+                editor.windowManager.open({
+                    title: 'Image Library',
+                    url: '/image_library/image_list?as_window=true',
+                    width: 875,
+                    height: 600,
+                    buttons: [{
+                            text: 'Close',
+                            onclick: 'close'
                         }]
                 });
             }
