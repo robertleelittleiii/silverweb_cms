@@ -6,7 +6,7 @@ tinymce.PluginManager.add('image_library', function (editor, url) {
         editor.addButton('image', {
             icon: 'image',
             tooltip: 'Insert/add image from library',
-            onAction: function () {
+            onclick: function () {
                 // Open window
 
                 editor.windowManager.open({
@@ -51,6 +51,27 @@ tinymce.PluginManager.add('image_library', function (editor, url) {
 
 
     if (tinymce.majorVersion < 5) {
+        editor.addMenuItem('image', {
+            text: 'Image Library',
+            context: 'tools',
+            onclick: function () {
+                // Open window with a specific url
+                editor.windowManager.open({
+                    title: 'Image Library',
+                    url: '/image_library/image_list?as_window=true',
+                    width: 875,
+                    height: 600,
+                    buttons: [{
+                            text: 'Close',
+                            onclick: 'close'
+                        }]
+                });
+            }
+        });
+
+    } else
+    {
+
         editor.ui.registry.addMenuItem('image_library', {
             text: 'Image Library',
             icon: 'image',
@@ -70,24 +91,6 @@ tinymce.PluginManager.add('image_library', function (editor, url) {
             }
         });
 
-    } else
-    {
 
-        editor.addMenuItem('image', {
-            text: 'Image Library',
-            onAction: function () {
-                // Open window with a specific url
-                editor.windowManager.open({
-                    title: 'Image Library',
-                    url: '/image_library/image_list?as_window=true',
-                    width: 875,
-                    height: 600,
-                    buttons: [{
-                            text: 'Close',
-                            onclick: 'close'
-                        }]
-                });
-            }
-        });
     }
 });
