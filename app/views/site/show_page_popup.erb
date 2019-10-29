@@ -1,3 +1,8 @@
- <div id="page-body-page">
+  <div class="hidden-item">
+    <div id="dialog-height"><%=@page.dialog_height%></div>
+    <div id="dialog-width"><%=@page.dialog_width%></div>
+  </div>
+
+  <div id="page-body-page">
     <%=display_html(@page.body) rescue @page%>
   </div>
