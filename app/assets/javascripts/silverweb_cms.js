@@ -222,7 +222,10 @@ function activate_popup_window_links() {
         e.preventDefault();
         console.log(this);
         var page_id = $(this).attr("page-id");
-        create_popup_window_and_show(page_id);
+        console.log(page_id);
+        var page_name = this.href.split("/").pop();
+        console.log(page_name);
+        create_popup_window_and_show(page_id, page_name);
 
 
         return false;
@@ -230,7 +233,18 @@ function activate_popup_window_links() {
     });
 }
 
-function create_popup_window_and_show(page_id) {
+
+function bindCloseLink() {
+    $("a#close-button").click(function () {
+        var popup = $("div.popup-window");
+        $(popup).fadeOut(400, function ()
+        {
+            popup.remove();
+        });
+    });
+}
+
+function create_popup_window_and_show(page_id, page_name) {
 
     $("body").append("<div class='popup-window'> <div class='content-center'>this is some content</div> </div>");
 
@@ -238,15 +252,27 @@ function create_popup_window_and_show(page_id) {
         url: "site/show_page_popup",
         type: 'get',
         data: {
-            id: page_id
+            page_id: page_id,
+            page_name: page_name
+            
         },
         success: function (data)
         {
             $("div.popup-window div.content-center").html(data);
+           
+            var height = $("div#dialog-height").text();
+            var width = $("div#dialog-width").text();
+    
+            $("div.popup-window div.content-center").height(height);
+            $("div.popup-window div.content-center").width(width);
             
             $("div.popup-window div.content-center").addClass("show");
+            
+            $("div.popup-window").fadeIn();
+           
             // call_document_ready_on_show_page_popup();
             bindClickToHidePopupWindow();
+            bindCloseLink();
             // enablePageEdit();
             //enableSliderEdit();
         }

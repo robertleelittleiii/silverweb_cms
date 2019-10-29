@@ -281,9 +281,13 @@ class SiteController < ApplicationController
 
   def show_page_popup
     session[:mainnav_status] = false
-    
-    @page = ((Page.find_by_id(params[:id]) || Page.find_by_title(params[:page_name]) || (params[:page_name].blank? ? nil : Page.where('lower(title) = ?', params[:page_name].gsub("_"," ").gsub("-"," ").downcase).first) || Page.find_by_slug(params[:page_name])) || Page.find_by_slug(Settings.home_page_name) || Page.find_by_title(Settings.home_page_name) || Page.find_by_title("Home")) || Page.new(:title=>"'Home' not found.", :body=>"'Home' not found.")   
-  
+    puts("page_id: #{params[:page_id]}")
+    puts("page_name: #{params[:page_nam]}")
+    unless params[:page_id].blank? then 
+      @page = Page.find_by_id(params[:page_id])
+    else
+          @page = ((Page.find_by_title(params[:page_name]) || (params[:page_name].blank? ? nil : Page.where('lower(title) = ?', params[:page_name].gsub("_"," ").gsub("-"," ").downcase).first) || Page.find_by_slug(params[:page_name])) || Page.find_by_slug(Settings.home_page_name) || Page.find_by_title(Settings.home_page_name) || Page.find_by_title("Home")) || Page.new(:title=>"#{params[:page_name]} not found.", :body=>"'#{params[:page_name]}' not found.")   
+    end
   end
     
   

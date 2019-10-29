@@ -29,12 +29,13 @@ module SiteHelper
   end
   
   def popup_page_link(page_name, the_class=nil, the_id=nil)
-    @page = Page.where(:title=> page_name).first
-    if @page .blank? then
+    @popup_page = Page.where(:title=> page_name).first
+    
+    if @popup_page .blank? then
       return "Page #{page_name} Not Found!!"
     end
     returnval = ""
-    returnval = returnval + link_to(page_name, {:controller=>"site", :action=>:show_page, :id=>@page.id}, {:class=>the_class, :id=>the_id})
+    returnval = returnval + link_to(page_name, {controller: :site, action: :show_page, id: @popup_page.id}, :class=>the_class, :id=>the_id)
     return returnval.html_safe
   end
   
