@@ -574,12 +574,52 @@ function logedIn() {
 
 
 
-    body_width = $(document).width();
-    body_height = $(document).height();
+    var body_width = $(document).width();
+    var body_height = $(document).height();
 
+
+    var grid_width = 1300 //parseInt($("div.grid_tabnav").css("width")); 
+    var grid_height = 900; //parseInt($("div.grid_tabnav").css("height"));
+
+
+   console.log('body_width',body_width);
+   console.log('body_height',body_height);
+   console.log('grid_width',grid_width);
+   console.log('grid_height',grid_height);
+   
+   
+
+    if (body_width > grid_width) {
+        var site_left = "100px"
+        var cloud_left = (body_width - 500) + 'px'
+    } else
+    {
+        var site_left = "100px"
+        var cloud_left = (grid_width - 400) + 'px'
+
+    }
+
+    if (body_height > grid_height) {
+        var site_top = "25px"
+        var cloud_top = (body_height - 125) + 'px'
+
+    } else
+    {
+        var site_top = "25px"
+        var cloud_top = (grid_height) + 'px'
+
+    }
+
+
+  console.log('site_left',site_left);
+   console.log('cloud_left',cloud_left);
+   console.log('site_top',site_top);
+   console.log('cloud_top',cloud_top);
+   
+   
     $("#site-logo").animate({
-        top: '25px',
-        left: '100px'
+        top: site_top,
+        left: site_left
     }, {
         queue: false,
         duration: 1000,
@@ -588,8 +628,9 @@ function logedIn() {
 
 
     $("#cloud-logo").animate({
-        top: (body_height - 124) + 'px',
-        left: (body_width - 500) + 'px'
+
+        top: cloud_top,
+        left: cloud_left
     }, {
         queue: false,
         duration: 1000,
@@ -811,6 +852,7 @@ function bindFavoriteClick() {
 
 function bindIconButtonClick() {
     $('.icon-button').click(function (e) {
+        bypassMobilVerticalAdjust = $("div#vertical-adjust-bypass").text().strip();
         if (window.matchMedia("only screen and (max-width: 524px)").matches) {
             the_url = $(this).attr("href").replace("window", "");
             // console.log(the_url);
