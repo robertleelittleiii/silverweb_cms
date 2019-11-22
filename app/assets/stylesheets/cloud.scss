@@ -565,7 +565,7 @@ div#cloud-switch img {
 }
 
 #cloud-switch {
-    position: absolute;
+    position: fixed;
     background: #ddd;
     top: 15px;
     left: 17px;
@@ -580,7 +580,7 @@ div#cloud-switch img {
 /* shortcut defs */
 
 div#cloud-shortcuts {
-   position: absolute;
+   position: fixed;
     background: #fffefeb0;
     top: 84px;
     left: 5px;
