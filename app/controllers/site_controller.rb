@@ -370,7 +370,7 @@ class SiteController < ApplicationController
   end
   
   def  session_active
-    render plain: session[:active] || "false"
+    render plain: session[:active] || "false" rescue "false"
   end
   
   #  def show_products_with_page

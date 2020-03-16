@@ -852,11 +852,11 @@ function bindFavoriteClick() {
 
 function bindIconButtonClick() {
     $('.icon-button').click(function (e) {
-        bypassMobilVerticalAdjust = $("div#vertical-adjust-bypass").text().strip();
-        if (window.matchMedia("only screen and (max-width: 524px)").matches) {
+        bypassMobilVerticalAdjust = $("div#vertical-adjust-bypass").text().trim();
+        if( (window.matchMedia("only screen and (max-width: 524px)").matches) | (isMobile) ){
             the_url = $(this).attr("href").replace("window", "");
-            // console.log(the_url);
-            // e.stopPropagation(); 
+             console.log(the_url);
+            e.stopPropagation(); 
             window.location = the_url;
         }
     })

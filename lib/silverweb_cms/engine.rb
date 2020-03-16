@@ -9,7 +9,9 @@ module SilverwebCms
   require 'non-stupid-digest-assets'
   # require 'activerecord-session_store'
   require 'active_record/session_store'
-
+  require 'browser'
+  require 'browser/browser'
+  
   #  require 'gavtastic'
   #  
   # require 'RFC822'

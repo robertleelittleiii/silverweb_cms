@@ -172,7 +172,7 @@ module SilverwebCms
       puts("params in cms_layout: #{params.inspect}")
       if request.xhr? then
         false
-      elsif params[:as_window] then
+      elsif (params[:as_window] or params[:window_type]=="dialog") then
         "cms_dialog"
       elsif (params[:window_type]=="iframe")
         "application_iframe" 

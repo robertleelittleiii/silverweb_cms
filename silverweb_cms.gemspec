@@ -50,7 +50,7 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'sitemap_generator', '5.2.0'
   s.add_runtime_dependency 'american_date'
   s.add_runtime_dependency 'activerecord-session_store'
-
+  s.add_runtime_dependency 'browser'
 
   
 end

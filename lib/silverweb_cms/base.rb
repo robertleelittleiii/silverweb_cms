@@ -11,14 +11,14 @@ module SilverwebCms
     end
     
     def self.load_nav_list
-      @GRID_NAV_LIST = [{:name=>"Home", :controller=>'admin', :action=>'index'}, 
-        {:name=>"Settings",:controller=>'admin', :action=>'site_settings'}, 
-        {:name=>"Users",:controller=>'admin', :action=>'user_administration'}, 
-        {:name=>"Menu", :controller=>'menus', :action=>'index'}, 
-        {:name=>"Pages",:controller=>'pages', :action=>'index'}, 
-        {:name=>"Page Templates",:controller=>'page_templates', :action=>'index'}, 
-        {:name=>"Rights", :controller=>'rights', :action=>'index'}, 
-        {:name=>"Roles", :controller=>'roles', :action=>'index'}]
+      @GRID_NAV_LIST = [{:name=>"Home", :controller=>'admin', :action=>'index', :window_type=>"dialog"}, 
+        {:name=>"Settings",:controller=>'admin', :action=>'site_settings', :window_type=>"dialog"}, 
+        {:name=>"Users",:controller=>'admin', :action=>'user_administration', :window_type=>"dialog"}, 
+        {:name=>"Menu", :controller=>'menus', :action=>'index', :window_type=>"dialog"}, 
+        {:name=>"Pages",:controller=>'pages', :action=>'index', :window_type=>"dialog"}, 
+        {:name=>"Page Templates",:controller=>'page_templates', :action=>'index', :window_type=>"dialog"}, 
+        {:name=>"Rights", :controller=>'rights', :action=>'index', :window_type=>"dialog"}, 
+        {:name=>"Roles", :controller=>'roles', :action=>'index', :window_type=>"dialog"}]
     end
     
     def self.add_nav_item(nav_item)
