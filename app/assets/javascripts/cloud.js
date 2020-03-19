@@ -582,12 +582,12 @@ function logedIn() {
     var grid_height = 900; //parseInt($("div.grid_tabnav").css("height"));
 
 
-   console.log('body_width',body_width);
-   console.log('body_height',body_height);
-   console.log('grid_width',grid_width);
-   console.log('grid_height',grid_height);
-   
-   
+    console.log('body_width', body_width);
+    console.log('body_height', body_height);
+    console.log('grid_width', grid_width);
+    console.log('grid_height', grid_height);
+
+
 
     if (body_width > grid_width) {
         var site_left = "100px"
@@ -611,12 +611,12 @@ function logedIn() {
     }
 
 
-  console.log('site_left',site_left);
-   console.log('cloud_left',cloud_left);
-   console.log('site_top',site_top);
-   console.log('cloud_top',cloud_top);
-   
-   
+    console.log('site_left', site_left);
+    console.log('cloud_left', cloud_left);
+    console.log('site_top', site_top);
+    console.log('cloud_top', cloud_top);
+
+
     $("#site-logo").animate({
         top: site_top,
         left: site_left
@@ -628,7 +628,6 @@ function logedIn() {
 
 
     $("#cloud-logo").animate({
-
         top: cloud_top,
         left: cloud_left
     }, {
@@ -853,10 +852,13 @@ function bindFavoriteClick() {
 function bindIconButtonClick() {
     $('.icon-button').click(function (e) {
         bypassMobilVerticalAdjust = $("div#vertical-adjust-bypass").text().trim();
-        if( (window.matchMedia("only screen and (max-width: 524px)").matches) | (isMobile) ){
-            the_url = $(this).attr("href").replace("window", "");
-             console.log(the_url);
-            e.stopPropagation(); 
+        if ((window.matchMedia("only screen and (max-width: 524px)").matches) | (isMobile)) {
+            the_url = $(this).attr("href").replace("window", "screen");
+            $(this).attr("href", the_url);
+            // the_url = $(this).attr("href");
+            console.log(the_url);
+
+            e.stopPropagation();
             window.location = the_url;
         }
     })
