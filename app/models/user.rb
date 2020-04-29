@@ -1,14 +1,14 @@
 require 'digest/sha1'
 # require 'RFC822'
 require 'gravtastic'
- #include Gravtastic
+#include Gravtastic
 require 'csv'
 
 
 class User < ActiveRecord::Base
   include RailsSettings::Extend
   
-    RFC822_valid = begin
+  RFC822_valid = begin
     qtext = '[^\\x0d\\x22\\x5c\\x80-\\xff]'
     dtext = '[^\\x0d\\x5b-\\x5d\\x80-\\xff]'
     atom = '[^\\x00-\\x20\\x22\\x28\\x29\\x2c\\x2e\\x3a-' +
@@ -33,7 +33,7 @@ class User < ActiveRecord::Base
   has_one :user_live_edit, :autosave => true
 
   # has_many :orders
-include Gravtastic
+  include Gravtastic
 
   gravtastic :name
   
@@ -54,14 +54,26 @@ include Gravtastic
   #accepts_nested_attributes_for :user_attribute, :allow_destroy => true
 
   def self.authenticate(name, password)
-    user = self.find_by_name(name)
-    if user
-      expected_password = encrypted_password(password, user.salt)
-      if user.hashed_password != expected_password
-        user = nil
+    @user = self.find_by_name(name)
+    
+    fail_count_max = (Settings.fail_count_max || 3) rescue 3
+    
+    return @user, false if @user and (@user and (@user.auth_fail_count.to_i >= fail_count_max))
+    
+    logged_in = false
+    
+    if (@user and (@user.auth_fail_count.to_i < fail_count_max))
+      expected_password = encrypted_password(password, @user.salt)
+      if @user.hashed_password != expected_password
+        @user.auth_fail_count = @user.auth_fail_count.to_i + 1
+        @user.save
+      else
+        @user.auth_fail_count = 0
+        @user.save
+        logged_in = true
       end
     end
-    user
+    return @user, logged_in
   end
 
   def full_name
@@ -193,6 +205,7 @@ include Gravtastic
     return if pwd.blank?
     create_new_salt
     self.hashed_password = User.encrypted_password(self.password, self.salt)
+    self.auth_fail_count = 0
   end
 
 
@@ -202,15 +215,15 @@ include Gravtastic
     end
   end
   
-def self.to_csv
+  def self.to_csv
     # attributes = %w{id email name}
 
     CSV.generate(headers: true) do |csv|
-          csv << ["Firstname", "Lastname", "Email"]
+      csv << ["Firstname", "Lastname", "Email"]
 
-    # data rows
-    all.each do |user|
-      #  csv << user.attributes.values_at(*column_names)
+      # data rows
+      all.each do |user|
+        #  csv << user.attributes.values_at(*column_names)
         csv << [user.user_attribute.first_name, user.user_attribute.last_name, user.name]
 
       end
@@ -220,7 +233,7 @@ def self.to_csv
   
   end
 
-def self.get_active
+  def self.get_active
     @user_list = []
     @session_list = ActiveRecord::SessionStore::Session.all
     @session_list.each do |a_session| 
@@ -230,9 +243,9 @@ def self.get_active
     return @user_list
   end
 
-#  def name
-#    "#{first_name} #{last_name}"
-#  end
+  #  def name
+  #    "#{first_name} #{last_name}"
+  #  end
   
   
 

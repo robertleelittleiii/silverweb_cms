@@ -354,6 +354,7 @@ function bindLoginClick(url_to_goto, show_main_menu) {
             $(".login-enclosure").effect("shake", {
                 times: 3
             }, 800);
+            setUpPurrNotifier("Notice", data.message);
 
         }
 

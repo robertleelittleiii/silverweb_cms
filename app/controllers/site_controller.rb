@@ -46,10 +46,13 @@ class SiteController < ApplicationController
   def login_ajax
     session[:user_id] = nil
     session[:active] = false
+    fail_count_max = (Settings.fail_count_max || 3) rescue 3
  
-    user = User.authenticate(params[:name], params[:password])
+    user, logged_in = User.authenticate(params[:name], params[:password])
     puts("User: #{user.inspect}") 
-    if user then
+    login_success = false
+
+    if logged_in then
       # reset_session
 
       session[:active]=true
@@ -62,8 +65,11 @@ class SiteController < ApplicationController
       uri = session[:original_uri]
       session[:original_uri] = nil
     else
-      flash.now[:notice] = "Invalid user/password combination"
-      login_success = false
+      if user.auth_fail_count.to_i >= fail_count_max
+        flash.now[:notice] = "User Account Locked! Too many failed attempts"
+      else
+        flash.now[:notice] = "Invalid user/password combination"
+      end
     end 
     
     respond_to do |format|
@@ -286,7 +292,7 @@ class SiteController < ApplicationController
     unless params[:page_id].blank? then 
       @page = Page.find_by_id(params[:page_id])
     else
-          @page = ((Page.find_by_title(params[:page_name]) || (params[:page_name].blank? ? nil : Page.where('lower(title) = ?', params[:page_name].gsub("_"," ").gsub("-"," ").downcase).first) || Page.find_by_slug(params[:page_name])) || Page.find_by_slug(Settings.home_page_name) || Page.find_by_title(Settings.home_page_name) || Page.find_by_title("Home")) || Page.new(:title=>"#{params[:page_name]} not found.", :body=>"'#{params[:page_name]}' not found.")   
+      @page = ((Page.find_by_title(params[:page_name]) || (params[:page_name].blank? ? nil : Page.where('lower(title) = ?', params[:page_name].gsub("_"," ").gsub("-"," ").downcase).first) || Page.find_by_slug(params[:page_name])) || Page.find_by_slug(Settings.home_page_name) || Page.find_by_title(Settings.home_page_name) || Page.find_by_title("Home")) || Page.new(:title=>"#{params[:page_name]} not found.", :body=>"'#{params[:page_name]}' not found.")   
     end
   end
     

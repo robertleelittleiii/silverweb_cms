@@ -98,8 +98,8 @@ class RegistrationController < ApplicationController
       flash[:notice] ="You already reset your password."
     else
       if (params[:password] != params[:password_confirmation] or params[:password].blank? )
-           message ="Paswords can't be blank and must match, please try again."
-           reset_status = -1
+        message ="Paswords can't be blank and must match, please try again."
+        reset_status = -1
       elsif @user.update_attributes(:password => params[:password], :password_confirmation => params[:password_confirmation])
         @user.delete_reset_code
         
@@ -250,19 +250,25 @@ class RegistrationController < ApplicationController
   # Had to add this to allow user to either login or do a quick register.  Have kept login in admin for maintanance reasons
   def login
     session[:main_search_status] = false
-   
+
+    fail_count_max = (Settings.fail_count_max || 3) rescue 3
+
+    
     logger.debug  "in login 1*****************"
     session[:user_id] = nil
     if request.post?
-      user = User.authenticate(params[:name], params[:password])
-      if user
+      user, logged_in = User.authenticate(params[:name], params[:password])
+      if logged_in
         session[:user_id] = user.id
         uri = session[:original_uri]
         session[:original_uri] = nil
         redirect_to(uri || { :controller=>"admin", :action => "index"  })
       else
-        flash.now[:notice] = "Invalid user/password combination"
-      end
+        if user.auth_fail_count.to_i >= fail_count_max
+          flash.now[:notice] = "User Account Locked! Too many failed attempts"
+        else
+          flash.now[:notice] = "Invalid user/password combination"
+        end      end
     end
   end
 

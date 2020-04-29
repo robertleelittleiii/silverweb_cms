@@ -101,7 +101,7 @@
     </div>
   </div>
   <div class="cms-section">
-    <div class="cms-heading">Site Status</div>
+    <div class="cms-heading">System Config</div>
     <div class="cms-content">
       </br>
 
@@ -138,6 +138,12 @@
        <p>
         <b>Turn on Site RackMiniProfiler for users in admin group:</b><br>
         <%= editablecheckboxedit("activate_rack_mini_profiler", @settings ,"Turn on RackMiniProfiler")%>
+      </p>
+     
+      
+        <p>
+        <b>User authentication fail count before accont is locked:(default 3)</b><br>
+        <%=editablefieldcreate("fail_count_max", @settings)%>
       </p>
      
 

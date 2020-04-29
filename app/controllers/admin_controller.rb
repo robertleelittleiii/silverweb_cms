@@ -5,17 +5,25 @@ class AdminController < ApplicationController
   protect_from_forgery except: :clear_user_locks
 
   def login
-admin_params
+    
+    fail_count_max = (Settings.fail_count_max || 3) rescue 3
+
+  
+    admin_params
     session[:user_id] = nil
     if request.post?
-      user = User.authenticate(params[:name], params[:password])
-      if user
+      user, logged_in = User.authenticate(params[:name], params[:password])
+      if logged_in
         session[:user_id] = user.id
         uri = session[:original_uri]
         session[:original_uri] = nil
         redirect_to(uri || { :action => "index" })
       else
-        flash.now[:notice] = "Invalid user/password combination"
+        if user.auth_fail_count.to_i >= fail_count_max
+          flash.now[:notice] = "User Account Locked! Too many failed attempts. Reset Password or Contact System Administrator."
+        else
+          flash.now[:notice] = "Invalid user/password combination"
+        end
       end
     end
   end
@@ -58,7 +66,7 @@ admin_params
   end
   
   def edit_ajax   
-admin_params
+    admin_params
 
     if params[:pointer_class]=="UserAttribute" then
       @user = UserAttribute.find(params[:id])
@@ -72,7 +80,7 @@ admin_params
   end
 
   def cancel_ajax
-admin_params
+    admin_params
 
     if params[:pointer_class]=="UserAttribute" then
       @user = UserAttribute.find(params[:id])
@@ -86,7 +94,7 @@ admin_params
   end
 
   def update_ajax
-admin_params
+    admin_params
 
     @alert_message="".dup
     if params[:pointer_class]=="UserAttribute" then
@@ -155,7 +163,7 @@ admin_params
   
   def add_image
   
-admin_params
+    admin_params
 
     @image_param=params[:image]
     format = params[:format]
@@ -190,7 +198,7 @@ admin_params
 
   def delete_image
     
-admin_params
+    admin_params
 
     @all_images = SystemImages.all
 
@@ -206,7 +214,7 @@ admin_params
 
 
   def destroy_image
-admin_params
+    admin_params
 
     @all_images = SystemImages.all
 
@@ -219,7 +227,7 @@ admin_params
   end
 
   def update_image_order
-admin_params
+    admin_params
 
     params[:album].each_with_index do |id, position|
       #   Image.update(id, :position => position)
