@@ -605,7 +605,12 @@ module  MenusHelper
               end
             end
             puts("current page:#{params[:current_page]}, Menu Name:#{menu.name} ")
-            if (menu.name.to_s.strip.downcase == params[:current_page].to_s.strip.downcase) or (menu.name.to_s.strip.downcase == params[:current_page].to_s.strip.downcase.split("-").join(" "))
+            
+#                puts("**** ----- **** -----" * 5)
+#       puts("eachmenu.name: #{menu.name} #{menu.name.parameterize} params[:current_page]: #{params[:current_page]}")
+#       puts("**** ----- **** -----" * 5)
+       
+  if (menu.name.to_s.strip.downcase == params[:current_page].to_s.strip.downcase) or (menu.name.to_s.strip.downcase == params[:current_page].to_s.strip.downcase.split("-").join(" ")) or (menu.name.parameterize == params[:current_page] )
               html_link_class = params[:selected_class]
             end
 
@@ -644,8 +649,9 @@ module  MenusHelper
 
     
       inputMenus.each_with_index  do |eachmenu, index | 
-        if eachmenu.menu_active then
-          if eachmenu.name == params[:current_page]
+        
+         if eachmenu.menu_active then
+          if (eachmenu.name == params[:current_page]) or ( eachmenu.name.parameterize == params[:current_page])
             html_link_class = params[:selected_class]
           else 
             html_link_class = ""
