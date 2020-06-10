@@ -186,7 +186,7 @@ module UiHelper
       array_index = field.scan(/\[(.*?)\]/).flatten.first.to_i
       field_name = field.split("[").first
       value = object.send(field_name)[array_index] rescue ""
-      
+      value = eval("object.#{field}") if value.blank?
       # if value is empty, lets try to treat it as a hash
       if value.blank? or value.nil? then
         array_index = CGI.unescapeHTML(field).scan(/\[(.*?)\]/).flatten.join("\"][\"")
