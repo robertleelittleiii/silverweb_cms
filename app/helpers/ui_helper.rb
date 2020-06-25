@@ -527,7 +527,7 @@ module UiHelper
           type: "JSON",
           url: url_for(field_pointer).to_s 
         },
-        :class => "ui-ajax-checkbox",
+        :class => "ui-ajax-checkbox #{opts[:css_class]}",
         checkbox_value: field_title,
         "data-path"=>url_for(field_pointer).to_s ,
         "data-id"=>field_pointer.id,
