@@ -1,3 +1,5 @@
+
+
 module UiHelper
         
   MAX_LENGTH_TEXT_AREA = 85
@@ -186,14 +188,20 @@ module UiHelper
       array_index = field.scan(/\[(.*?)\]/).flatten.first.to_i
       field_name = field.split("[").first
       value = object.send(field_name)[array_index] rescue ""
-    #  eval_value = "object.#{field.sub(".","")}"
-    #  puts("evel_value: #{eval_value}")
-    #  value = (eval(eval_value) if value.blank?) rescue ""
+      #  eval_value = "object.#{field.sub(".","")}"
+      #  puts("evel_value: #{eval_value}")
+      #  value = (eval(eval_value) if value.blank?) rescue ""
       # if value is empty, lets try to treat it as a hash
       if value.blank? or value.nil? then
         array_index = CGI.unescapeHTML(field).scan(/\[(.*?)\]/).flatten.join("\"][\"")
         hash_value = object.send(field_name)
         value = (eval("hash_value[\"#{array_index}\"]") || "") rescue ""
+      end
+      
+      if field.include?("[:") and value.blank? then
+        eval_value = "object.#{field.sub(".","")}"
+        puts("evel_value: #{eval_value}")
+        value = (eval(eval_value) if value.blank?) rescue ""
       end
       
       # if value is still empty, lets try to treat it as a hash with a trailing array element
