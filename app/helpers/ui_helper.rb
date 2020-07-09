@@ -691,9 +691,15 @@ module UiHelper
         hash_value = field_pointer.send(field) rescue {}
         value = (eval("hash_value[\"#{array_index}\"]") || "") rescue ""
       end
-      # puts("array_index: #{array_index}\n , field_name: #{field_name},\n field: #{field} \n hash value: #{hash_value}, \n value: #{value}")
+#       puts("array_index: #{array_index}\n , field_name: #{field_name},\n field: #{field} \n hash value: #{hash_value}, \n value: #{value}")
 
-      #  puts("if value is still empty, lets try to treat it as a hash with a trailing array element")
+      if field_name.include?("[:") and value.blank? then
+        eval_value = "field_pointer.#{field_name.sub(".","")}"
+#        puts("eval_value: #{eval_value}, value: #{eval(eval_value)}")
+        value = (eval(eval_value) if value.blank?) rescue ""
+      end
+      
+#        puts("if value is still empty, lets try to treat it as a hash with a trailing array element")
       # if value is still empty, lets try to treat it as a hash with a trailing array element
       if value.blank? or value.nil? then
         array_index = field_name.scan(/\[(.*?)\]/).flatten
@@ -705,9 +711,9 @@ module UiHelper
         end
       end
   
-      #  puts("*  " * 40)
-      # puts("array_index: #{array_index}\n , field_name: #{field_name},\n field: #{field} \n hash value: #{hash_value}, \n value: #{value}")
-      # puts("options_for_select(value_list, value): #{options_for_select(value_list, value)}")
+#      puts("*  " * 40)
+#      puts("array_index: #{array_index}\n , field_name: #{field_name},\n field: #{field} \n hash value: #{hash_value}, \n value: #{value}")
+#      puts("options_for_select(value_list, value): #{options_for_select(value_list, value)}")
       
       html_options = html_options.merge({"data-path"=>url_for(field_pointer).to_s ,"data-id"=>field_pointer.id ,"data-attribute"=>field_name, "data-object"=>field_object, "data-initial-val"=>field_pointer[field_name]}) rescue {}
       html_options[:class] = html_options[:class] + " ui-ajax-select" rescue "ui-ajax-select"
