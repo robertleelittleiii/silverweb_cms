@@ -65,7 +65,7 @@ class SiteController < ApplicationController
       uri = session[:original_uri]
       session[:original_uri] = nil
     else
-      if user.auth_fail_count.to_i >= fail_count_max
+      if !user.nil? and user.auth_fail_count.to_i >= fail_count_max
         flash.now[:notice] = "User Account Locked! Too many failed attempts"
       else
         flash.now[:notice] = "Invalid user/password combination"
