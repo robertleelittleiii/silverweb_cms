@@ -205,7 +205,11 @@ class User < ActiveRecord::Base
     return if pwd.blank?
     create_new_salt
     self.hashed_password = User.encrypted_password(self.password, self.salt)
-    self.auth_fail_count = 0
+    begin
+      self.auth_fail_count = 0
+    rescue 
+      
+    end
   end
 
 
