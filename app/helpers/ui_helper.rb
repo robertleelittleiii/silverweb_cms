@@ -9,7 +9,7 @@ module UiHelper
   #   def hidden_div_if(condition, attributes = {})
   #    if condition
   #      attributes["style"] = "display: none"
-  #    end
+  #    end  
   #     content_tag(:div, attributes).html_safe
   #  end
   
@@ -82,15 +82,15 @@ module UiHelper
     #   stylesheet_path = Rails.application.assets_manifest.files.values.map{|v| v['logical_path']}.include?('#{stylesheet}')
     stylesheet_path = asset_available? stylesheet
     
-    puts('testingtestingtesting');
-    puts("stylesheet: #{stylesheet}----> stylesheet_path: '#{stylesheet_path}'");
+    # puts('testingtestingtesting');
+    # puts("stylesheet: #{stylesheet}----> stylesheet_path: '#{stylesheet_path}'");
     
     stylesheetaction = "#{params[:controller]}/#{params[:action]=="index" ? "index_" : params[:action]}.css"
     #  stylesheetaction_path = Rails.application.assets.find_asset(stylesheetaction)
     #  stylesheetaction_path = Rails.application.assets_manifest.files.values.map{|v| v['logical_path']}.include?('#{stylesheetaction}')
     stylesheetaction_path = asset_available? stylesheetaction
 
-    puts("stylesheetaction: #{stylesheetaction}---> stylesheetaction_path '#{stylesheetaction_path}'");
+    # puts("stylesheetaction: #{stylesheetaction}---> stylesheetaction_path '#{stylesheetaction_path}'");
 
     stylesheet_return = ""
   
@@ -122,15 +122,15 @@ module UiHelper
     #    javascript_path = Rails.application.assets.find_asset(javascript)
     #    javascript_path = Rails.application.assets_manifest.files.values.map{|v| v['logical_path']}.include?('#{javascript}')
     javascript_path = asset_available? javascript
-    puts('testingtestingtesting');
-    puts("javascript: #{javascript}----> javascript_path: '#{javascript_path}'");
+    # puts('testingtestingtesting');
+    # puts("javascript: #{javascript}----> javascript_path: '#{javascript_path}'");
  
     javascriptaction = "#{params[:controller]}/#{params[:action]=="index" ? "index_" : params[:action]}.js"
     #   javascriptaction_path = Rails.application.assets.find_asset(javascriptaction)
     #   javascriptaction_path = Rails.application.assets_manifest.files.values.map{|v| v['logical_path']}.include?('#{javascriptaction}')
     javascriptaction_path = asset_available? javascriptaction
-    puts('testingtestingtesting');
-    puts("javascriptaction: #{javascriptaction}----> javascriptaction_path: '#{javascriptaction_path}'");
+    # puts('testingtestingtesting');
+    # puts("javascriptaction: #{javascriptaction}----> javascriptaction_path: '#{javascriptaction_path}'");
  
     javascript_return = ""
            
@@ -160,17 +160,17 @@ module UiHelper
   end
   
   def best_in_place(object, field, opts = {})
-    logger.info("*"*10 + " START " + "*"*10)
-    logger.info("best_in_place")
-    logger.info(opts[:class])
-    puts("object: #{object}, field: #{field}, opts: #{opts.inspect}")
-    puts("object: #{object}, field: #{field}, opts: #{opts.inspect}")
+ #   logger.info("*"*10 + " START " + "*"*10)
+ #   logger.info("best_in_place")
+ #   logger.info(opts[:class])
+    # puts("object: #{object}, field: #{field}, opts: #{opts.inspect}")
+    # puts("object: #{object}, field: #{field}, opts: #{opts.inspect}")
   
     opts[:type] ||= :input
     opts[:collection] ||= []
 
     field = field.to_s
-    puts("bestinplace->>> field is: #{field}")
+    # puts("bestinplace->>> field is: #{field}")
     # puts("bestinplace->>> Object is: #{object.inspect}")
     
     field_items = field.split(".")
@@ -181,8 +181,8 @@ module UiHelper
       hash_value = object.send(field_name)
       value = eval("hash_value[#{array_index}]")
       # value = object.send(field_name)[array_index] rescue ""
-      puts("*" * 40)
-      puts("array_index: #{array_index} , field_name: #{field_name}, hash value: #{hash_value}, value: #{value}")
+     #  puts("*" * 40)
+     #  puts("array_index: #{array_index} , field_name: #{field_name}, hash value: #{hash_value}, value: #{value}")
 
     elsif field.include?("[") and field.include?("]") then
       array_index = field.scan(/\[(.*?)\]/).flatten.first.to_i
@@ -200,7 +200,7 @@ module UiHelper
       
       if field.include?("[:") and value.blank? then
         eval_value = "object.#{field.sub(".","")}"
-        puts("evel_value: #{eval_value}")
+       # puts("evel_value: #{eval_value}")
         value = (eval(eval_value) if value.blank?) rescue ""
       end
       
@@ -215,8 +215,8 @@ module UiHelper
         end
       end
   
-      puts("*" * 40)
-      puts("array_index: #{array_index} , field_name: #{field_name}, hash value: #{hash_value}, value: #{value}")
+     #  puts("*" * 40)
+     #  puts("array_index: #{array_index} , field_name: #{field_name}, hash value: #{hash_value}, value: #{value}")
 
     elsif object.class.to_s.include?("Settings") then # settins, treat it a bit differently
       value = Settings[field].to_s
@@ -227,13 +227,13 @@ module UiHelper
     
     value = value.blank? ? "" : value
     
-    puts("bestinplace->>> Value is: #{value}")
+   #  puts("bestinplace->>> Value is: #{value}")
 
     collection = nil
     if opts[:type] == :select && !opts[:collection].blank?
       v = object.send(field)
-      logger.info(v)
-      logger.info(opts[:collection])
+     # logger.info(v)
+     # logger.info(opts[:collection])
       value = Hash[opts[:collection]][!!(v =~ /^[0-9]+$/) ? v.to_i : v] || "Please Select..."
       collection = opts[:collection].to_json
     end
@@ -245,8 +245,8 @@ module UiHelper
     fieldValue = ""
 
     if opts[:type] == :checkbox
-      puts("bestinplace->>> Object is checkbox")
-      puts("field: #{field}")
+     #  puts("bestinplace->>> Object is checkbox")
+     #  puts("field: #{field}")
       value = value=="true" ? true : false if value.class.to_s == "String"
 
       if object_class_name == "settings" then
@@ -260,7 +260,7 @@ module UiHelper
         end
       end
 
-      puts("fieldValue '#{fieldValue}' , value: #{value}")
+     #  puts("fieldValue '#{fieldValue}' , value: #{value}")
 
       fieldValue = value if fieldValue.blank? 
 
@@ -270,7 +270,7 @@ module UiHelper
       value = fieldValue ? opts[:collection][1] : opts[:collection][0]
       collection = opts[:collection].to_json
       
-      puts("fieldValue '#{fieldValue}' , value: #{value}")
+     #  puts("fieldValue '#{fieldValue}' , value: #{value}")
 
     end
     extraclass = "'"
@@ -284,7 +284,7 @@ module UiHelper
       opts[:path] = opts[:path].blank? ? request.original_url : opts[:path]
     end rescue ""
     
-    puts("object-class-name in bestinplace: #{object_class_name}")
+    # puts("object-class-name in bestinplace: #{object_class_name}")
     
     out = "<div class='best_in_place " + extraclass
     out << " id='best_in_place_#{object_class_name}_#{field}'"
@@ -308,7 +308,7 @@ module UiHelper
     #           Will simply use the rails number_to_currency on the value to format.
     #
     
-    puts()
+   #  puts()
     if not opts[:time_zone].blank?  then  
       case opts[:format_type]
       when "date"
@@ -356,7 +356,7 @@ module UiHelper
       out << opts[:validation_message]
       out << "</lable>"
     end
-    puts("bestinplace->>> out: #{out}")
+   #  puts("bestinplace->>> out: #{out}")
 
     return out
   end
@@ -434,6 +434,8 @@ module UiHelper
   
   def editablecheckboxeditmulti (field_name, field_pointer ,field_title, opts={})
 
+    html_out = "".dup
+    
     db_field_name= field_name.split("-").first
     is_selected = field_pointer.send(db_field_name).split(",").include?(field_title) rescue false  
     divClass = (opts[:divclass].blank? ? "cms-contentitem ajax-check-multi" : opts[:divclass])
@@ -441,31 +443,39 @@ module UiHelper
     #fix for rails settings gem
     object_class_name = field_pointer.class.to_s.gsub("::", "_").underscore
     object_class_name = (object_class_name == "settings_active_record_relation" ? "settings" : object_class_name)
-    puts("*()*[]"*20)
-    puts(field_pointer)
-    puts(field_name)
-  
+    object_class_name = (field_pointer.to_s == "RailsSettings::ScopedSettings" ? "scoped_settings" : object_class_name )
+    
+   # puts("*()*[]"*20)
+   # puts(field_pointer)
+   # puts(field_name)
+   # puts(object_class_name)
+    the_action = :update
     if object_class_name == "settings" then
       is_selected = Settings.send(field_name).split(",").include?(field_title) rescue false
       field_pointer_id = "settings"
       field_class_pointer = object_class_name
+    elsif object_class_name == "scoped_settings" then
+      is_selected = field_pointer.send(field_name).include?(field_title) rescue false
+      field_pointer_id = "scoped_settings"
+      field_class_pointer = object_class_name
+      the_action = :update_settings
     elsif field_name.include?("[") then
       #   db_field_name =  field_name.include?("[") ? field_name : field_name.split("-").first
       base_field_name = field_name.split("[").first
-      puts("base_field_name: #{base_field_name}")
+     # puts("base_field_name: #{base_field_name}")
       sub_fields = field_name.split("[")[1..-1].collect{|x| x.sub("]","") }
-      puts("sub_fields: #{sub_fields}")
-      puts("field_pointer.send(base_field_name): #{field_pointer.send(base_field_name)}")
+     # puts("sub_fields: #{sub_fields}")
+     # puts("field_pointer.send(base_field_name): #{field_pointer.send(base_field_name)}")
       case sub_fields.size 
       when 1
         is_selected =  field_pointer.send(base_field_name)[sub_fields[0]].include?(field_title) rescue false  
-        puts("one: #{is_selected}, value: #{field_pointer.send(base_field_name)[sub_fields[0]][sub_fields[1]]},  field_title: #{field_title}  ")
+      #  puts("one: #{is_selected}, value: #{field_pointer.send(base_field_name)[sub_fields[0]][sub_fields[1]]},  field_title: #{field_title}  ")
       when 2
         is_selected =  field_pointer.send(base_field_name)[sub_fields[0]][sub_fields[1]].include?(field_title)  rescue false  
-        puts("two: #{is_selected}, value: #{field_pointer.send(base_field_name)[sub_fields[0]][sub_fields[1]]}, field_title: #{field_title} ")
+      #  puts("two: #{is_selected}, value: #{field_pointer.send(base_field_name)[sub_fields[0]][sub_fields[1]]}, field_title: #{field_title} ")
       when 3
         is_selected =  field_pointer.send(base_field_name)[sub_fields[0]][sub_fields[1]][sub_fields[2]].include?(field_title)  rescue false  
-        puts("three: #{is_selected}, value: #{field_pointer.send(base_field_name)[sub_fields[0]][sub_fields[1]]},  field_title: #{field_title}  ")
+      # puts("three: #{is_selected}, value: #{field_pointer.send(base_field_name)[sub_fields[0]][sub_fields[1]]},  field_title: #{field_title}  ")
       else
         is_selected =  false
       end
@@ -479,26 +489,38 @@ module UiHelper
       field_class_pointer = field_pointer.class.name.underscore.downcase
     end
     
-    ( "<div class='#{divClass}' >"  + check_box_tag("#{field_name}", field_title, is_selected, 
-        data:{
-          remote: true,
-          method: "PUT",
-          type: "JSON",
-          url:
-            url_for(
-            id: field_pointer_id,
-            selected: is_selected,
-            action: :update,
-            "#{field_class_pointer}" => {"#{field_name}"=> field_title}   ) 
-        },  
-        :class => "ajax-check-multi",
-        checkbox_value: field_title
-      )+field_title + "</div>").html_safe
+    
+    checkbox_html = check_box_tag("#{field_name + opts[:counter].to_s}", field_title, is_selected, 
+      data:{
+        remote: true,
+        method: "PUT",
+        type: "JSON",
+        url:
+          url_for(
+          id: field_pointer_id,
+          selected: is_selected,
+          action: the_action,
+          "#{field_class_pointer}" => {"#{field_name}"=> field_title}   ) 
+      },  
+      :class => "ajax-check-multi",
+      checkbox_value: field_title
+    )
+      
+    if (opts[:label] == true) then
+      html_out <<  label_tag("#{field_name + opts[:counter].to_s}", field_title)
+      html_out << checkbox_html
+    else
+      html_out << "<div class='#{divClass}' >"  
+      html_out << checkbox_html
+      html_out << field_title + "</div>"
+    end
+     
       
     # check_box_tag( "#{field_name}",field_title, is_selected , html_options.merge!({
     #       :onchange => "#{remote_function(:url  => {:action => "update_checkbox_multi", :id=>field_pointer.id, :field=>db_field_name ,:pointer_class=>field_pointer.class, :checkbox_value=>field_title},
     #       :with => "'current_status='+checked")}"}))+field_title
 
+    return html_out.html_safe
   end
   
   
@@ -574,7 +596,17 @@ module UiHelper
     
     return_value = ""
     
-    value_list.each do |item|
+    value_list.each_with_index do |item, counter|
+     # puts "---- abc ---" * 50
+     # puts html_options
+     # puts html_options[:label]
+
+      if html_options[:label] == true then
+        html_options[:counter] = "_#{counter}"
+      end
+      
+     # puts html_options
+
       return_value =  return_value + editablecheckboxeditmulti(field_name, field_pointer,item, html_options)  
     end
     return content_tag(:div,return_value, html_options,false)
@@ -641,7 +673,7 @@ module UiHelper
     #  the_object_class = field_pointer.class.name.downcase
     the_object_class = "checked_option"
     
-    puts("tag_list_name:#{tag_list_name}, tag_name: #{tag_name}, tag_array1: #{tag_array1.inspect}, tag_array: #{tag_array}")
+   # puts("tag_list_name:#{tag_list_name}, tag_name: #{tag_name}, tag_array1: #{tag_array1.inspect}, tag_array: #{tag_array}")
     
     if include_id then
     else
@@ -691,15 +723,15 @@ module UiHelper
         hash_value = field_pointer.send(field) rescue {}
         value = (eval("hash_value[\"#{array_index}\"]") || "") rescue ""
       end
-#       puts("array_index: #{array_index}\n , field_name: #{field_name},\n field: #{field} \n hash value: #{hash_value}, \n value: #{value}")
+      #       puts("array_index: #{array_index}\n , field_name: #{field_name},\n field: #{field} \n hash value: #{hash_value}, \n value: #{value}")
 
       if field_name.include?("[:") and value.blank? then
         eval_value = "field_pointer.#{field_name.sub(".","")}"
-#        puts("eval_value: #{eval_value}, value: #{eval(eval_value)}")
+        #        puts("eval_value: #{eval_value}, value: #{eval(eval_value)}")
         value = (eval(eval_value) if value.blank?) rescue ""
       end
       
-#        puts("if value is still empty, lets try to treat it as a hash with a trailing array element")
+      #        puts("if value is still empty, lets try to treat it as a hash with a trailing array element")
       # if value is still empty, lets try to treat it as a hash with a trailing array element
       if value.blank? or value.nil? then
         array_index = field_name.scan(/\[(.*?)\]/).flatten
@@ -711,9 +743,9 @@ module UiHelper
         end
       end
   
-#      puts("*  " * 40)
-#      puts("array_index: #{array_index}\n , field_name: #{field_name},\n field: #{field} \n hash value: #{hash_value}, \n value: #{value}")
-#      puts("options_for_select(value_list, value): #{options_for_select(value_list, value)}")
+      #      puts("*  " * 40)
+      #      puts("array_index: #{array_index}\n , field_name: #{field_name},\n field: #{field} \n hash value: #{hash_value}, \n value: #{value}")
+      #      puts("options_for_select(value_list, value): #{options_for_select(value_list, value)}")
       
       html_options = html_options.merge({"data-path"=>url_for(field_pointer).to_s ,"data-id"=>field_pointer.id ,"data-attribute"=>field_name, "data-object"=>field_object, "data-initial-val"=>field_pointer[field_name]}) rescue {}
       html_options[:class] = html_options[:class] + " ui-ajax-select" rescue "ui-ajax-select"
@@ -722,14 +754,14 @@ module UiHelper
 
     elsif (field_object == "settings") then
       found_item = value_list.index{|a| a[1]== Settings.send(field_name) }
-      puts("found_item: '#{found_item}'")
+     # puts("found_item: '#{found_item}'")
       # html_options==nil ? html_options={:class=>"ui-ajax-settings-select", "data-path"=>url_for(request.original_url).to_s } : ""
       html_options = html_options.merge({:class=>"ui-ajax-settings-select", "data-path"=>url_for(request.original_url).to_s ,"data-attribute"=>field_name, "data-object"=>field_object, "data-initial-val"=>Settings.send(field_name)}   )
       select_tag(field_name, options_for_select(value_list, Settings.send(field_name)), html_options)
     elsif (field_object == "cart") then
       found_item = value_list.index{|a| a[1]== @cart.send(field_name) }
-      puts("@CART = #{@cart.inspect}")
-      puts("found_item: '#{found_item}'")
+    #  puts("@CART = #{@cart.inspect}")
+    #  puts("found_item: '#{found_item}'")
       # html_options==nil ? html_options={:class=>"ui-ajax-cart-select", "data-path"=>url_for(field_pointer).to_s } : ""
       html_options = html_options.merge({:class=>"ui-ajax-cart-select", "data-path"=>url_for(field_pointer).to_s ,"data-attribute"=>field_name, "data-object"=>field_object, "data-initial-val"=>@cart.send(field_name)})
       select_tag(field_name, options_for_select(value_list, @cart.send(field_name)), html_options)
@@ -754,7 +786,7 @@ module UiHelper
   def generate_grid_tabnav(*args)
     html_options      = args.first || {}
     icon_list = args.second || {}
-    puts(icon_list)
+   # puts(icon_list)
     grid_div_class = html_options[:grid_div_class].blank? ? "" : ("class='" + html_options[:grid_div_class]+"'")
     grid_div_id = html_options[:grid_div_id].blank? ? "" : ("id='" + html_options[:grid_div_id]+"'")
   
@@ -767,8 +799,8 @@ module UiHelper
     out << "<div #{grid_div_class} #{grid_div_id}>"
     out << "<ul #{grid_ul_class} #{grid_ul_id}>"
     icon_list.each  do |item|
-      puts(item)
-      puts(item.class)
+     # puts(item)
+     # puts(item.class)
       additional_args = item[:additional_args] ||{}
       additional_params = item[:additional_params] ||{}
 
@@ -789,7 +821,7 @@ module UiHelper
   def generate_shortcut_tabnav(*args)
     html_options = args.first || {}
     icon_list = args.second || {}
-    puts(icon_list)
+  #  puts(icon_list)
     grid_div_class = html_options[:grid_div_class].blank? ? "" : ("class='" + html_options[:grid_div_class]+"'")
     grid_div_id = html_options[:grid_div_id].blank? ? "" : ("id='" + html_options[:grid_div_id]+"'")
   
@@ -803,8 +835,8 @@ module UiHelper
     out << "<ul #{grid_ul_class} #{grid_ul_id}>"
 
     icon_list.each  do |item|
-      puts(item)
-      puts(item.class)
+   #   puts(item)
+   #   puts(item.class)
       additional_args = item[:additional_args] ||{}
       additional_params = item[:additional_params] ||{}
 

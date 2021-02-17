@@ -159,8 +159,8 @@ class MenusController < ApplicationController
   end
 
   def update_order
-    puts("here")
-    puts(params)
+  #  puts("here")
+  #  puts(params)
     paramName="field"
     #paramName=params[:name]
     params[paramName].each_with_index do |id, position|

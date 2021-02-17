@@ -3,11 +3,11 @@ module PagesHelper
   def get_page_name
     out="".dup
     if not @category_id.blank?
-      puts("Category selected for get_page_name")
+    # puts("Category selected for get_page_name")
       out = @category_id
     else
-      puts("Page.name selected for get_page_name: '#{@page.inspect}', @page_name: '#{@page_name}'")
-      puts("params: #{params.inspect}")
+    #  puts("Page.name selected for get_page_name: '#{@page.inspect}', @page_name: '#{@page_name}'")
+    #  puts("params: #{params.inspect}")
       out = @page.name rescue ((@page_name.blank? ? params[:page_name] : @page_name) rescue "")
    #  out << (@page.blank? ? (@page_name.blank? ? "n/a" : @page_name) : @page.name)
 
@@ -15,7 +15,7 @@ module PagesHelper
     
     out = out.parameterize if !out.blank?
     
-    puts("out: '#{out}'")
+  #  puts("out: '#{out}'")
     
     return out
   end

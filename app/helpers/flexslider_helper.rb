@@ -24,7 +24,7 @@ module FlexsliderHelper
 #        end
 
       page.sliders.active.each_with_index do |slider, slide_count| 
-        puts("slide count #{slide_count}")
+       # puts("slide count #{slide_count}")
         returnval = returnval + "<li> \n"
         
         returnval = returnval + "<div class='hidden-item'>"

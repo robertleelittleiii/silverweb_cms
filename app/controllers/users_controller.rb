@@ -64,7 +64,7 @@ class UsersController < ApplicationController
 
 
   def selfcreate
-    puts "selfcreate"
+  #  puts "selfcreate"
 
     @user = User.new(user_params)
   end
@@ -72,7 +72,7 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(user_params)
-    puts "testing"
+  #  puts "testing"
     logger.info("controller #{self.class.controller_path}")
     logger.info("action: #{action_name}")
     @newAttributes = UserAttribute.new()
@@ -210,13 +210,13 @@ class UsersController < ApplicationController
       @roles = Role.all
     else
       @role = Role.find(params[:role_id])
-      puts(params[:is_checked])
+    #  puts(params[:is_checked])
       if (params[:is_checked]=="true") then
-        puts("add to list")
+     #   puts("add to list")
         @user.roles.where(:id=>@role.id).blank? ? @user.roles << @role : ""
 
       else
-        puts("Remove from list")
+    #    puts("Remove from list")
         @user.roles.delete(@role)
       end
       @user.save
@@ -248,7 +248,7 @@ class UsersController < ApplicationController
     if @user.id == session[:user_id] then
       # @user.errors[:base] <<   "Can't delete self."
       render :json => {:error => "Can't delete self."},:status => 400
-      puts("can't delete self.")
+  #    puts("can't delete self.")
     else
       @user.destroy
       render body: nil
@@ -289,7 +289,7 @@ class UsersController < ApplicationController
   end
 
   def datatable_columns(column_id)
-    puts(column_id)
+  #  puts(column_id)
     case column_id.to_i
     when 0
       return "`users`.`id`"

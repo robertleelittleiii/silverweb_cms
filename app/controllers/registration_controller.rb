@@ -164,7 +164,7 @@ class RegistrationController < ApplicationController
     @user = User.new
     @role_name="Customer"
     @new_uri = params[:new_uri] || ""
-    puts 'New URI:' + @new_uri
+  #  puts 'New URI:' + @new_uri
     #     redirect_back_or_default('/')
     session[:original_uri] = @new_uri if not @new_uri==nil
   end
@@ -197,11 +197,11 @@ class RegistrationController < ApplicationController
   def registration
     session[:main_search_status] = false
 
-    puts"registration"
+  #  puts"registration"
     uri =  session[:original_uri]
     $hostfull=request.protocol + request.host_with_port
 
-    puts uri
+  #  puts uri
     #first check if user exists.
     @user = User.find_by_name(params[:user][:name])
     @regtype=params[:register][:regtype]||""
@@ -213,7 +213,7 @@ class RegistrationController < ApplicationController
         @user.roles << @role
 
         @user_attribute = UserAttribute.create(params[:user_attribute])
-        puts(@user_attribute)
+     #   puts(@user_attribute)
         @user.user_attribute = @user_attribute
       
         if @user.save

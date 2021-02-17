@@ -22,9 +22,9 @@ class ApplicationController < ActionController::Base
   
   def authenticate
     # put an exception here for self registration
-    puts "In Authenticate"
-    logger.info("controller #{self.class.controller_path}")
-    logger.info("action: #{action_name}")
+  #  puts "In Authenticate"
+  #  logger.info("controller #{self.class.controller_path}")
+  #  logger.info("action: #{action_name}")
 
     if(self.class.controller_path == "users" && action_name=="create")
 
@@ -32,7 +32,7 @@ class ApplicationController < ActionController::Base
       unless User.find_by_id(session[:user_id])
         session[:original_uri] = request.request_uri
         flash.now[:notice] = "Please log in"
-        puts("redirected to admin/login.")
+   #     puts("redirected to admin/login.")
         redirect_to(:controller => "registration" , :action => "login" )
       end
     end

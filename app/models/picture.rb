@@ -51,7 +51,7 @@ class Picture < ActiveRecord::Base
   end
   
   def self.reorder(id,position)
-    puts(id, position)
+  #  puts(id, position)
     ActiveRecord::Base.connection.execute ("UPDATE `pictures` SET `position` = '"+position.to_s+"' WHERE `pictures`.`id` ="+id.to_s+" LIMIT 1 ;")
   end
   

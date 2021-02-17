@@ -68,11 +68,11 @@ module  MenusHelper
     #  added this because the html_options was getting modified and passed along to other menus.
     html_options = html_options_in.clone
     
-    puts("options-> #{options}")
+   # puts("options-> #{options}")
     
     class_options==nil ? class_options={} : ""
     
-    puts("menuItem.name:#{menuItem.name}")
+   # puts("menuItem.name:#{menuItem.name}")
     
     if menuItem.menu_active then
       menuText="<span "+ span_options +">"+menuItem.name + "</span>"
@@ -120,11 +120,11 @@ module  MenusHelper
             html_options.merge!({"page-id"=>"#{menuItem.page.id}"})
           end
        
-          puts("------------ ------------------- -------------------")
-          puts("item_link_to: #{item_link_to}")
-          puts("class_options: #{class_options}")
-          puts("html_options: #{html_options}")
-          puts("------------ ------------------- -------------------")
+      #    puts("------------ ------------------- -------------------")
+      #    puts("item_link_to: #{item_link_to}")
+      #    puts("class_options: #{class_options}")
+      #    puts("html_options: #{html_options}")
+      #    puts("------------ ------------------- -------------------")
 
           return_link =  link_to(item_link_to, class_options, html_options)
         
@@ -247,14 +247,14 @@ module  MenusHelper
     end
   
     def buildverticlesubmenu(params=nil)
-      puts("-------------------> #{params.inspect}")
-      puts("******************> #{params[:menu_name]}")
+    #  puts("-------------------> #{params.inspect}")
+    #  puts("******************> #{params[:menu_name]}")
       @menu_id = Menu.where(:name=>params[:menu_name]).first.id rescue session[:parent_menu_id] 
     
-      puts("in build sub menu with:", session[:parent_menu_id] , @menu_id)
+    #  puts("in build sub menu with:", session[:parent_menu_id] , @menu_id)
     
       if @menu_id==0 then
-        puts("returning") 
+     #   puts("returning") 
         return("")
       else
     
@@ -271,9 +271,9 @@ module  MenusHelper
 
         returnMenu="".dup
     
-        puts(@menus.inspect)
+      #  puts(@menus.inspect)
         for @menu in @menus.menus
-          puts("@menu.name: #{@menu.name}, @article_name: #{@article_name} ")
+      #    puts("@menu.name: #{@menu.name}, @article_name: #{@article_name} ")
           if @menu.name.downcase == @article_name.downcase
             returnMenu = returnMenu + params[:selected_class] + "<div class='menu-selected'>" + @menu.name + "</div>" + @posthtml
           else
@@ -340,11 +340,11 @@ module  MenusHelper
     end
 
     def buildhorizontalmenu(params=nil)
-      puts("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
-      puts("- - - - - - - - - - - - - - Start build horizontal menu - - - - - - - - - - - - - - - - - - ")
-      puts("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
+    #  puts("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
+    #  puts("- - - - - - - - - - - - - - Start build horizontal menu - - - - - - - - - - - - - - - - - - ")
+     # puts("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
  
-      puts("build menu params: #{params.inspect}")
+    #  puts("build menu params: #{params.inspect}")
       html_options = {}
     
       html_options.merge!({:class=>params[:class]}) 
@@ -395,35 +395,35 @@ module  MenusHelper
         
         
           menuText =  self.buildmenuitem(@menu,html_options,"", input_params)
-          puts("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
-          puts("- - - - - - - - - - - - - - Start build horizontal menu ITEM - - - - - - - - - - - - - - - - - - ")
+        #  puts("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
+        #  puts("- - - - - - - - - - - - - - Start build horizontal menu ITEM - - - - - - - - - - - - - - - - - - ")
 
-          puts("menuText: #{menuText} menu: #{@menu.name} vs page name: #{params[:current_page]}")
-          puts("parent_name: #{@parent_name}")
-          puts("page_name: #{@page_name}")
-          puts("current_page: #{params[:current_page] }")
+        #  puts("menuText: #{menuText} menu: #{@menu.name} vs page name: #{params[:current_page]}")
+        #  puts("parent_name: #{@parent_name}")
+        #  puts("page_name: #{@page_name}")
+        #  puts("current_page: #{params[:current_page] }")
         
           if not menuText.blank?  then
             if @menu.name.to_s.downcase == params[:current_page].to_s.downcase and not menu_selected
               menu_selected=true  
               returnMenu=  returnMenu + breaker + @selected_class + menuText + @posthtml
-              puts("Logic: @menu.name == params[:current_page] and not menu_selected")
+        #      puts("Logic: @menu.name == params[:current_page] and not menu_selected")
             else 
               if @menu.name == @parent_name and not menu_selected then
                 returnMenu=  returnMenu + breaker + @selected_class + menuText + @posthtml
                 menu_selected = true
-                puts("Logic: @menu.name == @parent_name and not menu_selected")
+         #       puts("Logic: @menu.name == @parent_name and not menu_selected")
               else
                 returnMenu=  returnMenu + breaker + @prehtml+ menuText + @posthtml
               end
             end
           end
-          puts(returnMenu)
-          puts("menu_selected: #{menu_selected}, @menu.name: #{@menu.name}, params[:current_page]: #{params[:current_page]} ")
+        #  puts(returnMenu)
+        #  puts("menu_selected: #{menu_selected}, @menu.name: #{@menu.name}, params[:current_page]: #{params[:current_page]} ")
        
           breaker = breaker_val
-          puts("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
-          puts("- - - - - - - - - - - - - - END build horizontal menu ITEM - - - - - - - - - - - - - - - - - - ")
+       #   puts("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
+      #    puts("- - - - - - - - - - - - - - END build horizontal menu ITEM - - - - - - - - - - - - - - - - - - ")
 
         end
       end
@@ -431,7 +431,7 @@ module  MenusHelper
     
         
       return ("<div data-menu-params=' "+ h(params.to_json) + "' data-menu-id='#{@top_menu.id rescue 0}' cms-menu-helper='buildhorizontalmenu'>#{returnMenu}</div>").html_safe
-      puts("- - - - - - - - - - - - - - END build horizontal menu - - - - - - - - - - - - - - - - - - ")
+     # puts("- - - - - - - - - - - - - - END build horizontal menu - - - - - - - - - - - - - - - - - - ")
     end
 
     def buildhorizontalmenuprodrop(params=nil)
@@ -456,7 +456,7 @@ module  MenusHelper
           else
             html_link_class="top_link"
           end
-          puts("current page:#{params[:current_page]}, Menu Name:#{@menu.name} ")
+        #  puts("current page:#{params[:current_page]}, Menu Name:#{@menu.name} ")
           if @menu.name.to_s.strip.downcase == params[:current_page].to_s.strip.downcase
             html_link_class = html_link_class +" "+ params[:selected_class]
           end
@@ -535,7 +535,7 @@ module  MenusHelper
     def menu_delete(menu)
       user =  User.find_by_id(session[:user_id])
 
-      puts(user.name, user.roles.find_by_name("Admin"), menu.parent_id) rescue ""
+    #  puts(user.name, user.roles.find_by_name("Admin"), menu.parent_id) rescue ""
         
       returnval="".dup
       if user.blank? then
@@ -558,9 +558,9 @@ module  MenusHelper
     end
   
     def buildhorizontalmenusuperfish(params=nil)
-      puts("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
-      puts("- - - - - - - - - - - - - - Start build horizontal menu super fish - - - - - - - - - - - - - - - - - - ")
-      puts("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
+    #  puts("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
+    #  puts("- - - - - - - - - - - - - - Start build horizontal menu super fish - - - - - - - - - - - - - - - - - - ")
+    #  puts("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
  
       @menu_id= params[:menu_id]
       returnMenu="".dup
@@ -578,13 +578,13 @@ module  MenusHelper
       
         menus.each_with_index  do |menu, index | 
           
-          puts("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
-          puts("- - - - - - - - - - - - - - Start build horizontal menu Super Fish ITEM - - - - - - - - - - - - - - - - - - ")
+        #  puts("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
+        #  puts("- - - - - - - - - - - - - - Start build horizontal menu Super Fish ITEM - - - - - - - - - - - - - - - - - - ")
 
-          puts("menu: #{@menu.name} vs page name: #{params[:current_page]}")
-          puts("parent_name: #{@parent_name}")
-          puts("page_name: #{@page_name}")
-          puts("current_page: #{params[:current_page] }")
+        #  puts("menu: #{@menu.name} vs page name: #{params[:current_page]}")
+        #  puts("parent_name: #{@parent_name}")
+        #  puts("page_name: #{@page_name}")
+        #  puts("current_page: #{params[:current_page] }")
  
           #for menu in menus
           if menu.menu_active then
@@ -604,7 +604,7 @@ module  MenusHelper
                 html_li_class="middle"
               end
             end
-            puts("current page:#{params[:current_page]}, Menu Name:#{menu.name} ")
+         #   puts("current page:#{params[:current_page]}, Menu Name:#{menu.name} ")
             
 #                puts("**** ----- **** -----" * 5)
 #       puts("eachmenu.name: #{menu.name} #{menu.name.parameterize} params[:current_page]: #{params[:current_page]}")
@@ -626,8 +626,8 @@ module  MenusHelper
 
             breaker = breaker_val.html_safe
           end
-          puts("- - - - - - - - - - - - - - END build horizontal menu Super Fish ITEM - - - - - - - - - - - - - - - - - - ")
-          puts("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
+        #  puts("- - - - - - - - - - - - - - END build horizontal menu Super Fish ITEM - - - - - - - - - - - - - - - - - - ")
+         # puts("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
 
         end
       end

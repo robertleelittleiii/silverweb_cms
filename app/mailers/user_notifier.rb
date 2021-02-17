@@ -33,7 +33,7 @@ class UserNotifier < ActionMailer::Base
   def reset_notification(user, host)
     
     set_up_images()
-    puts("Self: #{self.default_params[:from]}")
+   # puts("Self: #{self.default_params[:from]}")
     @user=user
     @hostfull=host
     @site_name = Settings.company_url

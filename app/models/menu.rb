@@ -54,10 +54,10 @@ class Menu < ActiveRecord::Base
   def find_top_level_parent
     
     if parent_id==0 then
-      puts("found parent:#{id} ")
+   #   puts("found parent:#{id} ")
       return id
     else
-      puts("check next level ^")
+    #  puts("check next level ^")
       return menu.find_top_level_parent
     end rescue return 0
   end

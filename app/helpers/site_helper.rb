@@ -55,7 +55,7 @@ module SiteHelper
       bounceTabs = "<div class=\"bouncetabs\">"
 
       page.sliders.active.each_with_index do |slider, slide_count| 
-        puts("slide count #{slide_count}")
+      #  puts("slide count #{slide_count}")
         
         if(slide_count % item_count) == 0 
           if slide_count  > 1
@@ -99,7 +99,7 @@ module SiteHelper
       returnval = returnval + "<div id=\"slides\">"
       returnval =  returnval + "<div class=\"slides_container\" >"
       page.sliders.active.each_with_index do |slider, slide_count| 
-        puts("slide count #{slide_count}")
+      #  puts("slide count #{slide_count}")
         if slide_count == 0 then
           returnval =  returnval + "<div class='slider-content'>"
         else
@@ -143,7 +143,7 @@ module SiteHelper
       
       returnval = returnval + "<div id=\"slides3\" class=\"slides3\"> \n"
       page.sliders.active.each_with_index do |slider, slide_count| 
-        puts("slide count #{slide_count}")
+      #  puts("slide count #{slide_count}")
         if slide_count == 0 then
           returnval =  returnval + "<div class='slider-content'> \n"
         else
@@ -185,7 +185,7 @@ module SiteHelper
 
         
         
-        puts("slide count #{slide_count}")
+      #  puts("slide count #{slide_count}")
         returnval =  returnval + "<div class='nav-item'> \n" # start nav-item
         returnval = returnval + slide_edit_div(slider)
 

@@ -26,8 +26,8 @@ class MailerController < ApplicationController
     body_field.delete("action") 
     body_field.delete("controller")
     
-    puts(body_field.inspect)
-    puts("Body field",body_field.to_yaml.to_s)
+   # puts(body_field.inspect)
+   # puts("Body field",body_field.to_yaml.to_s)
     
     response_code = body_field["g-recaptcha-response"]
     body_field.delete("g-recaptcha-response")
@@ -50,7 +50,7 @@ class MailerController < ApplicationController
     if response_parsed[:success] or response_code.blank? then
       @message_body = body_field.to_yaml.split("\n")[1..-1].join("\n")
 
-      puts("here", @messsage_body, @from, @to, @subject)
+    #  puts("here", @messsage_body, @from, @to, @subject)
       @mail_item = ContactUs.send_mail(@message_body, @from, @to, @subject)
       @mail_item.deliver
     

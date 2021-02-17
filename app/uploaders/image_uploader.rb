@@ -87,7 +87,7 @@ class ImageUploader < CarrierWave::Uploader::Base
       cols=img.columns
       rows=img.rows
 
-      puts("cols: #{cols}, rows: #{rows} ")
+    #  puts("cols: #{cols}, rows: #{rows} ")
       if width != cols || height != rows
         scale = [width/cols.to_f, height/rows.to_f].max
         cols = (scale * (cols + 0.5)).round

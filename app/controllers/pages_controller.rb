@@ -73,7 +73,7 @@ class PagesController < ApplicationController
 
     style_path = Rails.root.to_s + "/app/assets/stylesheets" +  "/style_types/*"
     style_type_files =  Dir.glob(style_path)
-    puts(style_type_files)
+  #  puts(style_type_files)
     
     style_type_files.each do |style_type|
        css_file_name = style_type.split("/").last
@@ -82,7 +82,7 @@ class PagesController < ApplicationController
         
     @style_type = [["B L A N K",""]] + style_types if style_types.length >0
 
-    puts("New TemplateList:#{ template_types.inspect}")
+  #  puts("New TemplateList:#{ template_types.inspect}")
     
     @item_edit =  @page
     @menu_location=[["Top",1] , ["Side",2]]
@@ -217,7 +217,7 @@ class PagesController < ApplicationController
   end
 
   def datatable_columns(column_id)
-    puts(column_id)
+  #  puts(column_id)
     case column_id.to_i
     when 0
       return "`pages`.`id`"

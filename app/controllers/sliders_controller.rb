@@ -115,7 +115,7 @@ class SlidersController < ApplicationController
     @sliders = Slider.where(:page_id=>params[:page_id])
     @sliders.each do |slider|
       slider.slider_order = params['slider'].index(slider.id.to_s) + 1
-      puts(slider.slider_order, slider)
+    #  puts(slider.slider_order, slider)
       slider.save
     end
 

@@ -49,7 +49,7 @@ class SiteController < ApplicationController
     fail_count_max = (Settings.fail_count_max || 3) rescue 3
  
     user, logged_in = User.authenticate(params[:name], params[:password])
-    puts("User: #{user.inspect}") 
+  #  puts("User: #{user.inspect}") 
     login_success = false
 
     if logged_in then
@@ -170,7 +170,7 @@ class SiteController < ApplicationController
       format.html {redirect_to(uri || {:controller=>"admin",  :action => "index" })}
     end 
     
-    puts("NOTICE====> #{flash[:notice]}")
+   # puts("NOTICE====> #{flash[:notice]}")
 
   end
   
@@ -210,7 +210,7 @@ class SiteController < ApplicationController
     #   puts("Not Found : #{@page.inspect}")
     @page = ((Page.find_by_id(params[:id]) || Page.find_by_title(params[:page_name]) || (params[:page_name].blank? ? nil : Page.where('lower(title) = ?', params[:page_name].gsub("_"," ").gsub("-"," ").downcase).first) || Page.find_by_slug(params[:page_name])) || Page.find_by_slug(Settings.home_page_name) || Page.find_by_title(Settings.home_page_name) || Page.find_by_title("Home")) || Page.new(:title=>"'Home' not found.", :body=>"'Home' not found.")   
    
-    puts ("Page Found : #{@page.inspect}")
+   # puts ("Page Found : #{@page.inspect}")
  
     @user =  User.find_by_id(session[:user_id])
 
@@ -240,13 +240,13 @@ class SiteController < ApplicationController
     session[:parent_menu_id] = @menu.id rescue 0
     #   end
         
-    puts("parent menu id:", session[:parent_menu_id])
+  #  puts("parent menu id:", session[:parent_menu_id])
     if params[:dialog]== true then
       
     end
     
     user_roles = @user.roles.map {|i| i.name } rescue  []
-    puts("************user roles: #{user_roles.inspect}, page_roles: #{@page.security_group_list.inspect}, VAlid: #{(user_roles & (@page.security_group_list)).blank?}")
+  # puts("************user roles: #{user_roles.inspect}, page_roles: #{@page.security_group_list.inspect}, VAlid: #{(user_roles & (@page.security_group_list)).blank?}")
    
     if @page.secure_page and ((user_roles) & (@page.security_group_list)).blank? then
       redirect_to :controller=>:site, :alert=>"You do not have permission to view that page."
@@ -287,8 +287,8 @@ class SiteController < ApplicationController
 
   def show_page_popup
     session[:mainnav_status] = false
-    puts("page_id: #{params[:page_id]}")
-    puts("page_name: #{params[:page_nam]}")
+  #  puts("page_id: #{params[:page_id]}")
+   # puts("page_name: #{params[:page_nam]}")
     unless params[:page_id].blank? then 
       @page = Page.find_by_id(params[:page_id])
     else
@@ -312,7 +312,7 @@ class SiteController < ApplicationController
     #  @page = Page.new(:title=>"'Home' not found.", :body=>"'Home' not found.") if @page.blank?
     #   puts("Not Found : #{@page.inspect}")
     @page = ((Page.find_by_id(params[:id]) || Page.find_by_title(params[:page_name]) || (params[:page_name].blank? ? nil : Page.where('lower(title) = ?', params[:page_name].gsub("_"," ").gsub("-"," ").downcase).first) || Page.find_by_slug(params[:page_name])) || Page.find_by_slug(Settings.home_page_name) || Page.find_by_title(Settings.home_page_name) || Page.find_by_title("Home")) || Page.new(:title=>"'Home' not found.", :body=>"'Home' not found.")   
-    puts ("Page Found : #{@page.inspect}")
+    # puts ("Page Found : #{@page.inspect}")
  
     @user =  User.find_by_id(session[:user_id])
 
@@ -341,13 +341,13 @@ class SiteController < ApplicationController
     session[:parent_menu_id] = @menu.id rescue 0
     #   end
         
-    puts("parent menu id:", session[:parent_menu_id])
+   # puts("parent menu id:", session[:parent_menu_id])
     if params[:dialog]== true then
       
     end
     
     user_roles = @user.roles.map {|i| i.name } rescue  []
-    puts("************user roles: #{user_roles.inspect}, page_roles: #{@page.security_group_list.inspect}, VAlid: #{(user_roles & (@page.security_group_list)).blank?}")
+   # puts("************user roles: #{user_roles.inspect}, page_roles: #{@page.security_group_list.inspect}, VAlid: #{(user_roles & (@page.security_group_list)).blank?}")
    
     if @page.secure_page and ((user_roles) & (@page.security_group_list)).blank? then
       redirect_to :controller=>:site, :alert=>"You do not have permission to view that page, please login.", :login=>true, :url=>request.original_url
@@ -1051,7 +1051,7 @@ class SiteController < ApplicationController
   
   def update_menu_order
     @user = User.find(session[:user_id])
-    puts(params)
+   # puts(params)
     @user.settings.menu_order = params[:menu_order].split(",")
     
     respond_to do |format|
@@ -1062,7 +1062,7 @@ class SiteController < ApplicationController
   
   def update_menu_shortcuts
     @user = User.find(session[:user_id])
-    puts(params)
+  #  puts(params)
     current_shortcuts = (@user.settings.menu_shortcuts || [] )rescue []
     
     if current_shortcuts.include?(params[:shortcut])
@@ -1170,14 +1170,14 @@ class SiteController < ApplicationController
   protected
   
   def authorize
-    puts "in authorize"
+ #   puts "in authorize"
     return true
   end
 
   def authenticate
     # always create a session.
     session.delete 'init'
-    puts "in authenticate"
+ #   puts "in authenticate"
 
     return true
   end

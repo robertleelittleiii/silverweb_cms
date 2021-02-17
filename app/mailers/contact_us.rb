@@ -13,7 +13,7 @@ class ContactUs < ActionMailer::Base
       
       from = Settings.admin_email || "noreply@onewhere.com"
     @form_data=form_data
-    puts("stuff", @form_data, from, to, subject)
+   # puts("stuff", @form_data, from, to, subject)
     mail(:to => to,:from=>from, :subject => subject)
   end
 end

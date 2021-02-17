@@ -47,9 +47,9 @@ module SilverwebCms
        
       def authenticate
         # put an exception here for self registration
-        puts "In Authenticate"
-        logger.info("controller #{self.class.controller_path}")
-        logger.info("action: #{action_name}")
+      #  puts "In Authenticate"
+      #  logger.info("controller #{self.class.controller_path}")
+      #  logger.info("action: #{action_name}")
 
         if(self.class.controller_path == "users" && action_name=="create")
 
@@ -57,7 +57,7 @@ module SilverwebCms
           unless User.find_by_id(session[:user_id])
             session[:original_uri] = request.original_url 
             flash[:notice] = "Please log in"
-            puts("redirected to admin/login.")
+        #    puts("redirected to admin/login.")
             redirect_to( "/" )
           end
         end
@@ -101,8 +101,8 @@ module SilverwebCms
       end
       
       def update_user_field
-        puts("*"*50)
-        puts(params)
+      #  puts("*"*50)
+      #  puts(params)
         parameters = params.permit(params.keys).to_h
 
         current_user =  User.find_by_id(session[:user_id])
@@ -112,7 +112,7 @@ module SilverwebCms
         
         current_user.user_live_edit.save
         
-        puts(current_user.user_live_edit.errors)
+     #   puts(current_user.user_live_edit.errors)
         
         render body: nil
 
@@ -169,7 +169,7 @@ module SilverwebCms
   
     
     def cms_layout(default="application")
-      puts("params in cms_layout: #{params.inspect}")
+     # puts("params in cms_layout: #{params.inspect}")
       if request.xhr? then
         false
       elsif (params[:as_window] or params[:window_type]=="dialog") then

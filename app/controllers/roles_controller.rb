@@ -129,13 +129,13 @@ class RolesController < ApplicationController
       @rights = Right.all
     else
       @right = Right.find(params[:right_id])
-      puts(params[:is_checked])
+     # puts(params[:is_checked])
       if (params[:is_checked]=="true") then
-        puts("add to list")
+     #   puts("add to list")
         @role.rights.where(:id=>@right.id).blank? ? @role.rights << @right : ""
 
       else
-        puts("Remove from list")
+     #   puts("Remove from list")
         @role.rights.delete(@right)
       end
       @role.save
@@ -188,7 +188,7 @@ class RolesController < ApplicationController
   end
 
   def datatable_columns(column_id)
-    puts(column_id)
+  #  puts(column_id)
     case column_id.to_i
     when 0
       return "`roles`.`id`"

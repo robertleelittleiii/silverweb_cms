@@ -133,7 +133,7 @@ class PageTemplatesController < ApplicationController
   end
 
   def datatable_columns(column_id)
-    puts(column_id)
+   # puts(column_id)
     case column_id.to_i
     when 0
       return "`page_templates`.`id`"
