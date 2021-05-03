@@ -88,3 +88,17 @@ div.data-nil {
     color: #aaa;
     font-style: italic;
 }
+
+.best_in_place.disabled {
+    color: gray;
+    font-weight: bold;
+}
+
+.best_in_place.disabled:hover {
+    background-color: transparent;
+}
+
+.best_in_place.disabled div {
+    color: #efcbcb !important;
+    font-weight: bold;
+}

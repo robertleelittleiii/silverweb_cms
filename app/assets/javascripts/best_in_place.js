@@ -172,9 +172,14 @@ BestInPlaceEditor.prototype = {
         console.log(this.element);
         console.log(this.element.html());
         console.log("----------------------------------------------------------");
-        this.oldValue = elem;
-        jQuery(this.activator).unbind("click", this.clickHandler);
-        this.activateForm();
+
+        if ((jQuery(this.activator[0]).hasClass("locked")) || (jQuery(this.activator[0]).hasClass("disabled"))) {
+        } else
+        {
+            this.oldValue = elem;
+            jQuery(this.activator).unbind("click", this.clickHandler);
+            this.activateForm();
+        }
     },
     abort: function () {
         console.log("----------------------------------------------------------");
@@ -375,8 +380,7 @@ BestInPlaceEditor.prototype = {
             }
 
             return jQuery.trim(s);
-        }
-        else
+        } else
         {
             return(s)
         }
@@ -647,7 +651,8 @@ BestInPlaceEditor.forms = {
         activateForm: function () {
             // .hasClass("locked")
             //  console.log(jQuery(this.activator[0]).hasClass("locked"))
-            if (jQuery(this.activator[0]).hasClass("locked")) {
+            if ((jQuery(this.activator[0]).hasClass("locked")) || (jQuery(this.activator[0]).hasClass("disabled"))) {
+                jQuery(this.activator).bind("click", this.clickHandler);
                 return;
             }
             var output = '<form class="form_in_place" action="javascript:void(0)" style="display:inline;">';
