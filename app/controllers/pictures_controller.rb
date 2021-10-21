@@ -64,7 +64,7 @@ class PicturesController < ApplicationController
     @picture = Picture.find(params[:id])
 
     respond_to do |format|
-      if @picture.update_attributes(picture_params)
+      if @picture.update(picture_params)
         format.html { redirect_to @picture, :notice=>"Picture was successfully updated."}
         format.json { head :ok }
       else

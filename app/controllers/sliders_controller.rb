@@ -71,7 +71,7 @@ class SlidersController < ApplicationController
     @slider = Slider.find(params[:id])
 
     respond_to do |format|
-      if @slider.update_attributes(slider_params)
+      if @slider.update(slider_params)
         format.html { redirect_to(:action=>"edit", :notice=>"Slider was successfully updated.")}
         format.json { head :ok }
       else

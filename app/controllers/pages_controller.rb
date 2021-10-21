@@ -116,7 +116,7 @@ class PagesController < ApplicationController
     @page = Page.find(params[:id])
 
     respond_to do |format|
-      if @page.update_attributes(page_params)
+      if @page.update(page_params)
         format.html { redirect_to(:action =>"edit", :notice => 'Page was successfully updated.') }
         format.json { render :json=> {:notice => 'Page was successfully updated.'} }
       else

@@ -100,7 +100,7 @@ class RegistrationController < ApplicationController
       if (params[:password] != params[:password_confirmation] or params[:password].blank? )
         message ="Paswords can't be blank and must match, please try again."
         reset_status = -1
-      elsif @user.update_attributes(:password => params[:password], :password_confirmation => params[:password_confirmation])
+      elsif @user.update(:password => params[:password], :password_confirmation => params[:password_confirmation])
         @user.delete_reset_code
         
         # also log the user in.
@@ -132,7 +132,7 @@ class RegistrationController < ApplicationController
       redirect_to :action=>:forgot
     else
       if request.post?
-        if @user.update_attributes(:password => params[:user][:password], :password_confirmation => params[:user][:password_confirmation])
+        if @user.update(:password => params[:user][:password], :password_confirmation => params[:user][:password_confirmation])
           #self.current_user = @user
           @user.delete_reset_code
           flash[:notice] = "Password reset successfully for #{@user.name}"

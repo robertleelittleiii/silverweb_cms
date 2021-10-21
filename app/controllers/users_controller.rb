@@ -129,7 +129,7 @@ class UsersController < ApplicationController
       eval("@user." + settings_params[0] + "." + settings_params[1] + "='" + params["user"].values.first + "'" ) rescue ""
       updated = true 
     else
-      updated =  @user.update_attributes(user_params)
+      updated =  @user.update(user_params)
     end
 
     respond_to do |format|

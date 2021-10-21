@@ -56,7 +56,7 @@ class RightsController < ApplicationController
     @right = Right.find(params[:id])
 
       respond_to do |format|
-      if @right.update_attributes(right_params)
+      if @right.update(right_params)
         format.html { redirect_to(action: "edit", notice: "Right #{@right.name} was successfully updated.") }
         format.json { render :json=> {:notice => "Right #{@right.name} was successfully updated."} }
       else

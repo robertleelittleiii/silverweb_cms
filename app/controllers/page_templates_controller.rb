@@ -75,7 +75,7 @@ class PageTemplatesController < ApplicationController
     @page_template = PageTemplate.find(params[:id])
 
     respond_to do |format|
-      if @page_template.update_attributes(page_template_params)
+      if @page_template.update(page_template_params)
         format.html { redirect_to(:action =>"edit", :notice => 'Page Template was successfully updated.') }
         format.json { render :json=> {:notice => 'Page Template was successfully updated.'} }
       else

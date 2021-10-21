@@ -82,7 +82,7 @@ class MenusController < ApplicationController
     @menu = Menu.find(params[:id])
 
     respond_to do |format|
-      if @menu.update_attributes(menu_params)
+      if @menu.update(menu_params)
         format.html { redirect_to(:action =>"edit", :notice => 'Menu was successfully updated.') }
         format.json  { head :ok }
       else

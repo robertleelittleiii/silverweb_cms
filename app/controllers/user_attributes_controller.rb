@@ -59,7 +59,7 @@ class UserAttributesController < ApplicationController
     @user_attribute = UserAttribute.find(params[:id])
 
     respond_to do |format|
-      if @user_attribute.update_attributes(user_attribute_params)
+      if @user_attribute.update(user_attribute_params)
         format.html { redirect_to(@user_attribute, :notice => 'User attribute was successfully updated.') }
         format.json  { head :ok }
       else
