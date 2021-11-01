@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.authors     = ["Robert Lee Little III"]
   s.email       = ["rob@silverwebsystems.com"]
   s.homepage    = "http://www.silverwebsystems.com/"
-  s.summary     = "This is a baseline CMS system built by silverwebs sytems"
+  s.summary     = "This is a baseline CMS system built by silverwebs sytems (rails 6)"
   s.description = "This CMS alows for Menus and Pages object.  Each page can have sliders.  Also has a built in secutiy model (Model/controller/Action Roles/Rules)"
   s.license     = "MIT"
 
@@ -24,7 +24,7 @@ Gem::Specification.new do |s|
   # s.add_runtime_dependency "sprockets" , "3.5.2"
   # s.add_runtime_dependency "compass-rails" , "~> 2.0.4"
   
-  s.add_runtime_dependency "rails", '~> 5.1'
+  s.add_runtime_dependency "rails", '> 5.1'
   s.add_runtime_dependency 'jquery-rails'
   s.add_runtime_dependency 'rmagick'
 
@@ -51,6 +51,7 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'american_date'
   s.add_runtime_dependency 'activerecord-session_store'
   s.add_runtime_dependency 'browser'
+  s.add_runtime_dependency 'rails-html-sanitizer'
 
   
 end
