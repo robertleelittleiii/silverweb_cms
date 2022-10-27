@@ -13,7 +13,7 @@ $(document).ready(function () {
     activateImages();
     bindSearchField();
     bindEndSearchButton();
-
+    bind_scroll_to_pictures();
 });
 
 function activateImages() {
@@ -662,4 +662,40 @@ function processSearchField(search_term) {
         }
 
     })
+}
+
+
+function bind_scroll_to_pictures() {
+    console.log("binding--- scroll");
+
+    $(window).on("scroll", function () {
+        var scrollHeight = $(document).height();
+        var scrollPosition = $(window).height() + $(window).scrollTop();
+        if ((scrollHeight - scrollPosition) / scrollHeight === 0) {
+            append_pictures();
+        }
+    })
+
+}
+
+function append_pictures()
+{
+
+    $.ajax({
+        dataType: "html",
+        url: '/image_library/next_images',
+        cache: false,
+        success: function (data)
+        {
+            $("div#picture-list div#pictures").append(data)
+            bind_mouseover();
+            initialize_insert_image_button();
+            initialize_edit_button();
+            activate_buttons();
+            bind_download_to_files();
+            bindDeleteImage();
+            $("img").unveil();
+        }
+    });
+
 }

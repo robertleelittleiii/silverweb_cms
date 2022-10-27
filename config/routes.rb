@@ -54,6 +54,9 @@ Rails.application.routes.draw do
     collection do
       get "image_list"
       post "image_list"
+      
+      get 'next_images'
+      post 'next_images'
     end
   end
   
