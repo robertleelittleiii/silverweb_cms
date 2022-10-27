@@ -44,6 +44,7 @@ class ImageUploader < CarrierWave::Uploader::Base
     end
   end
 
+  
   def set_dpi
     manipulate! do |img|
       img.resample(72.0, 72.0)
@@ -223,9 +224,17 @@ class ImageUploader < CarrierWave::Uploader::Base
       frame if index.zero? # take only the first page of the file
     end
   end
+  
+  def fix_pdf_image
+    manipulate! do |img|
+      img.alpha(Magick::RemoveAlphaChannel)
+      img
+    end
+  end
 
   version :pdf_preview , :if => :pdf? do
       process :cover
+      process :fix_pdf_image
       process :resize_to_fit => [150, 150]
       process :convert => :jpg
 
@@ -237,6 +246,7 @@ class ImageUploader < CarrierWave::Uploader::Base
   
   version :pdf_thumb, :if => :pdf? do
     process :cover
+    process :fix_pdf_image
     process resize_to_fit: [100, 100]
     process :convert => :jpg
     

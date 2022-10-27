@@ -1,11 +1,22 @@
 
-  module ImageTools
+
 require 'rmagick'
 include Magick
+
+module ImageTools
 
 
   def self.test
     return   "hello world"
+  end
+  
+  def self.test2
+    return "hello world 2"
+  end
+  
+  def self.fix_alpha_channel(picture)
+    picture.alpha(Magick::RemoveAlphaChannel)
+    return(picture)
   end
   
   def self.border_on_image(picture,width,offset,color, border)
