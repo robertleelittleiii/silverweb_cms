@@ -8,6 +8,8 @@ require 'csv'
 class User < ActiveRecord::Base
   include RailsSettings::Extend
   
+  serialize :geo_data, JSON
+
   RFC822_valid = begin
     qtext = '[^\\x0d\\x22\\x5c\\x80-\\xff]'
     dtext = '[^\\x0d\\x5b-\\x5d\\x80-\\xff]'
@@ -53,14 +55,71 @@ class User < ActiveRecord::Base
 
   #accepts_nested_attributes_for :user_attribute, :allow_destroy => true
 
-  def self.authenticate(name, password)
+  def self.two_factor_auth (two_factor_code)
+    @user = self.find_by_two_factor_code(two_factor_code)
+        
+    unless @user.nil? 
+      @user.two_factor_date = DateTime.now
+      @user.two_factor_code == nil
+      @user.save
+      return @user, true
+    else
+      return @user, false
+    end
+  end
+  
+  def two_factor_life
+    two_factor_age = Settings.two_factor_age
+    case Settings.two_factor_interval.to_sym 
+    when :days 
+      Settings.two_factor_age.to_i.days
+    when :hours
+      Settings.two_factor_age.to_i.hours
+    when :minutes
+      Settings.two_factor_age.to_i.minutes       
+    end
+  end
+  
+  def secret_life
+    secret_age = Settings.secret_code_age
+    case Settings.secret_code_interval.to_sym 
+    when :days 
+      Settings.secret_code_age.to_i.days
+    when :hours
+      Settings.secret_code_age.to_i.hours
+    when :minutes
+      Settings.secret_code_age.to_i.minutes       
+    end
+  end
+  
+  def generate_two_factor_code
+    
+    secret_time_interval = secret_life
+    
+    write_attribute(:two_factor_code, '%06d' % "#{(rand * 1000000).to_i}") if updated_at + secret_time_interval < DateTime.now
+  end
+    
+  def self.authenticate(name, password, geo_data)
+    
+    puts(geo_data)
+    
     @user = self.find_by_name(name)
     
+    return nil,false, false if @user.nil?
     fail_count_max = (Settings.fail_count_max || 3) rescue 3
     
-    return @user, false if @user and (@user and (@user.auth_fail_count.to_i >= fail_count_max))
+    if @user and (@user and (@user.auth_fail_count.to_i >= fail_count_max)) 
+      return @user, false, false
+    end
     
     logged_in = false
+    two_factor = false
+    
+       
+    if @user.geo_data.nil?
+      @user.geo_data = geo_data 
+      @user.save
+    end
     
     if (@user and (@user.auth_fail_count.to_i < fail_count_max))
       expected_password = encrypted_password(password, @user.salt)
@@ -68,14 +127,40 @@ class User < ActiveRecord::Base
         @user.auth_fail_count = @user.auth_fail_count.to_i + 1
         @user.save
       else
+        logged_in = true
+        if (Settings.enable_two_factor_auth == "true") and (@user.two_factor_date.nil? or @user.two_factor_date + @user.two_factor_life < DateTime.now or (@user.geo_data["ip_address"] != geo_data["ip_address"] rescue true)) 
+      #    puts("generating two factor code")
+          @user.generate_two_factor_code
+          @user.two_factor_date = DateTime.now - 1.day  if @user.two_factor_date.nil?
+          two_factor = true
+          @user.geo_data = geo_data 
+        end
+        
         @user.auth_fail_count = 0
         @user.save
-        logged_in = true
       end
+     
     end
-    return @user, logged_in
+    return @user, logged_in, two_factor
   end
 
+  def formated_phone_number
+    unless user_attribute.phone_number.nil?
+      clean_number = user_attribute.phone_number.delete(" \t\r\n)(") 
+
+      case
+      when (clean_number.chr[0] == "+" and clean_number.chr[1] == "1" and clean_number.length==12) # Looks good
+        return clean_number
+      when (clean_number.chr[0] != "+" and clean_number.chr[0] == "1" and clean_number.length==11)  # no plus, add it.
+        return "+#{clean_number}"
+      when (clean_number.chr[0] != "+" and clean_number.chr[0] != "1" and clean_number.length==10) 
+        return "+1#{clean_number}"
+      end
+      return clean_number
+    end
+    return ""
+  end
+  
   def full_name
     #user_attributes=UserAttribute.where(:user_id => self.id)
     if self.user_attribute.nil? then

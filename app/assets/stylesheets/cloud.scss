@@ -141,8 +141,20 @@ input#update-button {
     -webkit-transform:rotateY(180deg);
     transform:rotateY(180deg);
 }
+#two-factor-form {
+    z-index:1;
+    opacity:0;
+    background-color: white;
+    border: double 10px gray;
+    border-radius: 20px;
 
-div.login-form.flipped #login-form, div.login-form.flipped-register #login-form{
+    /* Rotating the recover password form by default */
+    -moz-transform:rotateY(180deg);
+    -webkit-transform:rotateY(180deg);
+    transform:rotateY(180deg);
+}
+
+div.login-form.flipped #login-form, div.login-form.flipped-register #login-form, div.login-form.flipped-two-factor #login-form{
 
     opacity:0;
 
@@ -165,6 +177,17 @@ div.login-form.flipped #recover-form{
     -webkit-transform:rotateY(0deg);
     transform:rotateY(0deg);
 }
+
+div.login-form.flipped-two-factor #two-factor-form{
+
+    opacity:1;
+
+    /* Rotating the recover div into view */
+    -moz-transform:rotateY(0deg);
+    -webkit-transform:rotateY(0deg);
+    transform:rotateY(0deg);
+}
+
 div.login-form.flipped-register #registration-form{
 
     opacity:1;
@@ -414,6 +437,13 @@ form#recover-form table tr td.center {
     text-align:center;
 
 }
+
+form#two-factor-form table tr td.center {
+    text-align:center;
+
+}
+
+
 form#login-form table tr td.center {
     text-align: center;
 

@@ -20,6 +20,7 @@ Rails.application.routes.draw do
       get "show_page_popup"
       get "login"
       post "login_ajax"
+      post "two_factor_ajax"
       post "reset_ajax"
       post "register_ajax"
       get "logout_ajax"

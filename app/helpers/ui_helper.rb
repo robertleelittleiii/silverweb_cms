@@ -758,6 +758,12 @@ module UiHelper
       # html_options==nil ? html_options={:class=>"ui-ajax-settings-select", "data-path"=>url_for(request.original_url).to_s } : ""
       html_options = html_options.merge({:class=>"ui-ajax-settings-select", "data-path"=>url_for(request.original_url).to_s ,"data-attribute"=>field_name, "data-object"=>field_object, "data-initial-val"=>Settings.send(field_name)}   )
       select_tag(field_name, options_for_select(value_list, Settings.send(field_name)), html_options)
+    elsif  (field_object.include?("settings"))
+      the_current_value =  eval("@#{field_object}.#{field_name}")
+      found_item = value_list.index{|a| a[1]== the_current_value }
+      html_options = html_options.merge({:class=>"ui-ajax-settings-select", "data-path"=>url_for(field_pointer).to_s ,"data-attribute"=>field_name, "data-object"=>"#{field_object}", "data-initial-val"=> the_current_value}   )
+     select_tag(field_name, options_for_select(value_list, the_current_value), html_options)
+
     elsif (field_object == "cart") then
       found_item = value_list.index{|a| a[1]== @cart.send(field_name) }
     #  puts("@CART = #{@cart.inspect}")

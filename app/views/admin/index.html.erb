@@ -4,88 +4,102 @@
     <div id="user-id"><%= session[:user_id] %> </div>
 </div>
 <div class="cms-block" Align="Left">
-    
-<%   $user =  User.find_by_id(session[:user_id])
-     $roles = $user.roles
- %>
 
- <div id="flash" align="center">
-  <!-- START:flash -->
-      <% if flash[:notice] -%>
-        <div id="notice"><%= flash[:notice] %></div>
-      <% end -%>
-      <!-- END:flash -->
-</div>
-<!-- <div class="cms-header">My Account Information</div> -->
- <div class="cms-section">
-   <div class="cms-heading">About Me</div>
-      <div class="cms-content">
+    <%   $user =  User.find_by_id(session[:user_id])
+    $roles = $user.roles
+  %>
 
-        <%  if @user.not_activated? %>
-        <p>
-          <b>Account has not been activated.</b><br>
-            <%= link_to "Resend Activate Code" , :controller =>'registration', :action=>'lostwithemail',  :name=>@user.name %>
-        </p>
-         <%else%>
-        <%end%>
+    <div id="flash" align="center">
+        <!-- START:flash -->
+        <% if flash[:notice] -%>
+          <div id="notice"><%= flash[:notice] %></div>
+        <% end -%>
+        <!-- END:flash -->
+    </div>
+    <!-- <div class="cms-header">My Account Information</div> -->
+    <div class="cms-section">
+        <div class="cms-heading">About Me</div>
+        <div class="cms-content">
 
-        
-        <div id="avitar-div" title="click on picture to go to gravatar.com and create or edit your avatar.">        
-        <%= link_to(image_tag(@user.gravatar_url,:class=>"avitar"), "http://gravatar.com", :target=>"new") %>
-      </div>        
-        
-        <p>
-        <b>First Name:</b><br>
-        <%=editablefieldcreate("first_name", @user_attributes)%>
-        </p>
+            <%  if @user.not_activated? %>
+              <p>
+                  <b>Account has not been activated.</b><br>
+                  <%= link_to "Resend Activate Code" , :controller =>'registration', :action=>'lostwithemail',  :name=>@user.name %>
+              </p>
+            <%else%>
+            <%end%>
 
-         <p>
-        <b>Last Name:</b><br>
-        <%=editablefieldcreate("last_name", @user_attributes)%>
-        </p>
-        
-        <p>
-        <b>Email Address:</b><br>
-        <%=editablefieldcreate("name", @user)%>
-        </p>
 
-        <p>
-        <b>Nick Name:</b><br>
-        <%=editablefieldcreate("handle", @user_attributes)%>
-        </p>
-        
-        <p>
-        <div class="button-link" id="password-user-item">Change Password</div>
-        
+            <div id="avitar-div" title="click on picture to go to gravatar.com and create or edit your avatar.">        
+                <%= link_to(image_tag(@user.gravatar_url,:class=>"avitar"), "http://gravatar.com", :target=>"new") %>
+            </div>        
+
+            <p>
+                <b>First Name:</b><br>
+                <%=editablefieldcreate("first_name", @user_attributes)%>
+            </p>
+
+            <p>
+                <b>Last Name:</b><br>
+                <%=editablefieldcreate("last_name", @user_attributes)%>
+            </p>
+
+            <p>
+                <b>Email Address:</b><br>
+                <%=editablefieldcreate("name", @user)%>
+            </p>
+
+            <%  if Settings.enable_two_factor_auth == "true" %>
+
+              <p>
+                  <b>Phone Number:</b><br>
+                  <%=editablefieldcreate("phone_number", @user_attributes)%>
+              </p>
+
+              <p>
+                  <b>Two factor authentication uses :</b>
+                  <%=ajax_select("two_factor_method","user.settings",@user, [[@user.settings.two_factor_method,@user.settings.two_factor_method],["Text","Text"],["Email","Email"]].uniq)%>
+              </p>
+              </br>
+            <% end %>
+
+            <p>
+                <b>Nick Name:</b><br>
+                <%=editablefieldcreate("handle", @user_attributes)%>
+            </p>
+
+            <p>
+            <div class="button-link" id="password-user-item">Change Password</div>
+
 <%#=editablefieldcreate2("password", @user)%> </br>
-        </p>
+            </p>
 
-         <%#*<p>%>
-          <%#*<b>Birthday:</b><br>%>
-            <%#=ajax_calendar_date_select ("birthdate",@user_attributes)%>
-        <%#*</p>%>
+<%#*<p>%>
+<%#*<b>Birthday:</b><br>%>
+<%#=ajax_calendar_date_select ("birthdate",@user_attributes)%>
+<%#*</p>%>
 
-      </div>
- </div>
-
-
-<%= build_pane_additions() %>
+        </div>
+    </div>
 
 
-<div class="cms-section">
-   <div class="cms-heading">My Account</div>
-   <div class="cms-content">
-It's <%= Time.now %>
+    <%= build_pane_additions() %>
 
-<br>
-Your Roles in the system: 
-<%for role in $roles do %>
-                <%=role.name %><%=$roles.last == role ? "" : ", " %>
-<%  end %>
-<br>
 
-   </div>
- </div>
+    <div class="cms-section">
+        <div class="cms-heading">My Account</div>
+        <div class="cms-content">
+            It's <%= Time.now %>
+
+            <br>
+            Your Roles in the system: 
+            <%for role in $roles do %>
+              <%=role.name %><%=$roles.last == role ? "" : ", " %>
+            <%  end %>
+            <br>
+
+        </div>
+    </div>
 
 
 

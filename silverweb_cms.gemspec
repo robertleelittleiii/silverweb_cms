@@ -52,6 +52,6 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'activerecord-session_store'
   s.add_runtime_dependency 'browser'
   s.add_runtime_dependency 'rails-html-sanitizer'
-
+  s.add_runtime_dependency 'twilio-ruby', '~> 5.73.4'
   
 end

@@ -42,6 +42,19 @@ class UserNotifier < ActionMailer::Base
   end
  
   
+    def two_factor_notification(user, host)
+    
+    set_up_images()
+   # puts("Self: #{self.default_params[:from]}")
+    @user=user
+    @two_factor_code=user.two_factor_code
+    @hostfull=host
+    @site_name = Settings.company_url
+    @admin_email = Settings.admin_email || self.default_params[:from]
+    mail(:from=>@admin_email,:to => "#{user.user_attribute.first_name} #{user.user_attribute.last_name}<#{user.name}>", :subject => "Reset your password", 'Importance' => 'high', 'X-Priority' => '1')
+  end
+ 
+  
 #  def signup_notification2(user, siteurl)
 #    set_up_images()
 #    @hostfull=siteurl

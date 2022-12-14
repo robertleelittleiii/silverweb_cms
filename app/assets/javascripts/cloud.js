@@ -242,8 +242,10 @@ function loadLoginBox(url_to_goto, show_main_menu) {
 
                 toggle_login_box(true);
                 bindLoginClick(url_to_goto, show_main_menu);
+                bindSubmitCodeClick(url_to_goto, show_main_menu);
                 bindLoginForgotLink();
                 bindLoginRegisterLink();
+                bindLoginTwoFactorLink();
                 bindResetClick();
                 bindRegisterClick();
                 bindCancelClick();
@@ -332,6 +334,76 @@ function bindLogoutClick() {
 
     });
 }
+
+function bindSubmitCodeClick(url_to_goto, show_main_menu) {
+
+    {
+        $('#two-factor-form').bind('ajax:beforeSend', function (evt, xhr, settings) {
+            // alert("ajax:before");  
+            // console.log('ajax:before');
+            // console.log(evt);
+            // console.log(xhr);
+            // console.log(settings);
+
+
+        }).bind('ajax:success', function (evt, data, status, xhr) {
+            //  alert("ajax:success"); 
+            // console.log('ajax:success');
+            // console.log(evt);
+            // console.log(data);
+            if (data.twofactor) {
+                if (data.code_expired)
+                {
+                    $('div.login-form').toggleClass('flipped-two-factor');
+                } 
+                else 
+                {
+
+                    $(".login-enclosure").effect("shake", {
+                        times: 3
+                    }, 800);
+                }
+                // $('div.login-form').toggleClass('flipped-two-factor');
+                setUpPurrNotifier("Notice", data.message);
+
+            } else if (data.sucessfull) {
+                login_sucessfull(url_to_goto, show_main_menu);
+                setUpPurrNotifier("Notice", data.message);
+
+            } else
+            {
+                $(".login-enclosure").effect("shake", {
+                    times: 3
+                }, 800);
+                setUpPurrNotifier("Notice", data.message);
+
+            }
+
+
+            // console.log(status);
+            // console.log(xhr);
+
+        }).bind('ajax:error', function (evt, xhr, status, error) {
+            // alert("ajax:failure"); 
+            // console.log('ajax:error');
+            // console.log(evt);
+            // console.log(xhr);
+            // console.log(status);
+            // console.log(error);
+
+        }).bind('ajax:complete', function (evt, xhr, status) {
+            //    alert("ajax:complete");  
+            // console.log('ajax:complete');
+            // console.log(evt);
+            // console.log(xhr);
+            // // console.log(status);
+
+
+        });
+
+    }
+}
+
 function bindLoginClick(url_to_goto, show_main_menu) {
     $('#login-form').bind('ajax:beforeSend', function (evt, xhr, settings) {
         // alert("ajax:before");  
@@ -346,8 +418,15 @@ function bindLoginClick(url_to_goto, show_main_menu) {
         // console.log('ajax:success');
         // console.log(evt);
         // console.log(data);
-        if (data.sucessfull) {
+        if (data.twofactor) {
+            $('div.login-form').toggleClass('flipped-two-factor');
+            setUpPurrNotifier("Notice", data.message);
+            $("input#code").focus();
+            $("input#code").trigger("click");
+
+        } else if (data.sucessfull) {
             login_sucessfull(url_to_goto, show_main_menu);
+            setUpPurrNotifier("Notice", data.message);
 
         } else
         {
@@ -1103,6 +1182,22 @@ function bindLoginRegisterLink() {
         e.preventDefault();
     });
 }
+
+function bindLoginTwoFactorLink() {
+    $('.two-factor-link').click(function (e) {
+
+        var formContainer = $('div.login-form');
+        // Flipping the forms
+        formContainer.toggleClass('flipped-two-factor');
+        // If there is no CSS3 3D support, simply
+        // hide the login form (exposing the recover one)
+        if (!$.support.css3d) {
+            $('#login').toggle();
+        }
+        e.preventDefault();
+    });
+}
+
 
 function bindRegisterClick() {
     $('#registration-form').bind('ajax:beforeSend', function (evt, xhr, settings) {

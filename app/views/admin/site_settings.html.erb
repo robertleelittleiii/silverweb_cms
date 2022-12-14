@@ -1,153 +1,216 @@
 <%= create_dialog_settings("Site Preferences", "650", "500") %>
 
 <div class="cms-block" Align="Left">
-  <%   $user =  User.find_by_id(session[:user_id])
-  $roles = $user.roles
-%>
+    <%   $user =  User.find_by_id(session[:user_id])
+    $roles = $user.roles
+  %>
 
-  <div id="flash" align="center">
-    <!-- START:flash -->
-    <% if flash[:notice] -%>
-      <div id="notice"><%= flash[:notice] %></div>
-    <% end -%>
-    <!-- END:flash -->
-  </div>
-
-
-
-  <!-- <div class="cms-header">Site Preferences</div> -->
-
-  <div class="cms-section">
-    <div class="cms-heading">Company Information</div>
-    <div class="cms-content">
-      <p>
-        <b>Web Site URL</b><br>
-        <%=editablefieldcreate("company_url", @settings)%>
-      </p>
-      <p>
-        <b>Admin Email Address</b><br>
-        <%=editablefieldcreate("admin_email", @settings)%>
-      </p>
-      <p>
-        <b>Name:</b><br>
-        <%=editablefieldcreate("company_name", @settings)%>
-      </p>
-      <p>
-        <b>Street Address:</b><br>
-        <%=editablefieldcreate("company_address", @settings,"123 somestreet", {:sanitize=>false})%>
-      </p>
-      <p>
-        <b>Phone Number:</b><br>
-        <%=editablefieldcreate("company_phone", @settings)%>
-      </p>
-      <p>
-        <b>Fax Number:</b><br>
-        <%=editablefieldcreate("company_fax", @settings)%>
-      </p>
-      <p>
-        <b>Email Carbon Copy Address:</b><br>
-        <%=editablefieldcreate("cc_email_address", @settings)%>
-      </p>
-      
-       <p>
-        <b>Site Entry Page (home page):</b><br>
-          <%=ajax_select("home_page_name","settings",@settings, @page_list)%>
-        </p>
-      
-      <p>
-      </p>
+    <div id="flash" align="center">
+        <!-- START:flash -->
+        <% if flash[:notice] -%>
+          <div id="notice"><%= flash[:notice] %></div>
+        <% end -%>
+        <!-- END:flash -->
     </div>
-  </div>
 
 
-  <%=build_site_pane_additions() %>
 
-  
-  <div class="cms-section">
-    <div class="cms-heading">Tracking Codes</div>
-    <div class="cms-content">
-      <p>
-        <b>Google Analytics:</b><br>
-        <%=editablefieldcreate("google_analytics", @settings)%>
-      </p>
-      <p>
-        <b>Google Tag Manager:</b><br>
-        <%=editablefieldcreate("google_tag_manager", @settings)%>
-      </p>
-      <p>
-        <b>Pinterest validation code:</b><br>
-        <%=editablefieldcreate("pintrest_id", @settings)%>
-      </p>
-      
-      <p>
+    <!-- <div class="cms-header">Site Preferences</div> -->
 
-      </p>
+    <div class="cms-section">
+        <div class="cms-heading">Company Information</div>
+        <div class="cms-content">
+            <p>
+                <b>Web Site URL</b><br>
+                <%=editablefieldcreate("company_url", @settings)%>
+            </p>
+            <p>
+                <b>Admin Email Address</b><br>
+                <%=editablefieldcreate("admin_email", @settings)%>
+            </p>
+            <p>
+                <b>Name:</b><br>
+                <%=editablefieldcreate("company_name", @settings)%>
+            </p>
+            <p>
+                <b>Street Address:</b><br>
+                <%=editablefieldcreate("company_address", @settings,"123 somestreet", {:sanitize=>false})%>
+            </p>
+            <p>
+                <b>Phone Number:</b><br>
+                <%=editablefieldcreate("company_phone", @settings)%>
+            </p>
+            <p>
+                <b>Fax Number:</b><br>
+                <%=editablefieldcreate("company_fax", @settings)%>
+            </p>
+            <p>
+                <b>Email Carbon Copy Address:</b><br>
+                <%=editablefieldcreate("cc_email_address", @settings)%>
+            </p>
+
+            <p>
+                <b>Site Entry Page (home page):</b><br>
+                <%=ajax_select("home_page_name","settings",@settings, @page_list)%>
+            </p>
+
+            <p>
+            </p>
+        </div>
     </div>
-  </div>
-  <div class="cms-section">
-    <div class="cms-heading">reCaptcha</div>
-    <div class="cms-content">
-      <p>
-        <b>Recaptcha Public Key:</b><br>
-        <%=editablefieldcreate("google_recaptcha_public_key", @settings)%>
-      </p>
-      <p>
-        <b>Recaptcha Private Key:</b><br>
-        <%=editablefieldcreate("google_recaptcha_private_key", @settings)%>
-      </p>
-      <p>
 
-      </p>
+
+    <%=build_site_pane_additions() %>
+
+
+    <div class="cms-section">
+        <div class="cms-heading">Tracking Codes</div>
+        <div class="cms-content">
+            <p>
+                <b>Google Analytics:</b><br>
+                <%=editablefieldcreate("google_analytics", @settings)%>
+            </p>
+            <p>
+                <b>Google Tag Manager:</b><br>
+                <%=editablefieldcreate("google_tag_manager", @settings)%>
+            </p>
+            <p>
+                <b>Pinterest validation code:</b><br>
+                <%=editablefieldcreate("pintrest_id", @settings)%>
+            </p>
+
+            <p>
+
+            </p>
+        </div>
     </div>
-  </div>
-  <div class="cms-section">
-    <div class="cms-heading">System Config</div>
-    <div class="cms-content">
-      </br>
+    <div class="cms-section">
+        <div class="cms-heading">reCaptcha</div>
+        <div class="cms-content">
+            <p>
+                <b>Recaptcha Public Key:</b><br>
+                <%=editablefieldcreate("google_recaptcha_public_key", @settings)%>
+            </p>
+            <p>
+                <b>Recaptcha Private Key:</b><br>
+                <%=editablefieldcreate("google_recaptcha_private_key", @settings)%>
+            </p>
+            <p>
+
+            </p>
+        </div>
+    </div>
+    <div class="cms-section">
+        <div class="cms-heading">System Config</div>
+        <div class="cms-content">
+            </br>
 
 <%#=link_to("reload!", {:action=>:reload_rails_env}, {})%>
 
-      <p>
-        <b> Server System time is:  <%= Time.now %> </b>
-      </p>
-      
-      <div id="site-status" class="<%= site_down() == true ? 'site-down' : 'site-up'  %> ">
-        <%=  site_status(site_down()) %>
-      </div>
-      
-      <p>
-        <%=link_to 'Turn Site '+ (site_down() ? "ON" : "OFF"), {:controller => 'admin', :action => 'toggle_index'}, :id=>"site-button", :remote=>true%>
-      </p>
-      </br></br>
-      
-          <p>
-        <b>Time to be down (in days:hours:min)</b><br>
-        <%=editablefieldcreate("down_time", @settings)%>
-      </p>
-      
-       <p>
-        <b> Click this link to reprocess all images:</b></br>
-        <%=link_to 'Reprocess all images', {:controller => 'admin', :action => 'reprocess_page_images'}, :id=>"process-image-button", :remote=>true%>
-      </p>
-      </br>
-      <p>
-        <b>Default new user group: (defaults to customer)</b><br>
-        <%=editablefieldcreate("default_registration", @settings)%>
-      </p>
-      
-       <p>
-        <b>Turn on Site RackMiniProfiler for users in admin group:</b><br>
-        <%= editablecheckboxedit("activate_rack_mini_profiler", @settings ,"Turn on RackMiniProfiler")%>
-      </p>
-     
-      
-        <p>
-        <b>User authentication fail count before accont is locked:(default 3)</b><br>
-        <%=editablefieldcreate("fail_count_max", @settings)%>
-      </p>
-     
+            <p>
+                <b> Server System time is:  <%= Time.now %> </b>
+            </p>
 
+            <div id="site-status" class="<%= site_down() == true ? 'site-down' : 'site-up'  %> ">
+                <%=  site_status(site_down()) %>
+            </div>
+
+            <p>
+                <%=link_to 'Turn Site '+ (site_down() ? "ON" : "OFF"), {:controller => 'admin', :action => 'toggle_index'}, :id=>"site-button", :remote=>true%>
+            </p>
+            </br></br>
+
+            <p>
+                <b>Time to be down (in days:hours:min)</b><br>
+                <%=editablefieldcreate("down_time", @settings)%>
+            </p>
+
+            <p>
+                <b> Click this link to reprocess all images:</b></br>
+                <%=link_to 'Reprocess all images', {:controller => 'admin', :action => 'reprocess_page_images'}, :id=>"process-image-button", :remote=>true%>
+            </p>
+            </br>
+            <p>
+                <b>Default new user group: (defaults to customer)</b><br>
+                <%=editablefieldcreate("default_registration", @settings)%>
+            </p>
+
+            <p>
+                <b>Turn on Site RackMiniProfiler for users in admin group:</b><br>
+                <%= editablecheckboxedit("activate_rack_mini_profiler", @settings ,"Turn on RackMiniProfiler")%>
+            </p>
+
+        </div>
     </div>
-  </div>
-  
+    <div class="cms-section">
+        <div class="cms-heading">User Security</div>
+        <div class="cms-content">
+            </br>
+
+
+            <p>
+                <b>User authentication fail count before accont is locked:(default 3)</b><br>
+                <%=editablefieldcreate("fail_count_max", @settings)%>
+            </p>
+
+            <p>
+                <b>Two factor Authentication:</b><br>
+                <%= editablecheckboxedit("enable_two_factor_auth", @settings ,"Enable Two Factor Auth")%>
+            </p>
+
+            <p>
+                <b>Secret Code Life (how long before secret code expires):</b><br>
+                <%=editablefieldcreate("secret_code_age", @settings)%>
+                <%=ajax_select("secret_code_interval","settings",@settings, ["days", "hours", "minutes"])%>
+            </p>
+
+            <p>
+                <b>Two Factor Life (how long before users need to refresh):</b><br>
+                <%=editablefieldcreate("two_factor_age", @settings)%>
+                <%=ajax_select("two_factor_interval","settings",@settings, ["days", "hours", "minutes"])%>
+            </p>
+
+            <hr>
+            <p>
+                <b>Abstractapi Key (for getting locations from IP addresses)</b><br>
+                <%=editablefieldcreate("abstract_api_key", @settings)%>
+            </p>
+            <hr>
+            <p> 
+                <b> Twillo Settings(for sending text messages) </b>
+            <p>
+
+                <b>From Phone Number </b><br>
+                <%=editablefieldcreate("twillo_from_phone_number", @settings)%>
+            </p>
+
+            <p> 
+
+                <b>Account SID </b><br>
+                <%=editablefieldcreate("twillo_account_sid", @settings)%>
+            </p>
+
+            <p> 
+                <b>Account Auth Token </b><br>
+                <%=editablefieldcreate("twillo_auth_token", @settings)%>
+            </p>
+
+            <b> If using API key, leave Account Auth Token blank and enter the following: </b>
+            <p> 
+
+                <b>Api Key SID</b><br>
+                <%=editablefieldcreate("twillo_api_key_sid", @settings)%>
+            </p>
+            <p> 
+
+                <b>Api Key Secret</b><br>
+                <%=editablefieldcreate("twillo_api_key_secret", @settings)%>
+
+
+            </p>
+
+
+        </div>
+    </div>
+
 </div>

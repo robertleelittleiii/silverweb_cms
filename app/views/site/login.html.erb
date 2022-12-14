@@ -1,3 +1,5 @@
+<div id="login-backdrop">
+</div>
 <div class="login-enclosure">
   <div align="center" class="login-form">
     <!-- START:flash -->
@@ -30,7 +32,7 @@
                   <BR>
                   <table border="0" cellspacing=0 class="ds_login">
                     <tr>
-                      <td valign="top">
+                      <td valign="top" class="lable">
                         <b>User Name:</b>
                       </td>
                       <td> <%= text_field_tag :name, params[:name] %><br>
@@ -38,7 +40,7 @@
                       </td>
                     </tr>
                     <tr>
-                      <td valign="top">
+                      <td valign="top" class="lable">
                         <b>Password:</b></td>
                       <td> <%= password_field_tag :password, params[:password] %><br>
                       </td>
@@ -51,10 +53,10 @@
                     </tr>
                     <tr>
                       <td class="center">
-                        <%= link_to("Forgot Password", "#", :class=>"button-link forgot-link")  %>  
+                        <%= link_to("Forgot Password", "javascript:void(0);", :class=>"button-link forgot-link")  %>  
                       </td>
                       <td class="center">
-                      <%= link_to("Cancel", "#", :id=>"cancel-button", :class=>"button-link")  %>
+                      <%= link_to("Cancel", "javascript:void(0);", :id=>"cancel-button", :class=>"button-link")  %>
                       <%= submit_tag("Login", :class=>"button-link", :id=>"login-button")%> <%= token_tag %> 
                       </td>
                     </tr>
@@ -86,7 +88,37 @@
                       </td>
                       <td class="center"> 
                         </br>
-                        <%= link_to "Back to Login", "#",:onclick=>"return(false);",  :class=>"button-link forgot-link"%>
+                        <%= link_to "Back to Login", "javascript:void(0);",:onclick=>"return(false);",  :class=>"button-link forgot-link"%>
+                      </td>
+                   </tr>
+                  </table>
+                <% end %>
+                  
+                  <%=form_tag({:controller=>"site", :action => 'two_factor_ajax'},{:id=>"two-factor-form", :remote=>true}) do %>
+                  </br>
+                  <DIV CLASS="L11G" STYLE="margin-bottom:10px">Enter Code Below:</DIV>
+                  <BR> <table border="0" cellspacing=0 class="ds_login">
+                    <tr>
+                      <td valign="top">
+                        <b>Code:</b>
+                      </td>
+                      <td> <%= text_field_tag :code, params[:code] %><br>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td height="5">
+
+                      </td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                       <td class="center">
+                        </br>
+                        <%= submit_tag("Continue", :class=>"button-link", :id=>"code-button")%> <%= token_tag %> </td>
+                      </td>
+                      <td class="center"> 
+                        </br>
+                        <%= link_to "Back to Login", "javascript:void(0);",:onclick=>"return(false);",  :class=>"button-link two-factor-link"%>
                       </td>
                    </tr>
                   </table>
@@ -152,7 +184,7 @@
                             <%= submit_tag("Register", :class=>"button-link", :id=>"register-button")%> <%= token_tag %> 
                           </td>
                           <td class="center">
- <%= link_to "Back to Login", "#",:onclick=>"return(false);",  :class=>"button-link register-link"%>
+ <%= link_to "Back to Login", "javascript:void(0);",:onclick=>"return(false);",  :class=>"button-link register-link"%>
                          </td>
                         </tr>
                       </table>
@@ -174,5 +206,3 @@
     </div>
   </div>
 
-<div id="login-backdrop">
-</div>

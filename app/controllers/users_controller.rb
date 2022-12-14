@@ -124,7 +124,12 @@ class UsersController < ApplicationController
   # PUT /users/1.xml
   def update
     @user = User.find(params[:id])
-    if params[:user].keys.first.include?("settings")
+    puts params.inspect
+    if params["settings"]
+      settings_attribute = params["settings"].keys.first
+      settings_value = params["settings"].values.first
+      eval("@user.settings.#{settings_attribute}='#{settings_value}'")
+    elsif params[:user].keys.first.include?("settings")
       settings_params = params["user"].keys.first.split(".")
       eval("@user." + settings_params[0] + "." + settings_params[1] + "='" + params["user"].values.first + "'" ) rescue ""
       updated = true 

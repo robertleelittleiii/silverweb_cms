@@ -41,18 +41,69 @@ class SiteController < ApplicationController
     end
   end
   
+  def two_factor_ajax
+    user, twofactor = User.two_factor_auth(params[:code])
+    
+    if twofactor then
+      session[:active]=true
+      session[:last_seen]=Time.now
+      session[:ip_address]= request.remote_ip rescue "n/a"
+
+      session[:user_id] = user.id
+      login_success = true
+      flash.now[:notice] = "Login Sucessfull, Welcome!!"
+      uri = session[:original_uri]
+      session[:original_uri] = nil
+      login_sucess = true
+      twofactor = false
+      code_expired = false
+    else
+      user = User.find(session[:temp_user_id])
+      code_age = ((user.updated_at + user.secret_life) -  DateTime.now).round
+      if code_age <= 0 
+        flash.now[:notice] = "Code has expired, please login again."
+        code_expired = true
+
+      else
+        flash.now[:notice] = "Wrong code, please try again (code expires in #{Time.at(code_age).utc.strftime "%H hr %M min %S sec"
+})"
+      end
+      twofactor = true
+      login_sucess = true
+    end
+    
+    respond_to do |format|
+      #   format.js {head :ok}   
+      #   format.json {head :ok}
+      format.json  {render :json=>{:message=>flash[:notice],:sucessfull=>login_success,:twofactor=>twofactor, :code_expired=>code_expired, :uri=>uri}}
+      format.html {redirect_to(uri || { :action => "index" })}
+    end  
+  end
   
+
   #ajax login code
   def login_ajax
     session[:user_id] = nil
     session[:active] = false
     fail_count_max = (Settings.fail_count_max || 3) rescue 3
- 
-    user, logged_in = User.authenticate(params[:name], params[:password])
-  #  puts("User: #{user.inspect}") 
-    login_success = false
 
-    if logged_in then
+    status_code, @results = AbstractApi::GeoData.make_request(request.remote_ip)
+    
+    user, logged_in, twofactor = User.authenticate(params[:name], params[:password], @results)
+    #  puts("User: #{user.inspect}") 
+    session[:temp_user_id] = user.id unless user.nil?
+    if twofactor 
+      if user.settings.two_factor_method == "Text" and not (user.formated_phone_number.nil? or user.formated_phone_number.blank?)
+        TwilioApi.send_sms(user.formated_phone_number,"Your Security Code is #{user.two_factor_code}")
+      else
+        UserNotifier.two_factor_notification(user, $hostfull).deliver
+      end
+    end
+    
+
+    login_success = false
+    
+    if logged_in and not twofactor then
       # reset_session
 
       session[:active]=true
@@ -65,7 +116,10 @@ class SiteController < ApplicationController
       uri = session[:original_uri]
       session[:original_uri] = nil
     else
-      if !user.nil? and user.auth_fail_count.to_i >= fail_count_max
+      if twofactor 
+        comm_method = user.formated_phone_number.blank? ? "email" : user.settings.two_factor_method || "email"
+        flash.now[:notice] = "You need to veryfy your account.  Enter code sent to you via #{comm_method}."
+      elsif !user.nil? and user.auth_fail_count.to_i >= fail_count_max
         flash.now[:notice] = "User Account Locked! Too many failed attempts"
       else
         flash.now[:notice] = "Invalid user/password combination"
@@ -75,7 +129,7 @@ class SiteController < ApplicationController
     respond_to do |format|
       #   format.js {head :ok}   
       #   format.json {head :ok}
-      format.json  {render :json=>{:message=>flash[:notice],:sucessfull=>login_success, :uri=>uri}}
+      format.json  {render :json=>{:message=>flash[:notice],:sucessfull=>login_success,:twofactor=>twofactor, :uri=>uri}}
       format.html {redirect_to(uri || { :action => "index" })}
     end  
   end
@@ -170,7 +224,7 @@ class SiteController < ApplicationController
       format.html {redirect_to(uri || {:controller=>"admin",  :action => "index" })}
     end 
     
-   # puts("NOTICE====> #{flash[:notice]}")
+    # puts("NOTICE====> #{flash[:notice]}")
 
   end
   
@@ -210,7 +264,7 @@ class SiteController < ApplicationController
     #   puts("Not Found : #{@page.inspect}")
     @page = ((Page.find_by_id(params[:id]) || Page.find_by_title(params[:page_name]) || (params[:page_name].blank? ? nil : Page.where('lower(title) = ?', params[:page_name].gsub("_"," ").gsub("-"," ").downcase).first) || Page.find_by_slug(params[:page_name])) || Page.find_by_slug(Settings.home_page_name) || Page.find_by_title(Settings.home_page_name) || Page.find_by_title("Home")) || Page.new(:title=>"'Home' not found.", :body=>"'Home' not found.")   
    
-   # puts ("Page Found : #{@page.inspect}")
+    # puts ("Page Found : #{@page.inspect}")
  
     @user =  User.find_by_id(session[:user_id])
 
@@ -240,13 +294,13 @@ class SiteController < ApplicationController
     session[:parent_menu_id] = @menu.id rescue 0
     #   end
         
-  #  puts("parent menu id:", session[:parent_menu_id])
+    #  puts("parent menu id:", session[:parent_menu_id])
     if params[:dialog]== true then
       
     end
     
     user_roles = @user.roles.map {|i| i.name } rescue  []
-  # puts("************user roles: #{user_roles.inspect}, page_roles: #{@page.security_group_list.inspect}, VAlid: #{(user_roles & (@page.security_group_list)).blank?}")
+    # puts("************user roles: #{user_roles.inspect}, page_roles: #{@page.security_group_list.inspect}, VAlid: #{(user_roles & (@page.security_group_list)).blank?}")
    
     if @page.secure_page and ((user_roles) & (@page.security_group_list)).blank? then
       redirect_to :controller=>:site, :alert=>"You do not have permission to view that page."
@@ -287,8 +341,8 @@ class SiteController < ApplicationController
 
   def show_page_popup
     session[:mainnav_status] = false
-  #  puts("page_id: #{params[:page_id]}")
-   # puts("page_name: #{params[:page_nam]}")
+    #  puts("page_id: #{params[:page_id]}")
+    # puts("page_name: #{params[:page_nam]}")
     unless params[:page_id].blank? then 
       @page = Page.find_by_id(params[:page_id])
     else
@@ -341,13 +395,13 @@ class SiteController < ApplicationController
     session[:parent_menu_id] = @menu.id rescue 0
     #   end
         
-   # puts("parent menu id:", session[:parent_menu_id])
+    # puts("parent menu id:", session[:parent_menu_id])
     if params[:dialog]== true then
       
     end
     
     user_roles = @user.roles.map {|i| i.name } rescue  []
-   # puts("************user roles: #{user_roles.inspect}, page_roles: #{@page.security_group_list.inspect}, VAlid: #{(user_roles & (@page.security_group_list)).blank?}")
+    # puts("************user roles: #{user_roles.inspect}, page_roles: #{@page.security_group_list.inspect}, VAlid: #{(user_roles & (@page.security_group_list)).blank?}")
    
     if @page.secure_page and ((user_roles) & (@page.security_group_list)).blank? then
       redirect_to :controller=>:site, :alert=>"You do not have permission to view that page, please login.", :login=>true, :url=>request.original_url
@@ -1051,7 +1105,7 @@ class SiteController < ApplicationController
   
   def update_menu_order
     @user = User.find(session[:user_id])
-   # puts(params)
+    # puts(params)
     @user.settings.menu_order = params[:menu_order].split(",")
     
     respond_to do |format|
@@ -1062,7 +1116,7 @@ class SiteController < ApplicationController
   
   def update_menu_shortcuts
     @user = User.find(session[:user_id])
-  #  puts(params)
+    #  puts(params)
     current_shortcuts = (@user.settings.menu_shortcuts || [] )rescue []
     
     if current_shortcuts.include?(params[:shortcut])
@@ -1170,14 +1224,14 @@ class SiteController < ApplicationController
   protected
   
   def authorize
- #   puts "in authorize"
+    #   puts "in authorize"
     return true
   end
 
   def authenticate
     # always create a session.
     session.delete 'init'
- #   puts "in authenticate"
+    #   puts "in authenticate"
 
     return true
   end

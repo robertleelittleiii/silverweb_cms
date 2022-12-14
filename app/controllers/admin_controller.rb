@@ -12,7 +12,7 @@ class AdminController < ApplicationController
     admin_params
     session[:user_id] = nil
     if request.post?
-      user, logged_in = User.authenticate(params[:name], params[:password])
+      user, logged_in, twofactor = User.authenticate(params[:name], params[:password])
       if logged_in
         session[:user_id] = user.id
         uri = session[:original_uri]
