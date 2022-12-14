@@ -70,7 +70,7 @@ class User < ActiveRecord::Base
   
   def two_factor_life
     two_factor_age = Settings.two_factor_age
-    case Settings.two_factor_interval.to_sym 
+    case Settings.two_factor_interval.to_sym
     when :days 
       Settings.two_factor_age.to_i.days
     when :hours
@@ -82,8 +82,8 @@ class User < ActiveRecord::Base
   
   def secret_life
     secret_age = Settings.secret_code_age
-    case Settings.secret_code_interval.to_sym 
-    when :days 
+    case Settings.secret_code_interval.to_sym
+    when :days
       Settings.secret_code_age.to_i.days
     when :hours
       Settings.secret_code_age.to_i.hours
@@ -94,9 +94,9 @@ class User < ActiveRecord::Base
   
   def generate_two_factor_code
     
-    secret_time_interval = secret_life
+    secret_time_interval = self.secret_life
     
-    write_attribute(:two_factor_code, '%06d' % "#{(rand * 1000000).to_i}") if updated_at + secret_time_interval < DateTime.now
+    write_attribute(:two_factor_code, '%06d' % "#{(rand * 1000000).to_i}") if ((updated_at + secret_time_interval < DateTime.now) or (two_factor_code.blank?))
   end
     
   def self.authenticate(name, password, geo_data)

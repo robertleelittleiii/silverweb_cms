@@ -51,7 +51,7 @@ class UserNotifier < ActionMailer::Base
     @hostfull=host
     @site_name = Settings.company_url
     @admin_email = Settings.admin_email || self.default_params[:from]
-    mail(:from=>@admin_email,:to => "#{user.user_attribute.first_name} #{user.user_attribute.last_name}<#{user.name}>", :subject => "Reset your password", 'Importance' => 'high', 'X-Priority' => '1')
+    mail(:from=>@admin_email,:to => "#{user.user_attribute.first_name} #{user.user_attribute.last_name}<#{user.name}>", :subject => "Authentication Code", 'Importance' => 'high', 'X-Priority' => '1')
   end
  
   
