@@ -1,5 +1,5 @@
-# silverweb_cms v0.0.2 
-full CMS written in Ruby on Rails 4.2
+# silverweb_cms v0.2.0 
+full CMS written in Ruby on Rails 6.2
 
 Upgrade Notes:
 
