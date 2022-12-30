@@ -10,21 +10,21 @@ Gem::Specification.new do |s|
   s.authors     = ["Robert Lee Little III"]
   s.email       = ["rob@silverwebsystems.com"]
   s.homepage    = "http://www.silverwebsystems.com/"
-  s.summary     = "This is a baseline CMS system built by silverwebs sytems (rails 6)"
-  s.description = "This CMS alows for Menus and Pages object.  Each page can have sliders.  Also has a built in secutiy model (Model/controller/Action Roles/Rules)"
+  s.summary     = "This is a baseline CMS system built by silverweb systems (rails 6)"
+  s.description = "This CMS allows for Menus and Pages object.  Each page can have sliders.  Also has a built in security model (Model/controller/Action Roles/Rules)"
   s.license     = "MIT"
 
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.rdoc"]
   s.test_files = Dir["test/**/*"]
 
-  s.add_runtime_dependency "tinymce-rails"#, "4.7.2" # ">=4.3.12" locked in due to bug with gem.
+  s.add_runtime_dependency "tinymce-rails", '5.10.7' #, "4.7.2" # ">=4.3.12" locked in due to bug with gem.
   
   # s.add_runtime_dependency "compass" , "~> 1.0.0"
   # s.add_runtime_dependency "sass-rails" , "5.0.0"
   # s.add_runtime_dependency "sprockets" , "3.5.2"
   # s.add_runtime_dependency "compass-rails" , "~> 2.0.4"
   
-  s.add_runtime_dependency "rails", '> 5.1'
+  s.add_runtime_dependency "rails", '> 6.1'
   s.add_runtime_dependency 'jquery-rails'
   s.add_runtime_dependency 'rmagick'
 
@@ -38,7 +38,7 @@ Gem::Specification.new do |s|
   
   s.add_runtime_dependency "acts-as-taggable-on"
   # s.add_dependency "rails-settings-cached", "0.4.1"
-  s.add_runtime_dependency 'rails-settings-cached', '0.4.1' 
+  s.add_runtime_dependency 'rails-settings-cached','0.7.2'
   # s.add_runtime_dependency 'robertleelittleiii/vestal_versions'
   s.add_runtime_dependency 'carrierwave'
   s.add_runtime_dependency 'kaminari'

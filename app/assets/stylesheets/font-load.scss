@@ -1,0 +1,22 @@
+@font-face{
+  font-family: 'tinymce';
+  src: font-url('tinymce.eot');
+  src: font-url('tinymce.eot?#iefix') format('embedded-opentype'), font-url('tinymce.woff') format('woff'), font-url('tinymce.ttf') format('truetype'), font-url('tinymce.svg#tinymce') format('svg');
+  font-weight: normal;
+  font-style: normal
+}
+
+@font-face {
+  font-family: 'tinymce-small';
+  src: font-url('tinymce-small.eot');
+  src: font-url('tinymce-small.eot?#iefix') format('embedded-opentype'), font-url('tinymce-small.woff') format('woff'), font-url('tinymce-small.ttf') format('truetype'), font-url('tinymce-small.svg#tinymce') format('svg');
+  font-weight: normal;
+  font-style: normal
+}
+
+@font-face {
+  font-family: 'tinymce-mobile';
+  src: font-url('tinymce-mobile.woff?8x92w3') format('woff');
+  font-weight: normal;
+  font-style: normal
+}
