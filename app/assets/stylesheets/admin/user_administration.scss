@@ -7,6 +7,7 @@
 */
 
 
+
 input.button-link, a.button-link {
 display: inline-block;
 float: initial;
@@ -16,6 +17,8 @@ margin-left: 5px;
 padding-top: 10px;
 padding-bottom: 75px;
 background-color: rgba(255, 255, 255, 0.41);
+    min-width: 600px;
+
 }
 #user-actions {
 display: inline-block;
