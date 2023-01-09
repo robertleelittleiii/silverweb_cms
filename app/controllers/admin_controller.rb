@@ -258,11 +258,10 @@ class AdminController < ApplicationController
       File.write('public/splash/waittime.js', "// Auto written by silverweb_cms \n\r \n\r var TargetDate = \"#{out_time}\"; \n")
     end
     
-     
-    
     respond_to do |format|
+      format.js {}
       format.json  { head :ok }
-      render body: nil
+      format.html { render body: nil }
     end  
   end
 
