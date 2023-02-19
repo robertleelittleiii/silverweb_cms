@@ -444,8 +444,9 @@ module UiHelper
     object_class_name = field_pointer.class.to_s.gsub("::", "_").underscore
     object_class_name = (object_class_name == "settings_active_record_relation" ? "settings" : object_class_name)
     object_class_name = (field_pointer.to_s == "RailsSettings::ScopedSettings" ? "scoped_settings" : object_class_name )
-    
-   # puts("*()*[]"*20)
+    disabled = opts[:disabled] || false
+
+    # puts("*()*[]"*20)
    # puts(field_pointer)
    # puts(field_name)
    # puts(object_class_name)
@@ -501,8 +502,9 @@ module UiHelper
           selected: is_selected,
           action: the_action,
           "#{field_class_pointer}" => {"#{field_name}"=> field_title}   ) 
-      },  
-      :class => "ajax-check-multi",
+      },
+     :disabled=> disabled,
+     :class => "ajax-check-multi",
       checkbox_value: field_title
     )
       
@@ -545,7 +547,8 @@ module UiHelper
     else
       divClass=opts[:divclass]
     end rescue divClass='class="cms-contentitem"'
-    
+
+    disabled = opts[:disabled] || false
     check_action = opts[:check_action] || :update
     check_value = opts[:check_value] ||  true
     is_selected = opts[:check_box_checked] || (field_pointer[field_name] == check_value)
@@ -557,6 +560,7 @@ module UiHelper
           type: "JSON",
           url: url_for(field_pointer).to_s 
         },
+        :disabled => disabled,
         :class => "ui-ajax-checkbox #{opts[:css_class]}",
         checkbox_value: field_title,
         "data-path"=>url_for(field_pointer).to_s ,
@@ -695,6 +699,10 @@ module UiHelper
     # puts(field_name, field_object, field_pointer.class, value_list.inspect)
     # puts("Settings.send(field_name): '#{Settings.send(field_name)}'")
     # puts("field_pointer[field_name]: '#{field_pointer[field_name]}'")
+
+    disabled = html_options[:disabled] || false
+    # html_options.delete(:disabled)
+
     if field_name.include?("[\'") and field_name.include?("\']") then # this is an object reference.
       array_index = field_name.scan(/\[([^\)]+)\]/).first.first
       field = field_name.split("[").first
@@ -706,7 +714,7 @@ module UiHelper
       #   
       html_options = html_options.merge({"data-path"=>url_for(field_pointer).to_s ,"data-id"=>field_pointer.id ,"data-attribute"=>field_name, "data-object"=>field_object, "data-initial-val"=>field_pointer[field_name]}) rescue {}
       html_options[:class] = html_options[:class] + " ui-ajax-select" rescue "ui-ajax-select"
-      
+
       select_tag("#{field_object}[#{field_name}]" , options_for_select(value_list, value), html_options)
 
     elsif field_name.include?("[") and field_name.include?("]") then
@@ -771,10 +779,10 @@ module UiHelper
       html_options[:class] = html_options[:class] + " ui-ajax-select" rescue "ui-ajax-select"
       
       # html_options==nil ? html_options={:class=>"ui-ajax-select", "data-path"=>url_for(field_pointer).to_s ,"data-id"=>field_pointer.id} : ""
-      prompt_hash = {}
-      prompt_hash ={ :prompt => prompt} if !prompt.blank? 
-        
-      select(field_object,"#{field_name}",  options_for_select(value_list, field_pointer[field_name]),prompt_hash, html_options )
+      options_hash = {}
+      options_hash[:prompt] = prompt if !prompt.blank?
+      options_hash[:disabled] = true if disabled
+      select(field_object,"#{field_name}",  options_for_select(value_list, field_pointer[field_name]),options_hash, html_options)
     end
     
 

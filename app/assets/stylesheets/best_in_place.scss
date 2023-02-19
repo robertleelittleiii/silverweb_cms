@@ -99,6 +99,10 @@ div.data-nil {
 }
 
 .best_in_place.disabled div {
-    color: #efcbcb !important;
+    color: gray !important;
     font-weight: bold;
+}
+
+.best_in_place.disabled div.data-nil {
+  display: none;
 }
