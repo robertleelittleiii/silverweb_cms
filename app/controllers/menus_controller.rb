@@ -221,7 +221,7 @@ class MenusController < ApplicationController
         format.json { render :json=>@picture, :status=>:created, :location=>@picture }
       else
         format.html { render :action=>"new" }
-        format.json { render :json=>@picture.errors, :status=>:unprocessable_entry }
+        format.json { render :json=>@picture.errors, :status=>:unprocessable_entity }
       end
     end
     

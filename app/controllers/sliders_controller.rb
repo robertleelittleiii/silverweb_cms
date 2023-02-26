@@ -60,7 +60,7 @@ class SlidersController < ApplicationController
         format.json { render :json=>@slider, :status=>:created, :location=>@slider }
       else
         format.html { render :action=>"new" }
-        format.json { render :json=>@slider.errors, :status=>:unprocessable_entry }
+        format.json { render :json=>@slider.errors, :status=>:unprocessable_entity }
       end
     end
   end
@@ -76,7 +76,7 @@ class SlidersController < ApplicationController
         format.json { head :ok }
       else
         format.html { render :action=>"edit" }
-        format.json { render :json=>@slider.errors, :status=>"unprocessable_entry" }
+        format.json { render :json=>@slider.errors, :status=>"unprocessable_entity" }
       end
     end
   end
