@@ -150,11 +150,7 @@ function ajaxUpdateSearch(search_term) {
     var full_search_url = url + "?search=" + formValue;
 
     //  $("#live-search #live-search_search").val(search_term);
-    if (($.browser.msie == true))
-    {
-        window.location.href = "/site/live_search?search=" + formValue;
-        $("#search-image").removeClass("loading"); // hide the spinner
-    } else
+
     {
 
         if (/chrome/.test(navigator.userAgent.toLowerCase()))
