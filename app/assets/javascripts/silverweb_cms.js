@@ -103,6 +103,14 @@ function enableSliderEdit() {
     }
 }
 
+function queryString( key )
+{
+    var re = new RegExp( "[?&]" + key + "=([^&$]*)", "i" );
+    var offset = location.search.search( re );
+    if ( offset == -1 ) return null;
+    return RegExp.$1;
+}
+
 function ajaxUpdateSearch(search_term) {
 
     var form = $("#live-search"); // grab the form wrapping the search bar.
