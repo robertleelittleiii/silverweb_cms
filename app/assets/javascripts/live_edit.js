@@ -161,9 +161,9 @@ function BestInPlaceCallBackNoChange(input) {
 
 
 function processBestInPlaceFields() {
-    var object_class = $($("div.object-info").last()).find("div#object-class").text().toLowerCase()
-    var userList = jQuery.parseJSON($("div#" + object_class + " div#live-edit-json").text())
-    var live_edit_name = "best_in_place"
+    var object_class = $($("div.object-info").last()).find("div#object-class").text().toLowerCase();
+    var userList = jQuery.parseJSON($("div#" + object_class + " div#live-edit-json").text() || "{}");
+    var live_edit_name = "best_in_place";
     $.each(userList, function (index, value) {
         //    console.log("----- start ----");
         //    console.log(value);
@@ -188,9 +188,9 @@ function processBestInPlaceFields() {
 }
 
 function  processUISelectFields() {
-    var object_class = $($("div.object-info").last()).find("div#object-class").text().toLowerCase()
-    var userList = jQuery.parseJSON($("div#" + object_class + " div#live-edit-json").text())
-    var live_edit_name = "ui-ajax-select"
+    var object_class = $($("div.object-info").last()).find("div#object-class").text().toLowerCase();
+    var userList = jQuery.parseJSON($("div#" + object_class + " div#live-edit-json").text() || "{}");
+    var live_edit_name = "ui-ajax-select";
     $.each(userList, function (index, value) {
         //       console.log("----- start ----");
         //       console.log(value);
@@ -287,9 +287,9 @@ function elementReady(editor_id) {
 }
 
 function processtTinyMCEFields() {
-    var object_class = $($("div.object-info").last()).find("div#object-class").text().toLowerCase()
-    var userList = jQuery.parseJSON($("div#" + object_class + " div#live-edit-json").text())
-    var live_edit_name = "mce-tinymce"
+    var object_class = $($("div.object-info").last()).find("div#object-class").text().toLowerCase();
+    var userList = jQuery.parseJSON($("div#" + object_class + " div#live-edit-json").text() || "{}");
+    var live_edit_name = "mce-tinymce";
     $.each(userList, function (index, value) {
         //    console.log("----- start ----");
         //   console.log(value);
@@ -334,7 +334,7 @@ function updated_changed_fields() {
 
     var fields_being_edited = $.merge($("div.locked"), $("select.locked"));
     var object_class = $($("div.object-info").last()).find("div#object-class").text().toLowerCase();
-    var userList = jQuery.parseJSON($("div#" + object_class + " div#live-edit-json").text());
+    var userList = jQuery.parseJSON($("div#" + object_class + " div#live-edit-json").text() || "{}");
 
     $.each(fields_being_edited, function (edit_index, edit_value) {
         item_found = false;
