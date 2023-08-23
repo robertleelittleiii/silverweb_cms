@@ -84,11 +84,14 @@ module UiHelper
     
     # puts('testingtestingtesting');
     # puts("stylesheet: #{stylesheet}----> stylesheet_path: '#{stylesheet_path}'");
-    
+
+
     stylesheetaction = "#{params[:controller]}/#{params[:action]=="index" ? "index_" : params[:action]}.css"
+    stylesheet_override_action = "#{params[:controller]}/#{params[:action]}_override.css"
     #  stylesheetaction_path = Rails.application.assets.find_asset(stylesheetaction)
     #  stylesheetaction_path = Rails.application.assets_manifest.files.values.map{|v| v['logical_path']}.include?('#{stylesheetaction}')
-    stylesheetaction_path = asset_available? stylesheetaction
+    stylesheetaction_path = asset_available? stylesheet_override_action
+    stylesheetaction_path ||= asset_available? stylesheetaction
 
     # puts("stylesheetaction: #{stylesheetaction}---> stylesheetaction_path '#{stylesheetaction_path}'");
 
@@ -124,11 +127,13 @@ module UiHelper
     javascript_path = asset_available? javascript
     # puts('testingtestingtesting');
     # puts("javascript: #{javascript}----> javascript_path: '#{javascript_path}'");
- 
+
     javascriptaction = "#{params[:controller]}/#{params[:action]=="index" ? "index_" : params[:action]}.js"
+    javascript_override_action = "#{params[:controller]}/#{params[:action]}_override.js"
     #   javascriptaction_path = Rails.application.assets.find_asset(javascriptaction)
     #   javascriptaction_path = Rails.application.assets_manifest.files.values.map{|v| v['logical_path']}.include?('#{javascriptaction}')
-    javascriptaction_path = asset_available? javascriptaction
+    javascriptaction_path = asset_available? javascript_override_action
+    javascriptaction_path ||= asset_available? javascriptaction
     # puts('testingtestingtesting');
     # puts("javascriptaction: #{javascriptaction}----> javascriptaction_path: '#{javascriptaction_path}'");
  
