@@ -53,7 +53,7 @@ class PicturesController < ApplicationController
         format.json { render :json=>@picture, :status=>:created, :location=>@picture }
       else
         format.html { render :action=>"new" }
-        format.json { render :json=>@picture.errors, :status=>:unprocessable_entry }
+        format.json { render :json=>@picture.errors, :status=>"unprocessable_entity" }
       end
     end
   end
@@ -69,7 +69,7 @@ class PicturesController < ApplicationController
         format.json { head :ok }
       else
         format.html { render :action=>"edit" }
-        format.json { render :json=>@picture.errors, :status=>"unprocessable_entry" }
+        format.json { render :json=>@picture.errors, :status=>"unprocessable_entity" }
       end
     end
   end

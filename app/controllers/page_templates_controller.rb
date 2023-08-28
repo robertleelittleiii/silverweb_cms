@@ -64,7 +64,7 @@ class PageTemplatesController < ApplicationController
         format.json { render :json=>@page_template, :status=>:created, :location=>@page_template }
       else
         format.html { render :action=>"new" }
-        format.json { render :json=>@page_template.errors, :status=>:unprocessable_entry }
+        format.json { render :json=>@page_template.errors, :status=>"unprocessable_entity" }
       end
     end
   end
@@ -80,7 +80,7 @@ class PageTemplatesController < ApplicationController
         format.json { render :json=> {:notice => 'Page Template was successfully updated.'} }
       else
         format.html { render :action=>"edit" }
-        format.json { render :json=>@page_template.errors, :status=>"unprocessable_entry" }
+        format.json { render :json=>@page_template.errors, :status=>"unprocessable_entity" }
       end
     end
   end
