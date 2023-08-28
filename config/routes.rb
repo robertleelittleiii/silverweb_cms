@@ -32,7 +32,7 @@ Rails.application.routes.draw do
       get "template_list"
       get "reset"
       post "set_time_zone"
-      post "check_session"
+      get "check_session"
       get "get_csrf_meta_tags"
       post "update_menu_order"
       post "update_menu_shortcuts"

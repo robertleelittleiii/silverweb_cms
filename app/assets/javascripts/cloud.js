@@ -146,7 +146,7 @@ function sessionActive() {
     //   console.log("session active?")
     $.ajax({
         url: "/site/check_session",
-        type: "POST",
+        type: "GET",
         dataType: "json",
         success: function (data)
         {
