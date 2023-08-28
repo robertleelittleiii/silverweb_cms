@@ -87,7 +87,7 @@ class SiteController < ApplicationController
     session[:active] = false
     fail_count_max = (Settings.fail_count_max || 3) rescue 3
 
-    status_code, @results = AbstractApi::GeoData.make_request(request.remote_ip)
+    # status_code, @results = AbstractApi::GeoData.make_request(request.remote_ip)
     
     user, logged_in, twofactor = User.authenticate(params[:name], params[:password], @results)
     #  puts("User: #{user.inspect}") 
