@@ -119,7 +119,7 @@ class SiteController < ApplicationController
       if twofactor 
         comm_method = user.formated_phone_number.blank? ? "email" : user.settings.two_factor_method || "email"
         flash.now[:notice] = "You need to veryfy your account.  Enter code sent to you via #{comm_method}."
-      elsif !user.nil? and user.auth_fail_count.to_i >= fail_count_max
+      elsif !user.nil? and user.auth_fail_count.to_i >= fail_count_max.to_i
         flash.now[:notice] = "User Account Locked! Too many failed attempts"
       else
         flash.now[:notice] = "Invalid user/password combination"
