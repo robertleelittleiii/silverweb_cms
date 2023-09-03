@@ -106,7 +106,7 @@ class User < ActiveRecord::Base
     @user = self.find_by_name(name)
     
     return nil,false, false if @user.nil?
-    fail_count_max = (Settings.fail_count_max || 3) rescue 3
+    fail_count_max = (Settings.fail_count_max.to_i || 3) rescue 3
     
     if @user and (@user and (@user.auth_fail_count.to_i >= fail_count_max)) 
       return @user, false, false
