@@ -76,13 +76,13 @@ function stop_animation() {
 }
 
 function initial_animation() {
-    body_width = (($("body").width() - 350) / 2) + "px";
-    $("#site-logo").css("left", body_width);
-    $("#cloud-logo").css("left", body_width);
+    body_width = (($("body").width() - 350) / 2);
+    $("#site-logo").css("left", body_width + 35 + "px");
+    $("#cloud-logo").css("left", body_width + "px");
 
 
     $("#site-logo").animate({
-        top: '75px'
+        top: '30px'
     }, {
         queue: false,
         duration: 1000,

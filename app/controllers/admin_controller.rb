@@ -294,11 +294,8 @@ class AdminController < ApplicationController
     end
     
     # TinyPrint.all.each {|s| s.image.reprocess! if s.image}
-    
-    respond_to do |format|
-      format.json  { head :ok }
-      render body: nil
-    end  
+    render body: nil
+
   end
   
   def clear_user_locks
