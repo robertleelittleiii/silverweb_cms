@@ -31,6 +31,18 @@ module SilverwebCms
     #     require 'activerecord-session_store'
     
     # isolate_namespace SilverwebCms
+    
+    # Configure autoloading for Rails 6 Zeitwerk compatibility
+    config.autoload_paths << root.join('app', 'services')
+    config.eager_load_paths << root.join('app', 'services')
+    
+    # Ensure services are available at initialization
+    initializer 'silverweb_cms.load_services', before: :set_autoload_paths do |app|
+      # Add services path to Rails autoload paths
+      app.config.autoload_paths << root.join('app', 'services')
+      app.config.eager_load_paths << root.join('app', 'services')
+    end
+    
     ActiveSupport.on_load(:action_controller) do
       include SilverwebCms::Controller # ActiveSupport::Concern
     end

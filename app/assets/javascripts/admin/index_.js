@@ -15,7 +15,7 @@ $(document).ready(function () {
         }
         else
         {
-            admin_index_callDocumentReady()
+            admin_index_callDocumentReady();
         }
     }
 

@@ -695,6 +695,19 @@ module UiHelper
     return return_value.html_safe
   end
   
+  # Determine if AuthPoint secrets are configured; returns false if any are missing or inaccessible
+  def authpoint_configured?
+    begin
+      required = %i[authpoint_access_id authpoint_password authpoint_account_id authpoint_resource_id authpoint_api_key]
+      required.all? do |m|
+        val = AUTHPOINT_CONFIG.send(m)
+        !(val.nil? || val.to_s.strip.empty?)
+      end
+    rescue => _e
+      false
+    end
+  end
+  
   def ajax_select(field_name, field_object, field_pointer, value_list, prompt='Please Select...', html_options={})
     # puts(" - - - - - - - - - -  - - - - - - - - - - -  -  - - - ")
     # puts(field_name, field_object, field_pointer.class, value_list.inspect)

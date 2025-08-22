@@ -419,20 +419,90 @@ function bindLoginClick(url_to_goto, show_main_menu) {
         // console.log(evt);
         // console.log(data);
         if (data.twofactor) {
-            $('div.login-form').toggleClass('flipped-two-factor');
-            setUpPurrNotifier("Notice", data.message);
-            $("input#code").focus();
-            $("input#code").trigger("click");
-
+            if (data.authpoint_pending) {
+                // AuthPoint push or QR flow: show instruction and start polling.
+                setUpPurrNotifier("Notice", data.message || "Please approve or scan the QR code in the AuthPoint app, then enter the code if prompted.");
+                try {
+                  if (data.authpoint_qrcode) {
+                    // Flip to the two-factor panel so the user can enter the code after scanning
+                    if (!$('div.login-form').hasClass('flipped-two-factor')) {
+                      $('div.login-form').toggleClass('flipped-two-factor');
+                    }
+                    // Inject QR code above the two-factor form if not already present
+                    if ($('#authpoint-qr-container-twofactor').length === 0) {
+                      var _qrSrc = computeAuthPointQrSrc(data.authpoint_qrcode || '');
+                      // Hidden container to show on hover
+                      var qrBlock = '<div id="authpoint-qr-container-twofactor" class="loginArea"\
+                                   style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); z-index:10000; text-align:center; padding:16px; box-shadow: 0 10px 25px rgba(0,0,0,0.35);">' +
+                                    '<div style="margin:5px 0 10px; font-weight:bold;">Scan this QR code with the AuthPoint app, then enter the code below if prompted.</div>' +
+                                    '<img id="authpoint-qr" alt="AuthPoint QR Code" style="max-width:240px;" src="' + _qrSrc + '" />' +
+                                    '</div>';
+                      $('#two-factor-form').prepend(qrBlock);
+                    } else {
+                      $('#authpoint-qr').attr('src', computeAuthPointQrSrc(data.authpoint_qrcode));
+                    }
+                    // Ensure small QR icon exists next to the code field
+                    if ($('#authpoint-qr-icon').length === 0) {
+                      var qrIcon = '<span id="authpoint-qr-icon" title="Show QR Code" ' +
+                                   'style="display:inline-block; vertical-align:middle; margin-left:6px; cursor:pointer; width:18px; height:18px;">' +
+                                   '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">' +
+                                   '<path fill="#555" d="M3 3h8v8H3V3zm2 2v4h4V5H5zm6-2h8v8h-8V3zm2 2v4h4V5h-4zM3 13h8v8H3v-8zm2 2v4h4v-4H5zm10-2h2v2h-2v-2zm-2 2h2v2h-2v-2zm4 0h4v2h-4v-2zm-2 2h2v2h-2v-2zm4 0h2v6h-6v-2h4v-4z"/>' +
+                                   '</svg>' +
+                                   '</span>';
+                      // Insert after the code input
+                      var $codeInput = $('#two-factor-form input#code');
+                      $codeInput.after(qrIcon);
+                    }
+                    // Bind hover handlers to show/hide the QR container
+                    (function(){
+                      var $icon = $('#authpoint-qr-icon');
+                      var $container = $('#authpoint-qr-container-twofactor');
+                      if (!$icon.data('hover-bound')) {
+                        var hideTimer = null;
+                        var scheduleHide = function(){ hideTimer = setTimeout(function(){ $container.stop(true,true).fadeOut(150); }, 150); };
+                        var cancelHide = function(){ if (hideTimer) { clearTimeout(hideTimer); hideTimer = null; } };
+                        $icon.on('mouseenter', function(){ cancelHide(); $container.stop(true,true).fadeIn(150); });
+                        $icon.on('mouseleave', function(){ scheduleHide(); });
+                        $container.on('mouseenter', function(){ cancelHide(); });
+                        $container.on('mouseleave', function(){ scheduleHide(); });
+                        $icon.data('hover-bound', true);
+                      }
+                    })();
+                  } else {
+                    // No QR; just show instruction on the current panel
+                    $("#notice").text(data.message);
+                  }
+                } catch(e) {}
+                // Start polling check_session until authenticated (works in parallel to code entry)
+                if (window.authpointPollInterval) { clearInterval(window.authpointPollInterval); }
+                window.authpointPollInterval = setInterval(function(){
+                  $.ajax({
+                    url: '/site/check_session',
+                    type: 'POST',
+                    dataType: 'json',
+                    success: function(resp){
+                      if (resp && resp.authenticated) {
+                        clearInterval(window.authpointPollInterval);
+                        // proceed as successful login
+                        login_sucessfull(url_to_goto, show_main_menu);
+                      }
+                    }
+                  });
+                }, 3000);
+            } else {
+                // Legacy 2FA code-entry flow
+                $('div.login-form').toggleClass('flipped-two-factor');
+                setUpPurrNotifier("Notice", data.message);
+                $("input#code").focus();
+                $("input#code").trigger("click");
+            }
         } else if (data.sucessfull) {
             login_sucessfull(url_to_goto, show_main_menu);
             setUpPurrNotifier("Notice", data.message);
 
         } else
         {
-            $(".login-enclosure").effect("shake", {
-                times: 3
-            }, 800);
+            // Only shake on incorrect two-factor code entries; do not shake on generic login failures
             setUpPurrNotifier("Notice", data.message);
 
         }
@@ -1632,4 +1702,23 @@ function bindDatatableSearchField(search_field_name, model_name) {
         }
     }
     );
+}
+
+// Utility to build a usable QR image src from raw AuthPoint 'command' or QR payload
+// If the string is already a URL or data URI, use it; otherwise generate a QR on the fly via a public QR service.
+function computeAuthPointQrSrc(raw) {
+  try {
+    if (!raw) { return ''; }
+    var s = String(raw);
+    // Already a data URL or URL/path? just return it
+    if (/^(data:image\/.+;base64,)/i.test(s) || /^(https?:)?\/\//i.test(s) || s.charAt(0) === '/') {
+      return s;
+    }
+    // Otherwise, treat as payload that must be rendered into a QR image
+    var payload = encodeURIComponent(s);
+    // Use a reliable public QR code image generator
+    return 'https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=' + payload;
+  } catch(e) {
+    return '';
+  }
 }

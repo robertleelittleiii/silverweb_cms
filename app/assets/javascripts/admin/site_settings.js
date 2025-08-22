@@ -3,7 +3,31 @@
  * and open the template in the editor.
  */
 
+var admin_site_settings_callDocumentReady_called = false;
+$(document).ready(function () {
+    if (!admin_site_settings_callDocumentReady_called)
+    {
+        admin_site_settings_callDocumentReady_called = true;
+        if ($("#as_window").text() == "true")
+        {
+//  alert("it is a window");
+        }
+        else
+        {
+            admin_site_settings_callDocumentReady();
+        }
+    }
 
+});
+
+function admin_site_settings_callDocumentReady()
+{
+    bindImageChage();
+    bindSiteToggleLinkClick();
+    bindCraigsListCheckClick();
+    ui_ajax_settings_select();
+
+}
 
 var toggleLoading = function () {
     $("#loader_progress").toggle()
@@ -100,10 +124,12 @@ function updateBestinplaceImageTitles() {
 }
 
 
-$(document).ready(function () {
-    bindImageChage();
-    bindSiteToggleLinkClick();
-    bindCraigsListCheckClick();
-    ui_ajax_settings_select();
+// $(document).ready(function () {
+//     alert("hello");
+//     bindImageChage();
+//     bindSiteToggleLinkClick();
+//     bindCraigsListCheckClick();
+//     ui_ajax_settings_select();
+//
+// });
 
-});

@@ -121,23 +121,47 @@ class User < ActiveRecord::Base
       @user.save
     end
     
+    effective_type = @user.effective_multi_factor_type
+    
     if (@user and (@user.auth_fail_count.to_i < fail_count_max))
-      expected_password = encrypted_password(password, @user.salt)
-      if @user.hashed_password != expected_password
-        @user.auth_fail_count = @user.auth_fail_count.to_i + 1
-        @user.save
-      else
-        logged_in = true
-        if (Settings.enable_two_factor_auth == "true") and (@user.two_factor_date.nil? or @user.two_factor_date + @user.two_factor_life < DateTime.now or (@user.geo_data["ip_address"] != geo_data["ip_address"] rescue true)) 
-      #    puts("generating two factor code")
-          @user.generate_two_factor_code
-          @user.two_factor_date = DateTime.now - 1.day  if @user.two_factor_date.nil?
-          two_factor = true
-          @user.geo_data = geo_data 
-        end
-        
+      case effective_type
+      when "Authpoint"
+        # Do not validate against local password; AuthPoint will validate
+        logged_in = false
+        two_factor = true
         @user.auth_fail_count = 0
+        @user.geo_data = geo_data if geo_data
         @user.save
+      when "None"
+        # Local password only, no two-factor ever
+        expected_password = encrypted_password(password, @user.salt)
+        if @user.hashed_password != expected_password
+          @user.auth_fail_count = @user.auth_fail_count.to_i + 1
+          @user.save
+        else
+          logged_in = true
+          two_factor = false
+          @user.auth_fail_count = 0
+          @user.geo_data = geo_data if geo_data
+          @user.save
+        end
+      else
+        # Text or Email (local password + optional two-factor based on Settings.enable_two_factor_auth)
+        expected_password = encrypted_password(password, @user.salt)
+        if @user.hashed_password != expected_password
+          @user.auth_fail_count = @user.auth_fail_count.to_i + 1
+          @user.save
+        else
+          logged_in = true
+          if (Settings.enable_two_factor_auth == "true") and (@user.two_factor_date.nil? or @user.two_factor_date + @user.two_factor_life < DateTime.now or (@user.geo_data["ip_address"] != geo_data["ip_address"] rescue true)) 
+            @user.generate_two_factor_code
+            @user.two_factor_date = DateTime.now - 1.day  if @user.two_factor_date.nil?
+            two_factor = true
+            @user.geo_data = geo_data 
+          end
+          @user.auth_fail_count = 0
+          @user.save
+        end
       end
      
     end
@@ -173,6 +197,24 @@ class User < ActiveRecord::Base
     end
   end
   
+  # Determine effective multi-factor type based on user setting and system default
+  # Returns one of: "Authpoint", "Text", "Email", "None"
+  def effective_multi_factor_type
+    value = self.multi_factor_type
+    return "None" if value.to_s.strip.downcase == "none"
+    return value if value.present?
+    # Fallback to system default when user-specific value is nil/blank
+    default = (Settings.default_multi_factor_type rescue nil)
+    case default.to_s.strip.downcase
+    when "authpoint" then "Authpoint"
+    when "text" then "Text"
+    when "email" then "Email"
+    else
+      # If not set, default to Email to preserve existing behavior
+      "Email"
+    end
+  end
+
   def initials
     #user_attributes=UserAttribute.where(:user_id => self.id)
     if self.user_attribute.nil? then

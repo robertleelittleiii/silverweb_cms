@@ -1,4 +1,3 @@
-
 <%= create_dialog_settings("My Account Information", "650", "500") %>
 <div class="hidden-item">
     <div id="user-id"><%= session[:user_id] %> </div>
@@ -58,7 +57,11 @@
 
               <p>
                   <b>Two factor authentication uses :</b>
-                  <%=ajax_select("two_factor_method","user.settings",@user, [[@user.settings.two_factor_method,@user.settings.two_factor_method],["Text","Text"],["Email","Email"]].uniq)%>
+                  <% current_label = @user.multi_factor_type.present? ? @user.multi_factor_type : "Default" %>
+                  <% current_value = @user.multi_factor_type.present? ? @user.multi_factor_type : "" %>
+                  <% options = [[current_label, current_value], ["Default", ""], ["None","None"], ["Text","Text"], ["Email","Email"]] %>
+                  <% options << ["Authpoint","Authpoint"] if authpoint_configured? %>
+                  <%= ajax_select("multi_factor_type","user",@user, options.uniq) %>
               </p>
               </br>
             <% end %>

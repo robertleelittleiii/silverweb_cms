@@ -8,6 +8,11 @@
    "<%= editablefieldcreate('name', user,"user@email.com",{:divclass=>"table-item"}).gsub("\"", "'").html_safe() %>",
    "<%= editablefieldcreate('first_name',  user.user_attribute,"First",{:divclass=>"table-item"}).gsub("\"", "'").html_safe() %>",
    "<%= editablefieldcreate('last_name', user.user_attribute,"Last",{:divclass=>"table-item"}  ).gsub("\"", "'").html_safe() %>",
+   <% current_label = user.multi_factor_type.present? ? user.multi_factor_type : 'Default' %>
+   <% current_value = user.multi_factor_type.present? ? user.multi_factor_type : '' %>
+   <% options = [[current_label, current_value], ['Default',''], ['None','None'], ['Text','Text'], ['Email','Email']] %>
+   <% options << ['Authpoint','Authpoint'] if authpoint_configured? %>
+   "<%= ajax_select('multi_factor_type','user',user, options.uniq).gsub("\"", "'").gsub("\n", " ").html_safe() %>",
    "<%= user.roles.collect {|p| [ p.name] }.join(', ') %>",
    "<center><%=("<div class='delete-user-item'>" + image_tag('interface/delete.png', :border=>'0').gsub("\"", "'").html_safe() + "</div>").gsub("\"", "'").html_safe() + "     "+
      link_to(image_tag('interface/edit.png', :border=>'0', :width=>"20"),"#",{:onclick=>"return(false)", :class=>'edit-user-item', :title=>"Edit User"}).gsub("\"", "'").html_safe() + "     "+

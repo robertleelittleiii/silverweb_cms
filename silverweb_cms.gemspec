@@ -15,6 +15,7 @@ Gem::Specification.new do |s|
   s.license     = "MIT"
 
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.rdoc"]
+  s.files += Dir["lib/generators/**/*"]
   s.test_files = Dir["test/**/*"]
 
   s.add_runtime_dependency "tinymce-rails", '5.10.7' #, "4.7.2" # ">=4.3.12" locked in due to bug with gem.
@@ -45,13 +46,15 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'rack-mini-profiler'
   s.add_runtime_dependency 'non-stupid-digest-assets'
   s.add_runtime_dependency 'gravtastic'
-  s.add_development_dependency "mysql"
-  s.add_development_dependency 'gem_reloader'
   s.add_runtime_dependency 'sitemap_generator', '5.2.0'
   s.add_runtime_dependency 'american_date'
   s.add_runtime_dependency 'activerecord-session_store'
   s.add_runtime_dependency 'browser'
   s.add_runtime_dependency 'rails-html-sanitizer'
   s.add_runtime_dependency 'twilio-ruby', '~> 5.73.4'
-  
+  s.add_runtime_dependency 'httparty'
+
+  s.add_development_dependency "mysql"
+  s.add_development_dependency 'gem_reloader'
+  s.add_development_dependency 'dotenv-rails', '~> 2.7.6'
 end

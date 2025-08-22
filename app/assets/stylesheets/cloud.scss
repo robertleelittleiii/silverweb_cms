@@ -154,6 +154,13 @@ input#update-button {
     transform:rotateY(180deg);
 }
 
+/* AuthPoint QR hover container should match two-factor form styling */
+#authpoint-qr-container-twofactor {
+    background-color: white;
+    border: double 10px gray;
+    border-radius: 20px;
+}
+
 div.login-form.flipped #login-form, div.login-form.flipped-register #login-form, div.login-form.flipped-two-factor #login-form{
 
     opacity:0;

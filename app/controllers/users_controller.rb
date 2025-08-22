@@ -134,6 +134,12 @@ class UsersController < ApplicationController
       eval("@user." + settings_params[0] + "." + settings_params[1] + "='" + params["user"].values.first + "'" ) rescue ""
       updated = true 
     else
+      # Normalize blank string to nil for multi_factor_type so 'Default' clears the user override
+      if params[:user] && params[:user].key?(:multi_factor_type)
+        if params[:user][:multi_factor_type].to_s.strip == ""
+          params[:user][:multi_factor_type] = nil
+        end
+      end
       updated =  @user.update(user_params)
     end
 
@@ -142,7 +148,7 @@ class UsersController < ApplicationController
       if updated
         flash[:notice] = "User #{@user.name} was successfully updated."
         format.html { redirect_to(:action=>'index') }
-        format.json  { head :ok }
+        format.json { render :json=> {:notice => "User #{@user.name} was successfully updated."} }
       else
         format.html { render :action => "edit" }
         format.json  { render :json => @user.errors, :status => :unprocessable_entity }
@@ -285,7 +291,7 @@ class UsersController < ApplicationController
     #user_attributes_ids = User.select('users.id').joins(:user_attribute).where("user_attributes.last_name like '%#{params[:search][:value]}%' or user_attributes.first_name like '%#{params[:search][:value]}%'").collect(&:id)
     # all_ids = User.select('u.id').from("users u").where(conditions).collect(&:id)
     
-    @current_objects = User.eager_load(:user_attribute).eager_load(:roles).page(current_page).per( params[:length]).where(conditions).order("#{datatable_columns(params[:order]["0"][:column])} #{params[:order]["0"][:dir]  || "DESC"}") 
+    @current_objects = User.eager_load(:user_attribute).eager_load(:roles).page(current_page).per( params[:length]).where(conditions).order("#{datatable_columns(params[:order]["0"][:column])} #{params[:order]["0"][:dir]  || "DESC"}")
     
   end
 
@@ -320,7 +326,7 @@ class UsersController < ApplicationController
   private
   
   def user_params
-    params[:user].permit("name", "hashed_password", "salt", "remember_token", "remember_token_expires_at", "activation_code", "activated_at", "state", "deleted_at", "password_reset_code",SilverwebCms::Config.USER_PERMITTED_FIELDS)
+    params[:user].permit("name", "hashed_password", "salt", "remember_token", "remember_token_expires_at", "activation_code", "activated_at", "state", "deleted_at", "password_reset_code","multi_factor_type",SilverwebCms::Config.USER_PERMITTED_FIELDS)
   end
 
 end
