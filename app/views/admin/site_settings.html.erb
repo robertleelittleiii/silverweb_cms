@@ -165,6 +165,7 @@
           <%= ajax_select("default_multi_factor_type","settings",@settings, default_options) %> </br>
               Is Authpoint configured?: <%=authpoint_configured?%> </br>
           Base URL: <%=ENV['AUTHPOINT_BASE_URL']%> </br>
+          TestEnv: <%=ENV['THIS_IS_A_TEST']%></br>
           <%=ENV['ASSET_HOST'] %> </p>
           <p></br></p>
             <p>
