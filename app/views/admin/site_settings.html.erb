@@ -162,9 +162,10 @@
                 <b>Default authentication method (used when a user’s type is not set):</b><br>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<% default_options = ["Text","Email"] %>
               <% default_options << "Authpoint" if authpoint_configured? %>
-              <%= ajax_select("default_multi_factor_type","settings",@settings, default_options) %>
+          <%= ajax_select("default_multi_factor_type","settings",@settings, default_options) %> </br>
               Is Authpoint configured?: <%=authpoint_configured?%> </br>
-              Base URL: <%=ENV['AUTHPOINT_BASE_URL']%> </p>
+          Base URL: <%=ENV['AUTHPOINT_BASE_URL']%> </br>
+          <%=ENV['ASSET_HOST'] %> </p>
           <p></br></p>
             <p>
                 <b>Secret Code Life (how long before secret code expires):</b><br>
@@ -184,7 +185,7 @@
                 <%=editablefieldcreate("abstract_api_key", @settings)%>
             </p>
             <hr>
-            <p> 
+            <p>
                 <b> Twillo Settings(for sending text messages) </b>
             <p>
 
@@ -192,24 +193,24 @@
                 <%=editablefieldcreate("twillo_from_phone_number", @settings)%>
             </p>
 
-            <p> 
+            <p>
 
                 <b>Account SID </b><br>
                 <%=editablefieldcreate("twillo_account_sid", @settings)%>
             </p>
 
-            <p> 
+            <p>
                 <b>Account Auth Token </b><br>
                 <%=editablefieldcreate("twillo_auth_token", @settings)%>
             </p>
 
             <b> If using API key, leave Account Auth Token blank and enter the following: </b>
-            <p> 
+            <p>
 
                 <b>Api Key SID</b><br>
                 <%=editablefieldcreate("twillo_api_key_sid", @settings)%>
             </p>
-            <p> 
+            <p>
 
                 <b>Api Key Secret</b><br>
                 <%=editablefieldcreate("twillo_api_key_secret", @settings)%>
