@@ -162,11 +162,8 @@
                 <b>Default authentication method (used when a user’s type is not set):</b><br>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<% default_options = ["Text","Email"] %>
               <% default_options << "Authpoint" if authpoint_configured? %>
-          <%= ajax_select("default_multi_factor_type","settings",@settings, default_options) %> </br>
-              Is Authpoint configured?: <%=authpoint_configured?%> </br>
-          Base URL: <%=ENV['AUTHPOINT_BASE_URL']%> </br>
-          TestEnv: <%=ENV['THIS_IS_A_TEST']%></br>
-          <%=ENV['ASSET_HOST'] %> </p>
+               <%= ajax_select("default_multi_factor_type","settings",@settings, default_options) %> </br>
+              </p>
           <p></br></p>
             <p>
                 <b>Secret Code Life (how long before secret code expires):</b><br>
