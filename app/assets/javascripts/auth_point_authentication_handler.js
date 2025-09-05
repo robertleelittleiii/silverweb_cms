@@ -19,7 +19,7 @@ function handleAuthPointAuthentication(userId) {
 }
 
 function pollAuthPointStatus() {
-  const pollInterval = setInterval(() => {
+  var pollInterval = setInterval(function() {
     $.ajax({
       url: '/site/check_session',
       method: 'POST',

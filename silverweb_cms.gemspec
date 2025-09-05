@@ -53,6 +53,8 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'rails-html-sanitizer'
   s.add_runtime_dependency 'twilio-ruby', '~> 5.73.4'
   s.add_runtime_dependency 'httparty'
+  s.add_runtime_dependency 'faraday','1.2.0'
+  s.add_runtime_dependency 'multipart-post', '2.4.1'
 
   s.add_development_dependency "mysql"
   s.add_development_dependency 'gem_reloader'
