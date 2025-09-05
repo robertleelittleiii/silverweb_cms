@@ -160,7 +160,7 @@
 
             <br>
                 <b>Default authentication method (used when a user’s type is not set):</b><br>
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<% default_options = ["Text","Email"] %>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp <% default_options = ["Text","Email"] %>
               <% default_options << "Authpoint" if authpoint_configured? %>
                <%= ajax_select("default_multi_factor_type","settings",@settings, default_options) %> </br>
               </p>
