@@ -147,10 +147,10 @@ module SilverwebCms
     
     # USER ATTRIBUTE ALLOW EDIT ATTR TO ALLOW LATER GEMS TO ADD TO USER FILEDS FOR EDIT.
 
-    @USER_ATTRIBUTE_PERMITTED_FIELDS = []
+    @USER_ATTRIBUTE_PERMITTED_FIELDS = ["first_name", "last_name", "phone_number", "allow_text_messages"]
     
     def self.USER_ATTRIBUTE_PERMITTED_FIELDS
-      @USER_ATTRIBUTE_PERMITTED_FIELDS 
+      @USER_ATTRIBUTE_PERMITTED_FIELDS
     end
     
     def self.add_user_attribute_permitted_fields(fields_to_add)

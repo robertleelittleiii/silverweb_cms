@@ -48,13 +48,63 @@
                 <%=editablefieldcreate("name", @user)%>
             </p>
 
+            <p>
+                <b>Phone Number:</b><br>
+                <%=editablefieldcreate("phone_number", @user_attributes)%>
+            </p>
+
+            <div class="cms-section">
+                <div class="cms-heading">Text Messaging Consent & Compliance</div>
+                <div class="cms-content">
+                    <p>
+                        <%= editablecheckboxedit("allow_text_messages", @user_attributes, "Send me work-related text messages based on my role (e.g., alerts, schedules, updates via Twilio). Msg & data rates may apply. Select NO in the popup to opt out text messages.") %>
+                    </p>
+
+                    <% if Dir.exist?(Rails.root.join('public', 'compliance')) && Dir.children(Rails.root.join('public', 'compliance')).any? %>
+                        <hr>
+                        <p><b>View :
+                          Compliance Documents:</b></p>
+                        <% Dir.foreach(Rails.root.join('public', 'compliance')) do |filename| %>
+                            <% next if filename == '.' or filename == '..' %>
+                            <% 
+                               # Human friendly name: title case, no underscores, no extension
+                               human_name = File.basename(filename, ".*").gsub('_', ' ').titleize 
+                            %>
+                            <p>
+                                <a href="#" class="compliance-link" data-file="/compliance/<%= filename %>" data-title="<%= human_name %>"><%= human_name %></a>
+                            </p>
+                        <% end %>
+
+                        <div id="compliance-dialog" style="display:none;">
+                            <iframe id="compliance-iframe" src="" style="width:100%; height:100%; border:none;"></iframe>
+                        </div>
+
+                        <script>
+                            $(document).ready(function() {
+                                $('.compliance-link').click(function(e) {
+                                    e.preventDefault();
+                                    var fileUrl = $(this).data('file');
+                                    var title = $(this).data('title');
+                                    $('#compliance-iframe').attr('src', fileUrl);
+                                    $('#compliance-dialog').dialog({
+                                        title: title,
+                                        width: 800,
+                                        height: 600,
+                                        modal: true,
+                                        buttons: {
+                                            Close: function() {
+                                                $(this).dialog('close');
+                                            }
+                                        }
+                                    });
+                                });
+                            });
+                        </script>
+                    <% end %>
+                </div>
+            </div>
+
             <%  if Settings.enable_two_factor_auth == "true" %>
-
-              <p>
-                  <b>Phone Number:</b><br>
-                  <%=editablefieldcreate("phone_number", @user_attributes)%>
-              </p>
-
               <p>
                   <b>Two factor authentication uses :</b>
                   <% current_label = @user.multi_factor_type.present? ? @user.multi_factor_type : "Default" %>
@@ -63,7 +113,6 @@
                   <% options << ["Authpoint","Authpoint"] if authpoint_configured? %>
                   <%= ajax_select("multi_factor_type","user",@user, options.uniq) %>
               </p>
-              </br>
             <% end %>
 
             <p>
@@ -71,11 +120,7 @@
                 <%=editablefieldcreate("handle", @user_attributes)%>
             </p>
 
-            <p>
             <div class="button-link" id="password-user-item">Change Password</div>
-
-<%#=editablefieldcreate2("password", @user)%> </br>
-            </p>
 
 <%#*<p>%>
 <%#*<b>Birthday:</b><br>%>
