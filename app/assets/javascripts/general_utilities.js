@@ -393,13 +393,15 @@ jQuery.fn.extend({
                 that = this
                 //alert(this.getAttribute("data-id"));
 
+                var csrfToken = $('meta[name="csrf-token"]').attr('content');
+                var csrfParam = $('meta[name="csrf-param"]').attr('content');
 
                 $.ajax({
                     url: controller, // controller + "/update",
                     dataType: "json",
                     type: "PUT",
-                    data: "id=" + this.getAttribute("data-id") + "&" + this.getAttribute("name") + "=" + selected_item,
-                }).success(function (data, textStatus, jqXHR)
+                    data: "id=" + this.getAttribute("data-id") + "&" + this.getAttribute("name") + "=" + selected_item + (csrfParam && csrfToken ? "&" + csrfParam + "=" + encodeURIComponent(csrfToken) : ""),
+                }).done(function (data, textStatus, jqXHR)
                 {
                     //        console.log(data);
                     //        console.log(textStatus);
@@ -425,8 +427,11 @@ jQuery.fn.extend({
                     //       console.log(errorThrown);
 
                     //       console.log(jqXHR.responseJSON.error)
-
-                    setUpNotifier("error.png", "Warning", jqXHR.responseJSON.error[0]);
+                    if (jqXHR.responseJSON && jqXHR.responseJSON.error) {
+                        setUpNotifier("error.png", "Warning", jqXHR.responseJSON.error[0]);
+                    } else {
+                        setUpNotifier("error.png", "Warning", "An error occurred while updating.");
+                    }
 
                     $(that).val($(that).data('initial-val'));
                 });
@@ -447,41 +452,48 @@ function ui_ajax_select(success_callback) {
         that = this
         //alert(this.getAttribute("data-id"));
 
+        var csrfToken = $('meta[name="csrf-token"]').attr('content');
+        var csrfParam = $('meta[name="csrf-param"]').attr('content');
 
         $.ajax({
-            url: controller, // controller + "/update",
-            dataType: "json",
+            url: controller.indexOf('.') === -1 ? controller + '.json' : controller,
+            dataType: "text",
             type: "PUT",
-            data: "id=" + this.getAttribute("data-id") + "&" + this.getAttribute("name") + "=" + selected_item,
-        }).success(function (data, textStatus, jqXHR)
+            headers: {
+                "Accept": "application/json, text/javascript, */*; q=0.01"
+            },
+            data: "id=" + this.getAttribute("data-id") + "&" + this.getAttribute("name") + "=" + selected_item + (csrfParam && csrfToken ? "&" + csrfParam + "=" + encodeURIComponent(csrfToken) : ""),
+        }).done(function (data, textStatus, jqXHR)
         {
-            //         console.log(data);
-            //        console.log(textStatus);
-            //        console.log(jqXHR);
-            //         console.log(that);
-            //        console.log(typeof (success_callback));
+            var responseData = data;
+            if (jqXHR.getResponseHeader("Content-Type") && jqXHR.getResponseHeader("Content-Type").indexOf("application/json") !== -1) {
+                try {
+                    if (typeof data === 'string' && data.trim() !== "") {
+                        responseData = JSON.parse(data);
+                    } else if (typeof data === 'string' && data.trim() === "") {
+                        responseData = {};
+                    }
+                } catch (e) {
+                    responseData = data;
+                }
+            }
 
             if (typeof success_callback == "function")
             {
-                success_callback(that, data);
-            }
-            // alert(data);
-            if (data === undefined || data === null || data === "")
-            {
-                //display warning
-            } else
-            {
-
+                success_callback(that, responseData);
             }
         }).fail(function (jqXHR, textStatus, errorThrown) {
-
-            //       console.log(jqXHR);
-            //      console.log(textStatus);
-            //       console.log(errorThrown);
-
-            //       console.log(jqXHR.responseJSON.error)
-
-            setUpNotifier("error.png", "Warning", jqXHR.responseJSON.error[0]);
+            var responseJSON = jqXHR.responseJSON;
+            if (!responseJSON && jqXHR.responseText) {
+                try {
+                    responseJSON = JSON.parse(jqXHR.responseText);
+                } catch (e) {}
+            }
+            if (responseJSON && responseJSON.error) {
+                setUpNotifier("error.png", "Warning", responseJSON.error[0]);
+            } else {
+                setUpNotifier("error.png", "Warning", "An error occurred while updating.");
+            }
 
             $(that).val($(that).data('initial-val'));
         })
@@ -491,118 +503,30 @@ function ui_ajax_select(success_callback) {
 
 jQuery.fn.extend({
     ui_ajax_checkbox: function (success_callback) {
-        return this.each(function () {
-            $(this).bind("change", function (event) {
-
-                event.stopPropagation(); // prevent click from propagation to other actions.
-
-            }).bind("click", function (event) {
-
-
-                dataUrl = this.getAttribute("data-url");
-                dataMethod = this.getAttribute("data-method");
-                dataType = this.getAttribute("data-type");
-                isChecked = $(this).is(':checked');
-                dataClass = this.getAttribute("data-class");
-                fieldName = this.getAttribute("name");
-                checkType = this.getAttribute("data-check-type");
-                checkBoxValue = this.getAttribute("checkbox_value");
-
-                var that = this;
-
-                var dataObj = {};
-                dataObj[dataClass] = {};
-                if (checkType == "boolean")
-                {
-                    dataObj[dataClass][fieldName] = (isChecked ? 1 : 0)
-                } else
-                {
-                    dataObj[dataClass][fieldName] = (isChecked ? checkBoxValue : "")
-                }
-
-
-//alert(this.getAttribute("data-id"));
-
-                $.ajax({
-                    url: dataUrl, // controller + "/update",
-                    dataType: dataType,
-                    type: dataMethod,
-                    data: dataObj
-                }).success(function (data, textStatus, jqXHR)
-                {
-
-                    console.log(data);
-                    console.log(textStatus);
-                    console.log(jqXHR);
-                    console.log(that);
-
-                    if (typeof success_callback == "function")
-                    {
-                        success_callback(that, data);
-                    }
-
-                    if (data === undefined || data === null || data === "")
-                    {
-//display warning
-                    } else
-                    {
-
-                    }
-
-// alert(data);
-                    if (data === undefined || data === null || data === "")
-                    {
-//display warning
-                    } else
-                    {
-
-                    }
-                }).fail(function (jqXHR, textStatus, errorThrown) {
-
-                    // console.log(jqXHR);
-                    // console.log(textStatus);
-                    // console.log(errorThrown);
-                    //  console.log(jqXHR.responseJSON.error)
-                    $(that).prop('checked', !isChecked);
-                    if (typeof (jqXHR.responseJSON.error) == "undefined")
-                    { // must parse object to get message
-                        part1 = Object.keys(jqXHR.responseJSON)[0].replace("_", " ")
-                        part2 = Object.values(jqXHR.responseJSON)[0][0]
-                        setUpNotifier("error.png", "Warning", part1 + ":" + part2);
-
-                    } else
-                    {
-                        setUpNotifier("error.png", "Warning", jqXHR.responseJSON.error[0]);
-                    }
-                    // setUpNotifier("error.png", "Warning", jqXHR.responseJSON.error[0]);
-
-                    $(that).val($(that).data('initial-val'));
-                });
-            });
-        });
+        ui_ajax_checkbox(success_callback);
     }
 });
 
 
 
 function ui_ajax_checkbox(success_callback) {
+    if (window.ui_ajax_checkbox_initialized) return;
+    window.ui_ajax_checkbox_initialized = true;
 
-    $("input.ui-ajax-checkbox").bind("change", function (event) {
+    $(document).on("change", "input.ui-ajax-checkbox", function (event) {
+        // Stop recursion if we are programmatically clicking/changing
+        if (event.isTrigger) return;
 
-        event.stopPropagation(); // prevent click from propagation to other actions.
+        var that = this;
+        var dataUrl = this.getAttribute("data-url");
+        var dataMethod = this.getAttribute("data-method");
+        var dataType = this.getAttribute("data-type");
+        var isChecked = $(this).prop('checked');
+        var dataClass = this.getAttribute("data-class");
+        var fieldName = this.getAttribute("name");
+        var checkType = this.getAttribute("data-check-type");
+        var checkBoxValue = this.getAttribute("checkbox_value");
 
-    }).bind("click", function (event) {
-
-
-        dataUrl = this.getAttribute("data-url");
-        dataMethod = this.getAttribute("data-method");
-        dataType = this.getAttribute("data-type");
-        isChecked = $(this).is(':checked');
-        dataClass = this.getAttribute("data-class");
-        fieldName = this.getAttribute("name");
-        checkType = this.getAttribute("data-check-type");
-        checkBoxValue = this.getAttribute("checkbox_value");
-        that = this;
         var dataObj = {};
         dataObj[dataClass] = {};
         if (checkType == "boolean")
@@ -613,64 +537,70 @@ function ui_ajax_checkbox(success_callback) {
             dataObj[dataClass][fieldName] = (isChecked ? checkBoxValue : "")
         }
 
+        var csrfToken = $('meta[name="csrf-token"]').attr('content');
+        var csrfParam = $('meta[name="csrf-param"]').attr('content');
 
-        //alert(this.getAttribute("data-id"));
+        if (csrfParam && csrfToken) {
+            dataObj[csrfParam] = csrfToken;
+        }
 
         $.ajax({
-            url: dataUrl, // controller + "/update",
-            dataType: dataType,
-            type: dataMethod,
+            url: dataUrl.indexOf('.') === -1 ? dataUrl + '.json' : dataUrl,
+            dataType: "text", // Always use text to handle empty responses from head :ok
+            type: dataMethod || "PUT",
+            headers: {
+                "Accept": "application/json, text/javascript, */*; q=0.01"
+            },
             data: dataObj
-        }).success(function (data, textStatus, jqXHR)
+        }).done(function (data, textStatus, jqXHR)
         {
-            var that = this;
-            //  console.log(data);
-            //  console.log(textStatus);
-            //  console.log(jqXHR);
-            //  console.log(that);
+            var responseData = data;
+            // Check if it's JSON either by the dataType attribute or by the Content-Type header
+            if (dataType && dataType.toLowerCase() === "json" || (jqXHR.getResponseHeader("Content-Type") && jqXHR.getResponseHeader("Content-Type").indexOf("application/json") !== -1)) {
+                try {
+                    if (typeof data === 'string' && data.trim() !== "") {
+                        responseData = JSON.parse(data);
+                        console.log("ui_ajax_checkbox: parsed JSON", responseData);
+                    } else if (typeof data === 'string' && data.trim() === "") {
+                        responseData = {};
+                        console.log("ui_ajax_checkbox: empty response handled as {}");
+                    }
+                } catch (e) {
+                    console.error("ui_ajax_checkbox: Error parsing JSON response", e);
+                    responseData = data;
+                }
+            }
 
             if (typeof success_callback == "function")
             {
-                success_callback(that, data);
-            }
-
-            if (data === undefined || data === null || data === "")
-            {
-                //display warning
-            } else
-            {
-
-            }
-
-            // alert(data);
-            if (data === undefined || data === null || data === "")
-            {
-                //display warning
-            } else
-            {
-
+                success_callback(that, responseData);
             }
         }).fail(function (jqXHR, textStatus, errorThrown) {
-
-//            console.log(jqXHR);
-//            console.log(textStatus);
-//            console.log(errorThrown);
-//            console.log(isChecked);
-
-//            console.log(jqXHR.responseJSON.error)
             $(that).prop('checked', !isChecked);
-            if (typeof (jqXHR.responseJSON.error) == "undefined")
-            { // must parse object to get message
-                part1 = Object.keys(jqXHR.responseJSON)[0].replace("_", " ")
-                part2 = Object.values(jqXHR.responseJSON)[0][0]
-                setUpNotifier("error.png", "Warning", part1 + ":" + part2);
-
-            } else
-            {
-                setUpNotifier("error.png", "Warning", jqXHR.responseJSON.error[0]);
+            var responseJSON = jqXHR.responseJSON;
+            if (!responseJSON && jqXHR.responseText) {
+                try {
+                    responseJSON = JSON.parse(jqXHR.responseText);
+                } catch (e) {}
             }
 
-            $(that).val($(that).data('initial-val'));
+            if (responseJSON && typeof (responseJSON.error) == "undefined")
+            {
+                var keys = Object.keys(responseJSON);
+                if (keys.length > 0) {
+                    var part1 = keys[0].replace("_", " ");
+                    var part2 = responseJSON[keys[0]];
+                    if (Array.isArray(part2)) part2 = part2[0];
+                    setUpNotifier("error.png", "Warning", part1 + ":" + part2);
+                } else {
+                    setUpNotifier("error.png", "Warning", "An error occurred while updating.");
+                }
+            } else if (responseJSON && responseJSON.error)
+            {
+                setUpNotifier("error.png", "Warning", responseJSON.error[0]);
+            } else {
+                setUpNotifier("error.png", "Warning", "An error occurred while updating.");
+            }
         });
     });
 }
@@ -685,35 +615,38 @@ function ui_ajax_settings_select(success_callback) {
 
         //alert(this.getAttribute("data-id"));
 
+        var csrfToken = $('meta[name="csrf-token"]').attr('content');
+        var csrfParam = $('meta[name="csrf-param"]').attr('content');
 
         $.ajax({
-            url: controller, // controller + "/update",
-            dataType: "json",
+            url: controller.indexOf('.') === -1 ? controller + '.json' : controller,
+            dataType: "text",
             type: "PUT",
-            data: "id=" + this.getAttribute("data-id") + "&settings[" + this.getAttribute("name") + "=" + selected_item,
-            success: function (data, textStatus, jqXHR)
-            {
-                //  console.log(data);
-                //  console.log(textStatus);
-                //  console.log(jqXHR);
-                //  console.log(that);
-
-                if (typeof success_callback == "function")
-                {
-                    success_callback(that, data);
-                }
-                // alert(data);
-                if (data === undefined || data === null || data === "")
-                {
-                    //display warning
-                } else
-                {
-
-                }
+            headers: {
+                "Accept": "application/json, text/javascript, */*; q=0.01"
             },
-            fail: function (jqXHR, textStatus, errorThrown) {
-                setUpNotifier("error.png", "Warning", textStatus);
+            data: "id=" + this.getAttribute("data-id") + "&settings[" + this.getAttribute("name") + "]=" + selected_item + (csrfParam && csrfToken ? "&" + csrfParam + "=" + encodeURIComponent(csrfToken) : ""),
+        }).done(function (data, textStatus, jqXHR)
+        {
+            var responseData = data;
+            if (jqXHR.getResponseHeader("Content-Type") && jqXHR.getResponseHeader("Content-Type").indexOf("application/json") !== -1) {
+                try {
+                    if (typeof data === 'string' && data.trim() !== "") {
+                        responseData = JSON.parse(data);
+                    } else if (typeof data === 'string' && data.trim() === "") {
+                        responseData = {};
+                    }
+                } catch (e) {
+                    responseData = data;
+                }
             }
+
+            if (typeof success_callback == "function")
+            {
+                success_callback(that, responseData);
+            }
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+            setUpNotifier("error.png", "Warning", "An error occurred while updating.");
         });
     });
 }

@@ -28,7 +28,6 @@ function admin_index_callDocumentReady()
                 passwordClickBinding();
                 ui_ajax_select();
                 ui_ajax_settings_select();
-
 }
 
 

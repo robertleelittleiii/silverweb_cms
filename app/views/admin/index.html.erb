@@ -16,64 +16,65 @@
         <!-- END:flash -->
     </div>
     <!-- <div class="cms-header">My Account Information</div> -->
-    <div class="cms-section">
-        <div class="cms-heading">About Me</div>
-        <div class="cms-content">
-
-            <%  if @user.not_activated? %>
-              <p>
-                  <b>Account has not been activated.</b><br>
-                  <%= link_to "Resend Activate Code" , :controller =>'registration', :action=>'lostwithemail',  :name=>@user.name %>
-              </p>
-            <%else%>
-            <%end%>
-
-
-            <div id="avitar-div" title="click on picture to go to gravatar.com and create or edit your avatar.">        
-                <%= link_to(image_tag(@user.gravatar_url,:class=>"avitar"), "http://gravatar.com", :target=>"new") %>
-            </div>        
-
-            <p>
-                <b>First Name:</b><br>
-                <%=editablefieldcreate("first_name", @user_attributes)%>
-            </p>
-
-            <p>
-                <b>Last Name:</b><br>
-                <%=editablefieldcreate("last_name", @user_attributes)%>
-            </p>
-
-            <p>
-                <b>Email Address:</b><br>
-                <%=editablefieldcreate("name", @user)%>
-            </p>
-
-            <p>
-                <b>Phone Number:</b><br>
-                <%=editablefieldcreate("phone_number", @user_attributes)%>
-            </p>
-
             <div class="cms-section">
-                <div class="cms-heading">Text Messaging Consent & Compliance</div>
+                <div class="cms-heading">About Me</div>
                 <div class="cms-content">
-                    <p>
-                        <%= editablecheckboxedit("allow_text_messages", @user_attributes, "Send me work-related text messages based on my role (e.g., alerts, schedules, updates via Twilio). Msg & data rates may apply. Select NO in the popup to opt out text messages.") %>
-                    </p>
 
-                    <% if Dir.exist?(Rails.root.join('public', 'compliance')) && Dir.children(Rails.root.join('public', 'compliance')).any? %>
-                        <hr>
-                        <p><b>View :
-                          Compliance Documents:</b></p>
-                        <% Dir.foreach(Rails.root.join('public', 'compliance')) do |filename| %>
-                            <% next if filename == '.' or filename == '..' %>
-                            <% 
-                               # Human friendly name: title case, no underscores, no extension
-                               human_name = File.basename(filename, ".*").gsub('_', ' ').titleize 
-                            %>
+                    <%  if @user.not_activated? %>
+                        <p>
+                            <b>Account has not been activated.</b><br>
+                            <%= link_to "Resend Activate Code" , :controller =>'registration', :action=>'lostwithemail',  :name=>@user.name %>
+                        </p>
+                    <% end %>
+
+                    <div id="avitar-div" title="click on picture to go to gravatar.com and create or edit your avatar.">
+                        <%= link_to(image_tag(@user.gravatar_url,:class=>"avitar"), "http://gravatar.com", :target=>"new") %>
+                    </div>
+
+                    <div class="field-group">
+                        <p>
+                            <b>First Name:</b>
+                            <%=editablefieldcreate("first_name", @user_attributes)%>
+                        </p>
+
+                        <p>
+                            <b>Last Name:</b>
+                            <%=editablefieldcreate("last_name", @user_attributes)%>
+                        </p>
+
+                        <p>
+                            <b>Email Address:</b>
+                            <%=editablefieldcreate("name", @user)%>
+                        </p>
+                    </div>
+
+                    <div class="cms-section inner-section">
+                        <div class="cms-heading">Text Messaging Consent & Compliance</div>
+                        <div class="cms-content">
                             <p>
-                                <a href="#" class="compliance-link" data-file="/compliance/<%= filename %>" data-title="<%= human_name %>"><%= human_name %></a>
+                               <b>Phone Number:</b>
+                                <%=editablefieldcreate("phone_number", @user_attributes)%>
                             </p>
-                        <% end %>
+
+                            <p>
+                                <%= editablecheckboxtag("allow_text_messages", @user_attributes, " I agree to receive SMS messages from #{Settings.company_name || '[Company Name]'} for work-related alerts and updates. Message frequency varies. Message and data rates apply. Reply STOP to opt out or HELP for help. Consent is not required.") %>
+                            </p>
+
+                            <% if Dir.exist?(Rails.root.join('public', 'compliance')) && Dir.children(Rails.root.join('public', 'compliance')).any? %>
+                                <div class="compliance-section">
+                                    <hr>
+                                    <p><b>Compliance Documents:</b></p>
+                                    <% Dir.foreach(Rails.root.join('public', 'compliance')) do |filename| %>
+                                        <% next if filename == '.' or filename == '..' %>
+                                        <%
+                                           # Human friendly name: title case, no underscores, no extension
+                                           human_name = File.basename(filename, ".*").gsub('_', ' ').titleize
+                                        %>
+                                        <p>
+                                            <a href="#" class="compliance-link" data-file="/compliance/<%= filename %>" data-title="<%= human_name %>"><%= human_name %></a>
+                                        </p>
+                                    <% end %>
+                                </div>
 
                         <div id="compliance-dialog" style="display:none;">
                             <iframe id="compliance-iframe" src="" style="width:100%; height:100%; border:none;"></iframe>
@@ -105,26 +106,30 @@
             </div>
 
             <%  if Settings.enable_two_factor_auth == "true" %>
-              <p>
-                  <b>Two factor authentication uses :</b>
-                  <% current_label = @user.multi_factor_type.present? ? @user.multi_factor_type : "Default" %>
-                  <% current_value = @user.multi_factor_type.present? ? @user.multi_factor_type : "" %>
-                  <% options = [[current_label, current_value], ["Default", ""], ["None","None"], ["Text","Text"], ["Email","Email"]] %>
-                  <% options << ["Authpoint","Authpoint"] if authpoint_configured? %>
-                  <%= ajax_select("multi_factor_type","user",@user, options.uniq) %>
-              </p>
+                <div class="field-group">
+                    <p>
+                        <b>Two factor authentication uses :</b>
+                        <% current_label = @user.multi_factor_type.present? ? @user.multi_factor_type : "Default" %>
+                        <% current_value = @user.multi_factor_type.present? ? @user.multi_factor_type : "" %>
+                        <% options = [[current_label, current_value], ["Default", ""], ["None","None"], ["Text","Text"], ["Email","Email"]] %>
+                        <% options << ["Authpoint","Authpoint"] if authpoint_configured? %>
+                        <%= ajax_select("multi_factor_type","user",@user, options.uniq) %>
+                    </p>
+                </div>
             <% end %>
 
-            <p>
-                <b>Nick Name:</b><br>
-                <%=editablefieldcreate("handle", @user_attributes)%>
-            </p>
+            <div class="field-group">
+                <p>
+                    <b>Nick Name:</b>
+                    <%=editablefieldcreate("handle", @user_attributes)%>
+                </p>
 
-            <div class="button-link" id="password-user-item">Change Password</div>
+                <div class="button-link" id="password-user-item">Change Password</div>
+            </div>
 
 <%#*<p>%>
 <%#*<b>Birthday:</b><br>%>
-<%#=ajax_calendar_date_select ("birthdate",@user_attributes)%>
+<%#=ajax_calendar_date_select ("birthdate",@user_attribute)%>
 <%#*</p>%>
 
         </div>
@@ -135,17 +140,16 @@
 
 
     <div class="cms-section">
-        <div class="cms-heading">My Account</div>
+        <div class="cms-heading">My Account Info</div>
         <div class="cms-content">
-            It's <%= Time.now %>
+            <p>It's <%= Time.now %></p>
 
-            <br>
-            Your Roles in the system: 
-            <%for role in $roles do %>
-              <%=role.name %><%=$roles.last == role ? "" : ", " %>
-            <%  end %>
-            <br>
-
+            <p>
+                <b>Your Roles in the system:</b><br>
+                <%for role in $roles do %>
+                    <%=role.name %><%=$roles.last == role ? "" : ", " %>
+                <%  end %>
+            </p>
         </div>
     </div>
 

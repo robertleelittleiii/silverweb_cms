@@ -60,7 +60,13 @@ class UserAttributesController < ApplicationController
 
     respond_to do |format|
       if @user_attribute.update(user_attribute_params)
-        format.html { redirect_to(@user_attribute, :notice => 'User attribute was successfully updated.') }
+        format.html { 
+          if request.xhr?
+            head :ok
+          else
+            redirect_to(@user_attribute, :notice => 'User attribute was successfully updated.') 
+          end
+        }
         format.json  { head :ok }
       else
         format.html { render :action => "edit" }
