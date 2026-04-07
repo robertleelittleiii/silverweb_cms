@@ -26,8 +26,6 @@ function admin_index_callDocumentReady()
                 $("#tabs").tabs();
                 $("div.button-link").button();
                 passwordClickBinding();
-                ui_ajax_select();
-                ui_ajax_settings_select();
 }
 
 

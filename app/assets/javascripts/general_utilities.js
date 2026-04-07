@@ -443,46 +443,59 @@ jQuery.fn.extend({
 
 
 function ui_ajax_select(success_callback) {
-    // console.log("ui_ajax_select - general")
-    // console.trace();
+    if (success_callback) {
+        $(document).on("ui-ajax-select:success", function(event, element, data) {
+            success_callback(element, data);
+        });
+    }
 
-    $("select.ui-ajax-select").off("change").on("change", function () {
-        selected_item = $(this).val();
-        controller = this.getAttribute("data-path")
-        that = this
-        //alert(this.getAttribute("data-id"));
+    if (window.ui_ajax_select_initialized) return;
+    window.ui_ajax_select_initialized = true;
+
+    $(document).on("change", "select.ui-ajax-select", function (event) {
+        // Stop recursion if we are programmatically changing
+        if (event.isTrigger) return;
+
+        var that = this;
+        var selected_item = $(this).val();
+        var controller = this.getAttribute("data-path");
+        var fieldName = this.getAttribute("name");
+        var dataId = this.getAttribute("data-id");
+
+        var dataObj = {};
+        dataObj["id"] = dataId;
+        dataObj[fieldName] = selected_item;
 
         var csrfToken = $('meta[name="csrf-token"]').attr('content');
         var csrfParam = $('meta[name="csrf-param"]').attr('content');
 
+        if (csrfParam && csrfToken) {
+            dataObj[csrfParam] = csrfToken;
+        }
+
         $.ajax({
             url: controller.indexOf('.') === -1 ? controller + '.json' : controller,
-            dataType: "text",
+            dataType: "text", // Always use text to handle empty responses from head :ok
             type: "PUT",
             headers: {
                 "Accept": "application/json, text/javascript, */*; q=0.01"
             },
-            data: "id=" + this.getAttribute("data-id") + "&" + this.getAttribute("name") + "=" + selected_item + (csrfParam && csrfToken ? "&" + csrfParam + "=" + encodeURIComponent(csrfToken) : ""),
-        }).done(function (data, textStatus, jqXHR)
-        {
-            var responseData = data;
+            data: dataObj
+        }).done(function (data, textStatus, jqXHR) {
+            var responseData = {};
             if (jqXHR.getResponseHeader("Content-Type") && jqXHR.getResponseHeader("Content-Type").indexOf("application/json") !== -1) {
                 try {
                     if (typeof data === 'string' && data.trim() !== "") {
                         responseData = JSON.parse(data);
-                    } else if (typeof data === 'string' && data.trim() === "") {
-                        responseData = {};
                     }
                 } catch (e) {
-                    responseData = data;
+                    console.error("ui_ajax_select: JSON parse error", e);
                 }
             }
 
-            if (typeof success_callback == "function")
-            {
-                success_callback(that, responseData);
-            }
+            $(that).trigger("ui-ajax-select:success", [that, responseData]);
         }).fail(function (jqXHR, textStatus, errorThrown) {
+            console.error("ui_ajax_select: fail", jqXHR, textStatus, errorThrown);
             var responseJSON = jqXHR.responseJSON;
             if (!responseJSON && jqXHR.responseText) {
                 try {
@@ -495,21 +508,39 @@ function ui_ajax_select(success_callback) {
                 setUpNotifier("error.png", "Warning", "An error occurred while updating.");
             }
 
+            // Revert value
             $(that).val($(that).data('initial-val'));
-        })
+        });
     });
 }
 // JQyuery version of ui_ajax_checkbox.
 
 jQuery.fn.extend({
     ui_ajax_checkbox: function (success_callback) {
-        ui_ajax_checkbox(success_callback);
+        ui_ajax_checkbox.call(this, success_callback);
     }
 });
 
 
 
 function ui_ajax_checkbox(success_callback) {
+    if (success_callback) {
+        // If it's a direct element selection, attach a one-time success listener that filters by element
+        if (this instanceof jQuery && this.length > 0) {
+            var elements = this;
+            $(document).on("ui-ajax-checkbox:success", function (event, element, data) {
+                if (elements.filter(element).length > 0) {
+                    success_callback(element, data);
+                }
+            });
+        } else {
+            // Fallback to global success listener
+            $(document).on("ui-ajax-checkbox:success", function (event, element, data) {
+                success_callback(element, data);
+            });
+        }
+    }
+
     if (window.ui_ajax_checkbox_initialized) return;
     window.ui_ajax_checkbox_initialized = true;
 
@@ -571,6 +602,8 @@ function ui_ajax_checkbox(success_callback) {
                 }
             }
 
+            $(that).trigger("ui-ajax-checkbox:success", [that, responseData]);
+
             if (typeof success_callback == "function")
             {
                 success_callback(that, responseData);
@@ -607,45 +640,62 @@ function ui_ajax_checkbox(success_callback) {
 
 
 function ui_ajax_settings_select(success_callback) {
+    if (success_callback) {
+        $(document).on("ui-ajax-settings-select:success", function(event, element, data) {
+            success_callback(element, data);
+        });
+    }
 
-    $("select.ui-ajax-settings-select").bind("change", function () {
-        selected_item = $(this).val();
-        controller = this.getAttribute("data-path")
-        that = this
+    if (window.ui_ajax_settings_select_initialized) return;
+    window.ui_ajax_settings_select_initialized = true;
 
-        //alert(this.getAttribute("data-id"));
+    $(document).on("change", "select.ui-ajax-settings-select", function (event) {
+        // Stop recursion if we are programmatically changing
+        if (event.isTrigger) return;
+
+        var that = this;
+        var selected_item = $(this).val();
+        var controller = this.getAttribute("data-path");
+        var fieldName = this.getAttribute("name");
+        var dataId = this.getAttribute("data-id");
+
+        var dataObj = {};
+        if (dataId) {
+            dataObj["id"] = dataId;
+        }
+        dataObj["settings"] = {};
+        dataObj["settings"][fieldName] = selected_item;
 
         var csrfToken = $('meta[name="csrf-token"]').attr('content');
         var csrfParam = $('meta[name="csrf-param"]').attr('content');
 
+        if (csrfParam && csrfToken) {
+            dataObj[csrfParam] = csrfToken;
+        }
+
         $.ajax({
             url: controller.indexOf('.') === -1 ? controller + '.json' : controller,
-            dataType: "text",
+            dataType: "text", // Always use text to handle empty responses from head :ok
             type: "PUT",
             headers: {
                 "Accept": "application/json, text/javascript, */*; q=0.01"
             },
-            data: "id=" + this.getAttribute("data-id") + "&settings[" + this.getAttribute("name") + "]=" + selected_item + (csrfParam && csrfToken ? "&" + csrfParam + "=" + encodeURIComponent(csrfToken) : ""),
-        }).done(function (data, textStatus, jqXHR)
-        {
-            var responseData = data;
+            data: dataObj
+        }).done(function (data, textStatus, jqXHR) {
+            var responseData = {};
             if (jqXHR.getResponseHeader("Content-Type") && jqXHR.getResponseHeader("Content-Type").indexOf("application/json") !== -1) {
                 try {
                     if (typeof data === 'string' && data.trim() !== "") {
                         responseData = JSON.parse(data);
-                    } else if (typeof data === 'string' && data.trim() === "") {
-                        responseData = {};
                     }
                 } catch (e) {
-                    responseData = data;
+                    console.error("ui_ajax_settings_select: JSON parse error", e);
                 }
             }
 
-            if (typeof success_callback == "function")
-            {
-                success_callback(that, responseData);
-            }
+            $(that).trigger("ui-ajax-settings-select:success", [that, responseData]);
         }).fail(function (jqXHR, textStatus, errorThrown) {
+            console.error("ui_ajax_settings_select: fail", jqXHR, textStatus, errorThrown);
             setUpNotifier("error.png", "Warning", "An error occurred while updating.");
         });
     });
