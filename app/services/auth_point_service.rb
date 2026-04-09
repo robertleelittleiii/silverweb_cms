@@ -21,7 +21,16 @@ class AuthPointService
   # Initiates AuthPoint push authentication for the user
   # Returns true when initiation succeeded (push sent), false otherwise
   def authenticate
-    return false unless @user&.multi_factor_type.to_s.casecmp("Authpoint").zero?
+    Rails.logger.info("[AuthPoint] authenticate called for user: #{@user&.name.inspect}, " \
+                     "email: #{@user&.email.inspect rescue 'n/a'}, " \
+                     "multi_factor_type: #{@user&.multi_factor_type.inspect}, " \
+                     "password_present: #{@password.present?}")
+
+    unless @user&.multi_factor_type.to_s.casecmp("Authpoint").zero?
+      Rails.logger.warn("[AuthPoint] Skipping — multi_factor_type '#{@user&.multi_factor_type.inspect}' " \
+                        "does not match 'Authpoint' for #{@user&.name.inspect}")
+      return false
+    end
 
     if @password.blank?
       Rails.logger.error("[AuthPoint] Password is required for authentication")
@@ -29,18 +38,29 @@ class AuthPointService
     end
 
     begin
+      Rails.logger.info("[AuthPoint] Checking authentication policy for login: #{@user.name.inspect}")
       # First check authentication policy to ensure user can authenticate
       policy_response = check_authentication_policy(@user.name)
 
+      Rails.logger.info("[AuthPoint] Policy response for #{@user.name.inspect}: " \
+                         "hasPolicy=#{policy_response['hasPolicy'].inspect}, " \
+                         "isAllowedToAuthenticate=#{policy_response['isAllowedToAuthenticate'].inspect}, " \
+                         "authenticationMethods=#{(policy_response['authenticationMethods'] || []).inspect}")
+      Rails.logger.debug("[AuthPoint] Full policy response: #{policy_response.inspect}")
+
       unless policy_response['hasPolicy'] && policy_response['isAllowedToAuthenticate']
-        Rails.logger.error("[AuthPoint] User #{@user.name} is not allowed to authenticate")
+        Rails.logger.error("[AuthPoint] User #{@user.name} is not allowed to authenticate — " \
+                           "hasPolicy=#{policy_response['hasPolicy'].inspect}, " \
+                           "isAllowedToAuthenticate=#{policy_response['isAllowedToAuthenticate'].inspect}")
         return false
       end
 
       # Determine available auth methods
       auth_methods = policy_response['authenticationMethods'] || []
+      Rails.logger.info("[AuthPoint] Auth methods available for #{@user.name.inspect}: #{auth_methods.inspect}")
 
       if auth_methods.include?('Push')
+        Rails.logger.info("[AuthPoint] Initiating Push authentication for #{@user.name.inspect}")
         # Initiate push authentication with password
         auth_response = authenticate_user(@user.name, 'push', nil, { password: @password })
 
@@ -54,6 +74,7 @@ class AuthPointService
           return false
         end
       elsif auth_methods.include?('OTP')
+        Rails.logger.info("[AuthPoint] Initiating OTP authentication for #{@user.name.inspect}")
         # OTP is synchronous — result is immediate, no transaction polling needed.
         # If no OTP code is provided yet (initiation phase), return true to signal
         # the frontend should prompt the user for their hardware token code.
@@ -80,6 +101,7 @@ class AuthPointService
           return false
         end
       elsif auth_methods.include?('QRCode')
+        Rails.logger.info("[AuthPoint] Initiating QRCode authentication for #{@user.name.inspect}")
         # Initiate QR code authentication with password (if required by policy)
         auth_response = authenticate_user(@user.name, 'qrcode', nil, { password: @password })
 
@@ -280,6 +302,7 @@ class AuthPointService
       raise error_message
     end
 
+    Rails.logger.info("[AuthPoint] check_authentication_policy: login=#{login.inspect}, origin_ip=#{origin_ip.inspect}")
     access_token = get_access_token
     body = { login: login }
     body[:originIpAddress] = origin_ip if origin_ip
@@ -304,8 +327,12 @@ class AuthPointService
 
     if response.success?
       policy_response = response.parsed_response
+      Rails.logger.debug("[AuthPoint] Raw policy API response for #{login.inspect}: #{response.body}")
       unless policy_response['hasPolicy'] && policy_response['isAllowedToAuthenticate']
-        error_message = "User #{login} is not allowed to authenticate: #{response.body}"
+        error_message = "User #{login} is not allowed to authenticate — " \
+                        "hasPolicy=#{policy_response['hasPolicy'].inspect}, " \
+                        "isAllowedToAuthenticate=#{policy_response['isAllowedToAuthenticate'].inspect}, " \
+                        "body=#{response.body}"
         Rails.logger.error(error_message)
         raise error_message
       end
@@ -405,9 +432,10 @@ class AuthPointService
 
     request_url = "/rest/authpoint/authentication/v1/accounts/#{account_id}/resources/#{resource_id}/#{endpoint}"
     Rails.logger.info("[AuthPoint] Authenticating with URL: #{self.class.base_uri}#{request_url}")
+    Rails.logger.info("[AuthPoint] authenticate_user: login=#{login.inspect}, auth_type=#{auth_type.inspect}, origin_ip=#{origin_ip.inspect}")
     # Mask sensitive fields (e.g., password) before logging
     redacted_body = redact_sensitive(body)
-    Rails.logger.debug("[AuthPoint] Request body: #{redacted_body.to_json}")
+    Rails.logger.info("[AuthPoint] Request body: #{redacted_body.to_json}")
 
     response = self.class.post(
       request_url,
