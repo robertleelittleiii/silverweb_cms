@@ -41,7 +41,8 @@ module SilverwebCms
       end
 
       def authpoint_audience
-        ENV['AUTHPOINT_AUDIENCE']
+        val = ENV['AUTHPOINT_AUDIENCE']
+        val && !val.empty? ? val : nil
       end
     end
   end

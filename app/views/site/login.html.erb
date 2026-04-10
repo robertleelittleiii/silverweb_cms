@@ -94,7 +94,37 @@
                   </table>
                 <% end %>
                   
-                  <%=form_tag({:controller=>"site", :action => 'two_factor_ajax'},{:id=>"two-factor-form", :remote=>true}) do %>
+                <div id="authpoint-method-form">
+                  </br>
+                  <DIV CLASS="L11G" STYLE="margin-bottom:10px">Choose your preferred authentication method:</DIV>
+                  <BR>
+                  <table border="0" cellspacing=0 class="ds_login">
+                    <tr>
+                      <td colspan="2" style="text-align:center;">
+                        <div id="authpoint-method-buttons"></div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td colspan="2" style="text-align:center; padding-top:8px;">
+                        <label style="font-size:0.85em;"><input type="checkbox" id="authpoint-save-preference"> Remember my choice</label>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td height="5"></td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td class="center">
+                        <%= link_to "Back to Login", "javascript:void(0);", onclick: "return(false);", class: "button-link authpoint-method-back-link" %>
+                      </td>
+                      <td class="center">
+                        <input type="button" class="button-link" id="authpoint-method-continue" value="Continue">
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+
+                <%=form_tag({:controller=>"site", :action => 'two_factor_ajax'},{:id=>"two-factor-form", :remote=>true}) do %>
                   </br>
                   <DIV CLASS="L11G" STYLE="margin-bottom:10px">Enter Code Below:</DIV>
                   <BR> <table border="0" cellspacing=0 class="ds_login">

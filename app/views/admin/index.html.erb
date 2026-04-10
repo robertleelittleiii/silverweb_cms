@@ -107,15 +107,39 @@
 
             <%  if Settings.enable_two_factor_auth == "true" %>
                 <div class="field-group">
-                    <p>
-                        <b>Two factor authentication uses :</b>
-                        <% current_label = @user.multi_factor_type.present? ? @user.multi_factor_type : "Default" %>
-                        <% current_value = @user.multi_factor_type.present? ? @user.multi_factor_type : "" %>
-                        <% options = [[current_label, current_value], ["Default", ""], ["None","None"], ["Text","Text"], ["Email","Email"]] %>
-                        <% options << ["Authpoint","Authpoint"] if authpoint_configured? %>
-                        <%= ajax_select("multi_factor_type","user",@user, options.uniq) %>
-                    </p>
+                    <% if @user.is_admin? %>
+                        <p>
+                            <b>Two factor authentication uses :</b>
+                            <% current_label = @user.multi_factor_type.present? ? @user.multi_factor_type : "Default" %>
+                            <% current_value = @user.multi_factor_type.present? ? @user.multi_factor_type : "" %>
+                            <% options = [[current_label, current_value], ["Default", ""], ["None","None"], ["Text","Text"], ["Email","Email"]] %>
+                            <% options << ["Authpoint","Authpoint"] if authpoint_configured? %>
+                            <%= ajax_select("multi_factor_type","user",@user, options.uniq) %>
+                        </p>
+                    <% end %>
+                    <% if authpoint_configured? %>
+                        <% ap_current_label = @user.try(:authpoint_auth_method).present? ? @user.authpoint_auth_method : "No Preference" %>
+                        <% ap_current_value = @user.try(:authpoint_auth_method).present? ? @user.authpoint_auth_method : "" %>
+                        <% ap_options = [[ap_current_label, ap_current_value], ["No Preference", ""], ["Push", "Push"], ["OTP", "OTP"], ["QRCode", "QRCode"]] %>
+                        <p class="authpoint-method-profile" style="<%= @user.effective_multi_factor_type == 'Authpoint' ? '' : 'display:none;' %>">
+                            <b>Preferred AuthPoint method:</b>
+                            <%= ajax_select("authpoint_auth_method", "user", @user, ap_options.uniq) %>
+                        </p>
+                    <% end %>
                 </div>
+                <% if @user.is_admin? %>
+                <script>
+                    $(document).ready(function() {
+                        $(document).on('change', 'select[name="user[multi_factor_type]"]', function() {
+                            if ($(this).val() === 'Authpoint') {
+                                $('.authpoint-method-profile').show();
+                            } else {
+                                $('.authpoint-method-profile').hide();
+                            }
+                        });
+                    });
+                </script>
+                <% end %>
             <% end %>
 
             <div class="field-group">

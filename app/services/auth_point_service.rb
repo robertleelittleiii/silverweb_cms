@@ -8,12 +8,14 @@
 class AuthPointService
   include HTTParty
 
-  attr_reader :last_qr_code
+  attr_reader :last_qr_code, :auth_method, :available_methods
 
-  def initialize(user, password = nil, otp: nil)
+  def initialize(user, password = nil, otp: nil, preferred_method: nil)
     @user = user
     @password = password
     @otp = otp
+    @preferred_method = preferred_method
+    @available_methods = []
     @config = AUTHPOINT_CONFIG
     self.class.base_uri @config.authpoint_base_url
   end
@@ -38,9 +40,10 @@ class AuthPointService
     end
 
     begin
-      Rails.logger.info("[AuthPoint] Checking authentication policy for login: #{@user.name.inspect}")
+      authpoint_login = @user.name.to_s.downcase.strip
+      Rails.logger.info("[AuthPoint] Checking authentication policy for login: #{authpoint_login.inspect}")
       # First check authentication policy to ensure user can authenticate
-      policy_response = check_authentication_policy(@user.name)
+      policy_response = check_authentication_policy(authpoint_login)
 
       Rails.logger.info("[AuthPoint] Policy response for #{@user.name.inspect}: " \
                          "hasPolicy=#{policy_response['hasPolicy'].inspect}, " \
@@ -57,75 +60,34 @@ class AuthPointService
 
       # Determine available auth methods
       auth_methods = policy_response['authenticationMethods'] || []
+      @available_methods = auth_methods.dup
       Rails.logger.info("[AuthPoint] Auth methods available for #{@user.name.inspect}: #{auth_methods.inspect}")
 
-      if auth_methods.include?('Push')
-        Rails.logger.info("[AuthPoint] Initiating Push authentication for #{@user.name.inspect}")
-        # Initiate push authentication with password
-        auth_response = authenticate_user(@user.name, 'push', nil, { password: @password })
+      # Determine which method to use:
+      # 1. Explicit preferred_method passed to constructor (e.g. from session during method selection)
+      # 2. User's saved preference from profile (authpoint_auth_method column)
+      # 3. If multiple methods and no preference, return without initiating so frontend can prompt
+      # 4. If only one method, use it directly
+      chosen = @preferred_method.presence ||
+               (@user.try(:authpoint_auth_method).presence if @user.respond_to?(:authpoint_auth_method))
 
-        transaction_id = auth_response['transactionId']
-        if transaction_id.present?
-          @user.update_column(:authpoint_session_id, transaction_id)
-          Rails.logger.info("[AuthPoint] Push authentication initiated for #{@user.name}, transaction: #{transaction_id}")
-          return true
-        else
-          Rails.logger.error("[AuthPoint] No transaction ID returned for push for #{@user.name}")
-          return false
-        end
-      elsif auth_methods.include?('OTP')
-        Rails.logger.info("[AuthPoint] Initiating OTP authentication for #{@user.name.inspect}")
-        # OTP is synchronous — result is immediate, no transaction polling needed.
-        # If no OTP code is provided yet (initiation phase), return true to signal
-        # the frontend should prompt the user for their hardware token code.
-        # Actual verification is handled by handle_authpoint_otp in the controller.
-        if @otp.blank?
-          Rails.logger.info("[AuthPoint] OTP authentication required for #{@user.name} — awaiting user input")
-          return true
-        end
-
-        auth_response = authenticate_user(@user.name, 'otp', nil, { password: @password, otp: @otp })
-
-        result = (auth_response['authenticationResult'] || auth_response['status'] || '').to_s.upcase
-        if %w[ACCEPTED APPROVED SUCCESS AUTHENTICATED AUTHORIZED].include?(result)
-          # Store a sentinel so verify_authentication knows OTP already succeeded
-          begin
-            @user.update_columns(authpoint_session_id: 'OTP_AUTHENTICATED', authpoint_last_qr_code: nil)
-          rescue => e
-            Rails.logger.warn("[AuthPoint] Unable to persist OTP session marker for #{@user.name}: #{e.message}")
-          end
-          Rails.logger.info("[AuthPoint] OTP authentication successful for #{@user.name}")
-          return true
-        else
-          Rails.logger.error("[AuthPoint] OTP authentication failed for #{@user.name}: #{result}")
-          return false
-        end
-      elsif auth_methods.include?('QRCode')
-        Rails.logger.info("[AuthPoint] Initiating QRCode authentication for #{@user.name.inspect}")
-        # Initiate QR code authentication with password (if required by policy)
-        auth_response = authenticate_user(@user.name, 'qrcode', nil, { password: @password })
-
-        transaction_id = auth_response['transactionId']
-        qr_code = auth_response['qrCode'] || auth_response['qrcode'] || auth_response['command']
-        if transaction_id.present?
-          @user.update_column(:authpoint_session_id, transaction_id)
-          @last_qr_code = qr_code
-          # Persist the last QR code on the user for later retrieval/display
-          begin
-            @user.update_column(:authpoint_last_qr_code, @last_qr_code)
-          rescue => e
-            Rails.logger.warn("[AuthPoint] Unable to persist authpoint_last_qr_code for #{@user.name}: #{e.message}")
-          end
-          Rails.logger.info("[AuthPoint] QR code authentication initiated for #{@user.name}, transaction: #{transaction_id}")
-          return true
-        else
-          Rails.logger.error("[AuthPoint] No transaction ID returned for qrcode for #{@user.name}")
-          return false
-        end
+      if chosen.present? && auth_methods.include?(chosen)
+        Rails.logger.info("[AuthPoint] Using preferred method '#{chosen}' for #{@user.name.inspect}")
+      elsif auth_methods.size > 1 && chosen.blank?
+        # Multiple methods available, no preference — let frontend prompt user to choose
+        Rails.logger.info("[AuthPoint] Multiple methods available for #{@user.name.inspect}, " \
+                          "no preference set — prompting user to choose")
+        @auth_method = nil
+        return true
+      elsif auth_methods.size == 1
+        chosen = auth_methods.first
+        Rails.logger.info("[AuthPoint] Single method available: '#{chosen}' for #{@user.name.inspect}")
       else
         Rails.logger.error("[AuthPoint] No supported authentication methods (Push/QRCode/OTP) available for #{@user.name}")
         return false
       end
+
+      initiate_chosen_method(chosen)
 
     rescue => e
       Rails.logger.error("[AuthPoint] authenticate error for #{@user.name}: #{e.class}: #{e.message}")
@@ -238,6 +200,99 @@ class AuthPointService
 
   private
 
+  # Initiate authentication using the chosen method (Push, OTP, or QRCode)
+  def initiate_chosen_method(method)
+    @auth_method = method
+    authpoint_login = @user.name.to_s.downcase.strip
+
+    case method
+    when 'Push'
+      Rails.logger.info("[AuthPoint] Initiating Push authentication for #{authpoint_login.inspect}")
+      auth_response = authenticate_user(authpoint_login, 'push', nil, { password: @password })
+
+      transaction_id = auth_response['transactionId']
+      if transaction_id.present?
+        @user.update_column(:authpoint_session_id, transaction_id)
+        Rails.logger.info("[AuthPoint] Push authentication initiated for #{@user.name}, transaction: #{transaction_id}")
+        true
+      else
+        Rails.logger.error("[AuthPoint] No transaction ID returned for push for #{@user.name}")
+        false
+      end
+
+    when 'OTP'
+      Rails.logger.info("[AuthPoint] Initiating OTP authentication for #{authpoint_login.inspect}")
+      if @otp.blank?
+        # Validate the password by attempting a push transaction (password is checked server-side).
+        # We don't poll or wait for push approval — we just need the password validation.
+        begin
+          Rails.logger.info("[AuthPoint] Validating password via push transaction for #{authpoint_login}")
+          validate_response = authenticate_user(authpoint_login, 'push', nil, { password: @password })
+          # If we get here without error, password is valid. Cancel/ignore the push transaction.
+          if validate_response['transactionId'].present?
+            Rails.logger.info("[AuthPoint] Password validated for #{authpoint_login}, ignoring push transaction")
+          end
+        rescue => e
+          error_msg = e.message.to_s
+          # Check if this is clearly a password/authentication failure vs a device/push delivery issue.
+          # 403 with "not authorized" or 401 = bad password. Other errors (e.g. no device) = allow OTP.
+          if error_msg.include?('401') ||
+             (error_msg.include?('403') && error_msg.match?(/not authorized|invalid.*password|authentication.*denied/i))
+            Rails.logger.error("[AuthPoint] Password validation failed for #{authpoint_login}: #{error_msg}")
+            return false
+          else
+            # Push failed for a non-password reason (e.g. no mobile device for hardware-token-only users).
+            # Allow the OTP form — the password will be validated when the OTP code is submitted.
+            Rails.logger.warn("[AuthPoint] Push validation unavailable for #{authpoint_login} (#{error_msg}), " \
+                              "proceeding to OTP form — password will be validated on OTP submission")
+          end
+        end
+        Rails.logger.info("[AuthPoint] OTP authentication required for #{authpoint_login} — awaiting user input")
+        return true
+      end
+
+      auth_response = authenticate_user(authpoint_login, 'otp', nil, { password: @password, otp: @otp })
+      result = (auth_response['authenticationResult'] || auth_response['status'] || '').to_s.upcase
+      if %w[ACCEPTED APPROVED SUCCESS AUTHENTICATED AUTHORIZED].include?(result)
+        begin
+          @user.update_columns(authpoint_session_id: 'OTP_AUTHENTICATED', authpoint_last_qr_code: nil)
+        rescue => e
+          Rails.logger.warn("[AuthPoint] Unable to persist OTP session marker for #{@user.name}: #{e.message}")
+        end
+        Rails.logger.info("[AuthPoint] OTP authentication successful for #{@user.name}")
+        true
+      else
+        Rails.logger.error("[AuthPoint] OTP authentication failed for #{@user.name}: #{result}")
+        false
+      end
+
+    when 'QRCode'
+      Rails.logger.info("[AuthPoint] Initiating QRCode authentication for #{authpoint_login.inspect}")
+      auth_response = authenticate_user(authpoint_login, 'qrcode', nil, { password: @password })
+
+      transaction_id = auth_response['transactionId']
+      qr_code = auth_response['qrCode'] || auth_response['qrcode'] || auth_response['command']
+      if transaction_id.present?
+        @user.update_column(:authpoint_session_id, transaction_id)
+        @last_qr_code = qr_code
+        begin
+          @user.update_column(:authpoint_last_qr_code, @last_qr_code)
+        rescue => e
+          Rails.logger.warn("[AuthPoint] Unable to persist authpoint_last_qr_code for #{@user.name}: #{e.message}")
+        end
+        Rails.logger.info("[AuthPoint] QR code authentication initiated for #{@user.name}, transaction: #{transaction_id}")
+        true
+      else
+        Rails.logger.error("[AuthPoint] No transaction ID returned for qrcode for #{@user.name}")
+        false
+      end
+
+    else
+      Rails.logger.error("[AuthPoint] Unknown method '#{method}' for #{@user.name}")
+      false
+    end
+  end
+
   # Get OAuth access token for API calls
   def get_access_token
     return @access_token if defined?(@access_token) && @access_token.present?
@@ -259,7 +314,8 @@ class AuthPointService
       grant_type: 'client_credentials',
       scope: 'api-access'
     }
-    body_params[:audience] = @config.authpoint_audience if @config.authpoint_audience
+    audience = @config.authpoint_audience
+    body_params[:audience] = audience if audience && !audience.empty?
 
     response = self.class.post(
       "#{auth_url}/oauth/token",

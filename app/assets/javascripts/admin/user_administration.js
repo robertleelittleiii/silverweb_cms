@@ -61,6 +61,16 @@ function admin_user_administration_callDocumentReady() {
     createUserDialog();
     ui_ajax_select();
 
+    // Toggle AuthPoint method dropdown when auth type changes
+    $(document).on('change', 'select[name="user[multi_factor_type]"]', function() {
+      var $cell = $(this).closest('td');
+      var $methodCell = $cell.find('.authpoint-method-cell');
+      if ($(this).val() === 'Authpoint') {
+        $methodCell.show();
+      } else {
+        $methodCell.hide();
+      }
+    });
 
 }
 

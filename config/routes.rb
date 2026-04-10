@@ -33,6 +33,7 @@ Rails.application.routes.draw do
       get "reset"
       post "set_time_zone"
       post "check_session"
+      post "set_authpoint_method_ajax"
       get "get_csrf_meta_tags"
       post "update_menu_order"
       post "update_menu_shortcuts"

@@ -131,9 +131,13 @@ class SiteController < ApplicationController
         ap_init = initiate_authpoint_authentication(user, params[:password])
         authpoint_pending = ap_init[:success]
         authpoint_qrcode = ap_init[:qr_code]
+        authpoint_method = ap_init[:auth_method]
+        authpoint_methods = ap_init[:available_methods]
         if authpoint_pending
           # flash is already set inside initiate
         else
+          # AuthPoint initiation failed (e.g. bad password) — treat as login failure, not two-factor
+          twofactor = false
           flash.now[:notice] = "AuthPoint authentication could not be initiated. Please try again or contact support."
         end
       when "Text"
@@ -161,14 +165,16 @@ class SiteController < ApplicationController
     else
       if twofactor
         method = user.effective_multi_factor_type
-        comm_method = if method == "Authpoint"
-                        "AuthPoint mobile app"
-                      elsif method == "Text"
-                        user.formated_phone_number.blank? ? "text" : "text"
-                      else
-                        "email"
-                      end
-        flash.now[:notice] = "You need to verify your account. Enter code sent to you via #{comm_method}."
+        if method == "Authpoint"
+          # Flash was already set by initiate_authpoint_authentication — don't overwrite it
+        else
+          comm_method = if method == "Text"
+                          user.formated_phone_number.blank? ? "text" : "text"
+                        else
+                          "email"
+                        end
+          flash.now[:notice] = "You need to verify your account. Enter code sent to you via #{comm_method}."
+        end
       elsif !user.nil? and user.auth_fail_count.to_i >= fail_count_max.to_i
         flash.now[:notice] = "User Account Locked! Too many failed attempts"
       else
@@ -183,6 +189,8 @@ class SiteController < ApplicationController
         twofactor: twofactor,
         authpoint_pending: (defined?(authpoint_pending) && authpoint_pending) ? true : false,
         authpoint_qrcode: (defined?(authpoint_qrcode) && authpoint_qrcode.present?) ? authpoint_qrcode : nil,
+        authpoint_method: (defined?(authpoint_method) && authpoint_method) || nil,
+        authpoint_methods: (defined?(authpoint_methods) && authpoint_methods.is_a?(Array) && authpoint_methods.size > 1) ? authpoint_methods : nil,
         uri: uri
       }}
       format.html { redirect_to(uri || { action: "index" }) }
@@ -557,6 +565,37 @@ class SiteController < ApplicationController
     end
   end
 
+  # User chose an AuthPoint method during login — re-initiate with that method
+  def set_authpoint_method_ajax
+    user = User.find_by(id: session[:temp_user_id])
+    chosen_method = params[:authpoint_method]
+
+    unless user && %w[Push OTP QRCode].include?(chosen_method)
+      render json: { message: 'Invalid request.', success: false } and return
+    end
+
+    # Optionally save the preference to the user profile
+    if params[:save_preference] == 'true' && user.respond_to?(:authpoint_auth_method=)
+      user.update_column(:authpoint_auth_method, chosen_method)
+    end
+
+    # Re-initiate authentication with the chosen method
+    password = session[:authpoint_password]
+    ap_init = initiate_authpoint_authentication(user, password, preferred_method: chosen_method)
+
+    respond_to do |format|
+      format.json { render json: {
+        message: flash[:notice],
+        success: ap_init[:success],
+        twofactor: true,
+        authpoint_pending: ap_init[:success],
+        authpoint_qrcode: ap_init[:qr_code].present? ? ap_init[:qr_code] : nil,
+        authpoint_method: ap_init[:auth_method],
+        authpoint_methods: nil
+      }}
+    end
+  end
+
   private
 
 
@@ -647,17 +686,18 @@ class SiteController < ApplicationController
   def handle_authpoint_otp(user, code)
     begin
       service = AuthPointService.new(user)
+      authpoint_login = user.name.to_s.downcase.strip
       if user.respond_to?(:authpoint_last_qr_code) && user.authpoint_last_qr_code.present?
         # Responding to a QR Code flow: use qrCodeResponse and /qrcode endpoint with transactionId, no password
         resp = service.authenticate_user(
-          user.name,
+          authpoint_login,
           'qrcode_response',
           request.remote_ip,
           { qrCodeResponse: code, transactionId: user.authpoint_session_id }
         )
       else
         # Standard OTP flow
-        resp = service.authenticate_user(user.name, 'otp', nil, { password: session[:authpoint_password], otp: code })
+        resp = service.authenticate_user(authpoint_login, 'otp', nil, { password: session[:authpoint_password], otp: code })
       end
       status = (resp['status'] || resp['authenticationResult'] || '').to_s.upcase
 
@@ -685,29 +725,41 @@ class SiteController < ApplicationController
   end
 
 
-  def initiate_authpoint_authentication(user, password)
-    auth_service = AuthPointService.new(user, password)
+  def initiate_authpoint_authentication(user, password, preferred_method: nil)
+    auth_service = AuthPointService.new(user, password, preferred_method: preferred_method)
     begin
       result = auth_service.authenticate
 
       if result
-        if auth_service.last_qr_code.present?
-          flash.now[:notice] = "Scan the QR code with the AuthPoint app, then wait on this page."
+        if auth_service.auth_method.nil? && auth_service.available_methods.size > 1
+          # Multiple methods, no preference — frontend will prompt user to choose
+          flash.now[:notice] = "Please choose your authentication method."
         else
-          flash.now[:notice] = "Please approve the authentication request on your mobile device"
+          case auth_service.auth_method
+          when 'OTP'
+            flash.now[:notice] = "Enter the code from your AuthPoint app or hardware token."
+          when 'QRCode'
+            flash.now[:notice] = "Scan the QR code with the AuthPoint app, then enter the code below."
+          else
+            flash.now[:notice] = "Please approve the authentication request on your mobile device."
+          end
         end
       else
         flash.now[:notice] = "Failed to initiate AuthPoint authentication"
       end
-      # Return a small struct-like hash so caller can include QR code when present
-      { success: result, qr_code: auth_service.last_qr_code }
+      # Return a small struct-like hash so caller can include QR code, method, and available methods
+      {
+        success: result,
+        qr_code: auth_service.last_qr_code,
+        auth_method: auth_service.auth_method,
+        available_methods: auth_service.available_methods
+      }
     rescue => e
       Rails.logger.error "AuthPoint authentication error: #{e.message}"
       flash.now[:notice] = "Authentication service temporarily unavailable"
-      { success: false, qr_code: nil }
+      { success: false, qr_code: nil, available_methods: [] }
     end
   end
-
 
 
   protected

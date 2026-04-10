@@ -419,7 +419,18 @@ function bindLoginClick(url_to_goto, show_main_menu) {
         // console.log(evt);
         // console.log(data);
         if (data.twofactor) {
-            if (data.authpoint_pending) {
+            if (data.authpoint_methods && data.authpoint_methods.length > 1 && !data.authpoint_method) {
+                // Multiple AuthPoint methods available, no preference — show method selection
+                showAuthPointMethodSelection(data.authpoint_methods, url_to_goto, show_main_menu, data.message);
+            } else if (data.authpoint_pending && data.authpoint_method === 'OTP') {
+                // AuthPoint OTP flow: show the code entry form so user can type their OTP
+                if (!$('div.login-form').hasClass('flipped-two-factor')) {
+                  $('div.login-form').toggleClass('flipped-two-factor');
+                }
+                setUpPurrNotifier("Notice", data.message || "Enter the code from your AuthPoint app or hardware token.");
+                $("input#code").focus();
+                $("input#code").trigger("click");
+            } else if (data.authpoint_pending) {
                 // AuthPoint push or QR flow: show instruction and start polling.
                 setUpPurrNotifier("Notice", data.message || "Please approve or scan the QR code in the AuthPoint app, then enter the code if prompted.");
                 try {
@@ -502,7 +513,9 @@ function bindLoginClick(url_to_goto, show_main_menu) {
 
         } else
         {
-            // Only shake on incorrect two-factor code entries; do not shake on generic login failures
+            $(".login-enclosure").effect("shake", {
+                times: 3
+            }, 800);
             setUpPurrNotifier("Notice", data.message);
 
         }
@@ -529,6 +542,106 @@ function bindLoginClick(url_to_goto, show_main_menu) {
 
     });
 
+}
+
+// Show AuthPoint method selection using the CSS flip panel
+function showAuthPointMethodSelection(methods, url_to_goto, show_main_menu, message) {
+    var methodLabels = { 'Push': 'Push Notification', 'OTP': 'One-Time Password (OTP)', 'QRCode': 'QR Code' };
+    var $buttons = $('#authpoint-method-buttons');
+    $buttons.empty();
+
+    $.each(methods, function(i, method) {
+      var label = methodLabels[method] || method;
+      var id = 'authpoint-method-' + method.toLowerCase();
+      var $radio = $('<div style="margin:6px 0; text-align:left; padding-left:30px;">' +
+                     '<label style="cursor:pointer;"><input type="radio" name="authpoint_method" value="' + method + '" id="' + id + '" style="margin-right:8px;">' + label + '</label>' +
+                     '</div>');
+      $buttons.append($radio);
+    });
+
+    // Select first option by default
+    $buttons.find('input[type=radio]:first').prop('checked', true);
+
+    // Continue button — submit selected radio
+    $('#authpoint-method-continue').off('click').on('click', function() {
+      var chosen = $('input[name=authpoint_method]:checked').val();
+      if (!chosen) return;
+      var savePreference = $('#authpoint-save-preference').is(':checked');
+      $('div.login-form').removeClass('flipped-authpoint-method');
+      selectAuthPointMethod(chosen, savePreference, url_to_goto, show_main_menu);
+    });
+
+    // Back to login link
+    $('.authpoint-method-back-link').off('click').on('click', function() {
+      $('div.login-form').removeClass('flipped-authpoint-method');
+    });
+
+    // Flip to method selection panel
+    if (!$('div.login-form').hasClass('flipped-authpoint-method')) {
+      $('div.login-form').toggleClass('flipped-authpoint-method');
+    }
+    setUpPurrNotifier("Notice", message || "Please choose your authentication method.");
+}
+
+// POST the chosen method to the server and handle the response like a normal login_ajax response
+function selectAuthPointMethod(method, savePreference, url_to_goto, show_main_menu) {
+    var csrfToken = $('meta[name="csrf-token"]').attr('content');
+    $.ajax({
+      url: '/site/set_authpoint_method_ajax',
+      type: 'POST',
+      dataType: 'json',
+      data: { authpoint_method: method, save_preference: savePreference ? 'true' : 'false' },
+      headers: { 'X-CSRF-Token': csrfToken },
+      success: function(data) {
+        // Process the response the same way bindLoginClick does
+        if (data.success && data.authpoint_method === 'OTP') {
+          if (!$('div.login-form').hasClass('flipped-two-factor')) {
+            $('div.login-form').toggleClass('flipped-two-factor');
+          }
+          setUpPurrNotifier("Notice", data.message || "Enter the code from your AuthPoint app or hardware token.");
+          $("input#code").focus();
+          $("input#code").trigger("click");
+        } else if (data.success && data.authpoint_pending) {
+          // Push or QR flow
+          setUpPurrNotifier("Notice", data.message);
+          if (data.authpoint_qrcode) {
+            if (!$('div.login-form').hasClass('flipped-two-factor')) {
+              $('div.login-form').toggleClass('flipped-two-factor');
+            }
+            // Inject QR code
+            if ($('#authpoint-qr-container-twofactor').length === 0) {
+              var _qrSrc = (typeof computeAuthPointQrSrc === 'function') ? computeAuthPointQrSrc(data.authpoint_qrcode) : data.authpoint_qrcode;
+              var qrBlock = '<div id="authpoint-qr-container-twofactor" class="loginArea" ' +
+                            'style="text-align:center; padding:16px;">' +
+                            '<div style="margin:5px 0 10px; font-weight:bold;">Scan this QR code with the AuthPoint app, then enter the code below.</div>' +
+                            '<img id="authpoint-qr" alt="AuthPoint QR Code" style="max-width:240px;" src="' + _qrSrc + '" />' +
+                            '</div>';
+              $('#two-factor-form').prepend(qrBlock);
+            }
+          }
+          // Start polling for push/QR approval
+          if (window.authpointPollInterval) { clearInterval(window.authpointPollInterval); }
+          window.authpointPollInterval = setInterval(function(){
+            $.ajax({
+              url: '/site/check_session',
+              type: 'POST',
+              dataType: 'json',
+              success: function(resp){
+                if (resp && resp.authenticated) {
+                  clearInterval(window.authpointPollInterval);
+                  login_sucessfull(url_to_goto, show_main_menu);
+                }
+              }
+            });
+          }, 3000);
+        } else {
+          setUpPurrNotifier("Notice", data.message || "Authentication failed. Please try again.");
+        }
+      },
+      error: function() {
+        setUpPurrNotifier("Notice", "Authentication service temporarily unavailable.");
+      }
+    });
 }
 
 function bindResetClick() {

@@ -84,7 +84,7 @@ div.login-form {
     perspective: 800px;
 }
 
-div.login-form form{
+div.login-form form, div.login-form #authpoint-method-form{
     width:100%;
     height:100%;
     position:absolute;
@@ -161,7 +161,33 @@ input#update-button {
     border-radius: 20px;
 }
 
-div.login-form.flipped #login-form, div.login-form.flipped-register #login-form, div.login-form.flipped-two-factor #login-form{
+#authpoint-method-form {
+    z-index:1;
+    opacity:0;
+    background-color: white;
+    border: double 10px gray;
+    border-radius: 20px;
+
+    -moz-transform:rotateY(180deg);
+    -webkit-transform:rotateY(180deg);
+    transform:rotateY(180deg);
+}
+
+div.login-form.flipped-authpoint-method #login-form {
+    opacity:0;
+    -moz-transform:rotateY(-180deg);
+    -webkit-transform:rotateY(-180deg);
+    transform:rotateY(-180deg);
+}
+
+div.login-form.flipped-authpoint-method #authpoint-method-form {
+    opacity:1;
+    -moz-transform:rotateY(0deg);
+    -webkit-transform:rotateY(0deg);
+    transform:rotateY(0deg);
+}
+
+div.login-form.flipped #login-form, div.login-form.flipped-register #login-form, div.login-form.flipped-two-factor #login-form, div.login-form.flipped-authpoint-method #login-form{
 
     opacity:0;
 

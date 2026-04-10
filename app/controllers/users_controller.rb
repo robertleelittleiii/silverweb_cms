@@ -326,7 +326,7 @@ class UsersController < ApplicationController
   private
   
   def user_params
-    params[:user].permit("name", "hashed_password", "salt", "remember_token", "remember_token_expires_at", "activation_code", "activated_at", "state", "deleted_at", "password_reset_code","multi_factor_type",SilverwebCms::Config.USER_PERMITTED_FIELDS)
+    params[:user].permit("name", "hashed_password", "salt", "remember_token", "remember_token_expires_at", "activation_code", "activated_at", "state", "deleted_at", "password_reset_code","multi_factor_type","authpoint_auth_method",SilverwebCms::Config.USER_PERMITTED_FIELDS)
   end
 
 end
