@@ -252,6 +252,19 @@ function loadLoginBox(url_to_goto, show_main_menu) {
                 $("input.button-link").button();
                 $("a.button-link").button();
 
+                // Password visibility toggle
+                $('.password-toggle').on('click', function() {
+                    var $input = $(this).siblings('input[type=password], input[type=text]').first();
+                    if ($input.attr('type') === 'password') {
+                        $input.attr('type', 'text');
+                        $(this).attr('title', 'Hide password');
+                        $(this).find('svg').attr('stroke', '#009238');
+                    } else {
+                        $input.attr('type', 'password');
+                        $(this).attr('title', 'Show password');
+                        $(this).find('svg').attr('stroke', '#666');
+                    }
+                });
 
             }
         });
